@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Venue details, menus, and reviews — Bite Club Melbourne.">
+  <title>Venue — Bite Club</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta property="og:title" content="Venue — Bite Club">
+  <meta property="og:description" content="Venue details, menus, and reviews — Bite Club Melbourne.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dark-mode.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .favourite-btn { position:absolute; top:1.5rem; right:1.5rem; background:rgba(0,0,0,0.4); border:none; color:white; font-size:1.5rem; width:48px; height:48px; border-radius:50%; cursor:pointer; transition:all 0.3s; z-index:10; backdrop-filter:blur(8px); }
+    .favourite-btn:hover { background:rgba(0,0,0,0.6); transform:scale(1.1); }
+    .favourite-btn.active { color:#E8A838; background:rgba(0,0,0,0.6); }
+    .profile-banner { padding:0.75rem 1rem; background:var(--accent-muted); border-radius:var(--radius-sm); border-left:3px solid var(--accent); margin-bottom:1rem; font-size:var(--text-sm); color:var(--text-secondary); }
+  </style>
+</head>
+<body>
+  <!-- NAVIGATION -->
+  <nav id="navbar"></nav>
+
+  <!-- VENUE HERO -->
+  <div class="venue-hero" id="venueHero"></div>
+
+  <!-- VENUE CONTENT -->
+  <div class="venue-detail-container">
+    <div class="venue-main">
+      <a href="index.html" class="back-btn">&larr; Back to Explore</a>
+
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="menu">Menu</button>
+        <button class="tab-btn" data-tab="critic-reviews">Critic Reviews</button>
+        <button class="tab-btn" data-tab="community-reviews">Community Reviews</button>
+      </div>
+
+      <!-- MENU TAB -->
+      <div class="tab-content active" id="tab-menu"></div>
+
+      <!-- CRITIC REVIEWS TAB -->
+      <div class="tab-content" id="tab-critic-reviews"></div>
+
+      <!-- COMMUNITY REVIEWS TAB -->
+      <div class="tab-content" id="tab-community-reviews"></div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="venue-sidebar" id="venueSidebar"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <div id="footer"></div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="storage.js"></script>
+  <script src="shared.js"></script>
+  <script src="data.js"></script>
+  <script>
+    // ===== INIT SHARED COMPONENTS =====
+    renderNavbar('');
+    renderFooter();
+
+    // ===== GET VENUE =====
+    const params = new URLSearchParams(window.location.search);
+    const venueId = parseInt(params.get('id'));
+    const venue = VENUES.find(v => v.id === venueId);
+
+    if (!venue) {
+      document.getElementById('venueHero').innerHTML = '';
+      document.querySelector('.venue-detail-container').innerHTML =
+        '<div style="text-align:center;padding:4rem 2rem;"><h1 style="font-family:var(--font-serif);color:var(--text);">Venue not found</h1>' +
+        '<p style="color:var(--text-muted);margin:1rem 0 2rem;">The venue you\'re looking for doesn\'t exist or has been removed.</p>' +
+        '<a href="index.html" class="btn btn-primary">&larr; Back to Explore</a></div>';
+      throw new Error('Venue not found');
+    }
+
+    document.title = `${venue.name} — Bite Club`;
+
+    // ===== USER PROFILE HELPERS =====
+    function getCurrentUserName() {
+      const profile = Storage.getUserProfile();
+      return profile ? profile.name : null;
+    }
+
+    function getCurrentUserInitials() {
+      const profile = Storage.getUserProfile();
+      return profile ? profile.initials : null;
+    }
+
+    // ===== RENDER HERO =====
+    const upcomingEvents = EVENTS.filter(e => e.status === 'upcoming' && e.venueIds.includes(venue.id));
+    const isFav = Storage.isFavourite(venue.id);
+    document.getElementById('venueHero').innerHTML = `
+      <img src="${venue.image}" alt="${venue.name}" loading="lazy" onerror="handleImageError(this, '${venue.type}')">
+      <div class="venue-hero-overlay">
+        <button class="favourite-btn ${isFav ? 'active' : ''}"
+                onclick="toggleVenueFavourite(this)" aria-label="Toggle favourite">&hearts;</button>
+        <h1>${venue.name}</h1>
+        <div class="venue-hero-info">
+          <span>&#x1F4CD; ${venue.suburb}</span>
+          <span>${venue.priceRange}</span>
+          <span>&#x2605; ${getAvgRating(venue)}</span>
+          <span>${venue.type === 'cafe' ? '&#9749; Cafe' : '&#x1F37D; Restaurant'}</span>
+          ${upcomingEvents.length ? '<span style="color:#E8A838;">&#x1F4C5; In upcoming event</span>' : ''}
+        </div>
+      </div>
+    `;
+
+    // ===== FAVOURITE TOGGLE =====
+    function toggleVenueFavourite(btn) {
+      const nowFav = Storage.toggleFavourite(venue.id);
+      btn.classList.toggle('active', nowFav);
+      showToast(nowFav ? 'Added to favourites!' : 'Removed from favourites', nowFav ? 'success' : '');
+    }
+
+    // ===== RENDER SIDEBAR =====
+    document.getElementById('venueSidebar').innerHTML = `
+      <div class="sidebar-card">
+        <h3>Details</h3>
+        <p><strong>Address:</strong> ${venue.address}</p>
+        <p><strong>Phone:</strong> ${venue.phone}</p>
+        <p><strong>Hours:</strong> ${venue.hours}</p>
+        <p><strong>Price:</strong> ${venue.priceRange}</p>
+      </div>
+      <div class="sidebar-card">
+        <h3>Description</h3>
+        <p>${venue.description}</p>
+      </div>
+      ${upcomingEvents.length ? `
+        <div class="sidebar-card">
+          <h3>Upcoming Events</h3>
+          <ul>
+            ${upcomingEvents.map(e => `<li><a href="events.html" style="color:var(--primary);text-decoration:none;font-weight:600;">${e.name}</a><br><span style="font-size:0.8rem;color:var(--text-muted);">${e.date} &middot; ${e.time}</span></li>`).join('')}
+          </ul>
+        </div>
+      ` : ''}
+      <div class="sidebar-card">
+        <h3>Ratings Summary</h3>
+        <p><strong>Critic avg:</strong> ${venue.criticReviews.length ? (venue.criticReviews.reduce((s,r) => s+r.rating,0)/venue.criticReviews.length).toFixed(1) : 'N/A'}/10</p>
+        <p><strong>Community avg:</strong> ${venue.communityReviews.length ? (venue.communityReviews.reduce((s,r) => s+r.rating,0)/venue.communityReviews.length).toFixed(1) : 'N/A'}/10</p>
+        <p><strong>Total reviews:</strong> ${venue.criticReviews.length + venue.communityReviews.length}</p>
+      </div>
+    `;
+
+    // ===== RENDER MENU =====
+    document.getElementById('tab-menu').innerHTML = venue.menu.map(cat => `
+      <div class="menu-category">
+        <h3>${cat.category}</h3>
+        ${cat.items.map(item => `
+          <div class="menu-item">
+            <div class="menu-item-info">
+              <div class="menu-item-name">${item.name}${item.isNew ? '<span class="new-tag">New</span>' : ''}</div>
+              <div class="menu-item-desc">${item.description}</div>
+            </div>
+            <div class="menu-item-price">${item.price > 0 ? '$' + item.price : '&mdash;'}</div>
+          </div>
+        `).join('')}
+      </div>
+    `).join('');
+
+    // ===== RENDER REVIEWS =====
+    function renderReview(review, type) {
+      const avatarClass = type === 'critic' ? 'critic' : 'community';
+      const initials = review.author.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+      const roleText = review.role ? `<div class="review-author-role">${review.role}</div>` : '';
+
+      // Merge stored comments with data.js comments
+      const dataComments = review.comments || [];
+      const storedComments = Storage.getComments(review.id);
+      const allComments = [...dataComments, ...storedComments];
+
+      // Check persisted like state
+      const isLiked = Storage.isLiked(review.id);
+      const displayLikes = isLiked ? review.likes + 1 : review.likes;
+
+      return `
+        <div class="review-card" data-review-id="${review.id}">
+          <div class="review-header">
+            <div class="review-author">
+              <div class="review-avatar ${avatarClass}">${initials}</div>
+              <div>
+                <div class="review-author-name">${review.author}</div>
+                ${roleText}
+              </div>
+            </div>
+            <div class="review-rating-badge">${review.rating}</div>
+          </div>
+          <div class="review-text">${review.text}</div>
+          <div class="review-date">${formatDate(review.date)}</div>
+          <div class="review-actions">
+            <button class="review-action-btn like-btn ${isLiked ? 'liked' : ''}" data-id="${review.id}" onclick="toggleLike(this, ${review.id})">
+              &hearts; <span class="like-count">${displayLikes}</span>
+            </button>
+            <button class="review-action-btn" onclick="toggleComments(${review.id})">
+              &#x1F4AC; ${allComments.length} comments
+            </button>
+          </div>
+          <div class="review-comments" id="comments-${review.id}" style="display:none;">
+            ${allComments.map(c => `
+              <div class="comment">
+                <span class="comment-author">${c.author}</span>
+                <span class="comment-date">${formatDate(c.date)}</span>
+                <div class="comment-text">${c.text}</div>
+              </div>
+            `).join('')}
+            <div class="comment-input-wrapper">
+              <input type="text" class="comment-input" id="comment-input-${review.id}" placeholder="Add a comment...">
+              <button class="comment-submit" onclick="addComment(${review.id})">Post</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Render stored user reviews (persisted across sessions)
+    function renderStoredReviews() {
+      const storedReviews = Storage.getReviews(venueId);
+      return storedReviews.map(r => renderReview(r, 'community')).join('');
+    }
+
+    // Critic Reviews
+    document.getElementById('tab-critic-reviews').innerHTML = `
+      <div style="margin-bottom:1rem;padding:0.75rem 1rem;background:var(--cream);border-radius:var(--radius-sm);border-left:3px solid var(--primary);">
+        <strong style="color:var(--primary-dark);">Critic Reviews</strong> &mdash; From our trusted committee members and food critics.
+      </div>
+      ${venue.criticReviews.map(r => renderReview(r, 'critic')).join('')}
+      ${!venue.criticReviews.length ? '<div class="empty-state"><p>No critic reviews yet.</p></div>' : ''}
+    `;
+
+    // Community Reviews — with profile banner and stored reviews
+    const userProfile = Storage.getUserProfile();
+    const profileBanner = !userProfile
+      ? '<div class="profile-banner">Set your name to get started reviewing!</div>'
+      : '';
+
+    document.getElementById('tab-community-reviews').innerHTML = `
+      <div style="margin-bottom:1rem;padding:0.75rem 1rem;background:var(--cream);border-radius:var(--radius-sm);border-left:3px solid var(--accent-dark);">
+        <strong style="color:var(--accent-dark);">Community Reviews</strong> &mdash; From fellow food lovers like you.
+      </div>
+      ${profileBanner}
+      <div class="write-review-card">
+        <h3>Write a Review</h3>
+        <div class="star-rating-input" id="starInput">
+          ${[10,9,8,7,6,5,4,3,2,1].map(i => `<span data-val="${i}" onclick="setRating(${i})">&#x2605;</span>`).join('')}
+        </div>
+        <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.5rem;">Rating: <span id="ratingDisplay">0</span>/10</div>
+        <input type="text" class="comment-input" id="reviewAuthor" placeholder="Your name" style="margin-bottom:0.5rem;width:100%;" value="${userProfile ? userProfile.name : ''}">
+        <textarea class="review-textarea" id="reviewText" placeholder="Share your experience..."></textarea>
+        <button class="submit-review-btn" onclick="submitReview()">Submit Review</button>
+      </div>
+      <div id="communityReviewsList">
+        ${renderStoredReviews()}
+        ${venue.communityReviews.map(r => renderReview(r, 'community')).join('')}
+      </div>
+      ${!venue.communityReviews.length && !Storage.getReviews(venueId).length ? '<div class="empty-state" id="emptyReviews"><p>No community reviews yet. Be the first!</p></div>' : ''}
+    `;
+
+    // ===== TAB SWITCHING =====
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+      });
+    });
+
+    // ===== INTERACTIONS =====
+    let selectedRating = 0;
+
+    function setRating(val) {
+      selectedRating = val;
+      document.getElementById('ratingDisplay').textContent = val;
+      document.querySelectorAll('#starInput span').forEach(star => {
+        star.classList.toggle('filled', parseInt(star.dataset.val) <= val);
+      });
+    }
+
+    function toggleLike(btn, reviewId) {
+      const nowLiked = Storage.toggleLike(reviewId);
+      const countEl = btn.querySelector('.like-count');
+      if (nowLiked) {
+        btn.classList.add('liked');
+        countEl.textContent = parseInt(countEl.textContent) + 1;
+      } else {
+        btn.classList.remove('liked');
+        countEl.textContent = parseInt(countEl.textContent) - 1;
+      }
+    }
+
+    function toggleComments(reviewId) {
+      const el = document.getElementById(`comments-${reviewId}`);
+      el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function addComment(reviewId) {
+      const input = document.getElementById(`comment-input-${reviewId}`);
+      const text = input.value.trim();
+      if (!text) return;
+
+      const userName = getCurrentUserName() || 'Anonymous';
+      const today = new Date().toISOString().split('T')[0];
+
+      const commentObj = { author: userName, date: today, text: text };
+      Storage.addComment(reviewId, commentObj);
+
+      const commentsEl = document.getElementById(`comments-${reviewId}`);
+      const commentHTML = `
+        <div class="comment">
+          <span class="comment-author">${userName}</span>
+          <span class="comment-date">${formatDate(today)}</span>
+          <div class="comment-text">${text}</div>
+        </div>
+      `;
+      // Insert before the input wrapper
+      const inputWrapper = commentsEl.querySelector('.comment-input-wrapper');
+      inputWrapper.insertAdjacentHTML('beforebegin', commentHTML);
+
+      // Update the comment count button
+      const reviewCard = commentsEl.closest('.review-card');
+      const commentBtn = reviewCard.querySelectorAll('.review-action-btn')[1];
+      const currentCount = parseInt(commentBtn.textContent.match(/\d+/)[0]);
+      commentBtn.innerHTML = `&#x1F4AC; ${currentCount + 1} comments`;
+
+      input.value = '';
+      showToast('Comment posted!', 'success');
+    }
+
+    function submitReview() {
+      const author = document.getElementById('reviewAuthor').value.trim();
+      const text = document.getElementById('reviewText').value.trim();
+      if (!author || !text || !selectedRating) {
+        showToast('Please fill in your name, rating, and review.', 'error');
+        return;
+      }
+
+      const reviewId = Date.now();
+      const today = new Date().toISOString().split('T')[0];
+
+      const reviewObj = {
+        id: reviewId,
+        author: author,
+        date: today,
+        rating: selectedRating,
+        text: text,
+        likes: 0,
+        comments: []
+      };
+
+      // Persist to storage
+      Storage.addReview(venueId, reviewObj);
+
+      // Save user profile
+      Storage.setUserProfile({
+        name: author,
+        initials: author.split(' ').map(w => w[0]).join('').toUpperCase()
+      });
+
+      // Remove the profile banner if it exists
+      const banner = document.querySelector('.profile-banner');
+      if (banner) banner.remove();
+
+      // Remove empty state if present
+      const emptyState = document.getElementById('emptyReviews');
+      if (emptyState) emptyState.remove();
+
+      const reviewHTML = renderReview(reviewObj, 'community');
+      document.getElementById('communityReviewsList').insertAdjacentHTML('afterbegin', reviewHTML);
+
+      // Reset form
+      document.getElementById('reviewAuthor').value = author; // Keep name filled
+      document.getElementById('reviewText').value = '';
+      selectedRating = 0;
+      document.getElementById('ratingDisplay').textContent = '0';
+      document.querySelectorAll('#starInput span').forEach(s => s.classList.remove('filled'));
+
+      showToast('Review submitted! Thanks for sharing.', 'success');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Bite Club CBD Food Playoff — vote in head-to-head matchups and crown Melbourne's champion dish under $30.">
+  <title>CBD Food Playoff — Bite Club</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta property="og:title" content="CBD Food Playoff — Bite Club">
+  <meta property="og:description" content="Vote in head-to-head matchups and crown Melbourne's champion dish under $30.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dark-mode.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- NAVIGATION -->
+  <nav id="navbar"></nav>
+
+  <!-- HEADER -->
+  <div class="events-header">
+    <h1>CBD Food Playoff</h1>
+    <p>Vote for your favourite venue in head-to-head matchups!</p>
+  </div>
+
+  <!-- BRACKET -->
+  <div class="faceoff-bracket">
+    <h2>Best Dish Under $30</h2>
+    <p class="bracket-subtitle">Vote in each match — winners advance to the Grand Final</p>
+
+    <!-- Semifinal Round -->
+    <h2 style="font-size:var(--text-xl);margin-bottom:1rem;color:var(--text-light);">Semifinals</h2>
+    <div class="faceoff-round" id="semiFinals">
+      <!-- Rendered by JS -->
+    </div>
+
+    <!-- Final Round -->
+    <h2 style="margin-top:3rem;">Grand Final</h2>
+    <p class="bracket-subtitle" id="finalSubtitle">Semifinal winners will face off here</p>
+    <div class="faceoff-round" id="finalRound">
+      <!-- Rendered by JS -->
+    </div>
+  </div>
+
+  <!-- BACK LINK -->
+  <div style="text-align:center;padding:0 2rem 3rem;">
+    <a href="events.html" class="btn btn-secondary">&larr; Back to Events</a>
+  </div>
+
+  <div id="footer"></div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="storage.js"></script>
+  <script src="shared.js"></script>
+  <script src="data.js"></script>
+  <script>
+    // ===== INIT NAVBAR & FOOTER =====
+    renderNavbar('faceoff');
+    renderFooter();
+
+    // ===== LOCAL COPY OF MATCH STATE =====
+    // We clone the data so we can mutate vote counts and bracket progression locally.
+    let matches = FACE_OFF_MATCHES.map(m => Object.assign({}, m));
+
+    // Restore vote increments from previous sessions
+    matches.forEach(m => {
+      const votedVenue = Storage.getVotedVenue(m.id);
+      if (votedVenue !== null) {
+        if (votedVenue === m.venueA) m.votesA++;
+        else if (votedVenue === m.venueB) m.votesB++;
+      }
+    });
+
+    // ===== HELPERS =====
+    function getVenue(id) {
+      return VENUES.find(v => v.id === id) || null;
+    }
+
+    function getVenueAvgRating(venue) {
+      if (!venue) return 'N/A';
+      return getAvgRating(venue);
+    }
+
+    // ===== RENDER A SINGLE MATCH =====
+    function renderMatch(match, container) {
+      const venueA = getVenue(match.venueA);
+      const venueB = getVenue(match.venueB);
+
+      // If both venues are null (final not yet populated), show placeholder
+      if (!venueA && !venueB) {
+        const placeholder = document.createElement('div');
+        placeholder.className = 'faceoff-match';
+        placeholder.style.opacity = '0.5';
+        placeholder.style.justifyContent = 'center';
+        placeholder.innerHTML = `
+          <div class="faceoff-venue" style="cursor:default;border-style:dashed;">
+            <div class="venue-name" style="color:var(--text-muted);">TBD</div>
+            <div class="venue-rating" style="font-size:var(--text-xs);">Winner of Semi 1</div>
+          </div>
+          <div class="faceoff-vs">VS</div>
+          <div class="faceoff-venue" style="cursor:default;border-style:dashed;">
+            <div class="venue-name" style="color:var(--text-muted);">TBD</div>
+            <div class="venue-rating" style="font-size:var(--text-xs);">Winner of Semi 2</div>
+          </div>
+        `;
+        container.appendChild(placeholder);
+        return;
+      }
+
+      const userVoted = Storage.hasVoted(match.id);
+      const votedVenueId = Storage.getVotedVenue(match.id);
+      const isActive = match.active;
+
+      const matchEl = document.createElement('div');
+      matchEl.className = 'faceoff-match' + (isActive && !userVoted ? ' faceoff-active' : '');
+      matchEl.dataset.matchId = match.id;
+
+      // Venue A panel
+      const panelA = buildVenuePanel(venueA, match, 'A', userVoted, votedVenueId);
+      // VS badge
+      const vs = document.createElement('div');
+      vs.className = 'faceoff-vs';
+      vs.textContent = 'VS';
+      // Venue B panel
+      const panelB = buildVenuePanel(venueB, match, 'B', userVoted, votedVenueId);
+
+      matchEl.appendChild(panelA);
+      matchEl.appendChild(vs);
+      matchEl.appendChild(panelB);
+      container.appendChild(matchEl);
+    }
+
+    function buildVenuePanel(venue, match, side, userVoted, votedVenueId) {
+      const panel = document.createElement('div');
+      panel.className = 'faceoff-venue';
+
+      if (!venue) {
+        panel.style.cursor = 'default';
+        panel.style.borderStyle = 'dashed';
+        panel.innerHTML = `<div class="venue-name" style="color:var(--text-muted);">TBD</div>`;
+        return panel;
+      }
+
+      const venueId = venue.id;
+      const isVotedFor = userVoted && votedVenueId === venueId;
+      const isLoser = userVoted && votedVenueId !== venueId;
+      const voteKey = side === 'A' ? 'votesA' : 'votesB';
+      const currentVotes = match[voteKey];
+
+      // Apply winner/voted styling
+      if (isVotedFor) {
+        panel.classList.add('faceoff-winner');
+        panel.style.cursor = 'default';
+      }
+      if (isLoser) {
+        panel.style.opacity = '0.6';
+        panel.style.cursor = 'default';
+      }
+      if (!match.active) {
+        panel.style.cursor = 'default';
+      }
+
+      const rating = getVenueAvgRating(venue);
+
+      panel.innerHTML = `
+        <div class="venue-name">${venue.name}</div>
+        <div class="venue-rating">${rating !== 'N/A' ? '&#9733; ' + rating : ''}</div>
+        <div class="vote-count">${currentVotes} vote${currentVotes !== 1 ? 's' : ''}</div>
+        ${match.active && !userVoted ? `<button class="btn btn-primary" style="margin-top:0.5rem;font-size:var(--text-xs);padding:0.4rem 1rem;" data-venue-id="${venueId}" data-match-id="${match.id}" data-side="${side}">Vote</button>` : ''}
+        ${isVotedFor ? '<div style="margin-top:0.4rem;font-size:var(--text-xs);color:var(--primary);font-weight:600;">Your vote &#10003;</div>' : ''}
+      `;
+
+      // Attach vote handler
+      if (match.active && !userVoted) {
+        panel.addEventListener('click', function (e) {
+          // Don't double-fire if button was clicked directly
+          if (e.target.tagName === 'BUTTON') return;
+          handleVote(match.id, venueId, side);
+        });
+        const btn = panel.querySelector('button');
+        if (btn) {
+          btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            handleVote(match.id, venueId, side);
+          });
+        }
+      }
+
+      return panel;
+    }
+
+    // ===== VOTE HANDLER =====
+    function handleVote(matchId, venueId, side) {
+      if (Storage.hasVoted(matchId)) return;
+
+      // Persist the vote
+      Storage.castVote(matchId, venueId);
+
+      // Update local match state
+      const match = matches.find(m => m.id === matchId);
+      if (match) {
+        if (side === 'A') match.votesA++;
+        else match.votesB++;
+      }
+
+      showToast('Vote recorded! Thanks for participating.', 'success');
+
+      // Check bracket progression
+      checkBracketProgression();
+
+      // Re-render everything
+      renderAllMatches();
+    }
+
+    // ===== BRACKET PROGRESSION =====
+    function checkBracketProgression() {
+      const semi1 = matches.find(m => m.id === 'semi-1');
+      const semi2 = matches.find(m => m.id === 'semi-2');
+      const final = matches.find(m => m.id === 'final');
+
+      if (!semi1 || !semi2 || !final) return;
+
+      const semi1Voted = Storage.hasVoted('semi-1');
+      const semi2Voted = Storage.hasVoted('semi-2');
+
+      // Only progress if the user has voted in both semifinals
+      if (semi1Voted && semi2Voted && final.venueA === null) {
+        // Determine leaders based on total vote counts
+        const semi1Leader = semi1.votesA >= semi1.votesB ? semi1.venueA : semi1.venueB;
+        const semi2Leader = semi2.votesA >= semi2.votesB ? semi2.venueA : semi2.venueB;
+
+        final.venueA = semi1Leader;
+        final.venueB = semi2Leader;
+        final.active = true;
+
+        // Update the final subtitle
+        const subtitle = document.getElementById('finalSubtitle');
+        if (subtitle) {
+          subtitle.textContent = 'The top two venues battle for the crown';
+        }
+      }
+    }
+
+    // ===== RENDER ALL MATCHES =====
+    function renderAllMatches() {
+      const semiContainer = document.getElementById('semiFinals');
+      const finalContainer = document.getElementById('finalRound');
+      semiContainer.innerHTML = '';
+      finalContainer.innerHTML = '';
+
+      const semis = matches.filter(m => m.round === 'semi');
+      const finals = matches.filter(m => m.round === 'final');
+
+      semis.forEach(m => renderMatch(m, semiContainer));
+      finals.forEach(m => renderMatch(m, finalContainer));
+    }
+
+    // ===== INIT =====
+    // Check if bracket should already be progressed (returning user)
+    checkBracketProgression();
+    renderAllMatches();
+  </script>
+</body>
+</html>

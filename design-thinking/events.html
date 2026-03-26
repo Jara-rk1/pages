@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Bite Club community events — food playoffs, coffee crawls, exclusive dining experiences across Melbourne.">
+  <title>Community Events — Bite Club</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta property="og:title" content="Community Events — Bite Club">
+  <meta property="og:description" content="Food playoffs, coffee crawls, exclusive dining experiences across Melbourne.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dark-mode.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- NAVIGATION -->
+  <nav id="navbar"></nav>
+
+  <!-- EVENTS HEADER -->
+  <div class="events-header">
+    <h1>Community Events</h1>
+    <p>Food playoffs, coffee crawls, dining experiences — join the community and discover Melbourne together.</p>
+  </div>
+
+  <!-- EVENTS CONTENT -->
+  <div class="events-container">
+
+    <!-- FACE-OFF CTA -->
+    <div style="background:var(--accent-muted);border:2px solid var(--accent);border-radius:var(--radius-xl);padding:1.5rem;margin-bottom:2rem;text-align:center;">
+      <h3 style="font-family:var(--font-serif);margin-bottom:0.5rem;">&#128293; CBD Food Playoff is Live!</h3>
+      <p style="color:var(--text-light);margin-bottom:1rem;">Vote in head-to-head matchups and crown Melbourne's champion.</p>
+      <a href="faceoff.html" class="btn btn-accent">Enter the Face-Off &rarr;</a>
+    </div>
+
+    <!-- ENHANCED LEADERBOARD -->
+    <div class="leaderboard-panel" id="leaderboard">
+      <h2>&#127942; Community Leaderboard</h2>
+      <p class="leaderboard-subtitle">Top venues ranked by average rating</p>
+      <div id="leaderboardList"></div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="filter-panel" id="eventFilters">
+      <div class="filter-content">
+        <div class="filter-group">
+          <span class="filter-label">Status</span>
+          <div class="filter-pills" id="statusPills">
+            <button class="pill active" data-filter="all">All Events</button>
+            <button class="pill" data-filter="upcoming">Upcoming</button>
+            <button class="pill" data-filter="past">Past</button>
+          </div>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Location</span>
+          <select class="filter-dropdown" id="locationFilter">
+            <option value="">All Locations</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Type</span>
+          <select class="filter-dropdown" id="typeFilter">
+            <option value="">All Types</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- EVENT CARDS -->
+    <div id="eventsList"></div>
+
+    <div class="empty-state" id="emptyEvents" style="display:none;">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      <p>No events match your filters.</p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div id="footer"></div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="storage.js"></script>
+  <script src="shared.js"></script>
+  <script src="data.js"></script>
+  <script>
+    // ===== INIT NAVBAR & FOOTER =====
+    renderNavbar('events');
+    renderFooter();
+
+    // ===== RESTORE REGISTRATION COUNTS =====
+    EVENTS.forEach(e => {
+      if (Storage.isRegistered(e.id)) e.registered++;
+    });
+
+    // ===== POPULATE FILTER DROPDOWNS =====
+    const locationSelect = document.getElementById('locationFilter');
+    SUBURB_GROUPS.forEach(sg => {
+      const opt = document.createElement('option');
+      opt.value = sg.name;
+      opt.textContent = sg.name;
+      locationSelect.appendChild(opt);
+    });
+
+    const typeSelect = document.getElementById('typeFilter');
+    const eventTypes = [...new Set(EVENTS.map(e => e.type))].sort();
+    eventTypes.forEach(type => {
+      const opt = document.createElement('option');
+      opt.value = type;
+      opt.textContent = type;
+      typeSelect.appendChild(opt);
+    });
+
+    // ===== ENHANCED LEADERBOARD =====
+    function renderLeaderboard() {
+      const ranked = VENUES.map(v => ({
+        id: v.id,
+        name: v.name,
+        suburb: v.suburb,
+        totalReviews: v.criticReviews.length + v.communityReviews.length,
+        avgRating: parseFloat(getAvgRating(v)) || 0
+      })).sort((a, b) => b.avgRating - a.avgRating);
+
+      document.getElementById('leaderboardList').innerHTML = ranked.slice(0, 5).map((v, i) => {
+        const rankClass = i < 3 ? 'rank-' + (i + 1) : 'rank-other';
+        return `
+          <div class="leaderboard-item" style="cursor:pointer;" onclick="window.location='venue.html?id=${v.id}'">
+            <div class="leaderboard-rank ${rankClass}">${i + 1}</div>
+            <div class="leaderboard-bar-wrapper">
+              <div class="leaderboard-name">${v.name} <span style="font-weight:400;color:var(--text-muted);font-size:0.8rem;">&#183; ${v.suburb}</span></div>
+              <div class="leaderboard-bar">
+                <div class="leaderboard-bar-fill" style="width:${(v.avgRating / 10) * 100}%"></div>
+              </div>
+            </div>
+            <div class="leaderboard-score">&#9733; ${v.avgRating.toFixed(1)}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ===== RENDER EVENTS =====
+    function getEventTypeClass(type) {
+      const map = { 'Food Playoff': 'playoff', 'Coffee Crawl': 'crawl', 'Exclusive Dining': 'dining', 'Festival': 'festival' };
+      return map[type] || 'playoff';
+    }
+
+    function renderEvents(statusFilter, groupFilter, typeFilter) {
+      statusFilter = statusFilter || 'all';
+      groupFilter = groupFilter || '';
+      typeFilter = typeFilter || '';
+
+      let filtered = EVENTS;
+
+      if (statusFilter === 'upcoming') filtered = filtered.filter(e => e.status === 'upcoming');
+      else if (statusFilter === 'past') filtered = filtered.filter(e => e.status === 'past');
+
+      if (groupFilter) {
+        filtered = filtered.filter(e => {
+          if (e.suburbGroup === groupFilter) return true;
+          const eventVenues = VENUES.filter(v => e.venueIds.includes(v.id));
+          return eventVenues.some(v => v.suburbGroup === groupFilter);
+        });
+      }
+
+      if (typeFilter) {
+        filtered = filtered.filter(e => e.type === typeFilter);
+      }
+
+      document.getElementById('emptyEvents').style.display = filtered.length ? 'none' : 'block';
+
+      document.getElementById('eventsList').innerHTML = filtered.map(event => {
+        const eventVenues = VENUES.filter(v => event.venueIds.includes(v.id));
+        const spotsLeft = event.capacity - event.registered;
+        const isFull = spotsLeft <= 0;
+        const isPast = event.status === 'past';
+        const isRegistered = Storage.isRegistered(event.id);
+
+        return `
+          <div class="event-card ${isPast ? 'past' : ''}">
+            <div class="event-card-img">
+              <img src="${event.image}" alt="${event.name}" loading="lazy" onerror="handleImageError(this, 'event')">
+            </div>
+            <div class="event-card-body">
+              <span class="event-card-type event-type-${getEventTypeClass(event.type)}">${event.type}</span>
+              <div class="event-card-name">${event.name}</div>
+              <div class="event-card-date">
+                <strong>${event.date}</strong> &#183; ${event.time} &#183; ${event.suburb}
+              </div>
+              <div class="event-card-desc">${event.description}</div>
+              <div style="margin-bottom:0.75rem;">
+                <span style="font-size:0.8rem;font-weight:600;color:var(--text-muted);display:block;margin-bottom:0.3rem;">Participating Venues:</span>
+                <div class="event-venues">
+                  ${eventVenues.map(v => `<a class="event-venue-tag" href="venue.html?id=${v.id}">${v.name}</a>`).join('')}
+                </div>
+              </div>
+              <div class="event-card-footer">
+                <div class="event-capacity">
+                  ${isPast ? `<strong>${event.registered}</strong> attended` :
+                    `<strong>${spotsLeft}</strong> of ${event.capacity} spots left`}
+                </div>
+                ${isPast ? '<span style="font-size:0.8rem;color:var(--text-muted);">Event completed</span>' :
+                  isFull ? '<button class="event-register-btn full" disabled>Sold Out</button>' :
+                  isRegistered ? '<button class="event-register-btn" style="background:var(--primary-light);" disabled>Registered &#10003;</button>' :
+                  `<button class="event-register-btn" onclick="registerEvent(this, ${event.id})">Register</button>`}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ===== FILTER LOGIC =====
+    let currentStatus = 'all';
+
+    function applyFilters() {
+      renderEvents(currentStatus, locationSelect.value, typeSelect.value);
+    }
+
+    // Status pill clicks
+    document.getElementById('statusPills').addEventListener('click', e => {
+      if (!e.target.classList.contains('pill')) return;
+      document.querySelectorAll('#statusPills .pill').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      currentStatus = e.target.dataset.filter;
+      applyFilters();
+    });
+
+    // Dropdown changes
+    locationSelect.addEventListener('change', applyFilters);
+    typeSelect.addEventListener('change', applyFilters);
+
+    // ===== REGISTER =====
+    function registerEvent(btn, eventId) {
+      Storage.registerForEvent(eventId);
+      // Update the spots-left counter
+      const event = EVENTS.find(e => e.id === eventId);
+      if (event) event.registered++;
+      btn.textContent = 'Registered \u2713';
+      btn.style.background = 'var(--primary-light)';
+      btn.disabled = true;
+      showToast('You\'re registered! See you there.', 'success');
+      applyFilters(); // re-render to update spots count
+    }
+
+    // ===== INIT =====
+    renderLeaderboard();
+    applyFilters();
+  </script>
+</body>
+</html>

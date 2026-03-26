@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="About Bite Club — Melbourne's community-driven food discovery platform. Meet the team and critics behind the reviews.">
+  <title>About — Bite Club</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta property="og:title" content="About — Bite Club">
+  <meta property="og:description" content="Melbourne's community-driven food discovery platform. Meet the team and critics behind the reviews.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dark-mode.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .about-section { margin-bottom: 3rem; }
+    .about-section h2 {
+      font-family: var(--font-serif);
+      font-size: var(--text-3xl);
+      color: var(--text);
+      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+    .about-section p {
+      color: var(--text-secondary);
+      font-size: var(--text-base);
+      line-height: 1.8;
+      max-width: 720px;
+    }
+    .about-section p + p { margin-top: 1rem; }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin: 2.5rem 0;
+      text-align: center;
+    }
+    .stat-card {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      padding: 2rem 1rem;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.35s var(--ease-out);
+    }
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
+    .stat-number {
+      font-family: var(--font-serif);
+      font-size: var(--text-4xl);
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.1;
+    }
+    .stat-label {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin: 1.5rem 0 3rem;
+    }
+    .team-card {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+      transition: all 0.35s var(--ease-out);
+    }
+    .team-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
+    .team-card .review-avatar {
+      width: 64px;
+      height: 64px;
+      font-size: 1.25rem;
+      background: var(--primary);
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .team-card h3 {
+      font-family: var(--font-serif);
+      font-size: var(--text-xl);
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+    .team-card .role {
+      font-size: var(--text-sm);
+      color: var(--accent-dark);
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+    .team-card .bio {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .team-card .fav-link {
+      display: inline-block;
+      font-size: var(--text-sm);
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .team-card .fav-link:hover {
+      color: var(--primary-light);
+    }
+    .critic-card .review-avatar {
+      background: var(--warm);
+    }
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin: 1.5rem 0 3rem;
+    }
+    .value-card {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.35s var(--ease-out);
+    }
+    .value-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .value-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+    }
+    .value-card h3 {
+      font-family: var(--font-serif);
+      font-size: var(--text-lg);
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .value-card p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .section-divider {
+      width: 48px;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+      margin: 0 0 2rem;
+    }
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
+      .values-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav id="navbar"></nav>
+
+  <!-- HERO HEADER -->
+  <div class="events-header">
+    <h1>About Bite Club</h1>
+    <p>Melbourne's community-driven food discovery platform. Founded 2024.</p>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div style="max-width:1120px; margin:0 auto; padding:2.5rem 2rem;" id="aboutContent">
+    <div class="loading" id="loadingSpinner" aria-label="Loading content">
+      <div class="loading-spinner"></div>
+    </div>
+  </div>
+
+  <div id="footer"></div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="storage.js"></script>
+  <script src="shared.js"></script>
+  <script src="data.js"></script>
+  <script>
+    // ===== INIT SHARED COMPONENTS =====
+    renderNavbar('about');
+    renderFooter();
+
+    // ===== COMPUTE STATS =====
+    const totalVenues = VENUES.length;
+    const totalReviews = VENUES.reduce((sum, v) => sum + v.criticReviews.length + v.communityReviews.length, 0);
+    const totalEvents = EVENTS.length;
+    // Community members: unique community review authors
+    const communityAuthors = new Set();
+    VENUES.forEach(v => v.communityReviews.forEach(r => communityAuthors.add(r.author)));
+    const totalMembers = communityAuthors.size;
+
+    // ===== HELPER: GET VENUE NAME =====
+    function getVenueName(venueId) {
+      const v = VENUES.find(venue => venue.id === venueId);
+      return v ? v.name : 'Unknown';
+    }
+
+    // ===== RENDER PAGE =====
+    const content = document.getElementById('aboutContent');
+    content.innerHTML = `
+      <!-- OUR STORY -->
+      <section class="about-section">
+        <div class="section-divider"></div>
+        <h2>Our Story</h2>
+        <p>Bite Club started as a simple idea: Melbourne has an incredible food scene, but discovering it shouldn't require an insider. We built a platform where critics and community members alike can share honest reviews, discover hidden gems, and come together over great food.</p>
+        <p>From our first coffee crawl with 12 people to our flagship Food Playoffs with hundreds of voters, we've grown into Melbourne's most engaged food community. Every review, every vote, every sold-out event brings us closer to our mission: making Melbourne's best food accessible to everyone.</p>
+      </section>
+
+      <!-- STATS -->
+      <section class="about-section">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number">${totalVenues}</div>
+            <div class="stat-label">Curated Venues</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">${totalReviews}</div>
+            <div class="stat-label">Total Reviews</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">${totalEvents}</div>
+            <div class="stat-label">Community Events</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">${totalMembers}+</div>
+            <div class="stat-label">Community Members</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VALUES -->
+      <section class="about-section">
+        <div class="section-divider"></div>
+        <h2>What We Believe In</h2>
+        <div class="values-grid">
+          <div class="value-card">
+            <div class="value-icon" aria-hidden="true">&#x1F50D;</div>
+            <h3>Honest Discovery</h3>
+            <p>Every review on Bite Club is genuine. No paid placements, no sponsored rankings. If a venue is here, it earned its spot.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-icon" aria-hidden="true">&#x1F91D;</div>
+            <h3>Community First</h3>
+            <p>We believe the best food recommendations come from real people. Our community reviews sit alongside critic opinions with equal weight.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-icon" aria-hidden="true">&#x1F30F;</div>
+            <h3>Local Love</h3>
+            <p>Melbourne's food scene thrives because of its diversity. We celebrate every neighbourhood, every cuisine, every price point.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-icon" aria-hidden="true">&#x1F389;</div>
+            <h3>Food as Experience</h3>
+            <p>Great food is more than what's on the plate. Our events, playoffs, and crawls bring people together to share the joy of eating well.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TEAM -->
+      <section class="about-section">
+        <div class="section-divider"></div>
+        <h2>Meet the Team</h2>
+        <div class="team-grid">
+          ${TEAM_MEMBERS.map(member => `
+            <div class="team-card">
+              <div class="review-avatar">${member.avatar}</div>
+              <h3>${member.name}</h3>
+              <p class="role">${member.role}</p>
+              <p class="bio">${member.bio}</p>
+              <a href="venue.html?id=${member.favouriteVenue}" class="fav-link">Favourite: ${getVenueName(member.favouriteVenue)} &rarr;</a>
+            </div>
+          `).join('')}
+        </div>
+      </section>
+
+      <!-- CRITICS -->
+      <section class="about-section">
+        <div class="section-divider"></div>
+        <h2>Our Critics</h2>
+        <p style="margin-bottom:1.5rem;">Our critic panel brings years of food industry experience to every review. Their expertise helps set the standard, while the community provides the pulse.</p>
+        <div class="team-grid">
+          ${CRITICS.map(critic => `
+            <div class="team-card critic-card">
+              <div class="review-avatar">${critic.avatar}</div>
+              <h3>${critic.name}</h3>
+              <p class="role">${critic.role}</p>
+              <p class="bio">${critic.bio}</p>
+            </div>
+          `).join('')}
+        </div>
+      </section>
+
+      <!-- JOIN CTA -->
+      <section class="about-section" style="text-align:center; padding:3rem 0 1rem;">
+        <h2 style="text-align:center;">Join the Club</h2>
+        <p style="margin:0 auto 1.5rem; text-align:center;">Start reviewing your favourite spots, vote in food playoffs, and be part of Melbourne's most passionate food community.</p>
+        <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+          <a href="index.html" class="btn btn-primary">Explore Venues</a>
+          <a href="events.html" class="btn btn-secondary">Upcoming Events</a>
+        </div>
+      </section>
+    `;
+  </script>
+</body>
+</html>

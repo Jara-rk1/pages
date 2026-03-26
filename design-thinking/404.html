@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Page not found — Bite Club Melbourne.">
+  <title>Page Not Found — Bite Club</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta property="og:title" content="Page Not Found — Bite Club">
+  <meta property="og:description" content="This dish isn't on the menu.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dark-mode.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .error-container {
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .error-logo {
+      margin-bottom: 2rem;
+      animation: gentle-float 3s ease-in-out infinite;
+    }
+    @keyframes gentle-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .error-code {
+      font-family: var(--font-serif);
+      font-size: var(--text-5xl);
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    .error-tagline {
+      font-size: var(--text-xl);
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+    .error-description {
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+    .error-links {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+  <nav id="navbar"></nav>
+
+  <div class="error-container">
+    <!-- Bite Club Logo SVG -->
+    <div class="error-logo">
+      <svg width="80" height="80" viewBox="0 0 32 32" aria-hidden="true">
+        <defs>
+          <mask id="err-bite">
+            <rect width="32" height="32" fill="white"/>
+            <circle cx="28" cy="4" r="7.5" fill="black"/>
+          </mask>
+          <linearGradient id="err-grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#3D7A2A"/>
+            <stop offset="100%" stop-color="#1B3B12"/>
+          </linearGradient>
+        </defs>
+        <g mask="url(#err-bite)">
+          <circle cx="16" cy="16" r="15" fill="url(#err-grad)"/>
+          <circle cx="16" cy="16" r="14.5" fill="none" stroke="#4A7C28" stroke-width="0.5" opacity="0.4"/>
+          <g transform="translate(12.5, 8.5)">
+            <rect x="0" y="0" width="1.3" height="5" rx="0.65" fill="#E8A838"/>
+            <rect x="2.85" y="0" width="1.3" height="5" rx="0.65" fill="#E8A838"/>
+            <rect x="5.7" y="0" width="1.3" height="5" rx="0.65" fill="#E8A838"/>
+            <path d="M0.65 5 Q3.5 7.5 6.35 5" fill="none" stroke="#E8A838" stroke-width="1.2"/>
+            <rect x="2.5" y="6.5" width="2" height="8.5" rx="1" fill="#E8A838"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+
+    <h1 class="error-code">404</h1>
+    <p class="error-tagline">This dish isn't on the menu.</p>
+    <p class="error-description">The page you're looking for doesn't exist or has been moved. Let's get you back to something delicious.</p>
+
+    <div class="error-links">
+      <a href="index.html" class="btn btn-primary">&larr; Back to Explore</a>
+      <a href="events.html" class="btn btn-secondary">View Events</a>
+    </div>
+  </div>
+
+  <div id="footer"></div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="storage.js"></script>
+  <script src="shared.js"></script>
+  <script src="data.js"></script>
+  <script>
+    renderNavbar('');
+    renderFooter();
+  </script>
+</body>
+</html>

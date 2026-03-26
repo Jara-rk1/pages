@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Bite Club — Melbourne's food community. Discover the best cafes and restaurants, read critic and community reviews, and join food events.">
+  <title>Bite Club — Discover, Review, Connect</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta property="og:title" content="Bite Club — Melbourne's Food Community">
+  <meta property="og:description" content="Discover the best cafes and restaurants, read critic and community reviews, and join food events.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dark-mode.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Search keyboard navigation */
+    .search-result-item.selected {
+      background: var(--primary-muted);
+    }
+
+    /* Favourite button */
+    .favourite-btn {
+      position: absolute;
+      top: 0.875rem;
+      right: 0.875rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 150ms var(--ease-out);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+      line-height: 1;
+      padding: 0;
+    }
+
+    .favourite-btn:hover {
+      background: rgba(255, 255, 255, 0.95);
+      transform: scale(1.12);
+    }
+
+    .favourite-btn.active {
+      color: #C24D1E;
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    /* Map loading overlay */
+    .map-loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      border-radius: var(--radius-xl);
+      transition: opacity 0.4s var(--ease-out);
+    }
+
+    .map-loading-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVIGATION -->
+  <nav id="navbar"></nav>
+
+  <!-- 3-COLUMN LANDING LAYOUT -->
+  <div class="landing-layout">
+
+    <!-- LEFT COLUMN: Latest Dishes -->
+    <div class="latest-column">
+      <h2>Latest Dishes</h2>
+      <div id="latestItems"></div>
+    </div>
+
+    <!-- CENTER COLUMN: Map + Filters + Venue Grid -->
+    <div class="local-column">
+      <div class="map-container" style="position:relative;">
+        <div id="map"></div>
+        <div class="map-loading-overlay" id="mapLoading">
+          <div class="loading">Loading map...</div>
+        </div>
+      </div>
+
+      <!-- FILTER BAR -->
+      <div class="filter-bar" style="position:static; border-bottom:none; padding:0; backdrop-filter:none; -webkit-backdrop-filter:none; background:transparent;">
+        <div class="filter-content" style="max-width:none;">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="cafe">Cafes</button>
+          <button class="filter-btn" data-filter="restaurant">Restaurants</button>
+          <button class="filter-btn" data-filter="event">In Events</button>
+          <button class="filter-btn" data-filter="favourites">Favourites</button>
+          <div class="search-container" style="position:relative; flex:1; min-width:200px;">
+            <span class="search-icon" style="position:absolute;left:0.875rem;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:1rem;pointer-events:none;">&#128269;</span>
+            <input type="text" class="search-input" id="searchInput" placeholder="Search venues, tags, or menu items..." style="padding-left:2.5rem;" autocomplete="off">
+            <div class="search-results-dropdown" id="searchDropdown" style="display:none;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VENUE GRID -->
+      <div>
+        <div class="section-header">
+          <h2>Featured Venues</h2>
+          <span class="venue-count" id="venueCount"></span>
+        </div>
+        <div class="venue-grid" id="venueGrid"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN: Upcoming Events -->
+    <div class="events-column">
+      <h2>Upcoming Events</h2>
+      <div id="eventPreviews"></div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div id="footer"></div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="storage.js"></script>
+  <script src="shared.js"></script>
+  <script src="data.js"></script>
+  <script>
+    // ===== SHARED MODULE INIT =====
+    renderNavbar('explore');
+    renderFooter();
+
+    // ===== LATEST DISHES (Left Column) =====
+    function renderLatestDishes() {
+      const container = document.getElementById('latestItems');
+      // Flatten all menu items with venue context
+      const allItems = [];
+      VENUES.forEach(v => {
+        v.menu.forEach(cat => {
+          cat.items.forEach(item => {
+            allItems.push({
+              name: item.name,
+              price: item.price,
+              isNew: !!item.isNew,
+              venueId: v.id,
+              venueName: v.name,
+              venueType: v.type,
+              venueImage: v.image
+            });
+          });
+        });
+      });
+
+      // Sort: isNew items first, then by venue id (newer data = higher ids)
+      allItems.sort((a, b) => {
+        if (a.isNew !== b.isNew) return b.isNew - a.isNew;
+        return b.venueId - a.venueId;
+      });
+
+      const items = allItems.slice(0, 12);
+
+      container.innerHTML = items.map(item => `
+        <a class="latest-item-card" href="venue.html?id=${item.venueId}">
+          <div class="item-thumb">
+            <img src="${item.venueImage}" alt="${item.name}" loading="lazy"
+                 onerror="handleImageError(this, '${item.venueType}')">
+          </div>
+          <div class="item-info">
+            <div class="item-name">${item.name}${item.isNew ? ' <span class="badge badge-new" style="font-size:0.55rem;padding:0.1rem 0.4rem;vertical-align:middle;">NEW</span>' : ''}</div>
+            <div class="item-venue">${item.venueName}</div>
+          </div>
+          <div class="item-price">${item.price > 0 ? '$' + item.price : 'Incl.'}</div>
+        </a>
+      `).join('');
+    }
+
+    // ===== EVENT PREVIEWS (Right Column) =====
+    function renderEventPreviews() {
+      const container = document.getElementById('eventPreviews');
+      const upcoming = EVENTS.filter(e => e.status === 'upcoming');
+
+      const badgeColors = {
+        'Food Playoff': 'background:rgba(194,77,30,0.12);color:#C24D1E;',
+        'Coffee Crawl': 'background:rgba(42,90,27,0.12);color:#2A5A1B;',
+        'Exclusive Dining': 'background:rgba(114,47,55,0.12);color:#722F37;',
+        'Festival': 'background:rgba(212,149,46,0.15);color:#B07A1A;'
+      };
+
+      container.innerHTML = upcoming.map(ev => {
+        const badgeStyle = badgeColors[ev.type] || 'background:var(--primary-muted);color:var(--primary);';
+        const spotsLeft = ev.capacity - ev.registered;
+        const spotsText = spotsLeft <= 10 ? `<span style="color:var(--warm);font-weight:600;">${spotsLeft} spots left</span>` : `${spotsLeft} spots left`;
+        return `
+          <a class="event-preview-card" href="events.html">
+            <div class="event-type-badge" style="${badgeStyle}">${ev.type}</div>
+            <div class="event-preview-name">${ev.name}</div>
+            <div class="event-preview-location">&#128205; ${ev.suburb}</div>
+            <div class="event-preview-date">&#128197; ${formatDate(ev.date)} &middot; ${ev.time}</div>
+            <div style="font-size:var(--text-xs);color:var(--text-muted);margin-top:0.35rem;">${spotsText}</div>
+          </a>
+        `;
+      }).join('');
+    }
+
+    // ===== MAP SETUP =====
+    const map = L.map('map', { zoomControl: false }).setView([-37.8136, 144.9631], 13);
+    L.control.zoom({ position: 'topright' }).addTo(map);
+
+    const tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap &copy; CARTO',
+      maxZoom: 19
+    }).addTo(map);
+
+    // Hide loading overlay when tiles load
+    tileLayer.on('load', function () {
+      const overlay = document.getElementById('mapLoading');
+      if (overlay) overlay.classList.add('hidden');
+    });
+
+    const markers = {};
+    VENUES.forEach(v => {
+      const hasEvent = hasUpcomingEvent(v.id);
+      const icon = L.divIcon({
+        className: 'custom-marker',
+        html: `<div class="marker-pin ${v.type} ${hasEvent ? 'event-venue' : ''}">
+                 <span>${v.type === 'cafe' ? '\u2615' : '\uD83C\uDF7D'}</span>
+               </div>`,
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+      });
+
+      const avgRating = getAvgRating(v);
+      const marker = L.marker([v.lat, v.lng], { icon }).addTo(map);
+      marker.bindPopup(`
+        <div class="popup-content">
+          <h3>${v.name}</h3>
+          <p>${v.suburb} \u00B7 ${v.priceRange} \u00B7 \u2605 ${avgRating}</p>
+          ${hasEvent ? '<p style="color:#E8A838;font-weight:600;">\uD83D\uDCC5 In upcoming event</p>' : ''}
+          <a class="popup-link" href="venue.html?id=${v.id}">View Details \u2192</a>
+        </div>
+      `);
+      markers[v.id] = marker;
+    });
+
+    // ===== BADGE LOGIC =====
+    function getVenueBadges(venue) {
+      // Check for isNew items
+      const hasNewItems = venue.menu.some(cat => cat.items.some(item => item.isNew));
+      return { hasNewItems };
+    }
+
+    // Compute top 3 most-reviewed venues for trending badge
+    const venuesByReviewCount = VENUES.map(v => ({
+      id: v.id,
+      count: v.criticReviews.length + v.communityReviews.length
+    })).sort((a, b) => b.count - a.count);
+    const trendingIds = new Set(venuesByReviewCount.slice(0, 3).map(v => v.id));
+
+    // ===== SEARCH SCORING =====
+    function highlightMatch(text, query) {
+      if (!query) return text;
+      const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      return text.replace(regex, '<span class="search-highlight">$1</span>');
+    }
+
+    function scoreVenue(venue, query) {
+      const q = query.toLowerCase();
+      let score = 0;
+      const matches = [];
+
+      // Venue name — highest priority
+      if (venue.name.toLowerCase().includes(q)) {
+        score += venue.name.toLowerCase().startsWith(q) ? 100 : 80;
+        matches.push({ type: 'venue', text: venue.name, sub: venue.suburb });
+      }
+
+      // Tags — high priority
+      venue.tags.forEach(tag => {
+        if (tag.toLowerCase().includes(q)) {
+          score += tag.toLowerCase().startsWith(q) ? 70 : 60;
+          matches.push({ type: 'tag', text: tag, sub: venue.name });
+        }
+      });
+
+      // Menu items — medium priority
+      venue.menu.forEach(cat => {
+        cat.items.forEach(item => {
+          if (item.name.toLowerCase().includes(q)) {
+            score += 50;
+            matches.push({ type: 'menu', text: item.name, sub: `${venue.name} \u00B7 ${cat.category}`, price: item.price });
+          }
+        });
+      });
+
+      // Suburb / area — lower priority
+      if (venue.suburb.toLowerCase().includes(q) || venue.suburbGroup.toLowerCase().includes(q)) {
+        score += 30;
+        if (!matches.some(m => m.type === 'venue')) {
+          matches.push({ type: 'area', text: venue.suburb, sub: venue.suburbGroup });
+        }
+      }
+
+      // Description — lowest priority
+      if (venue.description.toLowerCase().includes(q)) {
+        score += 10;
+      }
+
+      return { venue, score, matches };
+    }
+
+    // ===== SEARCH DROPDOWN =====
+    let selectedIndex = -1;
+
+    function renderSearchDropdown(query) {
+      const dropdown = document.getElementById('searchDropdown');
+      selectedIndex = -1;
+
+      if (!query || query.length < 2) {
+        dropdown.style.display = 'none';
+        return;
+      }
+
+      const results = VENUES.map(v => scoreVenue(v, query)).filter(r => r.score > 0);
+      results.sort((a, b) => b.score - a.score);
+
+      if (!results.length) {
+        dropdown.style.display = 'none';
+        return;
+      }
+
+      // Group matches by type
+      const groups = { venue: [], tag: [], menu: [], area: [] };
+      const seen = new Set();
+      results.forEach(r => {
+        r.matches.forEach(m => {
+          const key = `${m.type}-${m.text}-${r.venue.id}`;
+          if (!seen.has(key)) {
+            seen.add(key);
+            groups[m.type].push({ ...m, venueId: r.venue.id });
+          }
+        });
+      });
+
+      const labels = { venue: 'Venues', tag: 'Tags', menu: 'Menu Items', area: 'Locations' };
+      const icons = { venue: '\uD83C\uDF7D', tag: '\uD83C\uDFF7', menu: '\uD83D\uDCCB', area: '\uD83D\uDCCD' };
+
+      let html = '';
+      for (const [type, items] of Object.entries(groups)) {
+        if (!items.length) continue;
+        html += `<div class="search-category">${labels[type]}</div>`;
+        items.slice(0, 4).forEach(item => {
+          const priceStr = item.price ? ` \u00B7 $${item.price}` : '';
+          html += `
+            <div class="search-result-item" data-venue-id="${item.venueId}">
+              <span style="font-size:1rem;">${icons[type]}</span>
+              <div style="flex:1;min-width:0;">
+                <div style="font-weight:600;color:var(--text);">${highlightMatch(item.text, query)}</div>
+                <div style="font-size:var(--text-xs);color:var(--text-muted);">${highlightMatch(item.sub, query)}${priceStr}</div>
+              </div>
+            </div>`;
+        });
+      }
+
+      dropdown.innerHTML = html;
+      dropdown.style.display = 'block';
+
+      // Click handlers for results
+      dropdown.querySelectorAll('.search-result-item').forEach(el => {
+        el.addEventListener('click', () => {
+          window.location.href = `venue.html?id=${el.dataset.venueId}`;
+        });
+      });
+    }
+
+    // ===== SEARCH KEYBOARD NAVIGATION =====
+    function updateSelectedItem() {
+      const dropdown = document.getElementById('searchDropdown');
+      const items = dropdown.querySelectorAll('.search-result-item');
+      items.forEach((el, i) => {
+        el.classList.toggle('selected', i === selectedIndex);
+      });
+      // Scroll selected item into view
+      if (selectedIndex >= 0 && items[selectedIndex]) {
+        items[selectedIndex].scrollIntoView({ block: 'nearest' });
+      }
+    }
+
+    document.getElementById('searchInput').addEventListener('keydown', function (e) {
+      const dropdown = document.getElementById('searchDropdown');
+      if (dropdown.style.display === 'none') return;
+
+      const items = dropdown.querySelectorAll('.search-result-item');
+      if (!items.length) return;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        selectedIndex = (selectedIndex + 1) % items.length;
+        updateSelectedItem();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        selectedIndex = selectedIndex <= 0 ? items.length - 1 : selectedIndex - 1;
+        updateSelectedItem();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (selectedIndex >= 0 && items[selectedIndex]) {
+          window.location.href = `venue.html?id=${items[selectedIndex].dataset.venueId}`;
+        }
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        dropdown.style.display = 'none';
+        selectedIndex = -1;
+      }
+    });
+
+    // ===== FAVOURITE TOGGLE =====
+    function toggleFav(e, venueId) {
+      e.preventDefault();
+      e.stopPropagation();
+      const isNowFav = Storage.toggleFavourite(venueId);
+      const btn = e.currentTarget;
+      btn.classList.toggle('active', isNowFav);
+      showToast(isNowFav ? 'Added to favourites' : 'Removed from favourites', 'success');
+
+      // Re-render if the favourites filter is active
+      if (currentFilter === 'favourites') {
+        renderVenues(currentFilter, document.getElementById('searchInput').value);
+      }
+    }
+
+    // ===== RENDER VENUES =====
+    function renderVenues(filter, search) {
+      filter = filter || 'all';
+      search = search || '';
+      const grid = document.getElementById('venueGrid');
+      let filtered = VENUES;
+
+      if (filter === 'cafe') filtered = filtered.filter(v => v.type === 'cafe');
+      else if (filter === 'restaurant') filtered = filtered.filter(v => v.type === 'restaurant');
+      else if (filter === 'event') filtered = filtered.filter(v => hasUpcomingEvent(v.id));
+      else if (filter === 'favourites') filtered = filtered.filter(v => Storage.isFavourite(v.id));
+
+      if (search) {
+        const scored = filtered.map(v => scoreVenue(v, search)).filter(r => r.score > 0);
+        scored.sort((a, b) => b.score - a.score);
+        filtered = scored.map(r => r.venue);
+      }
+
+      document.getElementById('venueCount').textContent = `${filtered.length} venue${filtered.length !== 1 ? 's' : ''}`;
+
+      if (!filtered.length) {
+        grid.innerHTML = `<div class="empty-state"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><p>${filter === 'favourites' ? 'No favourites yet. Tap the heart on a venue card to save it.' : 'No venues match your search.'}</p></div>`;
+        return;
+      }
+
+      const searchQuery = search ? search.toLowerCase() : '';
+      grid.innerHTML = filtered.map(v => {
+        const avg = getAvgRating(v);
+        const reviewCount = v.criticReviews.length + v.communityReviews.length;
+        const eventBadge = hasUpcomingEvent(v.id) ? '<span class="badge badge-event">\uD83D\uDCC5 Event</span>' : '';
+        const badges = getVenueBadges(v);
+        const newBadge = badges.hasNewItems ? '<span class="badge badge-new">New</span>' : '';
+        const trendBadge = trendingIds.has(v.id) ? '<span class="badge badge-trending">Trending</span>' : '';
+        const isFav = Storage.isFavourite(v.id);
+        const nameHtml = searchQuery ? highlightMatch(v.name, searchQuery) : v.name;
+        const matchedTags = searchQuery
+          ? v.tags.map(t => t.toLowerCase().includes(searchQuery) ? `<span class="tag" style="border-color:var(--accent);background:var(--accent-muted);">${highlightMatch(t, searchQuery)}</span>` : `<span class="tag">${t}</span>`)
+          : v.tags.map(t => `<span class="tag">${t}</span>`);
+        return `
+          <a class="venue-card" href="venue.html?id=${v.id}">
+            <div class="venue-card-img">
+              <img src="${v.image}" alt="${v.name}" loading="lazy"
+                   onerror="handleImageError(this, '${v.type}')">
+              <div class="venue-card-badge">
+                <span class="badge badge-${v.type}">${v.type}</span>
+                ${eventBadge}
+                ${newBadge}
+                ${trendBadge}
+              </div>
+              <button class="favourite-btn${isFav ? ' active' : ''}" onclick="toggleFav(event, ${v.id})" aria-label="Toggle favourite">\u2665</button>
+            </div>
+            <div class="venue-card-body">
+              <div class="venue-card-name">${nameHtml}</div>
+              <div class="venue-card-location">${v.suburb} \u00B7 ${v.suburbGroup}</div>
+              <div class="venue-card-desc">${v.description}</div>
+              <div class="venue-card-meta">
+                <div class="venue-rating">
+                  <span class="stars">\u2605</span>
+                  <span class="rating-num">${avg}</span>
+                  <span class="rating-count">(${reviewCount} reviews)</span>
+                </div>
+                <span class="venue-price">${v.priceRange}</span>
+              </div>
+              <div class="venue-tags">${matchedTags.join('')}</div>
+            </div>
+          </a>
+        `;
+      }).join('');
+    }
+
+    // ===== FILTER EVENTS =====
+    let currentFilter = 'all';
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        renderVenues(currentFilter, document.getElementById('searchInput').value);
+      });
+    });
+
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', e => {
+      const val = e.target.value.trim();
+      renderVenues(currentFilter, val);
+      renderSearchDropdown(val);
+    });
+
+    // Close dropdown on outside click
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.search-container')) {
+        document.getElementById('searchDropdown').style.display = 'none';
+        selectedIndex = -1;
+      }
+    });
+
+    // Re-open dropdown on focus if there's a query
+    searchInput.addEventListener('focus', () => {
+      const val = searchInput.value.trim();
+      if (val.length >= 2) renderSearchDropdown(val);
+    });
+
+    // ===== INIT =====
+    renderLatestDishes();
+    renderEventPreviews();
+    renderVenues();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Bite Club — Your profile. Set your location, food preferences, and manage event registrations.">
+  <title>My Profile — Bite Club</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dark-mode.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ===== PROFILE PAGE LAYOUT ===== */
+    .profile-container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    /* ===== SIDEBAR ===== */
+    .profile-sidebar {
+      position: sticky;
+      top: calc(var(--nav-height) + 1.5rem);
+    }
+
+    .profile-card {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .profile-avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 700;
+      font-family: var(--font-serif);
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .profile-avatar-edit {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--primary-dark);
+      border: 2px solid var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .profile-avatar-edit:hover {
+      background: var(--accent-dark);
+      color: white;
+    }
+
+    .profile-name {
+      font-family: var(--font-serif);
+      font-size: var(--text-xl);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    .profile-location {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .profile-bio {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Completeness bar */
+    .completeness-section {
+      margin-top: 1rem;
+      text-align: left;
+    }
+
+    .completeness-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .completeness-label {
+      font-size: var(--text-xs);
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .completeness-pct {
+      font-size: var(--text-xs);
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .completeness-track {
+      height: 6px;
+      background: var(--cream-dark);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .completeness-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      border-radius: 3px;
+      transition: width 0.6s var(--ease-out);
+    }
+
+    /* Sidebar stats */
+    .profile-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .profile-stat {
+      text-align: center;
+    }
+
+    .profile-stat-num {
+      font-family: var(--font-serif);
+      font-size: var(--text-2xl);
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.1;
+    }
+
+    .profile-stat-label {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 0.2rem;
+    }
+
+    /* Sidebar nav */
+    .profile-nav {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      padding: 0.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .profile-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: all var(--transition-fast);
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .profile-nav-item:hover {
+      background: var(--cream-dark);
+      color: var(--text);
+    }
+
+    .profile-nav-item.active {
+      background: var(--primary-muted);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .profile-nav-icon {
+      font-size: 1.1rem;
+      width: 24px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    /* ===== MAIN CONTENT PANELS ===== */
+    .profile-main {
+      min-width: 0;
+    }
+
+    .profile-panel {
+      display: none;
+      animation: fadeInUp 0.4s var(--ease-out) both;
+    }
+
+    .profile-panel.active {
+      display: block;
+    }
+
+    .panel-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .panel-header h2 {
+      font-family: var(--font-serif);
+      font-size: var(--text-3xl);
+      color: var(--text);
+      margin-bottom: 0.35rem;
+    }
+
+    .panel-header p {
+      color: var(--text-muted);
+      font-size: var(--text-sm);
+    }
+
+    .section-divider {
+      width: 48px;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+      margin: 0 0 1.5rem;
+    }
+
+    /* ===== FORM STYLES ===== */
+    .form-section {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 1.25rem;
+    }
+
+    .form-section-title {
+      font-family: var(--font-serif);
+      font-size: var(--text-lg);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    .form-section-desc {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-label {
+      display: block;
+      font-size: var(--text-sm);
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+
+    .form-hint {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      padding: 0.6rem 0.9rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+      color: var(--text);
+      background: var(--cream);
+      transition: all var(--transition-fast);
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-muted);
+    }
+
+    .form-textarea {
+      min-height: 80px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* ===== CHIP/TAG SELECTOR ===== */
+    .chip-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.45rem 0.9rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs);
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      background: var(--white);
+      user-select: none;
+    }
+
+    .chip:hover {
+      border-color: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .chip.selected {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .chip-icon {
+      font-size: 0.9rem;
+      line-height: 1;
+    }
+
+    /* ===== PRICE RANGE SELECTOR ===== */
+    .price-options {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .price-chip {
+      flex: 1;
+      text-align: center;
+      padding: 0.6rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      background: var(--white);
+      user-select: none;
+    }
+
+    .price-chip:hover {
+      border-color: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .price-chip.selected {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .price-chip-label {
+      display: block;
+      font-size: 0.6rem;
+      font-weight: 500;
+      opacity: 0.7;
+      margin-top: 0.15rem;
+    }
+
+    /* ===== NOTIFICATION TOGGLES ===== */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .toggle-row:last-child {
+      border-bottom: none;
+    }
+
+    .toggle-info {
+      flex: 1;
+    }
+
+    .toggle-label {
+      font-size: var(--text-sm);
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .toggle-desc {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+      margin-left: 1rem;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--border);
+      border-radius: 12px;
+      transition: all var(--transition-fast);
+    }
+
+    .toggle-slider::before {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 3px;
+      bottom: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: all var(--transition-fast);
+      box-shadow: var(--shadow-xs);
+    }
+
+    .toggle-switch input:checked + .toggle-slider {
+      background: var(--primary);
+    }
+
+    .toggle-switch input:checked + .toggle-slider::before {
+      transform: translateX(20px);
+    }
+
+    /* ===== MY EVENTS LIST ===== */
+    .event-reg-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--white);
+      border-radius: var(--radius-md);
+      margin-bottom: 0.75rem;
+      box-shadow: var(--shadow-xs);
+      transition: all var(--transition-base);
+      border: 1px solid transparent;
+    }
+
+    .event-reg-card:hover {
+      border-color: var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .event-reg-date {
+      text-align: center;
+      min-width: 56px;
+      padding: 0.5rem;
+      background: var(--primary-muted);
+      border-radius: var(--radius-sm);
+    }
+
+    .event-reg-day {
+      font-family: var(--font-serif);
+      font-size: var(--text-xl);
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.1;
+    }
+
+    .event-reg-month {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--primary-light);
+    }
+
+    .event-reg-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .event-reg-name {
+      font-weight: 600;
+      font-size: var(--text-sm);
+      color: var(--text);
+      margin-bottom: 0.15rem;
+    }
+
+    .event-reg-meta {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+    }
+
+    .event-reg-badge {
+      padding: 0.3rem 0.7rem;
+      border-radius: var(--radius-full);
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
+
+    .badge-upcoming {
+      background: rgba(42, 90, 27, 0.1);
+      color: var(--primary);
+    }
+
+    .badge-past {
+      background: var(--cream-dark);
+      color: var(--text-muted);
+    }
+
+    /* ===== FAVOURITES GRID ===== */
+    .fav-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .fav-card {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      padding: 0.875rem;
+      background: var(--white);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-xs);
+      text-decoration: none;
+      color: inherit;
+      transition: all var(--transition-base);
+      border: 1px solid transparent;
+    }
+
+    .fav-card:hover {
+      border-color: var(--border);
+      box-shadow: var(--shadow-sm);
+      transform: translateY(-2px);
+    }
+
+    .fav-card-img {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .fav-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .fav-card-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .fav-card-name {
+      font-weight: 600;
+      font-size: var(--text-sm);
+      color: var(--text);
+    }
+
+    .fav-card-sub {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      margin-top: 0.1rem;
+    }
+
+    .fav-card-rating {
+      font-size: var(--text-sm);
+      font-weight: 700;
+      color: var(--accent-dark);
+      flex-shrink: 0;
+    }
+
+    /* ===== EMPTY STATES ===== */
+    .profile-empty {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      color: var(--text-muted);
+    }
+
+    .profile-empty svg {
+      margin-bottom: 1rem;
+      opacity: 0.4;
+    }
+
+    .profile-empty p {
+      font-size: var(--text-sm);
+      margin-bottom: 1rem;
+    }
+
+    /* ===== SAVE BUTTON ===== */
+    .save-bar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+      .profile-sidebar {
+        position: static;
+      }
+      .profile-nav {
+        display: flex;
+        overflow-x: auto;
+        gap: 0;
+      }
+      .profile-nav-item {
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .profile-container {
+        padding: 1.5rem 1rem;
+      }
+      .profile-stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+      }
+      .profile-stat-num {
+        font-size: var(--text-xl);
+      }
+      .fav-grid {
+        grid-template-columns: 1fr;
+      }
+      .price-options {
+        flex-wrap: wrap;
+      }
+      .price-chip {
+        flex: 0 0 calc(50% - 0.25rem);
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav id="navbar"></nav>
+
+  <!-- HEADER -->
+  <div class="events-header">
+    <h1>My Profile</h1>
+    <p>Personalise your Bite Club experience — set your location, food preferences, and track your activity.</p>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="profile-container">
+    <div class="profile-grid">
+
+      <!-- SIDEBAR -->
+      <div class="profile-sidebar">
+        <div class="profile-card">
+          <div class="profile-avatar" id="profileAvatar">
+            <span id="avatarInitials">?</span>
+            <div class="profile-avatar-edit" onclick="document.getElementById('avatarInput').click()" title="Change avatar colour">&#9998;</div>
+            <input type="color" id="avatarInput" style="display:none;" value="#2A5A1B">
+          </div>
+          <div class="profile-name" id="sidebarName">New Member</div>
+          <div class="profile-location" id="sidebarLocation">Set your location</div>
+
+          <div class="completeness-section">
+            <div class="completeness-header">
+              <span class="completeness-label">Profile</span>
+              <span class="completeness-pct" id="completePct">0%</span>
+            </div>
+            <div class="completeness-track">
+              <div class="completeness-fill" id="completeFill" style="width:0%"></div>
+            </div>
+          </div>
+
+          <div class="profile-stats">
+            <div class="profile-stat">
+              <div class="profile-stat-num" id="statFavs">0</div>
+              <div class="profile-stat-label">Favs</div>
+            </div>
+            <div class="profile-stat">
+              <div class="profile-stat-num" id="statReviews">0</div>
+              <div class="profile-stat-label">Reviews</div>
+            </div>
+            <div class="profile-stat">
+              <div class="profile-stat-num" id="statEvents">0</div>
+              <div class="profile-stat-label">Events</div>
+            </div>
+          </div>
+        </div>
+
+        <nav class="profile-nav" id="profileNav">
+          <button class="profile-nav-item active" data-panel="details">
+            <span class="profile-nav-icon">&#128100;</span> Details
+          </button>
+          <button class="profile-nav-item" data-panel="preferences">
+            <span class="profile-nav-icon">&#9881;</span> Preferences
+          </button>
+          <button class="profile-nav-item" data-panel="events">
+            <span class="profile-nav-icon">&#128197;</span> My Events
+          </button>
+          <button class="profile-nav-item" data-panel="favourites">
+            <span class="profile-nav-icon">&#9829;</span> Favourites
+          </button>
+        </nav>
+      </div>
+
+      <!-- MAIN PANELS -->
+      <div class="profile-main">
+
+        <!-- PANEL: DETAILS -->
+        <div class="profile-panel active" id="panel-details">
+          <div class="panel-header">
+            <div class="section-divider"></div>
+            <h2>Profile Details</h2>
+            <p>Tell us about yourself so we can tailor your experience.</p>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title">Basic Info</div>
+            <div class="form-section-desc">Your public identity in the Bite Club community.</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="inputName">Display Name</label>
+                <input class="form-input" type="text" id="inputName" placeholder="e.g. FoodieMelb" maxlength="30">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="inputEmail">Email</label>
+                <input class="form-input" type="email" id="inputEmail" placeholder="you@example.com">
+                <div class="form-hint">For event confirmations only. Never shared.</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="inputBio">Bio</label>
+              <textarea class="form-textarea" id="inputBio" placeholder="What's your food story? (e.g. 'Brunch addict, coffee snob, always hunting for the perfect dumplings.')" maxlength="200"></textarea>
+              <div class="form-hint"><span id="bioCount">0</span>/200 characters</div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title">Location</div>
+            <div class="form-section-desc">Help us show you relevant venues and events near you.</div>
+            <div class="form-group">
+              <label class="form-label" for="inputLocation">Your Area</label>
+              <select class="form-select" id="inputLocation">
+                <option value="">Select your area...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Neighbourhoods You Explore</label>
+              <div class="form-hint" style="margin-bottom:0.5rem;">Select all the areas you like to eat in.</div>
+              <div class="chip-grid" id="suburbChips"></div>
+            </div>
+          </div>
+
+          <div class="save-bar">
+            <button class="btn btn-secondary" onclick="resetDetails()">Reset</button>
+            <button class="btn btn-primary" onclick="saveDetails()">Save Profile</button>
+          </div>
+        </div>
+
+        <!-- PANEL: PREFERENCES -->
+        <div class="profile-panel" id="panel-preferences">
+          <div class="panel-header">
+            <div class="section-divider"></div>
+            <h2>Food Preferences</h2>
+            <p>Customise what you see — we'll highlight venues and events that match your tastes.</p>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title">Dietary Needs</div>
+            <div class="form-section-desc">Select any that apply to you.</div>
+            <div class="chip-grid" id="dietaryChips"></div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title">Cuisine Preferences</div>
+            <div class="form-section-desc">What flavours are you drawn to?</div>
+            <div class="chip-grid" id="cuisineChips"></div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title">Price Range</div>
+            <div class="form-section-desc">What's your typical spend per person?</div>
+            <div class="price-options" id="priceChips"></div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title">Venue Type</div>
+            <div class="form-section-desc">Do you prefer cafes, restaurants, or both?</div>
+            <div class="chip-grid" id="venueTypeChips"></div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title">Event Interests</div>
+            <div class="form-section-desc">Which event types would you like to be notified about?</div>
+            <div class="chip-grid" id="eventTypeChips"></div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title">Notifications</div>
+            <div class="form-section-desc">Control how we keep you in the loop.</div>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <div class="toggle-label">New Events</div>
+                <div class="toggle-desc">Get notified when events matching your interests are posted.</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="notifNewEvents">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <div class="toggle-label">Venue Updates</div>
+                <div class="toggle-desc">New menu items and reviews at your favourite venues.</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="notifVenueUpdates">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <div class="toggle-label">Weekly Digest</div>
+                <div class="toggle-desc">A curated round-up of top-rated venues and upcoming events.</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="notifWeeklyDigest">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="save-bar">
+            <button class="btn btn-secondary" onclick="resetPreferences()">Reset</button>
+            <button class="btn btn-primary" onclick="savePreferences()">Save Preferences</button>
+          </div>
+        </div>
+
+        <!-- PANEL: MY EVENTS -->
+        <div class="profile-panel" id="panel-events">
+          <div class="panel-header">
+            <div class="section-divider"></div>
+            <h2>My Events</h2>
+            <p>Events you've registered for. Don't miss them!</p>
+          </div>
+          <div id="myEventsList"></div>
+          <div class="profile-empty" id="emptyEvents" style="display:none;">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            <p>You haven't registered for any events yet.</p>
+            <a href="events.html" class="btn btn-primary">Browse Events</a>
+          </div>
+        </div>
+
+        <!-- PANEL: FAVOURITES -->
+        <div class="profile-panel" id="panel-favourites">
+          <div class="panel-header">
+            <div class="section-divider"></div>
+            <h2>My Favourites</h2>
+            <p>Venues you've saved for later.</p>
+          </div>
+          <div class="fav-grid" id="favGrid"></div>
+          <div class="profile-empty" id="emptyFavs" style="display:none;">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <p>No favourites yet. Tap the heart on any venue to save it here.</p>
+            <a href="index.html" class="btn btn-primary">Explore Venues</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div id="footer"></div>
+  <div class="toast" id="toast"></div>
+
+  <script src="storage.js"></script>
+  <script src="shared.js"></script>
+  <script src="data.js"></script>
+  <script>
+    // ===== INIT =====
+    renderNavbar('profile');
+    renderFooter();
+
+    // ===== REFERENCE DATA =====
+    const DIETARY_OPTIONS = [
+      { id: 'vegetarian', label: 'Vegetarian', icon: '\uD83E\uDD66' },
+      { id: 'vegan', label: 'Vegan', icon: '\uD83C\uDF31' },
+      { id: 'gluten-free', label: 'Gluten Free', icon: '\uD83C\uDF3E' },
+      { id: 'dairy-free', label: 'Dairy Free', icon: '\uD83E\uDD5B' },
+      { id: 'halal', label: 'Halal', icon: '\u2B50' },
+      { id: 'kosher', label: 'Kosher', icon: '\u2721' },
+      { id: 'nut-free', label: 'Nut Free', icon: '\uD83E\uDD5C' },
+      { id: 'pescatarian', label: 'Pescatarian', icon: '\uD83D\uDC1F' }
+    ];
+
+    const CUISINE_OPTIONS = [
+      { id: 'australian', label: 'Modern Australian', icon: '\uD83E\uDD58' },
+      { id: 'italian', label: 'Italian', icon: '\uD83C\uDF55' },
+      { id: 'japanese', label: 'Japanese', icon: '\uD83C\uDF63' },
+      { id: 'chinese', label: 'Chinese', icon: '\uD83E\uDD5F' },
+      { id: 'vietnamese', label: 'Vietnamese', icon: '\uD83C\uDF5C' },
+      { id: 'thai', label: 'Thai', icon: '\uD83C\uDF5B' },
+      { id: 'indian', label: 'Indian', icon: '\uD83C\uDF6B' },
+      { id: 'mexican', label: 'Mexican', icon: '\uD83C\uDF2E' },
+      { id: 'middle-eastern', label: 'Middle Eastern', icon: '\uD83E\uDDC6' },
+      { id: 'greek', label: 'Greek', icon: '\uD83E\uDD57' },
+      { id: 'korean', label: 'Korean', icon: '\uD83E\uDD62' },
+      { id: 'french', label: 'French', icon: '\uD83E\uDDC0' },
+      { id: 'brunch', label: 'Brunch & Breakfast', icon: '\uD83E\uDD5E' },
+      { id: 'coffee', label: 'Specialty Coffee', icon: '\u2615' },
+      { id: 'pastry', label: 'Pastry & Bakery', icon: '\uD83E\uDD50' },
+      { id: 'seafood', label: 'Seafood', icon: '\uD83E\uDD90' }
+    ];
+
+    const PRICE_OPTIONS = [
+      { id: '$', label: '$', desc: 'Budget' },
+      { id: '$$', label: '$$', desc: 'Mid-range' },
+      { id: '$$$', label: '$$$', desc: 'Upscale' },
+      { id: '$$$$', label: '$$$$', desc: 'Fine dining' }
+    ];
+
+    const VENUE_TYPE_OPTIONS = [
+      { id: 'cafe', label: 'Cafes', icon: '\u2615' },
+      { id: 'restaurant', label: 'Restaurants', icon: '\uD83C\uDF7D' },
+      { id: 'bar', label: 'Bars & Wine', icon: '\uD83C\uDF77' },
+      { id: 'takeaway', label: 'Takeaway', icon: '\uD83E\uDD61' }
+    ];
+
+    const EVENT_TYPE_OPTIONS = [
+      { id: 'Food Playoff', label: 'Food Playoffs', icon: '\uD83C\uDFC6' },
+      { id: 'Coffee Crawl', label: 'Coffee Crawls', icon: '\u2615' },
+      { id: 'Exclusive Dining', label: 'Exclusive Dining', icon: '\uD83C\uDF7D' },
+      { id: 'Festival', label: 'Festivals', icon: '\uD83C\uDF89' }
+    ];
+
+    // ===== CHIP RENDERER =====
+    function renderChips(containerId, options, selectedIds) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = options.map(opt => `
+        <button class="chip${selectedIds.includes(opt.id) ? ' selected' : ''}" data-id="${opt.id}">
+          <span class="chip-icon">${opt.icon}</span> ${opt.label}
+        </button>
+      `).join('');
+
+      container.querySelectorAll('.chip').forEach(chip => {
+        chip.addEventListener('click', () => chip.classList.toggle('selected'));
+      });
+    }
+
+    function renderPriceChips(selectedIds) {
+      const container = document.getElementById('priceChips');
+      container.innerHTML = PRICE_OPTIONS.map(opt => `
+        <button class="price-chip${selectedIds.includes(opt.id) ? ' selected' : ''}" data-id="${opt.id}">
+          ${opt.label}
+          <span class="price-chip-label">${opt.desc}</span>
+        </button>
+      `).join('');
+
+      container.querySelectorAll('.price-chip').forEach(chip => {
+        chip.addEventListener('click', () => chip.classList.toggle('selected'));
+      });
+    }
+
+    function getSelectedIds(containerId) {
+      return [...document.querySelectorAll(`#${containerId} .chip.selected, #${containerId} .price-chip.selected`)]
+        .map(el => el.dataset.id);
+    }
+
+    // ===== POPULATE LOCATION DROPDOWN =====
+    const locationSelect = document.getElementById('inputLocation');
+    SUBURB_GROUPS.forEach(sg => {
+      const opt = document.createElement('option');
+      opt.value = sg.name;
+      opt.textContent = sg.name;
+      locationSelect.appendChild(opt);
+    });
+
+    // ===== SUBURB GROUP CHIPS =====
+    function renderSuburbChips(selected) {
+      const container = document.getElementById('suburbChips');
+      container.innerHTML = SUBURB_GROUPS.map(sg => `
+        <button class="chip${selected.includes(sg.name) ? ' selected' : ''}" data-id="${sg.name}">
+          <span class="chip-icon">\uD83D\uDCCD</span> ${sg.name}
+        </button>
+      `).join('');
+      container.querySelectorAll('.chip').forEach(chip => {
+        chip.addEventListener('click', () => chip.classList.toggle('selected'));
+      });
+    }
+
+    // ===== LOAD SAVED DATA =====
+    function loadProfile() {
+      const profile = Storage.getUserProfile() || {};
+      const prefs = Storage.getPreferences();
+
+      // Details
+      document.getElementById('inputName').value = profile.name || '';
+      document.getElementById('inputEmail').value = profile.email || '';
+      document.getElementById('inputBio').value = profile.bio || '';
+      document.getElementById('bioCount').textContent = (profile.bio || '').length;
+      locationSelect.value = prefs.location || '';
+      if (profile.avatarColor) {
+        document.getElementById('avatarInput').value = profile.avatarColor;
+        document.getElementById('profileAvatar').style.background = profile.avatarColor;
+      }
+
+      renderSuburbChips(prefs.suburbGroups || []);
+
+      // Preferences
+      renderChips('dietaryChips', DIETARY_OPTIONS, prefs.dietaryNeeds || []);
+      renderChips('cuisineChips', CUISINE_OPTIONS, prefs.cuisineTypes || []);
+      renderPriceChips(prefs.priceRange || []);
+      renderChips('venueTypeChips', VENUE_TYPE_OPTIONS, prefs.venueTypes || []);
+      renderChips('eventTypeChips', EVENT_TYPE_OPTIONS, prefs.eventTypes || []);
+
+      // Notifications
+      const notif = prefs.notifications || { newEvents: true, venueUpdates: false, weeklyDigest: true };
+      document.getElementById('notifNewEvents').checked = notif.newEvents;
+      document.getElementById('notifVenueUpdates').checked = notif.venueUpdates;
+      document.getElementById('notifWeeklyDigest').checked = notif.weeklyDigest;
+
+      // Sidebar
+      updateSidebar();
+    }
+
+    // ===== UPDATE SIDEBAR =====
+    function updateSidebar() {
+      const profile = Storage.getUserProfile() || {};
+      const prefs = Storage.getPreferences();
+
+      // Avatar initials
+      const name = profile.name || '';
+      const initials = name ? name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2) : '?';
+      document.getElementById('avatarInitials').textContent = initials;
+      document.getElementById('sidebarName').textContent = name || 'New Member';
+      document.getElementById('sidebarLocation').textContent = prefs.location
+        ? '\uD83D\uDCCD ' + prefs.location
+        : 'Set your location';
+
+      if (profile.avatarColor) {
+        document.getElementById('profileAvatar').style.background = profile.avatarColor;
+      }
+
+      // Stats
+      const favs = Storage.getFavourites();
+      document.getElementById('statFavs').textContent = favs.length;
+
+      let reviewCount = 0;
+      VENUES.forEach(v => { reviewCount += Storage.getReviews(v.id).length; });
+      document.getElementById('statReviews').textContent = reviewCount;
+
+      document.getElementById('statEvents').textContent = Storage.getRegistrations().length;
+
+      // Completeness
+      const pct = Storage.getProfileComplete();
+      document.getElementById('completePct').textContent = pct + '%';
+      document.getElementById('completeFill').style.width = pct + '%';
+    }
+
+    // ===== SAVE DETAILS =====
+    function saveDetails() {
+      const profile = Storage.getUserProfile() || {};
+      profile.name = document.getElementById('inputName').value.trim();
+      profile.email = document.getElementById('inputEmail').value.trim();
+      profile.bio = document.getElementById('inputBio').value.trim();
+      profile.avatarColor = document.getElementById('avatarInput').value;
+      Storage.setUserProfile(profile);
+
+      const prefs = Storage.getPreferences();
+      prefs.location = locationSelect.value;
+      prefs.suburbGroups = getSelectedIds('suburbChips');
+      Storage.setPreferences(prefs);
+
+      updateSidebar();
+      showToast('Profile saved!', 'success');
+    }
+
+    function resetDetails() {
+      document.getElementById('inputName').value = '';
+      document.getElementById('inputEmail').value = '';
+      document.getElementById('inputBio').value = '';
+      document.getElementById('bioCount').textContent = '0';
+      locationSelect.value = '';
+      renderSuburbChips([]);
+      showToast('Form reset. Save to confirm changes.', '');
+    }
+
+    // ===== SAVE PREFERENCES =====
+    function savePreferences() {
+      const prefs = Storage.getPreferences();
+      prefs.dietaryNeeds = getSelectedIds('dietaryChips');
+      prefs.cuisineTypes = getSelectedIds('cuisineChips');
+      prefs.priceRange = getSelectedIds('priceChips');
+      prefs.venueTypes = getSelectedIds('venueTypeChips');
+      prefs.eventTypes = getSelectedIds('eventTypeChips');
+      prefs.notifications = {
+        newEvents: document.getElementById('notifNewEvents').checked,
+        venueUpdates: document.getElementById('notifVenueUpdates').checked,
+        weeklyDigest: document.getElementById('notifWeeklyDigest').checked
+      };
+      Storage.setPreferences(prefs);
+      updateSidebar();
+      showToast('Preferences saved!', 'success');
+    }
+
+    function resetPreferences() {
+      renderChips('dietaryChips', DIETARY_OPTIONS, []);
+      renderChips('cuisineChips', CUISINE_OPTIONS, []);
+      renderPriceChips([]);
+      renderChips('venueTypeChips', VENUE_TYPE_OPTIONS, []);
+      renderChips('eventTypeChips', EVENT_TYPE_OPTIONS, []);
+      document.getElementById('notifNewEvents').checked = true;
+      document.getElementById('notifVenueUpdates').checked = false;
+      document.getElementById('notifWeeklyDigest').checked = true;
+      showToast('Preferences reset. Save to confirm changes.', '');
+    }
+
+    // ===== RENDER MY EVENTS =====
+    function renderMyEvents() {
+      const regs = Storage.getRegistrations();
+      const container = document.getElementById('myEventsList');
+      const emptyEl = document.getElementById('emptyEvents');
+
+      if (!regs.length) {
+        container.innerHTML = '';
+        emptyEl.style.display = 'block';
+        return;
+      }
+
+      emptyEl.style.display = 'none';
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+      container.innerHTML = regs.map(eventId => {
+        const ev = EVENTS.find(e => e.id === eventId);
+        if (!ev) return '';
+        const d = new Date(ev.date + 'T00:00:00');
+        const isUpcoming = ev.status === 'upcoming';
+        return `
+          <div class="event-reg-card">
+            <div class="event-reg-date">
+              <div class="event-reg-day">${d.getDate()}</div>
+              <div class="event-reg-month">${months[d.getMonth()]}</div>
+            </div>
+            <div class="event-reg-info">
+              <div class="event-reg-name">${ev.name}</div>
+              <div class="event-reg-meta">${ev.time} \u00B7 ${ev.suburb}</div>
+            </div>
+            <span class="event-reg-badge ${isUpcoming ? 'badge-upcoming' : 'badge-past'}">${isUpcoming ? 'Upcoming' : 'Attended'}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ===== RENDER FAVOURITES =====
+    function renderFavourites() {
+      const favIds = Storage.getFavourites();
+      const grid = document.getElementById('favGrid');
+      const emptyEl = document.getElementById('emptyFavs');
+
+      if (!favIds.length) {
+        grid.innerHTML = '';
+        emptyEl.style.display = 'block';
+        return;
+      }
+
+      emptyEl.style.display = 'none';
+      grid.innerHTML = favIds.map(id => {
+        const v = VENUES.find(venue => venue.id === id);
+        if (!v) return '';
+        const avg = getAvgRating(v);
+        return `
+          <a class="fav-card" href="venue.html?id=${v.id}">
+            <div class="fav-card-img">
+              <img src="${v.image}" alt="${v.name}" loading="lazy" onerror="handleImageError(this, '${v.type}')">
+            </div>
+            <div class="fav-card-info">
+              <div class="fav-card-name">${v.name}</div>
+              <div class="fav-card-sub">${v.suburb} \u00B7 ${v.priceRange}</div>
+            </div>
+            <div class="fav-card-rating">\u2605 ${avg}</div>
+          </a>
+        `;
+      }).join('');
+    }
+
+    // ===== PANEL NAVIGATION =====
+    document.getElementById('profileNav').addEventListener('click', e => {
+      const btn = e.target.closest('.profile-nav-item');
+      if (!btn) return;
+      const panel = btn.dataset.panel;
+
+      // Update nav
+      document.querySelectorAll('.profile-nav-item').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Update panels
+      document.querySelectorAll('.profile-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('panel-' + panel).classList.add('active');
+
+      // Lazy-render panels and refresh sidebar stats
+      if (panel === 'events') renderMyEvents();
+      if (panel === 'favourites') renderFavourites();
+      updateSidebar();
+    });
+
+    // ===== BIO COUNTER =====
+    document.getElementById('inputBio').addEventListener('input', function () {
+      document.getElementById('bioCount').textContent = this.value.length;
+    });
+
+    // ===== AVATAR COLOUR PICKER =====
+    document.getElementById('avatarInput').addEventListener('input', function () {
+      document.getElementById('profileAvatar').style.background = this.value;
+    });
+
+    // ===== INIT PAGE =====
+    loadProfile();
+  </script>
+</body>
+</html>
