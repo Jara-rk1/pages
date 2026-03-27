@@ -233,30 +233,31 @@ const GameEngine = {
        ========================================================== */
 
     async startGame(gameId, callbacks) {
-        // 1. Check auth
+        // 1. Check auth — allow demo/static mode when no token present
         const token = this.getToken();
-        if (!token) {
-            this.goToHub();
-            return false;
-        }
+        const demoMode = !token;
 
-        // 2. Get current edition
+        // 2. Get current edition (skip in demo mode)
         let edition = null;
-        try {
-            const res = await fetch('/api/editions/current', {
-                headers: { 'Authorization': 'Bearer ' + token }
-            });
-            if (res.ok) {
-                edition = await res.json();
+        if (!demoMode) {
+            try {
+                const res = await fetch('/api/editions/current', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                if (res.ok) {
+                    edition = await res.json();
+                }
+            } catch (_) {
+                // Proceed with null edition — allow offline play
             }
-        } catch (_) {
-            // Proceed with null edition — allow offline play
         }
 
         const editionId = edition ? edition.id : null;
 
-        // 3. Check remaining attempts
-        const attempts = await this.checkAttempts(gameId, editionId);
+        // 3. Check remaining attempts (unlimited in demo mode)
+        const attempts = demoMode
+            ? { used: 0, remaining: this.MAX_ATTEMPTS, best_score: 0, attempts: [] }
+            : await this.checkAttempts(gameId, editionId);
 
         // 4. If no attempts left, show locked overlay
         if (attempts.remaining <= 0) {
@@ -1054,7 +1055,7 @@ const GameEngine = {
        ========================================================== */
 
     goToHub() {
-        window.location.href = '/';
+        window.location.href = '../../';
     },
 
     /* ==========================================================
