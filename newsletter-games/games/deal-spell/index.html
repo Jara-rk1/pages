@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Deal Spell | KPMG Minigames</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #F5F5F5;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; overflow: hidden;
+        }
+        .game-header {
+            width: 100%; background: #00338D; color: white;
+            padding: 8px 16px; display: flex; align-items: center; gap: 12px;
+            font-size: 14px;
+        }
+        .game-header a { color: white; text-decoration: none; font-size: 20px; }
+        .game-header h1 { font-size: 16px; font-weight: bold; }
+        #game-container {
+            position: relative; width: 100%; max-width: 480px;
+            flex: 1; display: flex; flex-direction: column; align-items: center;
+            padding: 12px;
+        }
+        .game-over-overlay {
+            display: none; position: absolute; inset: 0;
+            background: rgba(0, 51, 141, 0.92); color: white;
+            flex-direction: column; align-items: center; justify-content: center;
+            gap: 16px; z-index: 10; padding: 24px; text-align: center;
+        }
+        .game-over-overlay.active { display: flex; }
+        .game-over-overlay .score-display { font-size: 48px; font-weight: bold; }
+        .game-over-overlay .label { font-size: 14px; opacity: 0.8; }
+        .game-over-overlay .stat { font-size: 20px; font-weight: bold; }
+        .game-over-overlay button {
+            padding: 12px 32px; border: none; border-radius: 4px;
+            font-size: 16px; font-weight: bold; cursor: pointer;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .btn-play-again { background: #00B8F5; color: white; }
+        .btn-hub { background: white; color: #00338D; }
+        .btn-play-again:hover { background: #1E49E2; }
+
+        /* Deal Spell specific */
+        .ds-top-bar {
+            width: 100%; display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 12px;
+        }
+        .ds-category-badge {
+            display: inline-block; padding: 4px 14px; border-radius: 12px;
+            color: white; font-size: 12px; font-weight: bold; letter-spacing: 0.5px;
+        }
+        .ds-round { font: bold 14px Arial, Helvetica, sans-serif; color: #333333; }
+        .ds-score-display { font: bold 16px Arial, Helvetica, sans-serif; color: #00338D; }
+
+        .ds-word-area {
+            width: 100%; display: flex; justify-content: center; flex-wrap: wrap;
+            gap: 8px; margin: 20px 0 16px; min-height: 60px;
+        }
+        .ds-letter-slot {
+            width: 36px; height: 48px; border-bottom: 3px solid #00338D;
+            display: flex; align-items: center; justify-content: center;
+            font: bold 28px Arial, Helvetica, sans-serif; color: #00338D;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .ds-letter-slot.revealed {
+            border-color: #269924;
+            animation: ds-pop 0.3s ease;
+        }
+        @keyframes ds-pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .ds-deal-bar-container {
+            width: 100%; margin: 12px 0; text-align: center;
+        }
+        .ds-deal-label {
+            font: bold 12px Arial, Helvetica, sans-serif; color: #333333;
+            margin-bottom: 4px;
+        }
+        .ds-deal-bar-track {
+            width: 100%; height: 24px; background: #E5E5E5; border-radius: 12px;
+            overflow: hidden; position: relative;
+        }
+        .ds-deal-bar-fill {
+            height: 100%; border-radius: 12px; transition: width 0.4s ease, background 0.4s ease;
+        }
+        .ds-deal-value {
+            position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+            font: bold 11px Arial, Helvetica, sans-serif; color: #333333;
+        }
+
+        .ds-wrong-area {
+            display: flex; gap: 6px; margin: 8px 0 12px; min-height: 24px;
+            justify-content: center;
+        }
+        .ds-wrong-x {
+            width: 24px; height: 24px; background: #ED2124; color: white;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font: bold 14px Arial, Helvetica, sans-serif;
+            animation: ds-shake 0.3s ease;
+        }
+        @keyframes ds-shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+
+        .ds-keyboard {
+            width: 100%; display: flex; flex-direction: column; gap: 6px;
+            align-items: center; margin-top: auto; padding-bottom: 12px;
+        }
+        .ds-kb-row {
+            display: flex; gap: 4px; justify-content: center;
+        }
+        .ds-key {
+            width: 34px; height: 42px; border: 2px solid #B2B2B2; border-radius: 6px;
+            background: white; color: #333333; font: bold 14px Arial, Helvetica, sans-serif;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.15s; user-select: none;
+            -webkit-user-select: none;
+        }
+        .ds-key:hover { background: #E5E5E5; }
+        .ds-key.correct { background: #269924; color: white; border-color: #269924; pointer-events: none; }
+        .ds-key.wrong { background: #ED2124; color: white; border-color: #ED2124; pointer-events: none; }
+        .ds-key.used { opacity: 0.4; pointer-events: none; }
+
+        .ds-timer {
+            font: 11px Arial, Helvetica, sans-serif; color: #666666; margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-header">
+        <a href="../../" title="Back to hub">&larr;</a>
+        <h1>Deal Spell</h1>
+    </div>
+    <div id="game-container">
+        <div class="ds-top-bar">
+            <span class="ds-category-badge" id="ds-category">Deals</span>
+            <span class="ds-round" id="ds-round">Round 1</span>
+            <span class="ds-score-display" id="ds-score">Score: 0</span>
+        </div>
+        <div class="ds-word-area" id="ds-word-area"></div>
+        <div class="ds-deal-bar-container">
+            <div class="ds-deal-label">Deal Value</div>
+            <div class="ds-deal-bar-track">
+                <div class="ds-deal-bar-fill" id="ds-bar-fill" style="width:100%; background:#269924;"></div>
+                <div class="ds-deal-value" id="ds-bar-value">$100M</div>
+            </div>
+        </div>
+        <div class="ds-wrong-area" id="ds-wrong-area"></div>
+        <div class="ds-timer" id="ds-timer"></div>
+        <div class="ds-keyboard" id="ds-keyboard"></div>
+        <div class="game-over-overlay" id="game-over"></div>
+    </div>
+    <script src="../../assets/game-engine.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
