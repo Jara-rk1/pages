@@ -182,7 +182,7 @@
                  onerror="handleImageError(this, '${item.venueType}')">
           </div>
           <div class="item-info">
-            <div class="item-name">${item.name}${item.isNew ? ' <span class="badge badge-new" style="font-size:0.55rem;padding:0.1rem 0.4rem;vertical-align:middle;">NEW</span>' : ''}</div>
+            <div class="item-name"><span class="item-name-text">${item.name}</span>${item.isNew ? '<span class="badge badge-new" style="font-size:0.55rem;padding:0.1rem 0.4rem;">NEW</span>' : ''}</div>
             <div class="item-venue">${item.venueName}</div>
           </div>
           <div class="item-price">${item.price > 0 ? '$' + item.price : 'Incl.'}</div>
