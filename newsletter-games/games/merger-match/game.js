@@ -266,11 +266,7 @@
             onInit: function () {
                 reset();
 
-                // Stop the canvas animation loop since we use our own timer
-                if (GameEngine.animFrameId) {
-                    cancelAnimationFrame(GameEngine.animFrameId);
-                    GameEngine.animFrameId = null;
-                }
+                // No need to cancel game loop — engine skips it for DOM-based games (no canvas)
 
                 gameActive = true;
                 startTime = Date.now();

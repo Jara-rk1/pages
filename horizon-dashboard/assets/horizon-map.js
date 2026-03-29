@@ -5,28 +5,21 @@
 
 var KPMG_OFFICES = [
     // Major Capital City Offices
-    { name: 'Sydney', lat: -33.8688, lng: 151.2093 },
-    { name: 'Melbourne', lat: -37.8136, lng: 144.9631 },
-    { name: 'Brisbane', lat: -27.4698, lng: 153.0251 },
-    { name: 'Perth', lat: -31.9505, lng: 115.8605 },
-    { name: 'Adelaide', lat: -34.9285, lng: 138.6007 },
-    { name: 'Hobart', lat: -42.8821, lng: 147.3272 },
-    { name: 'Canberra', lat: -35.2809, lng: 149.1300 },
-    { name: 'Darwin', lat: -12.4634, lng: 130.8456 },
+    { name: 'Sydney', lat: -33.8651, lng: 151.2021 },       // Tower Three, International Towers, 300 Barangaroo Ave
+    { name: 'Melbourne', lat: -37.8212, lng: 144.9496 },     // Tower Two, Collins Square, 727 Collins St
+    { name: 'Brisbane', lat: -27.4679, lng: 153.0256 },      // Level 11, Heritage Lanes, 80 Ann St
+    { name: 'Perth', lat: -31.9535, lng: 115.8605 },         // 235 St Georges Terrace
+    { name: 'Adelaide', lat: -34.9249, lng: 138.6100 },      // 151 Pirie St
+    { name: 'Hobart', lat: -42.8822, lng: 147.3223 },        // Level 3, 100 Melville St
+    { name: 'Canberra', lat: -35.2975, lng: 149.1300 },      // Level 9, Constitution Place, 1 Constitution Ave
+    { name: 'Darwin', lat: -12.4634, lng: 130.8456 },        // 18 Smith St
     // Regional & Secondary Offices
-    { name: 'Parramatta', lat: -33.8151, lng: 151.0011 },
-    { name: 'Gold Coast', lat: -28.0167, lng: 153.4000 },
-    { name: 'Townsville', lat: -19.2590, lng: 146.8169 },
-    { name: 'Wollongong', lat: -34.4278, lng: 150.8931 },
-    { name: 'Geelong', lat: -38.1499, lng: 144.3617 },
-    { name: 'Newcastle', lat: -32.9283, lng: 151.7817 },
-    { name: 'Cairns', lat: -16.9186, lng: 145.7781 },
-    { name: 'Karratha', lat: -20.7377, lng: 116.8463 },
-    { name: 'Mount Isa', lat: -20.7256, lng: 139.4927 },
-    { name: 'Albury', lat: -36.0737, lng: 146.9135 },
-    { name: 'Launceston', lat: -41.4332, lng: 147.1441 },
-    { name: 'Bendigo', lat: -36.7570, lng: 144.2794 },
-    { name: 'Toowoomba', lat: -27.5598, lng: 151.9507 }
+    { name: 'Parramatta', lat: -33.8165, lng: 151.0034 },    // Level 16, 3 Parramatta Square, 153 Macquarie St
+    { name: 'Gold Coast', lat: -28.0127, lng: 153.4150 },    // Level 11, Corporate Centre One, Bundall
+    { name: 'Townsville', lat: -19.2590, lng: 146.7810 },    // Level 10, 61-73 Sturt St
+    { name: 'Wollongong', lat: -34.4268, lng: 150.8931 },    // Level 7, 77 Market St
+    { name: 'Geelong', lat: -38.1467, lng: 144.3570 },       // 60 Moorabool St
+    { name: 'Newcastle', lat: -32.9267, lng: 151.7700 }      // Level 3, 18 Honeysuckle Dr
 ];
 
 var JURISDICTION_COORDS = {

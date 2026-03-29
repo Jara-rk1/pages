@@ -297,12 +297,14 @@ const GameEngine = {
             this._callbacks.onInit();
         }
 
-        // 9. Show countdown, then start loop
+        // 9. Show countdown, then start loop (skip loop for DOM-based games with no canvas)
         return new Promise((resolve) => {
             this.renderCountdown(3, () => {
                 this.state.startTime = performance.now();
                 this.lastTimestamp = performance.now();
-                this.animFrameId = requestAnimationFrame((t) => this.gameLoop(t));
+                if (this.canvas && this.ctx) {
+                    this.animFrameId = requestAnimationFrame((t) => this.gameLoop(t));
+                }
                 resolve(true);
             });
         });
@@ -410,6 +412,7 @@ const GameEngine = {
 
     renderHUD() {
         const ctx = this.ctx;
+        if (!ctx) return; // DOM-based games have no canvas HUD
         const w = this._logicalWidth;
         const h = this.HUD_HEIGHT;
 
@@ -472,6 +475,49 @@ const GameEngine = {
         let stepIndex = 0;
 
         const hasGSAP = typeof gsap !== 'undefined';
+
+        // DOM-based games have no canvas context — use a DOM overlay countdown
+        if (!ctx) {
+            const overlay = this._overlayEl;
+            if (!overlay) {
+                callback();
+                return;
+            }
+
+            overlay.style.display = 'flex';
+            const countdownEl = document.createElement('div');
+            countdownEl.style.cssText = 'font: bold 72px Arial, Helvetica, sans-serif; color: ' + KPMG.colours.white + ';';
+            overlay.innerHTML = '';
+            overlay.appendChild(countdownEl);
+
+            const stepDuration = this.COUNTDOWN_STEP_MS;
+
+            const domStep = () => {
+                if (stepIndex >= steps.length) {
+                    overlay.style.display = 'none';
+                    overlay.innerHTML = '';
+                    callback();
+                    return;
+                }
+                countdownEl.textContent = steps[stepIndex];
+                countdownEl.style.transform = 'scale(0.3)';
+                countdownEl.style.opacity = '0';
+                countdownEl.style.transition = 'transform ' + (stepDuration * 0.6 / 1000) + 's cubic-bezier(0.34, 1.56, 0.64, 1), opacity ' + (stepDuration * 0.4 / 1000) + 's ease';
+
+                // Force reflow then animate
+                void countdownEl.offsetWidth;
+                countdownEl.style.transform = 'scale(1)';
+                countdownEl.style.opacity = '1';
+
+                setTimeout(() => {
+                    stepIndex++;
+                    domStep();
+                }, stepDuration);
+            };
+
+            domStep();
+            return;
+        }
 
         const drawStep = () => {
             if (stepIndex >= steps.length) {
@@ -764,6 +810,7 @@ const GameEngine = {
 
     renderPauseOverlay() {
         const ctx = this.ctx;
+        if (!ctx) return; // DOM-based games have no canvas pause overlay
         const w = this._logicalWidth;
         const h = this._logicalHeight;
 

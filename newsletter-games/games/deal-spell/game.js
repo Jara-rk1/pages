@@ -292,6 +292,14 @@
         };
 
         document.addEventListener('keydown', onPhysicalKey);
+
+        // Register cleanup so GameEngine.endGame() removes the listener
+        GameEngine._inputCleanup = function () {
+            if (onPhysicalKey) {
+                document.removeEventListener('keydown', onPhysicalKey);
+                onPhysicalKey = null;
+            }
+        };
     }
 
     /* ---- init ---- */

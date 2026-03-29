@@ -95,12 +95,10 @@
             }
         }
 
-        const lastPipeX = pipes.length > 0 ? pipes[pipes.length - 1].x : 0;
-        while (lastPipeX < W + PIPE_INTERVAL || pipes.length === 0) {
+        // Spawn pipes when the furthest pipe has scrolled close enough
+        if (pipes.length === 0) {
             spawnPipe();
-            break;
-        }
-        if (pipes.length > 0) {
+        } else {
             const furthest = pipes[pipes.length - 1].x;
             if (furthest < W + 20) {
                 spawnPipe();
