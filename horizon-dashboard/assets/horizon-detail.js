@@ -253,16 +253,22 @@ function renderDetail(opp) {
   html += '  <div class="detail-section__body">';
   html += '    <div class="gaps-chart" id="detail-gaps-chart" style="width:100%;height:240px;"></div>';
   if (gaps.length > 0) {
+    var mixedJuris = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
+    var colA = mixedJuris ? 'Jurisdiction' : escapeHtml(gaps[0].jurisdiction_a || 'A');
+    var colB = escapeHtml(gaps[0].jurisdiction_b || 'National');
     html += '    <table class="data-table">';
-    html += '      <thead><tr><th>Metric</th><th>' + escapeHtml(gaps[0].jurisdiction_a || 'A') + '</th><th>' + escapeHtml(gaps[0].jurisdiction_b || 'B') + '</th><th>Gap</th></tr></thead>';
+    html += '      <thead><tr><th>Metric</th><th>' + colA + '</th><th>' + colB + '</th><th>Gap</th></tr></thead>';
     html += '      <tbody>';
     for (var gi = 0; gi < gaps.length; gi++) {
       var gap = gaps[gi];
       var gapPctVal = gap.gap_pct || 0;
       var gapColor = gapPctVal >= 0 ? '#00C0AE' : '#AB0D82';
+      var cellA = mixedJuris
+        ? escapeHtml(gap.jurisdiction_a || '') + ' ' + escapeHtml(String(gap.value_a || ''))
+        : escapeHtml(String(gap.value_a || ''));
       html += '      <tr>';
       html += '        <td>' + escapeHtml(formatMetricName(gap.metric)) + '</td>';
-      html += '        <td>' + escapeHtml(String(gap.value_a || '')) + '</td>';
+      html += '        <td>' + cellA + '</td>';
       html += '        <td>' + escapeHtml(String(gap.value_b || '')) + '</td>';
       html += '        <td style="color:' + gapColor + ';font-weight:bold">' + (gapPctVal >= 0 ? '+' : '') + gapPctVal.toFixed(1) + '%</td>';
       html += '      </tr>';
@@ -759,16 +765,22 @@ function renderBrief(brief) {
   html += _briefSection('Jurisdiction Gaps', (function() {
     var s = '<div class="brief-gaps-chart" id="brief-gaps-chart" style="width:100%;height:220px;"></div>';
     if (gaps.length > 0) {
+      var mixedJ = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
+      var hdrA = mixedJ ? 'Jurisdiction' : escapeHtml(gaps[0].jurisdiction_a || 'A');
+      var hdrB = escapeHtml(gaps[0].jurisdiction_b || 'National');
       s += '<table class="brief-table">';
-      s += '<thead><tr><th>Metric</th><th>' + escapeHtml(gaps[0].jurisdiction_a || 'A') + '</th><th>' + escapeHtml(gaps[0].jurisdiction_b || 'B') + '</th><th>Gap</th></tr></thead>';
+      s += '<thead><tr><th>Metric</th><th>' + hdrA + '</th><th>' + hdrB + '</th><th>Gap</th></tr></thead>';
       s += '<tbody>';
       for (var i = 0; i < gaps.length; i++) {
         var g = gaps[i];
         var gPct = g.gap_pct || 0;
         var gCol = gPct >= 0 ? '#00C0AE' : '#AB0D82';
+        var valA = mixedJ
+          ? escapeHtml(g.jurisdiction_a || '') + ' ' + escapeHtml(String(g.value_a || ''))
+          : escapeHtml(String(g.value_a || ''));
         s += '<tr>';
         s += '<td>' + escapeHtml(formatMetricName(g.metric)) + '</td>';
-        s += '<td>' + escapeHtml(String(g.value_a || '')) + '</td>';
+        s += '<td>' + valA + '</td>';
         s += '<td>' + escapeHtml(String(g.value_b || '')) + '</td>';
         s += '<td style="color:' + gCol + ';font-weight:bold">' + (gPct >= 0 ? '+' : '') + gPct.toFixed(1) + '%</td>';
         s += '</tr>';
