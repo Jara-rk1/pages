@@ -78,7 +78,7 @@
             return;
         }
 
-        pipeSpeed = PIPE_SPEED_BASE + Math.floor(score / 10) * 15;
+        pipeSpeed = Math.min(450, PIPE_SPEED_BASE + Math.floor(score / 10) * 15);
 
         for (let i = pipes.length - 1; i >= 0; i--) {
             const p = pipes[i];

@@ -343,9 +343,13 @@
                 GameEngine.state.score = 0;
                 setupGameInput();
 
+                // Render the first round immediately (so UI is populated behind countdown)
+                // but defer gameActive until countdown finishes
+                nextRound();
+            },
+            onCountdownComplete: function () {
                 gameActive = true;
                 timerInterval = setInterval(updateTimer, 1000);
-                nextRound();
             }
         });
     }

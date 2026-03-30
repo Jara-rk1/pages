@@ -125,6 +125,12 @@
     /* --- Input handling --- */
     function setupGameInput() {
         const onKeyDown = (e) => {
+            if (GameEngine.state.paused || GameEngine.state.gameOver) return;
+            if (e.key === 'Escape' && GameEngine.state.running) {
+                GameEngine.state.paused = !GameEngine.state.paused;
+                keysDown = {}; // clear held keys on pause toggle
+                return;
+            }
             if (e.key === ' ' || e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
                 e.preventDefault();
                 keysDown[e.key] = true;
@@ -133,7 +139,7 @@
         const onKeyUp = (e) => {
             delete keysDown[e.key];
         };
-        const onPointerDown = (e) => { keysDown['_pointer'] = true; };
+        const onPointerDown = (e) => { if (!GameEngine.state.paused) keysDown['_pointer'] = true; };
         const onPointerUp = (e) => { delete keysDown['_pointer']; };
         const onTouchStart = (e) => { keysDown['_pointer'] = true; };
         const onTouchEnd = (e) => { delete keysDown['_pointer']; };

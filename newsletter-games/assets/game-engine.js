@@ -74,6 +74,7 @@ const GameEngine = {
     _overlayEl: null,
     _resizeHandler: null,
     _options: {},
+    _gameGeneration: 0, // incremented on each startGame to detect stale endGame callbacks
 
     /* ==========================================================
        CANVAS SETUP
@@ -233,6 +234,9 @@ const GameEngine = {
        ========================================================== */
 
     async startGame(gameId, callbacks) {
+        // Increment generation to invalidate any in-flight endGame from previous session
+        this._gameGeneration++;
+
         // 1. Check auth — allow demo/static mode when no token present
         const token = this.getToken();
         const demoMode = !token;
@@ -286,7 +290,8 @@ const GameEngine = {
             onDraw: callbacks.onDraw || function () {},
             onGameOver: callbacks.onGameOver || function () {},
             onReset: callbacks.onReset || null,
-            onInit: callbacks.onInit || null
+            onInit: callbacks.onInit || null,
+            onCountdownComplete: callbacks.onCountdownComplete || null
         };
 
         // 7. Hide any existing overlay
@@ -305,6 +310,10 @@ const GameEngine = {
                 if (this.canvas && this.ctx) {
                     this.animFrameId = requestAnimationFrame((t) => this.gameLoop(t));
                 }
+                // Notify game that countdown finished (used by DOM games to defer gameActive)
+                if (this._callbacks.onCountdownComplete) {
+                    this._callbacks.onCountdownComplete();
+                }
                 resolve(true);
             });
         });
@@ -320,6 +329,9 @@ const GameEngine = {
             this._callbacks.onUpdate(dt);
         }
 
+        // onUpdate may have called endGame() — check before continuing
+        if (!this.state.running) return;
+
         this._callbacks.onDraw(this.ctx);
         this.renderHUD();
 
@@ -331,8 +343,15 @@ const GameEngine = {
     },
 
     async endGame() {
+        // Guard against double calls (e.g. boundary + collision on same frame,
+        // or timer expiry during level-complete transition)
+        if (this.state.gameOver) return;
+
         this.state.running = false;
         this.state.gameOver = true;
+
+        // Capture generation so we can detect if a new game started during async ops
+        const gen = this._gameGeneration;
 
         if (this.animFrameId) {
             cancelAnimationFrame(this.animFrameId);
@@ -360,6 +379,9 @@ const GameEngine = {
         } catch (_) {
             // API failure — proceed with local data
         }
+
+        // If a new game started while we were awaiting, abort — don't clobber the new game
+        if (this._gameGeneration !== gen) return;
 
         // Update state from server response
         if (result) {

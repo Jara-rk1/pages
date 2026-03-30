@@ -324,6 +324,16 @@
                 }
             }
         });
+
+        // Chain keyUpHandler cleanup into engine's cleanup so it's removed on endGame
+        var engineCleanup = GameEngine._inputCleanup;
+        GameEngine._inputCleanup = function () {
+            if (keyUpHandler) {
+                document.removeEventListener('keyup', keyUpHandler);
+                keyUpHandler = null;
+            }
+            if (engineCleanup) engineCleanup();
+        };
     }
 
     // ---- Update ----

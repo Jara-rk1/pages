@@ -96,6 +96,12 @@
     /* --- Input --- */
     function setupGameInput() {
         const onKeyDown = (e) => {
+            if (e.key === 'Escape' && GameEngine.state.running && !GameEngine.state.gameOver) {
+                GameEngine.state.paused = !GameEngine.state.paused;
+                held = {}; // clear held keys on pause toggle
+                return;
+            }
+            if (GameEngine.state.paused || GameEngine.state.gameOver) return;
             if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
                 e.preventDefault();
                 held.left = true;
@@ -120,11 +126,12 @@
         };
 
         const onPointerDown = (e) => {
+            if (GameEngine.state.paused) return;
             dragging = true;
             dragStartAngle = getAngleFromEvent(e);
         };
         const onPointerMove = (e) => {
-            if (!dragging) return;
+            if (!dragging || GameEngine.state.paused) return;
             shieldAngle = getAngleFromEvent(e);
         };
         const onPointerUp = () => { dragging = false; };

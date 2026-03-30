@@ -215,6 +215,7 @@
     }
 
     function endGame() {
+        if (!gameActive) return; // guard against double call (timer + level-complete race)
         gameActive = false;
         if (timerInterval) {
             clearInterval(timerInterval);
@@ -268,10 +269,13 @@
 
                 // No need to cancel game loop — engine skips it for DOM-based games (no canvas)
 
+                // Build the grid behind the countdown overlay but defer gameActive
+                buildLevel(0);
+            },
+            onCountdownComplete: function () {
                 gameActive = true;
                 startTime = Date.now();
                 timerInterval = setInterval(checkTimer, 250);
-                buildLevel(0);
             }
         });
     }

@@ -319,13 +319,14 @@
         const canvas = GameEngine.canvas;
 
         const onKeyDown = (e) => {
+            if (!gameActive) return; // ignore input before game starts / during countdown
             keysDown[e.key] = true;
             if (['ArrowLeft', 'ArrowRight', 'a', 'd'].includes(e.key)) {
                 e.preventDefault();
             }
         };
         const onKeyUp = (e) => {
-            keysDown[e.key] = false;
+            delete keysDown[e.key];
         };
         document.addEventListener('keydown', onKeyDown);
         document.addEventListener('keyup', onKeyUp);
