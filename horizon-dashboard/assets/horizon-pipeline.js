@@ -134,6 +134,34 @@ function api(path) {
 }
 
 function apiPost(path, body) {
+    if (typeof HORIZON_DATA !== 'undefined') {
+        // Static mode: update in-memory data (persists for session only)
+        var clean = path.split('?')[0].replace(/\/$/, '');
+        var scoreMatch = clean.match(/^\/api\/opportunities\/(\d+)\/score$/);
+        if (scoreMatch && body) {
+            var id = scoreMatch[1];
+            if (HORIZON_DATA.details && HORIZON_DATA.details[id] && body.scores) {
+                var d = HORIZON_DATA.details[id];
+                for (var k in body.scores) { d.scores[k] = body.scores[k]; }
+                if (body.composite_score !== undefined) d.composite_score = body.composite_score;
+            }
+            return Promise.resolve({ ok: true, id: parseInt(id) });
+        }
+        var statusMatch = clean.match(/^\/api\/opportunities\/(\d+)\/status$/);
+        if (statusMatch && body && body.status) {
+            var sid = statusMatch[1];
+            if (HORIZON_DATA.details && HORIZON_DATA.details[sid]) {
+                HORIZON_DATA.details[sid].status = body.status;
+            }
+            if (HORIZON_DATA.opportunities) {
+                HORIZON_DATA.opportunities.forEach(function(o) {
+                    if (String(o.id) === sid) o.status = body.status;
+                });
+            }
+            return Promise.resolve({ ok: true, id: parseInt(sid), status: body.status });
+        }
+        return Promise.resolve({ ok: true });
+    }
     return fetch(path, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -266,6 +294,7 @@ function renderKPIs(stats) {
 // 7. Feed Rendering
 // ================================================================
 function getFilteredOpps() {
+    if (!APP.opportunities) return [];
     var statusFilter = APP.filters.status;
     var sectorFilter = APP.filters.sector;
     var searchText   = APP.filters.search.toLowerCase().trim();
@@ -368,7 +397,12 @@ function setupFilters() {
             sectorSelect.appendChild(opt);
         });
         // Restore current filter value if still valid
-        if (APP.filters.sector) sectorSelect.value = APP.filters.sector;
+        if (APP.filters.sector) {
+            sectorSelect.value = APP.filters.sector;
+            if (sectorSelect.value !== APP.filters.sector) {
+                APP.filters.sector = '';
+            }
+        }
     }
 
     // Status filter

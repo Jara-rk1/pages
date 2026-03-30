@@ -460,7 +460,7 @@ function renderDetailGaps(gaps) {
       formatter: function(params) {
         var p = params[0];
         var idx = p.dataIndex;
-        return '<strong>' + fullMetrics[idx] + '</strong><br/>Gap: ' + p.value.toFixed(1) + '%';
+        return '<strong>' + escapeHtml(fullMetrics[idx]) + '</strong><br/>Gap: ' + p.value.toFixed(1) + '%';
       }
     },
     grid: { left: '35%', right: 60, top: 10, bottom: 30 },
@@ -945,7 +945,7 @@ function renderBriefGaps(gaps) {
       formatter: function(params) {
         var p = params[0];
         var idx = p.dataIndex;
-        return '<strong>' + fullMetrics[idx] + '</strong><br/>Gap: ' + p.value.toFixed(1) + '%';
+        return '<strong>' + escapeHtml(fullMetrics[idx]) + '</strong><br/>Gap: ' + p.value.toFixed(1) + '%';
       }
     },
     grid: { left: '35%', right: 60, top: 10, bottom: 30 },
