@@ -263,6 +263,7 @@ a:hover {
     display: grid;
     grid-template-columns: 1fr 400px;
     gap: 20px;
+    align-items: start;
 }
 
 .feed-panel {
@@ -270,12 +271,17 @@ a:hover {
     border: 1px solid var(--border);
     border-radius: 6px;
     overflow: hidden;
+    max-height: calc(100vh - 140px);
+    display: flex;
+    flex-direction: column;
 }
 
 .charts-panel {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    position: sticky;
+    top: 72px;
 }
 
 .chart-panel {
@@ -478,6 +484,8 @@ a:hover {
     flex-direction: column;
     gap: 8px;
     overflow-y: auto;
+    flex: 1;
+    min-height: 0;
 }
 
 /* ---- Opportunity Cards ---- */
@@ -563,7 +571,7 @@ a:hover {
 }
 
 .badge--watch {
-    background: #0077B6;
+    background: var(--kpmg-pacific);
     color: white;
 }
 
@@ -1042,6 +1050,25 @@ a:hover {
 .btn--sm {
     padding: 5px 12px;
     font-size: 11px;
+}
+
+.btn--show-more {
+    width: 100%;
+    padding: 12px;
+    background: var(--bg-panel-header);
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    color: var(--kpmg-blue);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn--show-more:hover {
+    background: var(--kpmg-blue);
+    color: white;
+    border-style: solid;
 }
 
 .btn--outline {

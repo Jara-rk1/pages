@@ -68,7 +68,9 @@ var APP = {
     charts: {},
     map: null,
     filters: { status: '', sector: '', search: '' },
-    sort: 'score' // 'score' | 'recent' | 'sector'
+    sort: 'score', // 'score' | 'recent' | 'sector'
+    feedPageSize: 50,
+    feedDisplayed: 50
 };
 
 // ================================================================
@@ -77,7 +79,7 @@ var APP = {
 var TIER_COLORS = {
     hot:   '#7213EA',
     warm:  '#1E49E2',
-    watch: '#0077B6',
+    watch: '#00B8F5',
     cold:  '#666666'
 };
 
@@ -131,8 +133,10 @@ function _resolveStatic(path) {
 }
 
 function api(path) {
+    var isFileProtocol = window.location.protocol === 'file:';
+
     // Tier 1: If SW is controlling this page, try fetch (SW intercepts /api/* if seeded)
-    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+    if (!isFileProtocol && navigator.serviceWorker && navigator.serviceWorker.controller) {
         return fetch(path).then(function(r) {
             if (r.ok) return r.json();
             // SW returned error (unseeded or IDB miss) — fall through to Tier 2
@@ -155,6 +159,10 @@ function api(path) {
     if (staticResult !== undefined && staticResult !== null) {
         return Promise.resolve(staticResult);
     }
+    // On file:// protocol, network fetch will fail — reject gracefully
+    if (isFileProtocol) {
+        return Promise.reject(new Error('No static data available for ' + path + ' (file:// mode)'));
+    }
     return fetch(path).then(function(r) {
         if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
         return r.json();
@@ -162,13 +170,14 @@ function api(path) {
 }
 
 function apiPost(path, body) {
+    var isFileProtocol = window.location.protocol === 'file:';
     var fetchOpts = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
     };
     // Tier 1: If SW is controlling, try fetch (SW handles POST if seeded)
-    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+    if (!isFileProtocol && navigator.serviceWorker && navigator.serviceWorker.controller) {
         return fetch(path, fetchOpts).then(function(r) {
             if (r.ok) return r.json();
             throw new Error(r.status + ' ' + r.statusText);
@@ -180,6 +189,9 @@ function apiPost(path, body) {
     // No SW — try static mutation, then network
     var staticResult = _staticPost(path, body);
     if (staticResult !== null) return staticResult;
+    if (isFileProtocol) {
+        return Promise.reject(new Error('Cannot POST in file:// mode'));
+    }
     return fetch(path, fetchOpts).then(function(r) {
         if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
         return r.json();
@@ -386,8 +398,11 @@ function renderFeed() {
         return;
     }
 
+    // Paginate: only render up to feedDisplayed items
+    var displayed = Math.min(APP.feedDisplayed, filtered.length);
     var html = '';
-    filtered.forEach(function (opp) {
+    for (var i = 0; i < displayed; i++) {
+        var opp = filtered[i];
         var score = (opp.composite_score || 0);
         var tier  = getTier(score);
         var scoreColor;
@@ -407,7 +422,15 @@ function renderFeed() {
         html += '<span class="badge badge--' + tier + '">' + tier.toUpperCase() + '</span>';
         html += '</div>';
         html += '</div>';
-    });
+    }
+
+    // Show more button if there are remaining items
+    if (displayed < filtered.length) {
+        var remaining = filtered.length - displayed;
+        html += '<button class="btn btn--show-more" id="show-more-btn">';
+        html += 'Show more (' + remaining + ' remaining)';
+        html += '</button>';
+    }
 
     feed.innerHTML = html;
 
@@ -418,6 +441,15 @@ function renderFeed() {
             window.location.hash = '#opportunity/' + id;
         });
     });
+
+    // Show more button handler
+    var showMoreBtn = document.getElementById('show-more-btn');
+    if (showMoreBtn) {
+        showMoreBtn.addEventListener('click', function () {
+            APP.feedDisplayed += APP.feedPageSize;
+            renderFeed();
+        });
+    }
 }
 
 // ================================================================
@@ -454,6 +486,7 @@ function setupFilters() {
         statusSelect._horizonBound = true;
         statusSelect.addEventListener('change', function () {
             APP.filters.status = this.value;
+            APP.feedDisplayed = APP.feedPageSize;
             renderFeed();
         });
     }
@@ -463,6 +496,7 @@ function setupFilters() {
         sectorSelect._horizonBound = true;
         sectorSelect.addEventListener('change', function () {
             APP.filters.sector = this.value;
+            APP.feedDisplayed = APP.feedPageSize;
             renderFeed();
         });
     }
@@ -477,6 +511,7 @@ function setupFilters() {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(function () {
                 APP.filters.search = val;
+                APP.feedDisplayed = APP.feedPageSize;
                 renderFeed();
             }, 200);
         });
@@ -494,6 +529,7 @@ function setupFilters() {
                 var sortVal = this.getAttribute('data-sort');
                 // Normalise 'recency' → 'recent' for APP.sort
                 APP.sort = (sortVal === 'recency') ? 'recent' : sortVal;
+                APP.feedDisplayed = APP.feedPageSize;
                 renderFeed();
             });
         }

@@ -13,7 +13,7 @@
 function tierColor(score) {
   if (score >= 80) return '#7213EA';
   if (score >= 60) return '#1E49E2';
-  if (score >= 40) return '#0077B6';
+  if (score >= 40) return '#00B8F5';
   return '#666666';
 }
 
