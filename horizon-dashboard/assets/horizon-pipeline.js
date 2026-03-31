@@ -131,21 +131,39 @@ function _resolveStatic(path) {
 }
 
 function api(path) {
+    // If a service worker is active, it will intercept the fetch — just fetch normally
+    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+        return fetch(path).then(function(r) {
+            if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
+            return r.json();
+        });
+    }
+    // No SW — try static data (first load or file:// protocol)
     var staticResult = _resolveStatic(path);
     if (staticResult !== undefined && staticResult !== null) {
         return Promise.resolve(staticResult);
     }
-    // null means static_lite mode — data not bundled; undefined means no static data at all
-    // In both cases, attempt a fetch (works in server mode, fails gracefully offline)
-    return fetch(path).then(function (r) {
+    // No static data either — try network (server mode)
+    return fetch(path).then(function(r) {
         if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
         return r.json();
     });
 }
 
 function apiPost(path, body) {
+    // If a service worker is active, it handles POST mutations via IndexedDB
+    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+        return fetch(path, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        }).then(function(r) {
+            if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
+            return r.json();
+        });
+    }
+    // No SW — try in-memory static mutation (existing behavior)
     if (typeof HORIZON_DATA !== 'undefined') {
-        // Static mode: update in-memory data (persists for session only)
         var clean = path.split('?')[0].replace(/\/$/, '');
         var scoreMatch = clean.match(/^\/api\/opportunities\/(\d+)\/score$/);
         if (scoreMatch && body) {
@@ -172,11 +190,12 @@ function apiPost(path, body) {
         }
         return Promise.resolve({ ok: true });
     }
+    // No SW, no static data — server mode
     return fetch(path, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
-    }).then(function (r) {
+    }).then(function(r) {
         if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
         return r.json();
     });

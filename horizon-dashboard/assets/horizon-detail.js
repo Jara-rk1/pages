@@ -58,8 +58,8 @@ async function loadDetail(id) {
     APP.currentOpp = data;
     renderDetail(data);
   } catch (e) {
-    // In static_lite mode, fall back to index-level data from HORIZON_DATA.opportunities
-    if (typeof HORIZON_DATA !== 'undefined' && HORIZON_DATA._mode === 'static_lite') {
+    // Fallback: try index-level data (works before SW activates)
+    if (typeof HORIZON_DATA !== 'undefined' && HORIZON_DATA.opportunities) {
       var fallback = _findOppFromIndex(id);
       if (fallback) {
         APP.currentOpp = fallback;
@@ -584,7 +584,7 @@ async function openBrief(id) {
       renderBrief(detail);
     } catch (e2) {
       // In static_lite mode, show available index data with server prompt
-      if (typeof HORIZON_DATA !== 'undefined' && HORIZON_DATA._mode === 'static_lite') {
+      if (typeof HORIZON_DATA !== 'undefined' && HORIZON_DATA.opportunities) {
         var fallback = _findOppFromIndex(id);
         if (fallback) {
           renderBrief(fallback);
