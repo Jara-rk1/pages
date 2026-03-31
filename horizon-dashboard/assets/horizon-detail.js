@@ -13,7 +13,7 @@
 function tierColor(score) {
   if (score >= 80) return '#7213EA';
   if (score >= 60) return '#1E49E2';
-  if (score >= 40) return '#00B8F5';
+  if (score >= 40) return '#0077B6';
   return '#666666';
 }
 
@@ -304,7 +304,7 @@ function renderDetail(opp) {
     for (var gi = 0; gi < gaps.length; gi++) {
       var gap = gaps[gi];
       var gapPctVal = gap.gap_pct || 0;
-      var gapColor = gapPctVal >= 0 ? '#00C0AE' : '#AB0D82';
+      var gapColor = gapPctVal >= 0 ? '#007A6E' : '#AB0D82';
       var cellA = mixedJuris
         ? escapeHtml(gap.jurisdiction_a || '') + ' ' + escapeHtml(String(gap.value_a || ''))
         : escapeHtml(String(gap.value_a || ''));
@@ -489,7 +489,7 @@ function renderDetailGaps(gaps) {
     metrics.push(fullName.length > 28 ? fullName.substring(0, 26) + '…' : fullName);
     var gv = sorted[i].gap_pct || 0;
     values.push(gv);
-    barColors.push(gv >= 0 ? '#00C0AE' : '#AB0D82');
+    barColors.push(gv >= 0 ? '#007A6E' : '#AB0D82');
   }
 
   var chart = echarts.init(el, 'kpmg');
@@ -836,7 +836,7 @@ function renderBrief(brief) {
       for (var i = 0; i < gaps.length; i++) {
         var g = gaps[i];
         var gPct = g.gap_pct || 0;
-        var gCol = gPct >= 0 ? '#00C0AE' : '#AB0D82';
+        var gCol = gPct >= 0 ? '#007A6E' : '#AB0D82';
         var valA = mixedJ
           ? escapeHtml(g.jurisdiction_a || '') + ' ' + escapeHtml(String(g.value_a || ''))
           : escapeHtml(String(g.value_a || ''));
@@ -994,7 +994,7 @@ function renderBriefGaps(gaps) {
     metrics.push(fullName.length > 28 ? fullName.substring(0, 26) + '…' : fullName);
     var gv = sorted[i].gap_pct || 0;
     values.push(gv);
-    barColors.push(gv >= 0 ? '#00C0AE' : '#AB0D82');
+    barColors.push(gv >= 0 ? '#007A6E' : '#AB0D82');
   }
 
   var chart = echarts.init(el, 'kpmg');

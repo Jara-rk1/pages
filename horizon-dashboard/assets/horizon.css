@@ -168,7 +168,7 @@ a:hover {
 
 .header-refresh {
     font-size: 10px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.75);
 }
 
 .classification-badge {
@@ -183,8 +183,8 @@ a:hover {
 }
 
 .btn-back {
-    background: var(--kpmg-pacific);
-    border: 1px solid var(--kpmg-light-blue);
+    background: var(--kpmg-cobalt);
+    border: 1px solid var(--kpmg-cobalt);
     color: white;
     font-size: 12px;
     padding: 6px 16px;
@@ -194,8 +194,8 @@ a:hover {
 }
 
 .btn-back:hover {
-    background: var(--kpmg-light-blue);
-    border-color: var(--kpmg-light-blue);
+    background: var(--kpmg-blue);
+    border-color: var(--kpmg-blue);
 }
 
 
@@ -250,7 +250,7 @@ a:hover {
     line-height: 1.2;
 }
 
-.kpi-card__value--pacific { color: var(--kpmg-pacific); }
+.kpi-card__value--pacific { color: var(--kpmg-cobalt); }
 .kpi-card__value--cobalt  { color: var(--kpmg-cobalt); }
 .kpi-card__value--purple  { color: var(--kpmg-purple); }
 .kpi-card__value--warm    { color: var(--kpmg-cobalt); }
@@ -548,8 +548,8 @@ a:hover {
 }
 
 .badge--jurisdiction {
-    background: rgba(0, 184, 245, 0.08);
-    color: var(--kpmg-pacific);
+    background: rgba(30, 73, 226, 0.08);
+    color: var(--kpmg-cobalt);
 }
 
 .badge--hot {
@@ -563,7 +563,7 @@ a:hover {
 }
 
 .badge--watch {
-    background: var(--kpmg-pacific);
+    background: #0077B6;
     color: white;
 }
 
@@ -1459,7 +1459,7 @@ a:hover {
     display: flex;
     gap: 12px;
     font-size: 10px;
-    color: var(--text-light);
+    color: var(--text-mid);
 }
 
 /* ---- Brief Signal Items ---- */

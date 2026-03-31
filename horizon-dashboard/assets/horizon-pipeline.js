@@ -77,7 +77,7 @@ var APP = {
 var TIER_COLORS = {
     hot:   '#7213EA',
     warm:  '#1E49E2',
-    watch: '#00B8F5',
+    watch: '#0077B6',
     cold:  '#666666'
 };
 

@@ -65,12 +65,16 @@ function initMap() {
     KPMG_OFFICES.forEach(function(office) {
         var icon = L.divIcon({
             className: 'kpmg-office-marker',
+            html: '<span role="img" aria-label="KPMG ' + escapeHtml(office.name) + ' office"></span>',
             iconSize: [10, 10],
             iconAnchor: [5, 5]
         });
-        L.marker([office.lat, office.lng], { icon: icon })
+        var marker = L.marker([office.lat, office.lng], { icon: icon })
             .bindPopup('<strong>KPMG ' + escapeHtml(office.name) + '</strong>')
             .addTo(APP.map);
+        // Leaflet divIcon creates a <div role="button"> — add aria-label for a11y
+        var el = marker.getElement();
+        if (el) el.setAttribute('aria-label', 'KPMG ' + office.name + ' office');
     });
 
     // Create layer group for opportunity markers
