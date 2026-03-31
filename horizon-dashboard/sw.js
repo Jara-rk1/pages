@@ -1,7 +1,7 @@
 // ================================================================
 // HORIZON BD Opportunity Engine — Service Worker
 // Intercepts /api/* requests and serves from IndexedDB
-// v2 — 2026-04-01: fix gap dedup, client matching, signal linking
+// v3 — 2026-04-01: clear stores before re-seeding to prevent stale data
 // ================================================================
 
 var DB_NAME = 'horizon';
@@ -124,12 +124,15 @@ function seedDatabase() {
             tx.oncomplete = function() { resolve(); };
             tx.onerror = function() { reject(tx.error); };
 
+            // Clear all stores before re-seeding to remove stale/deleted records
             var oppStore = tx.objectStore(STORES.opportunities);
+            oppStore.clear();
             (seed.opportunities || []).forEach(function(opp) {
                 oppStore.put(opp);
             });
 
             var detailStore = tx.objectStore(STORES.details);
+            detailStore.clear();
             Object.keys(seed.details || {}).forEach(function(id) {
                 var d = seed.details[id];
                 d.id = parseInt(id, 10);
@@ -137,12 +140,14 @@ function seedDatabase() {
             });
 
             var briefStore = tx.objectStore(STORES.briefs);
+            briefStore.clear();
             Object.keys(seed.briefs || {}).forEach(function(id) {
                 var b = seed.briefs[id];
                 b.id = parseInt(id, 10);
                 briefStore.put(b);
             });
 
+            tx.objectStore(STORES.stats).clear();
             tx.objectStore(STORES.stats).put(seed.stats, 'current');
 
             tx.objectStore(STORES.scheduler).put(seed.scheduler || {
