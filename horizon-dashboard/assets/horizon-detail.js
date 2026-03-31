@@ -58,10 +58,52 @@ async function loadDetail(id) {
     APP.currentOpp = data;
     renderDetail(data);
   } catch (e) {
+    // In static_lite mode, fall back to index-level data from HORIZON_DATA.opportunities
+    if (typeof HORIZON_DATA !== 'undefined' && HORIZON_DATA._mode === 'static_lite') {
+      var fallback = _findOppFromIndex(id);
+      if (fallback) {
+        APP.currentOpp = fallback;
+        renderDetail(fallback);
+        _showLiteBanner('detail-content');
+        return;
+      }
+    }
     var el = document.getElementById('detail-content');
     if (el) el.innerHTML = '<div class="error-state">Failed to load opportunity details.</div>';
     console.error('loadDetail error:', e);
   }
+}
+
+/** Find an opportunity from the static index data by id */
+function _findOppFromIndex(id) {
+  if (typeof HORIZON_DATA === 'undefined' || !HORIZON_DATA.opportunities) return null;
+  var numId = parseInt(id, 10);
+  for (var i = 0; i < HORIZON_DATA.opportunities.length; i++) {
+    if (HORIZON_DATA.opportunities[i].id === numId) {
+      // Return a copy with empty arrays for fields not in index data
+      var opp = {};
+      for (var k in HORIZON_DATA.opportunities[i]) {
+        opp[k] = HORIZON_DATA.opportunities[i][k];
+      }
+      opp.signals = opp.signals || [];
+      opp.gaps = opp.gaps || [];
+      // offerings are included in the index list (from build_opportunities)
+      opp.offerings = opp.offerings || [];
+      return opp;
+    }
+  }
+  return null;
+}
+
+/** Insert a lite-mode info banner at the top of a container */
+function _showLiteBanner(containerId) {
+  var el = document.getElementById(containerId);
+  if (!el) return;
+  var banner = document.createElement('div');
+  banner.className = 'lite-banner';
+  banner.style.cssText = 'background:#00338D;color:#fff;padding:10px 16px;border-radius:4px;margin-bottom:12px;font-size:13px;';
+  banner.innerHTML = 'Showing summary data only. <strong>Start the HORIZON server</strong> for full detail view — run <code style="background:rgba(255,255,255,0.2);padding:2px 6px;border-radius:3px">python dashboard/server.py</code>';
+  el.insertBefore(banner, el.firstChild);
 }
 
 /* ============================================================
@@ -541,10 +583,30 @@ async function openBrief(id) {
       var detail = await api('/api/opportunities/' + id);
       renderBrief(detail);
     } catch (e2) {
+      // In static_lite mode, show available index data with server prompt
+      if (typeof HORIZON_DATA !== 'undefined' && HORIZON_DATA._mode === 'static_lite') {
+        var fallback = _findOppFromIndex(id);
+        if (fallback) {
+          renderBrief(fallback);
+          _showLiteBannerInBrief();
+          return;
+        }
+      }
       if (body) body.innerHTML = '<div class="error-state">Unable to load brief. Please try again.</div>';
       console.error('openBrief error:', e2);
     }
   }
+}
+
+/** Insert a lite-mode banner inside the brief modal body */
+function _showLiteBannerInBrief() {
+  var body = document.getElementById('brief-body');
+  if (!body) return;
+  var banner = document.createElement('div');
+  banner.className = 'lite-banner';
+  banner.style.cssText = 'background:#00338D;color:#fff;padding:10px 16px;border-radius:4px;margin-bottom:12px;font-size:13px;';
+  banner.innerHTML = 'Full briefing pack requires the HORIZON server. Run <code style="background:rgba(255,255,255,0.2);padding:2px 6px;border-radius:3px">python dashboard/server.py</code> for client intelligence, news, audit trail, and related opportunities.';
+  body.insertBefore(banner, body.firstChild);
 }
 
 function closeBrief() {

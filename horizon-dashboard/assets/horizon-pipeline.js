@@ -114,19 +114,29 @@ function _resolveStatic(path) {
     if (clean === '/api/scheduler') return HORIZON_DATA.scheduler;
 
     var detailMatch = clean.match(/^\/api\/opportunities\/(\d+)$/);
-    if (detailMatch) return HORIZON_DATA.details[detailMatch[1]];
+    if (detailMatch) {
+        // In static_lite mode, detail data is not bundled — return null to trigger fetch fallback
+        if (HORIZON_DATA._mode === 'static_lite') return null;
+        return HORIZON_DATA.details ? HORIZON_DATA.details[detailMatch[1]] : undefined;
+    }
 
     var briefMatch = clean.match(/^\/api\/opportunities\/(\d+)\/brief$/);
-    if (briefMatch) return HORIZON_DATA.briefs[briefMatch[1]];
+    if (briefMatch) {
+        // In static_lite mode, brief data is not bundled — return null to trigger fetch fallback
+        if (HORIZON_DATA._mode === 'static_lite') return null;
+        return HORIZON_DATA.briefs ? HORIZON_DATA.briefs[briefMatch[1]] : undefined;
+    }
 
     return undefined;
 }
 
 function api(path) {
     var staticResult = _resolveStatic(path);
-    if (staticResult !== undefined) {
+    if (staticResult !== undefined && staticResult !== null) {
         return Promise.resolve(staticResult);
     }
+    // null means static_lite mode — data not bundled; undefined means no static data at all
+    // In both cases, attempt a fetch (works in server mode, fails gracefully offline)
     return fetch(path).then(function (r) {
         if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
         return r.json();
