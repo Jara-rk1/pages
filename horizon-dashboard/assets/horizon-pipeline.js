@@ -363,7 +363,7 @@ function renderFeed() {
         else if (score >= 40) scoreColor = TIER_COLORS.watch;
         else                  scoreColor = '#666666';
 
-        html += '<div class="opp-card" data-id="' + opp.id + '" style="border-left:4px solid ' + scoreColor + '">';
+        html += '<div class="opp-card" data-id="' + opp.id + '" data-sector="' + escapeHtml(opp.sector || '') + '" style="border-left:4px solid ' + scoreColor + '">';
         html += '<div class="opp-card__title">' + escapeHtml(opp.title) + '</div>';
         html += '<div class="opp-card__meta">';
         html += '<span class="opp-card__score" style="color:' + scoreColor + '">' + score.toFixed(1) + '</span>';
