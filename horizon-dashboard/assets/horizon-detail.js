@@ -296,7 +296,7 @@ function renderDetail(opp) {
   html += '    <div class="gaps-chart" id="detail-gaps-chart" style="width:100%;height:240px;"></div>';
   if (gaps.length > 0) {
     var mixedJuris = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
-    var colA = mixedJuris ? 'Jurisdiction' : escapeHtml(gaps[0].jurisdiction_a || 'A');
+    var colA = mixedJuris ? 'Jurisdiction' : escapeHtml(gaps[0].jurisdiction_a || 'State');
     var colB = escapeHtml(gaps[0].jurisdiction_b || 'National');
     html += '    <table class="data-table">';
     html += '      <thead><tr><th>Metric</th><th>' + colA + '</th><th>' + colB + '</th><th>Gap</th></tr></thead>';
@@ -828,7 +828,7 @@ function renderBrief(brief) {
     var s = '<div class="brief-gaps-chart" id="brief-gaps-chart" style="width:100%;height:220px;"></div>';
     if (gaps.length > 0) {
       var mixedJ = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
-      var hdrA = mixedJ ? 'Jurisdiction' : escapeHtml(gaps[0].jurisdiction_a || 'A');
+      var hdrA = mixedJ ? 'Jurisdiction' : escapeHtml(gaps[0].jurisdiction_a || 'State');
       var hdrB = escapeHtml(gaps[0].jurisdiction_b || 'National');
       s += '<table class="brief-table">';
       s += '<thead><tr><th>Metric</th><th>' + hdrA + '</th><th>' + hdrB + '</th><th>Gap</th></tr></thead>';
