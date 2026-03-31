@@ -131,19 +131,30 @@ function _resolveStatic(path) {
 }
 
 function api(path) {
-    // If a service worker is active, it will intercept the fetch — just fetch normally
+    // Tier 1: If SW is controlling this page, try fetch (SW intercepts /api/* if seeded)
     if (navigator.serviceWorker && navigator.serviceWorker.controller) {
         return fetch(path).then(function(r) {
-            if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
-            return r.json();
+            if (r.ok) return r.json();
+            // SW returned error (unseeded or IDB miss) — fall through to Tier 2
+            throw new Error(r.status + ' ' + r.statusText);
+        }).catch(function() {
+            // Tier 2: Static data fallback
+            var staticResult = _resolveStatic(path);
+            if (staticResult !== undefined && staticResult !== null) {
+                return Promise.resolve(staticResult);
+            }
+            // Tier 3: Direct network fetch (server mode)
+            return fetch(path).then(function(r) {
+                if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
+                return r.json();
+            });
         });
     }
-    // No SW — try static data (first load or file:// protocol)
+    // No SW controller — try static first, then network
     var staticResult = _resolveStatic(path);
     if (staticResult !== undefined && staticResult !== null) {
         return Promise.resolve(staticResult);
     }
-    // No static data either — try network (server mode)
     return fetch(path).then(function(r) {
         if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
         return r.json();
@@ -151,54 +162,57 @@ function api(path) {
 }
 
 function apiPost(path, body) {
-    // If a service worker is active, it handles POST mutations via IndexedDB
-    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
-        return fetch(path, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
-        }).then(function(r) {
-            if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
-            return r.json();
-        });
-    }
-    // No SW — try in-memory static mutation (existing behavior)
-    if (typeof HORIZON_DATA !== 'undefined') {
-        var clean = path.split('?')[0].replace(/\/$/, '');
-        var scoreMatch = clean.match(/^\/api\/opportunities\/(\d+)\/score$/);
-        if (scoreMatch && body) {
-            var id = scoreMatch[1];
-            if (HORIZON_DATA.details && HORIZON_DATA.details[id] && body.scores) {
-                var d = HORIZON_DATA.details[id];
-                for (var k in body.scores) { d.scores[k] = body.scores[k]; }
-                if (body.composite_score !== undefined) d.composite_score = body.composite_score;
-            }
-            return Promise.resolve({ ok: true, id: parseInt(id) });
-        }
-        var statusMatch = clean.match(/^\/api\/opportunities\/(\d+)\/status$/);
-        if (statusMatch && body && body.status) {
-            var sid = statusMatch[1];
-            if (HORIZON_DATA.details && HORIZON_DATA.details[sid]) {
-                HORIZON_DATA.details[sid].status = body.status;
-            }
-            if (HORIZON_DATA.opportunities) {
-                HORIZON_DATA.opportunities.forEach(function(o) {
-                    if (String(o.id) === sid) o.status = body.status;
-                });
-            }
-            return Promise.resolve({ ok: true, id: parseInt(sid), status: body.status });
-        }
-        return Promise.resolve({ ok: true });
-    }
-    // No SW, no static data — server mode
-    return fetch(path, {
+    var fetchOpts = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
-    }).then(function(r) {
+    };
+    // Tier 1: If SW is controlling, try fetch (SW handles POST if seeded)
+    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+        return fetch(path, fetchOpts).then(function(r) {
+            if (r.ok) return r.json();
+            throw new Error(r.status + ' ' + r.statusText);
+        }).catch(function() {
+            // Tier 2: In-memory static mutation
+            return _staticPost(path, body);
+        });
+    }
+    // No SW — try static mutation, then network
+    var staticResult = _staticPost(path, body);
+    if (staticResult !== null) return staticResult;
+    return fetch(path, fetchOpts).then(function(r) {
         if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
         return r.json();
     });
+}
+
+function _staticPost(path, body) {
+    if (typeof HORIZON_DATA === 'undefined') return null;
+    var clean = path.split('?')[0].replace(/\/$/, '');
+    var scoreMatch = clean.match(/^\/api\/opportunities\/(\d+)\/score$/);
+    if (scoreMatch && body) {
+        var id = scoreMatch[1];
+        if (HORIZON_DATA.details && HORIZON_DATA.details[id] && body.scores) {
+            var d = HORIZON_DATA.details[id];
+            for (var k in body.scores) { d.scores[k] = body.scores[k]; }
+            if (body.composite_score !== undefined) d.composite_score = body.composite_score;
+        }
+        return Promise.resolve({ ok: true, id: parseInt(id) });
+    }
+    var statusMatch = clean.match(/^\/api\/opportunities\/(\d+)\/status$/);
+    if (statusMatch && body && body.status) {
+        var sid = statusMatch[1];
+        if (HORIZON_DATA.details && HORIZON_DATA.details[sid]) {
+            HORIZON_DATA.details[sid].status = body.status;
+        }
+        if (HORIZON_DATA.opportunities) {
+            HORIZON_DATA.opportunities.forEach(function(o) {
+                if (String(o.id) === sid) o.status = body.status;
+            });
+        }
+        return Promise.resolve({ ok: true, id: parseInt(sid), status: body.status });
+    }
+    return null;
 }
 
 // ================================================================
