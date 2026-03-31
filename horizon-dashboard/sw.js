@@ -1,6 +1,7 @@
 // ================================================================
 // HORIZON BD Opportunity Engine — Service Worker
 // Intercepts /api/* requests and serves from IndexedDB
+// v2 — 2026-04-01: fix gap dedup, client matching, signal linking
 // ================================================================
 
 var DB_NAME = 'horizon';
