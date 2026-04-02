@@ -1,8 +1,13 @@
 // ================================================================
 // HORIZON BD Opportunity Engine — Service Worker
 // Intercepts /api/* requests and serves from IndexedDB
-// v3 — 2026-04-01: clear stores before re-seeding to prevent stale data
+// v4 — 2026-04-02: cache-busting via DATA_VERSION from build_static.py
 // ================================================================
+
+// DATA_VERSION is updated by build_static.py on each full build.
+// When this value changes, the browser detects sw.js as modified and
+// triggers a reinstall, which re-seeds IndexedDB from sw-seed-data.js.
+var DATA_VERSION = '2026-04-02T18:14:32';
 
 var DB_NAME = 'horizon';
 var DB_VERSION = 1;
