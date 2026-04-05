@@ -67,7 +67,7 @@ var APP = {
     currentOpp: null,
     charts: {},
     map: null,
-    filters: { status: '', sector: '', search: '' },
+    filters: { status: '', sector: '', search: '', jurisdiction: '', tier: '' },
     sort: 'score', // 'score' | 'recent' | 'sector'
     feedPageSize: 50,
     feedDisplayed: 50
@@ -302,27 +302,32 @@ function renderKPIs(stats) {
         {
             label: 'Opportunities',
             value: (stats.opp_count || 0).toLocaleString(),
-            modifier: ''
+            modifier: '',
+            accent: '#00338D'
         },
         {
             label: 'Hot',
             value: (stats.hot || 0).toLocaleString(),
-            modifier: 'kpi-card__value--purple'
+            modifier: 'kpi-card__value--purple',
+            accent: '#7213EA'
         },
         {
             label: 'Warm',
             value: (stats.warm || 0).toLocaleString(),
-            modifier: 'kpi-card__value--warm'
+            modifier: 'kpi-card__value--warm',
+            accent: '#1E49E2'
         },
         {
             label: 'Signals',
             value: (stats.signal_count || 0).toLocaleString(),
-            modifier: 'kpi-card__value--pacific'
+            modifier: 'kpi-card__value--pacific',
+            accent: '#00B8F5'
         },
         {
             label: 'Gaps',
             value: (stats.gap_count || 0).toLocaleString(),
-            modifier: 'kpi-card__value--cobalt'
+            modifier: 'kpi-card__value--cobalt',
+            accent: '#1E49E2'
         }
     ];
 
@@ -330,6 +335,8 @@ function renderKPIs(stats) {
     cards.forEach(function (card) {
         var el = document.createElement('div');
         el.className = 'kpi-card';
+        el.setAttribute('role', 'listitem');
+        el.style.borderLeftColor = card.accent;
 
         var labelEl = document.createElement('div');
         labelEl.className = 'kpi-card__label';
@@ -352,11 +359,15 @@ function getFilteredOpps() {
     if (!APP.opportunities) return [];
     var statusFilter = APP.filters.status;
     var sectorFilter = APP.filters.sector;
+    var jurisdictionFilter = APP.filters.jurisdiction;
+    var tierFilter = APP.filters.tier;
     var searchText   = APP.filters.search.toLowerCase().trim();
 
     return APP.opportunities.filter(function (o) {
         if (statusFilter && o.status !== statusFilter) return false;
         if (sectorFilter && o.sector !== sectorFilter) return false;
+        if (jurisdictionFilter && o.jurisdiction !== jurisdictionFilter) return false;
+        if (tierFilter && getTier(o.composite_score || 0) !== tierFilter) return false;
         if (searchText && (o.title || '').toLowerCase().indexOf(searchText) === -1) return false;
         return true;
     });
@@ -480,6 +491,28 @@ function setupFilters() {
         }
     }
 
+    // Populate jurisdiction dropdown
+    var jurisdictionSelect = document.getElementById('filter-jurisdiction');
+    if (jurisdictionSelect) {
+        var jurisdictions = {};
+        APP.opportunities.forEach(function (o) {
+            if (o.jurisdiction) jurisdictions[o.jurisdiction] = true;
+        });
+        while (jurisdictionSelect.options.length > 1) jurisdictionSelect.remove(1);
+        Object.keys(jurisdictions).sort().forEach(function (j) {
+            var opt = document.createElement('option');
+            opt.value = j;
+            opt.textContent = j;
+            jurisdictionSelect.appendChild(opt);
+        });
+        if (APP.filters.jurisdiction) {
+            jurisdictionSelect.value = APP.filters.jurisdiction;
+            if (jurisdictionSelect.value !== APP.filters.jurisdiction) {
+                APP.filters.jurisdiction = '';
+            }
+        }
+    }
+
     // Status filter
     var statusSelect = document.getElementById('filter-status');
     if (statusSelect && !statusSelect._horizonBound) {
@@ -496,6 +529,27 @@ function setupFilters() {
         sectorSelect._horizonBound = true;
         sectorSelect.addEventListener('change', function () {
             APP.filters.sector = this.value;
+            APP.feedDisplayed = APP.feedPageSize;
+            renderFeed();
+        });
+    }
+
+    // Jurisdiction filter
+    if (jurisdictionSelect && !jurisdictionSelect._horizonBound) {
+        jurisdictionSelect._horizonBound = true;
+        jurisdictionSelect.addEventListener('change', function () {
+            APP.filters.jurisdiction = this.value;
+            APP.feedDisplayed = APP.feedPageSize;
+            renderFeed();
+        });
+    }
+
+    // Tier filter
+    var tierSelect = document.getElementById('filter-tier');
+    if (tierSelect && !tierSelect._horizonBound) {
+        tierSelect._horizonBound = true;
+        tierSelect.addEventListener('change', function () {
+            APP.filters.tier = this.value;
             APP.feedDisplayed = APP.feedPageSize;
             renderFeed();
         });

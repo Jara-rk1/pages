@@ -120,15 +120,26 @@ function renderDetail(opp) {
   var color = tierColor(score);
   var sensitivity = (opp.sensitivity || 'standard').toLowerCase();
 
-  // Estimated value calculation
+  // Estimated value calculation — prefer procurement data
   var estMin = 0;
   var estMax = 0;
   var offerings = opp.offerings || [];
-  for (var i = 0; i < offerings.length; i++) {
-    var off = offerings[i];
-    var conf = off.confidence || 0;
-    estMin += (off.typical_size_min || 0) * conf;
-    estMax += (off.typical_size_max || 0) * conf;
+  var procDetails0 = opp.procurement_details || [];
+  var pdMax = 0;
+  for (var pdi = 0; pdi < procDetails0.length; pdi++) {
+    var pv = procDetails0[pdi].award_value || procDetails0[pdi].tender_value || 0;
+    if (pv > pdMax) pdMax = pv;
+  }
+  if (pdMax > 0) {
+    estMin = pdMax / 1000;
+    estMax = pdMax / 1000;
+  } else {
+    for (var i = 0; i < offerings.length; i++) {
+      var off = offerings[i];
+      var conf = off.confidence || 0;
+      estMin += (off.typical_size_min || 0) * conf;
+      estMax += (off.typical_size_max || 0) * conf;
+    }
   }
 
   // Status list
@@ -258,6 +269,107 @@ function renderDetail(opp) {
   html += '  </div>';
   html += '</div>';
 
+  // Procurement Details Section
+  var procDetails = opp.procurement_details || [];
+  if (procDetails.length > 0) {
+    html += '<div class="detail-section">';
+    html += '  <div class="detail-section__header"><span class="detail-section__title">Procurement Details</span></div>';
+    html += '  <div class="detail-section__body">';
+    for (var pi = 0; pi < procDetails.length; pi++) {
+      var pd = procDetails[pi];
+      html += '<div class="procurement-item">';
+
+      // Value row
+      if (pd.tender_value || pd.award_value) {
+        var procVal = pd.award_value || pd.tender_value;
+        var procCur = pd.award_currency || pd.tender_currency || 'AUD';
+        html += '<div class="procurement-item__row">';
+        html += '  <span class="procurement-item__label">Value</span>';
+        html += '  <span class="procurement-item__value procurement-item__value--highlight">$' + Number(procVal).toLocaleString() + ' ' + escapeHtml(procCur) + '</span>';
+        html += '</div>';
+      }
+
+      // Method badge
+      if (pd.procurement_method) {
+        var methodCls = 'method-badge--' + (pd.procurement_method === 'open' ? 'open' : pd.procurement_method === 'direct' ? 'direct' : 'selective');
+        html += '<div class="procurement-item__row">';
+        html += '  <span class="procurement-item__label">Method</span>';
+        html += '  <span class="method-badge ' + methodCls + '">' + escapeHtml(pd.procurement_method) + '</span>';
+        if (pd.procurement_method_details) {
+          html += '  <span class="procurement-item__detail">' + escapeHtml(pd.procurement_method_details) + '</span>';
+        }
+        html += '</div>';
+      }
+
+      // Submission window
+      if (pd.tender_start || pd.tender_end) {
+        html += '<div class="procurement-item__row">';
+        html += '  <span class="procurement-item__label">Submission Window</span>';
+        html += '  <span class="procurement-item__value">';
+        if (pd.tender_start) html += escapeHtml(formatDate(pd.tender_start));
+        if (pd.tender_start && pd.tender_end) html += ' &rarr; ';
+        if (pd.tender_end) {
+          html += escapeHtml(formatDate(pd.tender_end));
+          var closeDate = new Date(pd.tender_end);
+          var now = new Date();
+          var daysLeft = Math.ceil((closeDate - now) / (1000 * 60 * 60 * 24));
+          if (daysLeft < 0) {
+            html += ' <span class="urgency-badge urgency-badge--closed">Closed</span>';
+          } else if (daysLeft <= 14) {
+            html += ' <span class="urgency-badge urgency-badge--closing">' + daysLeft + 'd left</span>';
+          }
+        }
+        html += '</span>';
+        html += '</div>';
+      }
+
+      // Buyer
+      if (pd.buyer_name) {
+        html += '<div class="procurement-item__row">';
+        html += '  <span class="procurement-item__label">Buyer</span>';
+        html += '  <span class="procurement-item__value">' + escapeHtml(pd.buyer_name) + '</span>';
+        html += '</div>';
+      }
+
+      // UNSPSC codes
+      if (pd.unspsc_codes) {
+        try {
+          var codes = JSON.parse(pd.unspsc_codes);
+          if (codes.length > 0) {
+            html += '<div class="procurement-item__row">';
+            html += '  <span class="procurement-item__label">UNSPSC</span>';
+            html += '  <div class="unspsc-pills">';
+            for (var ci = 0; ci < codes.length; ci++) {
+              html += '<span class="unspsc-pill" title="' + escapeHtml(codes[ci].id || '') + '">' + escapeHtml(codes[ci].desc || codes[ci].id || '') + '</span>';
+            }
+            html += '  </div>';
+            html += '</div>';
+          }
+        } catch (e) { /* ignore parse errors */ }
+      }
+
+      // Award
+      if (pd.award_value && pd.award_date) {
+        html += '<div class="procurement-item__row">';
+        html += '  <span class="procurement-item__label">Award</span>';
+        html += '  <span class="procurement-item__value">$' + Number(pd.award_value).toLocaleString() + ' on ' + escapeHtml(formatDate(pd.award_date)) + '</span>';
+        html += '</div>';
+      }
+
+      // Budget
+      if (pd.budget_description) {
+        html += '<div class="procurement-item__row">';
+        html += '  <span class="procurement-item__label">Budget</span>';
+        html += '  <span class="procurement-item__value">' + escapeHtml(pd.budget_description) + '</span>';
+        html += '</div>';
+      }
+
+      html += '</div>'; // end procurement-item
+    }
+    html += '  </div>';
+    html += '</div>';
+  }
+
   html += '</div>'; // end detail-grid__left
 
   // RIGHT COLUMN
@@ -291,11 +403,17 @@ function renderDetail(opp) {
 
   // Gaps Section
   html += '<div class="detail-section">';
-  html += '  <div class="detail-section__header"><span class="detail-section__title">Jurisdiction Gaps</span></div>';
+  var gapsTitleSuffix = '';
+  if (gaps.length > 0) {
+    var mixedJuris = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
+    var jurisA = mixedJuris ? 'Mixed' : (gaps[0].jurisdiction_a || 'State');
+    var jurisB = gaps[0].jurisdiction_b || 'National';
+    gapsTitleSuffix = ' — ' + escapeHtml(jurisA) + ' vs ' + escapeHtml(jurisB);
+  }
+  html += '  <div class="detail-section__header"><span class="detail-section__title">Jurisdiction Gaps' + gapsTitleSuffix + '</span></div>';
   html += '  <div class="detail-section__body">';
   html += '    <div class="gaps-chart" id="detail-gaps-chart" style="width:100%;height:240px;"></div>';
   if (gaps.length > 0) {
-    var mixedJuris = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
     var colA = mixedJuris ? 'Jurisdiction' : escapeHtml(gaps[0].jurisdiction_a || 'State');
     var colB = escapeHtml(gaps[0].jurisdiction_b || 'National');
     html += '    <table class="data-table">';
@@ -340,6 +458,7 @@ function renderDetail(opp) {
   // Init charts
   renderDetailRadar(scores);
   renderDetailGaps(gaps);
+  renderDefenceBreakdown(opp);
 
   // Attach event listeners
   _attachDetailListeners(opp);
@@ -485,27 +604,39 @@ function renderDetailGaps(gaps) {
   for (var i = 0; i < sorted.length; i++) {
     var fullName = formatMetricName(sorted[i].metric);
     fullMetrics.push(fullName);
-    // Truncate long labels for axis display
-    metrics.push(fullName.length > 28 ? fullName.substring(0, 26) + '…' : fullName);
+    metrics.push(fullName);
     var gv = sorted[i].gap_pct || 0;
     values.push(gv);
     barColors.push(gv >= 0 ? '#007A6E' : '#AB0D82');
   }
 
+  // Build comparison subtitle for chart
+  var gapSubtitle = '';
+  var mixedJ = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
+  var jA = mixedJ ? 'Mixed' : (gaps[0].jurisdiction_a || 'State');
+  var jB = gaps[0].jurisdiction_b || 'National';
+  gapSubtitle = jA + ' vs ' + jB;
+
   var chart = echarts.init(el, 'kpmg');
   APP.charts.detailGaps = chart;
 
   chart.setOption({
+    title: {
+      text: gapSubtitle,
+      left: 'center',
+      top: 0,
+      textStyle: { fontSize: 12, fontWeight: 'normal', color: '#666666' }
+    },
     tooltip: {
       trigger: 'axis',
       axisPointer: { type: 'shadow' },
       formatter: function(params) {
         var p = params[0];
         var idx = p.dataIndex;
-        return '<strong>' + escapeHtml(fullMetrics[idx]) + '</strong><br/>Gap: ' + p.value.toFixed(1) + '%';
+        return '<strong>' + escapeHtml(fullMetrics[idx]) + '</strong><br/>' + jA + ' vs ' + jB + ': ' + (p.value >= 0 ? '+' : '') + p.value.toFixed(1) + '%';
       }
     },
-    grid: { left: '35%', right: 60, top: 10, bottom: 30 },
+    grid: { left: '40%', right: 60, top: 30, bottom: 30 },
     xAxis: {
       type: 'value',
       axisLabel: { formatter: function(v) { return v + '%'; } }
@@ -514,8 +645,8 @@ function renderDetailGaps(gaps) {
       type: 'category',
       data: metrics,
       axisLabel: {
-        fontSize: 11,
-        width: 180,
+        fontSize: 10,
+        width: 220,
         overflow: 'truncate',
         ellipsis: '…'
       }
@@ -567,9 +698,44 @@ function renderDetailGaps(gaps) {
   });
 })();
 
+/** Set up focus trap inside briefing modal */
+function _trapFocusInBrief() {
+  var modal = document.querySelector('.brief-modal');
+  if (!modal) return;
+  var closeBtn = document.getElementById('brief-close-btn');
+  if (closeBtn) closeBtn.focus();
+
+  // Remove any previous trap listener
+  if (APP._briefTrapHandler) {
+    modal.removeEventListener('keydown', APP._briefTrapHandler);
+  }
+
+  APP._briefTrapHandler = function(e) {
+    if (e.key !== 'Tab') return;
+    var focusable = modal.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+    if (focusable.length === 0) return;
+    var first = focusable[0];
+    var last = focusable[focusable.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  };
+  modal.addEventListener('keydown', APP._briefTrapHandler);
+}
+
 async function openBrief(id) {
   var overlay = document.getElementById('brief-overlay');
   if (overlay) overlay.classList.add('brief-overlay--open');
+  // Store previously focused element for restoration
+  APP._briefPrevFocus = document.activeElement;
 
   var body = document.getElementById('brief-body');
   if (body) body.innerHTML = '<div class="empty-state"><span class="spinner"></span></div>';
@@ -577,17 +743,20 @@ async function openBrief(id) {
   try {
     var brief = await api('/api/opportunities/' + id + '/brief');
     renderBrief(brief);
+    _trapFocusInBrief();
   } catch (e) {
     // Fallback: use detail data (partial brief)
     try {
       var detail = await api('/api/opportunities/' + id);
       renderBrief(detail);
+      _trapFocusInBrief();
     } catch (e2) {
       // In static_lite mode, show available index data with server prompt
       if (typeof HORIZON_DATA !== 'undefined' && HORIZON_DATA.opportunities) {
         var fallback = _findOppFromIndex(id);
         if (fallback) {
           renderBrief(fallback);
+          _trapFocusInBrief();
           _showLiteBannerInBrief();
           return;
         }
@@ -612,6 +781,17 @@ function _showLiteBannerInBrief() {
 function closeBrief() {
   var overlay = document.getElementById('brief-overlay');
   if (overlay) overlay.classList.remove('brief-overlay--open');
+  // Restore focus to previously focused element
+  if (APP._briefPrevFocus && APP._briefPrevFocus.focus) {
+    APP._briefPrevFocus.focus();
+    APP._briefPrevFocus = null;
+  }
+  // Clean up trap handler
+  if (APP._briefTrapHandler) {
+    var modal = document.querySelector('.brief-modal');
+    if (modal) modal.removeEventListener('keydown', APP._briefTrapHandler);
+    APP._briefTrapHandler = null;
+  }
 }
 
 function renderBrief(brief) {
@@ -824,7 +1004,14 @@ function renderBrief(brief) {
   })());
 
   // 7. Jurisdiction Gaps
-  html += _briefSection('Jurisdiction Gaps', (function() {
+  var briefGapsTitle = 'Jurisdiction Gaps';
+  if (gaps.length > 0) {
+    var briefMixedJ = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
+    var briefJA = briefMixedJ ? 'Mixed' : (gaps[0].jurisdiction_a || 'State');
+    var briefJB = gaps[0].jurisdiction_b || 'National';
+    briefGapsTitle += ' — ' + escapeHtml(briefJA) + ' vs ' + escapeHtml(briefJB);
+  }
+  html += _briefSection(briefGapsTitle, (function() {
     var s = '<div class="brief-gaps-chart" id="brief-gaps-chart" style="width:100%;height:220px;"></div>';
     if (gaps.length > 0) {
       var mixedJ = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
@@ -991,26 +1178,38 @@ function renderBriefGaps(gaps) {
   for (var i = 0; i < sorted.length; i++) {
     var fullName = formatMetricName(sorted[i].metric);
     fullMetrics.push(fullName);
-    metrics.push(fullName.length > 28 ? fullName.substring(0, 26) + '…' : fullName);
+    metrics.push(fullName);
     var gv = sorted[i].gap_pct || 0;
     values.push(gv);
     barColors.push(gv >= 0 ? '#007A6E' : '#AB0D82');
   }
 
+  // Build comparison subtitle
+  var briefMixJ = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
+  var briefChartJA = briefMixJ ? 'Mixed' : (gaps[0].jurisdiction_a || 'State');
+  var briefChartJB = gaps[0].jurisdiction_b || 'National';
+  var briefChartSub = briefChartJA + ' vs ' + briefChartJB;
+
   var chart = echarts.init(el, 'kpmg');
   APP.charts.briefGaps = chart;
 
   chart.setOption({
+    title: {
+      text: briefChartSub,
+      left: 'center',
+      top: 0,
+      textStyle: { fontSize: 11, fontWeight: 'normal', color: '#666666' }
+    },
     tooltip: {
       trigger: 'axis',
       axisPointer: { type: 'shadow' },
       formatter: function(params) {
         var p = params[0];
         var idx = p.dataIndex;
-        return '<strong>' + escapeHtml(fullMetrics[idx]) + '</strong><br/>Gap: ' + p.value.toFixed(1) + '%';
+        return '<strong>' + escapeHtml(fullMetrics[idx]) + '</strong><br/>' + briefChartJA + ' vs ' + briefChartJB + ': ' + (p.value >= 0 ? '+' : '') + p.value.toFixed(1) + '%';
       }
     },
-    grid: { left: '35%', right: 60, top: 10, bottom: 30 },
+    grid: { left: '35%', right: 60, top: 28, bottom: 30 },
     xAxis: {
       type: 'value',
       axisLabel: { formatter: function(v) { return v + '%'; } }
@@ -1019,8 +1218,8 @@ function renderBriefGaps(gaps) {
       type: 'category',
       data: metrics,
       axisLabel: {
-        fontSize: 11,
-        width: 160,
+        fontSize: 10,
+        width: 180,
         overflow: 'truncate',
         ellipsis: '…'
       }
@@ -1039,3 +1238,92 @@ function renderBriefGaps(gaps) {
     }]
   });
 }
+
+
+/* ============================================================
+   DEFENCE SUB-SECTOR BREAKDOWN CHART
+   ============================================================ */
+
+/**
+ * Render a pie chart showing defence sub-sector distribution.
+ * Only visible when the current opportunity has a sector starting with "defence:".
+ * Uses the KPMG ECharts theme for brand-compliant colours.
+ */
+function renderDefenceBreakdown(opportunity) {
+  var container = document.getElementById('defence-breakdown-chart');
+  if (!container) return;
+
+  // Only show for defence: sector opportunities
+  var sector = (opportunity.sector || '').toLowerCase();
+  if (!sector.startsWith('defence:')) {
+    container.style.display = 'none';
+    return;
+  }
+
+  container.style.display = 'block';
+
+  // Dispose previous instance to prevent memory leak
+  if (APP.charts && APP.charts.defenceBreakdown) {
+    APP.charts.defenceBreakdown.dispose();
+    APP.charts.defenceBreakdown = null;
+  }
+
+  // Extract sub-sector from "defence:IT" format
+  var subSector = sector.split(':')[1] || 'general';
+
+  // Count related opportunities by sub-sector (from pipeline data)
+  var subSectorCounts = {};
+  var allOpps = (window.APP && APP.opportunities) || [];
+  for (var i = 0; i < allOpps.length; i++) {
+    var s = (allOpps[i].sector || '').toLowerCase();
+    if (s.startsWith('defence:')) {
+      var sub = s.split(':')[1] || 'general';
+      subSectorCounts[sub] = (subSectorCounts[sub] || 0) + 1;
+    }
+  }
+
+  // If only one defence opportunity (this one), still show it
+  if (Object.keys(subSectorCounts).length === 0) {
+    subSectorCounts[subSector] = 1;
+  }
+
+  // Build chart data
+  var chartData = [];
+  var keys = Object.keys(subSectorCounts);
+  for (var j = 0; j < keys.length; j++) {
+    chartData.push({
+      name: keys[j].charAt(0).toUpperCase() + keys[j].slice(1),
+      value: subSectorCounts[keys[j]]
+    });
+  }
+
+  // Render ECharts pie chart with KPMG brand colours
+  var chart = echarts.init(container, 'kpmg');
+  APP.charts = APP.charts || {};
+  APP.charts.defenceBreakdown = chart;
+  chart.setOption({
+    title: {
+      text: 'Defence Sub-Sector Distribution',
+      textStyle: { fontSize: 14, fontWeight: 'bold', color: '#333333' }
+    },
+    tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
+    series: [{
+      type: 'pie',
+      radius: ['35%', '65%'],
+      data: chartData,
+      emphasis: {
+        itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0,0,0,0.2)' }
+      },
+      label: { formatter: '{b}\n{d}%' }
+    }]
+  });
+
+  // Highlight current sub-sector
+  var currentIndex = keys.indexOf(subSector);
+  if (currentIndex >= 0) {
+    chart.dispatchAction({ type: 'highlight', seriesIndex: 0, dataIndex: currentIndex });
+  }
+
+  // Responsive resize — handled via APP.charts reference in global resize handler
+}
+

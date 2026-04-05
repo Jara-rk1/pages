@@ -28,7 +28,7 @@
     --bg-dark: #0C233C;
     --bg-body: #F5F6F8;
     --bg-panel: #FFFFFF;
-    --bg-panel-header: #FAFBFC;
+    --bg-panel-header: #FFFFFF;
 
     /* Status indicators */
     --status-active: #00C0AE;
@@ -250,7 +250,7 @@ a:hover {
     line-height: 1.2;
 }
 
-.kpi-card__value--pacific { color: var(--kpmg-cobalt); }
+.kpi-card__value--pacific { color: var(--kpmg-pacific); }
 .kpi-card__value--cobalt  { color: var(--kpmg-cobalt); }
 .kpi-card__value--purple  { color: var(--kpmg-purple); }
 .kpi-card__value--warm    { color: var(--kpmg-cobalt); }
@@ -271,7 +271,8 @@ a:hover {
     border: 1px solid var(--border);
     border-radius: 6px;
     overflow: hidden;
-    max-height: calc(100vh - 140px);
+    max-height: calc(100vh - 120px);
+    min-height: 600px;
     display: flex;
     flex-direction: column;
 }
@@ -515,10 +516,8 @@ a:hover {
     color: var(--text-dark);
     margin-bottom: 6px;
     line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .opp-card__meta {
@@ -673,6 +672,8 @@ a:hover {
     color: var(--text-dark);
     margin-bottom: 10px;
     line-height: 1.3;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .detail-banner__badges {
@@ -768,6 +769,9 @@ a:hover {
 
 .detail-section__body {
     padding: 18px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    overflow-x: auto;
 }
 
 /* ---- Radar chart ---- */
@@ -909,7 +913,7 @@ a:hover {
 
 .signal-item__date {
     font-size: 11px;
-    color: var(--text-light);
+    color: var(--text-mid);
     margin-left: 6px;
 }
 
@@ -1007,6 +1011,9 @@ a:hover {
 .data-table td {
     padding: 8px;
     border-bottom: 1px solid var(--border);
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    max-width: 200px;
 }
 
 .data-table tbody tr:hover {
@@ -1241,6 +1248,8 @@ a:hover {
     color: var(--text-dark);
     margin-bottom: 10px;
     line-height: 1.3;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .brief-banner__badges {
@@ -1353,6 +1362,8 @@ a:hover {
     padding: 14px 16px;
     transition: max-height 0.3s ease, padding 0.3s ease;
     overflow: hidden;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .brief-section__body--collapsed {
@@ -1607,7 +1618,7 @@ a:hover {
 
 .brief-offering__cmd {
     font-size: 10px;
-    color: var(--text-light);
+    color: var(--text-mid);
     margin-top: 2px;
 }
 
@@ -1676,9 +1687,10 @@ a:hover {
     flex: 1;
     font-size: 12px;
     color: var(--text-dark);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    white-space: normal;
+    line-height: 1.4;
 }
 
 /* ---- Brief Audit Trail ---- */
@@ -1695,7 +1707,7 @@ a:hover {
 }
 
 .brief-audit-item__time {
-    color: var(--text-light);
+    color: var(--text-mid);
     min-width: 120px;
     font-size: 10px;
 }
@@ -1758,6 +1770,8 @@ a:hover {
     font-size: 13px;
     color: var(--text-mid);
     line-height: 1.6;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 
@@ -1914,4 +1928,152 @@ a:hover {
 :focus-visible {
     outline: 2px solid var(--kpmg-pacific);
     outline-offset: 2px;
+}
+
+/* ============================================================
+   PROCUREMENT DETAILS
+   ============================================================ */
+.procurement-item {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 8px;
+    background: #FFFFFF;
+}
+
+.procurement-item__row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    flex-wrap: wrap;
+}
+
+.procurement-item__label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-mid);
+    min-width: 120px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.procurement-item__value {
+    font-size: 14px;
+    color: var(--text-dark);
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.procurement-item__value--highlight {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--kpmg-blue);
+}
+
+.procurement-item__detail {
+    font-size: 12px;
+    color: var(--text-mid);
+}
+
+/* Method badges */
+.method-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.method-badge--open {
+    background: #FFFFFF;
+    border-left: 3px solid #269924;
+    color: #269924;
+}
+
+.method-badge--selective,
+.method-badge--limited {
+    background: #FFFFFF;
+    border-left: 3px solid #F1C44D;
+    color: #333333;
+}
+
+.method-badge--direct {
+    background: #FFFFFF;
+    border-left: 3px solid #ED2124;
+    color: #ED2124;
+}
+
+/* UNSPSC pills */
+.unspsc-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.unspsc-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    background: var(--kpmg-blue);
+    color: #fff;
+}
+
+/* Urgency badges */
+.urgency-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 6px;
+}
+
+.urgency-badge--closed {
+    background: var(--text-mid);
+    color: #fff;
+}
+
+.urgency-badge--closing {
+    background: #ED2124;
+    color: #fff;
+    animation: pulse-urgency 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-urgency {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* ============================================================
+   SKIP LINK (Accessibility)
+   ============================================================ */
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 16px;
+    z-index: 10000;
+    padding: 8px 16px;
+    background: var(--kpmg-blue);
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 0 0 4px 4px;
+    transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* ============================================================
+   DEFENCE SUB-SECTOR BREAKDOWN CHART
+   ============================================================ */
+#defence-breakdown-chart {
+    margin-top: 1rem;
+    border-top: 1px solid #E5E5E5;
+    padding-top: 1rem;
 }

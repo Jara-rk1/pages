@@ -11,6 +11,7 @@
           crossorigin="anonymous">
 </head>
 <body>
+<a href="#view-pipeline" class="skip-link">Skip to main content</a>
 
 <!-- ============================================================ -->
 <!-- Header                                                        -->
@@ -45,8 +46,8 @@
     <div class="page-container">
 
         <!-- KPI Row -->
-        <div class="kpi-row" id="kpi-row">
-            <div class="empty-state">Loading…</div>
+        <div class="kpi-row" id="kpi-row" role="list" aria-live="polite">
+            <div class="empty-state" role="listitem">Loading…</div>
         </div>
 
         <!-- Pipeline Layout: Feed (left) + Charts/Map (right) -->
@@ -56,7 +57,7 @@
             <div class="feed-panel">
                 <div class="panel-header">
                     <span class="panel-header__title">Opportunity Pipeline</span>
-                    <span class="panel-header__meta" id="feed-count"></span>
+                    <span class="panel-header__meta" id="feed-count" aria-live="polite"></span>
                 </div>
 
                 <!-- Filters -->
@@ -72,6 +73,17 @@
                     </select>
                     <select id="filter-sector" aria-label="Filter by sector">
                         <option value="">All Sectors</option>
+                        <option value="!defence">Non-Defence</option>
+                    </select>
+                    <select id="filter-jurisdiction" aria-label="Filter by jurisdiction">
+                        <option value="">All Jurisdictions</option>
+                    </select>
+                    <select id="filter-tier" aria-label="Filter by tier">
+                        <option value="">All Tiers</option>
+                        <option value="hot">Hot (80+)</option>
+                        <option value="warm">Warm (60–79)</option>
+                        <option value="watch">Watch (40–59)</option>
+                        <option value="cold">Cold (&lt;40)</option>
                     </select>
                     <input type="text" id="filter-search" placeholder="Search opportunities…" aria-label="Search opportunities">
                 </div>
@@ -127,6 +139,11 @@
     <div class="page-container" id="detail-content">
         <div class="empty-state"><span class="spinner"></span></div>
     </div>
+    <!-- Defence Sub-Sector Breakdown (shown only for defence: sector) -->
+    <div class="page-container">
+        <div id="defence-breakdown-chart" style="display:none; width:100%; height:280px;"
+             aria-label="Defence sub-sector breakdown chart showing distribution across IT, logistics, facilities, munitions, personnel, and strategy categories"></div>
+    </div>
 </div>
 
 </main>
@@ -134,7 +151,7 @@
 <!-- ============================================================ -->
 <!-- Briefing Modal Overlay                                        -->
 <!-- ============================================================ -->
-<div class="brief-overlay" id="brief-overlay">
+<div class="brief-overlay" id="brief-overlay" role="dialog" aria-modal="true" aria-label="Opportunity briefing">
     <div class="brief-modal">
         <div class="brief-modal__header">
             <div class="brief-modal__header-left">
@@ -147,7 +164,7 @@
                 <button class="brief-close-btn" id="brief-close-btn" aria-label="Close brief">&times;</button>
             </div>
         </div>
-        <div class="brief-modal__body" id="brief-body">
+        <div class="brief-modal__body" id="brief-body" tabindex="0">
             <div class="empty-state"><span class="spinner"></span></div>
         </div>
     </div>
