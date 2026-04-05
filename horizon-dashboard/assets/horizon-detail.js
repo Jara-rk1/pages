@@ -655,7 +655,7 @@ function renderDetailGaps(gaps) {
         return '<strong>' + escapeHtml(fullMetrics[idx]) + '</strong><br/>' + jA + ' is ' + Math.abs(val).toFixed(1) + '% ' + dir + ' ' + jB;
       }
     },
-    grid: { left: 180, right: 70, top: 48, bottom: 36 },
+    grid: { left: 180, right: 90, top: 48, bottom: 36 },
     xAxis: {
       type: 'value',
       axisLabel: { formatter: function(v) { return v + '%'; }, fontSize: 10 }
@@ -667,36 +667,42 @@ function renderDetailGaps(gaps) {
         fontSize: 11,
         width: 160,
         overflow: 'truncate',
-        ellipsis: '…'
+        ellipsis: '…',
+        margin: 12
       }
     },
     series: [
       {
         name: 'Above ' + jB,
         type: 'bar',
-        barMaxWidth: 24,
+        barMaxWidth: 22,
+        barCategoryGap: '40%',
         data: values.map(function(v, idx) {
           return v >= 0 ? { value: v, itemStyle: { color: '#007A6E' } } : { value: null };
         }),
         label: {
           show: true,
           position: 'right',
+          distance: 8,
           formatter: function(p) { return p.value == null ? '' : '+' + p.value.toFixed(1) + '%'; },
-          fontSize: 10
+          fontSize: 10,
+          color: '#333333'
         }
       },
       {
         name: 'Below ' + jB,
         type: 'bar',
-        barMaxWidth: 24,
+        barMaxWidth: 22,
         data: values.map(function(v, idx) {
           return v < 0 ? { value: v, itemStyle: { color: '#AB0D82' } } : { value: null };
         }),
         label: {
           show: true,
           position: 'left',
+          distance: 8,
           formatter: function(p) { return p.value == null ? '' : p.value.toFixed(1) + '%'; },
-          fontSize: 10
+          fontSize: 10,
+          color: '#333333'
         }
       }
     ]
@@ -1265,7 +1271,7 @@ function renderBriefGaps(gaps) {
         return '<strong>' + escapeHtml(fullMetrics[idx]) + '</strong><br/>' + briefChartJA + ' is ' + Math.abs(val).toFixed(1) + '% ' + dir + ' ' + briefChartJB;
       }
     },
-    grid: { left: 160, right: 60, top: 44, bottom: 34 },
+    grid: { left: 160, right: 80, top: 44, bottom: 34 },
     xAxis: {
       type: 'value',
       axisLabel: { formatter: function(v) { return v + '%'; }, fontSize: 9 }
@@ -1277,36 +1283,42 @@ function renderBriefGaps(gaps) {
         fontSize: 10,
         width: 140,
         overflow: 'truncate',
-        ellipsis: '…'
+        ellipsis: '…',
+        margin: 10
       }
     },
     series: [
       {
         name: 'Above ' + briefChartJB,
         type: 'bar',
-        barMaxWidth: 20,
+        barMaxWidth: 18,
+        barCategoryGap: '40%',
         data: values.map(function(v) {
           return v >= 0 ? { value: v, itemStyle: { color: '#007A6E' } } : { value: null };
         }),
         label: {
           show: true,
           position: 'right',
+          distance: 6,
           formatter: function(p) { return p.value == null ? '' : '+' + p.value.toFixed(1) + '%'; },
-          fontSize: 9
+          fontSize: 9,
+          color: '#333333'
         }
       },
       {
         name: 'Below ' + briefChartJB,
         type: 'bar',
-        barMaxWidth: 20,
+        barMaxWidth: 18,
         data: values.map(function(v) {
           return v < 0 ? { value: v, itemStyle: { color: '#AB0D82' } } : { value: null };
         }),
         label: {
           show: true,
           position: 'left',
+          distance: 6,
           formatter: function(p) { return p.value == null ? '' : p.value.toFixed(1) + '%'; },
-          fontSize: 9
+          fontSize: 9,
+          color: '#333333'
         }
       }
     ]
