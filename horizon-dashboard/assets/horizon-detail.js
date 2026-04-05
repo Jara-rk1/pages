@@ -675,12 +675,12 @@ function renderDetailGaps(gaps) {
         name: 'Above ' + jB,
         type: 'bar',
         data: values.map(function(v, idx) {
-          return v >= 0 ? { value: v, itemStyle: { color: '#007A6E' } } : { value: '-', itemStyle: { color: 'transparent' } };
+          return v >= 0 ? { value: v, itemStyle: { color: '#007A6E' } } : { value: null };
         }),
         label: {
           show: true,
           position: 'right',
-          formatter: function(p) { return p.value === '-' ? '' : '+' + p.value.toFixed(1) + '%'; },
+          formatter: function(p) { return p.value == null ? '' : '+' + p.value.toFixed(1) + '%'; },
           fontSize: 11
         }
       },
@@ -688,12 +688,12 @@ function renderDetailGaps(gaps) {
         name: 'Below ' + jB,
         type: 'bar',
         data: values.map(function(v, idx) {
-          return v < 0 ? { value: v, itemStyle: { color: '#AB0D82' } } : { value: '-', itemStyle: { color: 'transparent' } };
+          return v < 0 ? { value: v, itemStyle: { color: '#AB0D82' } } : { value: null };
         }),
         label: {
           show: true,
           position: 'left',
-          formatter: function(p) { return p.value === '-' ? '' : p.value.toFixed(1) + '%'; },
+          formatter: function(p) { return p.value == null ? '' : p.value.toFixed(1) + '%'; },
           fontSize: 11
         }
       }
@@ -1283,12 +1283,12 @@ function renderBriefGaps(gaps) {
         name: 'Above ' + briefChartJB,
         type: 'bar',
         data: values.map(function(v) {
-          return v >= 0 ? { value: v, itemStyle: { color: '#007A6E' } } : { value: '-', itemStyle: { color: 'transparent' } };
+          return v >= 0 ? { value: v, itemStyle: { color: '#007A6E' } } : { value: null };
         }),
         label: {
           show: true,
           position: 'right',
-          formatter: function(p) { return p.value === '-' ? '' : '+' + p.value.toFixed(1) + '%'; },
+          formatter: function(p) { return p.value == null ? '' : '+' + p.value.toFixed(1) + '%'; },
           fontSize: 10
         }
       },
@@ -1296,12 +1296,12 @@ function renderBriefGaps(gaps) {
         name: 'Below ' + briefChartJB,
         type: 'bar',
         data: values.map(function(v) {
-          return v < 0 ? { value: v, itemStyle: { color: '#AB0D82' } } : { value: '-', itemStyle: { color: 'transparent' } };
+          return v < 0 ? { value: v, itemStyle: { color: '#AB0D82' } } : { value: null };
         }),
         label: {
           show: true,
           position: 'left',
-          formatter: function(p) { return p.value === '-' ? '' : p.value.toFixed(1) + '%'; },
+          formatter: function(p) { return p.value == null ? '' : p.value.toFixed(1) + '%'; },
           fontSize: 10
         }
       }
