@@ -412,7 +412,7 @@ function renderDetail(opp) {
   }
   html += '  <div class="detail-section__header"><span class="detail-section__title">Jurisdiction Gaps' + gapsTitleSuffix + '</span></div>';
   html += '  <div class="detail-section__body">';
-  html += '    <div class="gaps-chart" id="detail-gaps-chart" style="width:100%;height:240px;"></div>';
+  html += '    <div class="gaps-chart" id="detail-gaps-chart" style="width:100%;height:300px;"></div>';
   if (gaps.length > 0) {
     var colA = mixedJuris ? 'Jurisdiction' : escapeHtml(gaps[0].jurisdiction_a || 'State');
     var colB = escapeHtml(gaps[0].jurisdiction_b || 'National');
@@ -621,22 +621,41 @@ function renderDetailGaps(gaps) {
   APP.charts.detailGaps = chart;
 
   chart.setOption({
-    title: {
-      text: gapSubtitle,
+    title: [
+      {
+        text: jA + '  vs  ' + jB,
+        left: 'center',
+        top: 0,
+        textStyle: { fontSize: 14, fontWeight: 'bold', color: '#00338D' }
+      },
+      {
+        text: 'Gap as % difference from ' + jB + ' benchmark',
+        left: 'center',
+        top: 22,
+        textStyle: { fontSize: 11, fontWeight: 'normal', color: '#666666' }
+      }
+    ],
+    legend: {
+      data: ['Above ' + jB, 'Below ' + jB],
+      bottom: 0,
       left: 'center',
-      top: 0,
-      textStyle: { fontSize: 12, fontWeight: 'normal', color: '#666666' }
+      itemWidth: 14,
+      itemHeight: 10,
+      textStyle: { fontSize: 11, color: '#333333' }
     },
     tooltip: {
       trigger: 'axis',
       axisPointer: { type: 'shadow' },
       formatter: function(params) {
-        var p = params[0];
+        var p = params[0] || params[1];
+        if (!p) return '';
         var idx = p.dataIndex;
-        return '<strong>' + escapeHtml(fullMetrics[idx]) + '</strong><br/>' + jA + ' vs ' + jB + ': ' + (p.value >= 0 ? '+' : '') + p.value.toFixed(1) + '%';
+        var val = values[idx];
+        var dir = val >= 0 ? 'above' : 'below';
+        return '<strong>' + escapeHtml(fullMetrics[idx]) + '</strong><br/>' + jA + ' is ' + Math.abs(val).toFixed(1) + '% ' + dir + ' ' + jB;
       }
     },
-    grid: { left: '40%', right: 60, top: 30, bottom: 30 },
+    grid: { left: '40%', right: 60, top: 48, bottom: 36 },
     xAxis: {
       type: 'value',
       axisLabel: { formatter: function(v) { return v + '%'; } }
@@ -651,18 +670,34 @@ function renderDetailGaps(gaps) {
         ellipsis: '…'
       }
     },
-    series: [{
-      type: 'bar',
-      data: values.map(function(v, idx) {
-        return { value: v, itemStyle: { color: barColors[idx] } };
-      }),
-      label: {
-        show: true,
-        position: 'right',
-        formatter: function(p) { return p.value.toFixed(1) + '%'; },
-        fontSize: 11
+    series: [
+      {
+        name: 'Above ' + jB,
+        type: 'bar',
+        data: values.map(function(v, idx) {
+          return v >= 0 ? { value: v, itemStyle: { color: '#007A6E' } } : { value: '-', itemStyle: { color: 'transparent' } };
+        }),
+        label: {
+          show: true,
+          position: 'right',
+          formatter: function(p) { return p.value === '-' ? '' : '+' + p.value.toFixed(1) + '%'; },
+          fontSize: 11
+        }
+      },
+      {
+        name: 'Below ' + jB,
+        type: 'bar',
+        data: values.map(function(v, idx) {
+          return v < 0 ? { value: v, itemStyle: { color: '#AB0D82' } } : { value: '-', itemStyle: { color: 'transparent' } };
+        }),
+        label: {
+          show: true,
+          position: 'left',
+          formatter: function(p) { return p.value === '-' ? '' : p.value.toFixed(1) + '%'; },
+          fontSize: 11
+        }
       }
-    }]
+    ]
   });
 }
 
@@ -1012,7 +1047,7 @@ function renderBrief(brief) {
     briefGapsTitle += ' — ' + escapeHtml(briefJA) + ' vs ' + escapeHtml(briefJB);
   }
   html += _briefSection(briefGapsTitle, (function() {
-    var s = '<div class="brief-gaps-chart" id="brief-gaps-chart" style="width:100%;height:220px;"></div>';
+    var s = '<div class="brief-gaps-chart" id="brief-gaps-chart" style="width:100%;height:280px;"></div>';
     if (gaps.length > 0) {
       var mixedJ = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
       var hdrA = mixedJ ? 'Jurisdiction' : escapeHtml(gaps[0].jurisdiction_a || 'State');
@@ -1194,22 +1229,41 @@ function renderBriefGaps(gaps) {
   APP.charts.briefGaps = chart;
 
   chart.setOption({
-    title: {
-      text: briefChartSub,
+    title: [
+      {
+        text: briefChartJA + '  vs  ' + briefChartJB,
+        left: 'center',
+        top: 0,
+        textStyle: { fontSize: 13, fontWeight: 'bold', color: '#00338D' }
+      },
+      {
+        text: 'Gap as % difference from ' + briefChartJB + ' benchmark',
+        left: 'center',
+        top: 20,
+        textStyle: { fontSize: 10, fontWeight: 'normal', color: '#666666' }
+      }
+    ],
+    legend: {
+      data: ['Above ' + briefChartJB, 'Below ' + briefChartJB],
+      bottom: 0,
       left: 'center',
-      top: 0,
-      textStyle: { fontSize: 11, fontWeight: 'normal', color: '#666666' }
+      itemWidth: 12,
+      itemHeight: 8,
+      textStyle: { fontSize: 10, color: '#333333' }
     },
     tooltip: {
       trigger: 'axis',
       axisPointer: { type: 'shadow' },
       formatter: function(params) {
-        var p = params[0];
+        var p = params[0] || params[1];
+        if (!p) return '';
         var idx = p.dataIndex;
-        return '<strong>' + escapeHtml(fullMetrics[idx]) + '</strong><br/>' + briefChartJA + ' vs ' + briefChartJB + ': ' + (p.value >= 0 ? '+' : '') + p.value.toFixed(1) + '%';
+        var val = values[idx];
+        var dir = val >= 0 ? 'above' : 'below';
+        return '<strong>' + escapeHtml(fullMetrics[idx]) + '</strong><br/>' + briefChartJA + ' is ' + Math.abs(val).toFixed(1) + '% ' + dir + ' ' + briefChartJB;
       }
     },
-    grid: { left: '35%', right: 60, top: 28, bottom: 30 },
+    grid: { left: '35%', right: 60, top: 44, bottom: 34 },
     xAxis: {
       type: 'value',
       axisLabel: { formatter: function(v) { return v + '%'; } }
@@ -1224,18 +1278,34 @@ function renderBriefGaps(gaps) {
         ellipsis: '…'
       }
     },
-    series: [{
-      type: 'bar',
-      data: values.map(function(v, idx) {
-        return { value: v, itemStyle: { color: barColors[idx] } };
-      }),
-      label: {
-        show: true,
-        position: 'right',
-        formatter: function(p) { return p.value.toFixed(1) + '%'; },
-        fontSize: 11
+    series: [
+      {
+        name: 'Above ' + briefChartJB,
+        type: 'bar',
+        data: values.map(function(v) {
+          return v >= 0 ? { value: v, itemStyle: { color: '#007A6E' } } : { value: '-', itemStyle: { color: 'transparent' } };
+        }),
+        label: {
+          show: true,
+          position: 'right',
+          formatter: function(p) { return p.value === '-' ? '' : '+' + p.value.toFixed(1) + '%'; },
+          fontSize: 10
+        }
+      },
+      {
+        name: 'Below ' + briefChartJB,
+        type: 'bar',
+        data: values.map(function(v) {
+          return v < 0 ? { value: v, itemStyle: { color: '#AB0D82' } } : { value: '-', itemStyle: { color: 'transparent' } };
+        }),
+        label: {
+          show: true,
+          position: 'left',
+          formatter: function(p) { return p.value === '-' ? '' : p.value.toFixed(1) + '%'; },
+          fontSize: 10
+        }
       }
-    }]
+    ]
   });
 }
 
