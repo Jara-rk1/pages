@@ -135,34 +135,26 @@ function _resolveStatic(path) {
 function api(path) {
     var isFileProtocol = window.location.protocol === 'file:';
 
-    // Tier 1: If SW is controlling this page, try fetch (SW intercepts /api/* if seeded)
-    if (!isFileProtocol && navigator.serviceWorker && navigator.serviceWorker.controller) {
-        return fetch(path).then(function(r) {
-            if (r.ok) return r.json();
-            // SW returned error (unseeded or IDB miss) — fall through to Tier 2
-            throw new Error(r.status + ' ' + r.statusText);
-        }).catch(function() {
-            // Tier 2: Static data fallback
-            var staticResult = _resolveStatic(path);
-            if (staticResult !== undefined && staticResult !== null) {
-                return Promise.resolve(staticResult);
-            }
-            // Tier 3: Direct network fetch (server mode)
-            return fetch(path).then(function(r) {
-                if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
-                return r.json();
-            });
-        });
-    }
-    // No SW controller — try static first, then network
+    // Tier 1: Always try static data first — instant, no race conditions
     var staticResult = _resolveStatic(path);
     if (staticResult !== undefined && staticResult !== null) {
         return Promise.resolve(staticResult);
     }
-    // On file:// protocol, network fetch will fail — reject gracefully
+
+    // Tier 2: If SW is controlling this page, try fetch (SW intercepts /api/* if seeded)
+    if (!isFileProtocol && navigator.serviceWorker && navigator.serviceWorker.controller) {
+        return fetch(path).then(function(r) {
+            if (r.ok) return r.json();
+            throw new Error(r.status + ' ' + r.statusText);
+        });
+    }
+
+    // Tier 3: On file:// protocol, network fetch will fail — reject gracefully
     if (isFileProtocol) {
         return Promise.reject(new Error('No static data available for ' + path + ' (file:// mode)'));
     }
+
+    // Tier 4: Direct network fetch (server mode)
     return fetch(path).then(function(r) {
         if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
         return r.json();
