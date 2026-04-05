@@ -117,15 +117,11 @@ function _resolveStatic(path) {
 
     var detailMatch = clean.match(/^\/api\/opportunities\/(\d+)$/);
     if (detailMatch) {
-        // In static_lite mode, detail data is not bundled — return null to trigger fetch fallback
-        if (HORIZON_DATA._mode === 'static_lite') return null;
         return HORIZON_DATA.details ? HORIZON_DATA.details[detailMatch[1]] : undefined;
     }
 
     var briefMatch = clean.match(/^\/api\/opportunities\/(\d+)\/brief$/);
     if (briefMatch) {
-        // In static_lite mode, brief data is not bundled — return null to trigger fetch fallback
-        if (HORIZON_DATA._mode === 'static_lite') return null;
         return HORIZON_DATA.briefs ? HORIZON_DATA.briefs[briefMatch[1]] : undefined;
     }
 
@@ -163,28 +159,21 @@ function api(path) {
 
 function apiPost(path, body) {
     var isFileProtocol = window.location.protocol === 'file:';
-    var fetchOpts = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-    };
-    // Tier 1: If SW is controlling, try fetch (SW handles POST if seeded)
-    if (!isFileProtocol && navigator.serviceWorker && navigator.serviceWorker.controller) {
-        return fetch(path, fetchOpts).then(function(r) {
-            if (r.ok) return r.json();
-            throw new Error(r.status + ' ' + r.statusText);
-        }).catch(function() {
-            // Tier 2: In-memory static mutation
-            return _staticPost(path, body);
-        });
-    }
-    // No SW — try static mutation, then network
+
+    // Tier 1: Always try static mutation first
     var staticResult = _staticPost(path, body);
     if (staticResult !== null) return staticResult;
+
+    // Tier 2: SW or network fetch
     if (isFileProtocol) {
         return Promise.reject(new Error('Cannot POST in file:// mode'));
     }
-    return fetch(path, fetchOpts).then(function(r) {
+
+    return fetch(path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    }).then(function(r) {
         if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
         return r.json();
     });

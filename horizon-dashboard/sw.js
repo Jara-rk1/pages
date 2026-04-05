@@ -98,12 +98,10 @@ self.addEventListener('install', function(event) {
     if (typeof self.SEED_DATA !== 'undefined') {
         event.waitUntil(seedDatabase().then(function() {
             _seeded = true;
-            return self.skipWaiting();
         }));
-    } else {
-        _seeded = false;
-        event.waitUntil(self.skipWaiting());
     }
+    // Do NOT call skipWaiting() — let the browser activate naturally
+    // on next navigation, avoiding mid-session data disruption
 });
 
 function seedDatabase() {
@@ -164,7 +162,10 @@ function seedDatabase() {
 // ----------------------------------------------------------------
 
 self.addEventListener('activate', function(event) {
-    event.waitUntil(self.clients.claim());
+    // Do NOT call clients.claim() — existing tabs keep their current SW
+    // until the user navigates away and back. This prevents the reload
+    // loop that caused data disappearing.
+    event.waitUntil(Promise.resolve());
 });
 
 // ----------------------------------------------------------------
