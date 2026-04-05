@@ -412,7 +412,7 @@ function renderDetail(opp) {
   }
   html += '  <div class="detail-section__header"><span class="detail-section__title">Jurisdiction Gaps' + gapsTitleSuffix + '</span></div>';
   html += '  <div class="detail-section__body">';
-  html += '    <div class="gaps-chart" id="detail-gaps-chart" style="width:100%;height:300px;"></div>';
+  html += '    <div class="gaps-chart" id="detail-gaps-chart" style="width:100%;height:340px;"></div>';
   if (gaps.length > 0) {
     var colA = mixedJuris ? 'Jurisdiction' : escapeHtml(gaps[0].jurisdiction_a || 'State');
     var colB = escapeHtml(gaps[0].jurisdiction_b || 'National');
@@ -655,17 +655,17 @@ function renderDetailGaps(gaps) {
         return '<strong>' + escapeHtml(fullMetrics[idx]) + '</strong><br/>' + jA + ' is ' + Math.abs(val).toFixed(1) + '% ' + dir + ' ' + jB;
       }
     },
-    grid: { left: '40%', right: 60, top: 48, bottom: 36 },
+    grid: { left: 180, right: 70, top: 48, bottom: 36 },
     xAxis: {
       type: 'value',
-      axisLabel: { formatter: function(v) { return v + '%'; } }
+      axisLabel: { formatter: function(v) { return v + '%'; }, fontSize: 10 }
     },
     yAxis: {
       type: 'category',
       data: metrics,
       axisLabel: {
-        fontSize: 10,
-        width: 220,
+        fontSize: 11,
+        width: 160,
         overflow: 'truncate',
         ellipsis: '…'
       }
@@ -674,6 +674,7 @@ function renderDetailGaps(gaps) {
       {
         name: 'Above ' + jB,
         type: 'bar',
+        barMaxWidth: 24,
         data: values.map(function(v, idx) {
           return v >= 0 ? { value: v, itemStyle: { color: '#007A6E' } } : { value: null };
         }),
@@ -681,12 +682,13 @@ function renderDetailGaps(gaps) {
           show: true,
           position: 'right',
           formatter: function(p) { return p.value == null ? '' : '+' + p.value.toFixed(1) + '%'; },
-          fontSize: 11
+          fontSize: 10
         }
       },
       {
         name: 'Below ' + jB,
         type: 'bar',
+        barMaxWidth: 24,
         data: values.map(function(v, idx) {
           return v < 0 ? { value: v, itemStyle: { color: '#AB0D82' } } : { value: null };
         }),
@@ -694,7 +696,7 @@ function renderDetailGaps(gaps) {
           show: true,
           position: 'left',
           formatter: function(p) { return p.value == null ? '' : p.value.toFixed(1) + '%'; },
-          fontSize: 11
+          fontSize: 10
         }
       }
     ]
@@ -1263,17 +1265,17 @@ function renderBriefGaps(gaps) {
         return '<strong>' + escapeHtml(fullMetrics[idx]) + '</strong><br/>' + briefChartJA + ' is ' + Math.abs(val).toFixed(1) + '% ' + dir + ' ' + briefChartJB;
       }
     },
-    grid: { left: '35%', right: 60, top: 44, bottom: 34 },
+    grid: { left: 160, right: 60, top: 44, bottom: 34 },
     xAxis: {
       type: 'value',
-      axisLabel: { formatter: function(v) { return v + '%'; } }
+      axisLabel: { formatter: function(v) { return v + '%'; }, fontSize: 9 }
     },
     yAxis: {
       type: 'category',
       data: metrics,
       axisLabel: {
         fontSize: 10,
-        width: 180,
+        width: 140,
         overflow: 'truncate',
         ellipsis: '…'
       }
@@ -1282,6 +1284,7 @@ function renderBriefGaps(gaps) {
       {
         name: 'Above ' + briefChartJB,
         type: 'bar',
+        barMaxWidth: 20,
         data: values.map(function(v) {
           return v >= 0 ? { value: v, itemStyle: { color: '#007A6E' } } : { value: null };
         }),
@@ -1289,12 +1292,13 @@ function renderBriefGaps(gaps) {
           show: true,
           position: 'right',
           formatter: function(p) { return p.value == null ? '' : '+' + p.value.toFixed(1) + '%'; },
-          fontSize: 10
+          fontSize: 9
         }
       },
       {
         name: 'Below ' + briefChartJB,
         type: 'bar',
+        barMaxWidth: 20,
         data: values.map(function(v) {
           return v < 0 ? { value: v, itemStyle: { color: '#AB0D82' } } : { value: null };
         }),
@@ -1302,7 +1306,7 @@ function renderBriefGaps(gaps) {
           show: true,
           position: 'left',
           formatter: function(p) { return p.value == null ? '' : p.value.toFixed(1) + '%'; },
-          fontSize: 10
+          fontSize: 9
         }
       }
     ]

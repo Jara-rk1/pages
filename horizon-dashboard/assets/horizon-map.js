@@ -49,12 +49,15 @@ function initMap() {
     APP.map = L.map('map-container', {
         center: [-28.0, 134.0],
         zoom: 4,
+        zoomControl: false,
         maxBounds: L.latLngBounds(
             L.latLng(-47.0, 108.0),
             L.latLng(-8.0, 160.0)
         ),
         maxBoundsViscosity: 0.85
     });
+
+    L.control.zoom({ position: 'bottomleft' }).addTo(APP.map);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors',
