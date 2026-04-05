@@ -613,7 +613,7 @@ function renderDetailGaps(gaps) {
         return '<strong>' + escapeHtml(fullMetrics[idx]) + '</strong><br/>' + jA + ' is ' + Math.abs(val).toFixed(1) + '% ' + dir + ' ' + jB;
       }
     },
-    grid: { left: 180, right: 90, top: 48, bottom: 36 },
+    grid: { left: 220, right: 110, top: 48, bottom: 36 },
     xAxis: {
       type: 'value',
       axisLabel: { formatter: function(v) { return v + '%'; }, fontSize: 10 }
@@ -623,10 +623,10 @@ function renderDetailGaps(gaps) {
       data: metrics,
       axisLabel: {
         fontSize: 11,
-        width: 160,
+        width: 195,
         overflow: 'truncate',
         ellipsis: '…',
-        margin: 12
+        margin: 16
       }
     },
     series: [
@@ -641,7 +641,7 @@ function renderDetailGaps(gaps) {
         label: {
           show: true,
           position: 'right',
-          distance: 8,
+          distance: 12,
           formatter: function(p) { return p.value == null ? '' : '+' + p.value.toFixed(1) + '%'; },
           fontSize: 10,
           color: '#333333'
@@ -657,7 +657,7 @@ function renderDetailGaps(gaps) {
         label: {
           show: true,
           position: 'left',
-          distance: 8,
+          distance: 12,
           formatter: function(p) { return p.value == null ? '' : p.value.toFixed(1) + '%'; },
           fontSize: 10,
           color: '#333333'
@@ -1208,7 +1208,7 @@ function renderBriefGaps(gaps) {
         return '<strong>' + escapeHtml(fullMetrics[idx]) + '</strong><br/>' + briefChartJA + ' is ' + Math.abs(val).toFixed(1) + '% ' + dir + ' ' + briefChartJB;
       }
     },
-    grid: { left: 160, right: 80, top: 44, bottom: 34 },
+    grid: { left: 195, right: 95, top: 44, bottom: 34 },
     xAxis: {
       type: 'value',
       axisLabel: { formatter: function(v) { return v + '%'; }, fontSize: 9 }
@@ -1218,10 +1218,10 @@ function renderBriefGaps(gaps) {
       data: metrics,
       axisLabel: {
         fontSize: 10,
-        width: 140,
+        width: 170,
         overflow: 'truncate',
         ellipsis: '…',
-        margin: 10
+        margin: 14
       }
     },
     series: [
@@ -1236,7 +1236,7 @@ function renderBriefGaps(gaps) {
         label: {
           show: true,
           position: 'right',
-          distance: 6,
+          distance: 10,
           formatter: function(p) { return p.value == null ? '' : '+' + p.value.toFixed(1) + '%'; },
           fontSize: 9,
           color: '#333333'
@@ -1252,7 +1252,7 @@ function renderBriefGaps(gaps) {
         label: {
           show: true,
           position: 'left',
-          distance: 6,
+          distance: 10,
           formatter: function(p) { return p.value == null ? '' : p.value.toFixed(1) + '%'; },
           fontSize: 9,
           color: '#333333'
