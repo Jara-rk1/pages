@@ -210,6 +210,9 @@
             grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
             gap: 16px;
         }
+        .news-grid.hidden {
+            display: none;
+        }
         .news-card {
             background: var(--white);
             border-radius: 4px;
@@ -276,6 +279,63 @@
             margin-top: auto;
         }
 
+        /* View toggle */
+        .view-toggle {
+            display: flex;
+            gap: 4px;
+            background: var(--grey-border);
+            border-radius: 4px;
+            padding: 2px;
+        }
+        .view-btn {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 3px;
+            background: transparent;
+            font-size: 12px;
+            font-family: Arial, Helvetica, sans-serif;
+            cursor: pointer;
+            color: var(--text-mid);
+            transition: all 0.2s;
+        }
+        .view-btn.active {
+            background: var(--white);
+            color: var(--text-dark);
+            font-weight: 600;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+        }
+
+        /* Sector summaries */
+        .summaries-container { display: block; }
+        .summaries-container.hidden { display: none; }
+        .sector-summary { margin-bottom: 28px; }
+        .summary-heading {
+            font-size: 17px;
+            font-weight: 700;
+            padding: 8px 16px;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+        .summary-period {
+            font-size: 12px;
+            color: var(--text-mid);
+            margin-bottom: 12px;
+            padding-left: 20px;
+        }
+        .summary-list { list-style: none; padding: 0; }
+        .summary-item {
+            padding: 14px 20px;
+            margin-bottom: 8px;
+            background: var(--white);
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        .summary-title { font-size: 14px; line-height: 1.4; display: block; margin-bottom: 4px; }
+        .summary-desc { font-size: 13px; color: var(--text-mid); line-height: 1.5; margin: 4px 0 8px; }
+        .summary-meta { font-size: 11px; color: var(--text-mid); }
+        .summary-meta a { color: var(--cobalt-blue); text-decoration: none; }
+        .summary-meta a:hover { text-decoration: underline; }
+
         /* Empty state */
         .empty-state {
             text-align: center;
@@ -315,6 +375,7 @@
             .stat-card { min-width: 120px; padding: 12px 14px; }
             .news-grid { grid-template-columns: 1fr; }
             .filter-btn { font-size: 11px; padding: 5px 10px; }
+            .view-toggle { margin-top: 8px; }
         }
 
         /* Print */
@@ -346,7 +407,7 @@
         </div>
         <div class="header-right">
             <div class="live-dot" title="Auto-updated daily"></div>
-            <div class="header-updated">Updated 08 April 2026 at 07:38 UTC</div>
+            <div class="header-updated">Updated 08 April 2026 at 17:49 AEST</div>
         </div>
     </header>
 
@@ -355,49 +416,49 @@
             <div class="stat-card">
                 <div class="stat-icon" style="background: rgba(0,51,141,0.12); color: var(--kpmg-blue)">📰</div>
                 <div>
-                    <div class="stat-value">64</div>
+                    <div class="stat-value">4</div>
                     <div class="stat-label">Total Articles</div>
                 </div>
             </div>
             
             <div class="stat-card">
                 <div class="stat-icon" style="background: #00338D15; color: #00338D">🏥</div>
-                <div class="stat-value">8</div>
+                <div class="stat-value">0</div>
                 <div class="stat-label">Aged Care</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon" style="background: #00B8F515; color: #00B8F5">♿</div>
-                <div class="stat-value">8</div>
+                <div class="stat-value">1</div>
                 <div class="stat-label">NDIS & Disability</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon" style="background: #1E49E215; color: #1E49E2">⚕️</div>
-                <div class="stat-value">8</div>
+                <div class="stat-value">0</div>
                 <div class="stat-label">Health</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon" style="background: #7213EA15; color: #7213EA">🛡️</div>
-                <div class="stat-value">8</div>
+                <div class="stat-value">0</div>
                 <div class="stat-label">Child Protection</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon" style="background: #76D2FF15; color: #76D2FF">🎓</div>
-                <div class="stat-value">8</div>
+                <div class="stat-value">0</div>
                 <div class="stat-label">Education</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon" style="background: #00C0AE15; color: #00C0AE">🏠</div>
-                <div class="stat-value">8</div>
+                <div class="stat-value">1</div>
                 <div class="stat-label">Housing & Homelessness</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon" style="background: #AB0D8215; color: #AB0D82">🏗️</div>
-                <div class="stat-value">8</div>
+                <div class="stat-value">0</div>
                 <div class="stat-label">Infrastructure</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon" style="background: #B497FF15; color: #B497FF">🏛️</div>
-                <div class="stat-value">8</div>
+                <div class="stat-value">2</div>
                 <div class="stat-label">Public Service & Budget</div>
             </div>
         </div>
@@ -406,492 +467,32 @@
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="Search articles..." aria-label="Search articles">
             </div>
+            <div class="view-toggle">
+                <button class="view-btn active" data-view="summary" aria-label="Summary view">Summary</button>
+                <button class="view-btn" data-view="cards" aria-label="Card view">Cards</button>
+            </div>
             <div class="filter-row">
                 <button class="filter-btn active" data-sector="all" style="--sector-colour: var(--kpmg-blue)">All</button>
-                <button class="filter-btn" data-sector="aged_care" style="--sector-colour: #00338D">🏥 Aged Care <span class="count">8</span></button><button class="filter-btn" data-sector="ndis" style="--sector-colour: #00B8F5">♿ NDIS & Disability <span class="count">8</span></button><button class="filter-btn" data-sector="health" style="--sector-colour: #1E49E2">⚕️ Health <span class="count">8</span></button><button class="filter-btn" data-sector="child_protection" style="--sector-colour: #7213EA">🛡️ Child Protection <span class="count">8</span></button><button class="filter-btn" data-sector="education" style="--sector-colour: #76D2FF">🎓 Education <span class="count">8</span></button><button class="filter-btn" data-sector="housing" style="--sector-colour: #00C0AE">🏠 Housing & Homelessness <span class="count">8</span></button><button class="filter-btn" data-sector="infrastructure" style="--sector-colour: #AB0D82">🏗️ Infrastructure <span class="count">8</span></button><button class="filter-btn" data-sector="public_service" style="--sector-colour: #B497FF">🏛️ Public Service & Budget <span class="count">8</span></button>
+                <button class="filter-btn" data-sector="aged_care" style="--sector-colour: #00338D">🏥 Aged Care <span class="count">0</span></button><button class="filter-btn" data-sector="ndis" style="--sector-colour: #00B8F5">♿ NDIS & Disability <span class="count">1</span></button><button class="filter-btn" data-sector="health" style="--sector-colour: #1E49E2">⚕️ Health <span class="count">0</span></button><button class="filter-btn" data-sector="child_protection" style="--sector-colour: #7213EA">🛡️ Child Protection <span class="count">0</span></button><button class="filter-btn" data-sector="education" style="--sector-colour: #76D2FF">🎓 Education <span class="count">0</span></button><button class="filter-btn" data-sector="housing" style="--sector-colour: #00C0AE">🏠 Housing & Homelessness <span class="count">1</span></button><button class="filter-btn" data-sector="infrastructure" style="--sector-colour: #AB0D82">🏗️ Infrastructure <span class="count">0</span></button><button class="filter-btn" data-sector="public_service" style="--sector-colour: #B497FF">🏛️ Public Service & Budget <span class="count">2</span></button>
             </div>
         </div>
 
-        <div class="news-grid" id="newsGrid">
+        <div class="summaries-container" id="summariesContainer">
+            <section class="sector-summary" data-sector="ndis"><h2 class="summary-heading" style="border-left: 4px solid #00B8F5">♿ NDIS & Disability</h2><p class="summary-period">Last 24 hours as at 08 April 2026 at 17:49 AEST</p><ul class="summary-list"><li class="summary-item"><strong class="summary-title">Central agencies offer redundancies across APS - The Mandarin</strong><p class="summary-desc">Central agencies offer redundancies across APS  The Mandarin</p><span class="summary-meta">The Mandarin &middot; 08 Apr 2026, 05:37 AM &middot; <a href="https://news.google.com/rss/articles/CBMijgFBVV95cUxOUDhTaTRUaXU0QWJTUjVrNDlYNG9BSWU4VU1Wc3VXR2NWMXgxTlppT2NhRmMzR2YyTnFiNmpVLU1oRDNidnNSTVBZR2FKa1l5dmF0ek16QlpSMmRKMG1LQnFZUUdlbmM4MDBQdS1GbENpNU5KN3l3eFh6SnYzZXVReTU5UzR4bHc3eUZVSzZR?oc=5" target="_blank" rel="noopener">Read&nbsp;article</a></span></li></ul></section><section class="sector-summary" data-sector="housing"><h2 class="summary-heading" style="border-left: 4px solid #00C0AE">🏠 Housing & Homelessness</h2><p class="summary-period">Last 24 hours as at 08 April 2026 at 17:49 AEST</p><ul class="summary-list"><li class="summary-item"><strong class="summary-title">Belconnen set for new 420-unit complex as build-to-rent gains traction - The Canberra Times</strong><p class="summary-desc">Belconnen set for new 420-unit complex as build-to-rent gains traction  The Canberra Times</p><span class="summary-meta">The Canberra Times &middot; 08 Apr 2026, 02:43 PM &middot; <a href="https://news.google.com/rss/articles/CBMiqgFBVV95cUxNekY3TkZFaDRCSW5hN1RmVDlLOTRoV3JsbE5jcUxqNndmbmxHQVRXaENFVWkwUTlFTVdUNXpmbVoyRm1ZWW05ZlFSVjZ0MEJKY0pmUHlwbS1iaW1QVUZkcWRaM21TQmpoTlBkb0szdnY1UUc4enBhcV92bEQ3d1c0ZDBXX09tTE5RdFY1dDN0bjRYcjNudWhvVnpxWUw0Q1AtYXlzNEhjSDdBUQ?oc=5" target="_blank" rel="noopener">Read&nbsp;article</a></span></li></ul></section><section class="sector-summary" data-sector="public_service"><h2 class="summary-heading" style="border-left: 4px solid #B497FF">🏛️ Public Service & Budget</h2><p class="summary-period">Last 24 hours as at 08 April 2026 at 17:49 AEST</p><ul class="summary-list"><li class="summary-item"><strong class="summary-title">Odds firm on new CGT property rate - The Australian</strong><p class="summary-desc">Odds firm on new CGT property rate  The Australian</p><span class="summary-meta">The Australian &middot; 08 Apr 2026, 07:05 AM &middot; <a href="https://news.google.com/rss/articles/CBMimwJBVV95cUxOUG1BNHhoRW5iSFFrbjN6LXh2Y29MSFBlaEFiUTMyTWtmWmh6X0h4NnRxSjNhTmx6VnNfWUNWM2FEeXotU3dJUGZKeTdvUENuc3d3R1FFaWxueHh1ZXphTUV5UkhsX0hpajZQbnl0dVlQSjIySXh4cmxQd3hEVGtvazJGc3E0ai1DeERqaWtnS3VpZXhWYnozVjFVWmNWMVljTzFOQXJkb2h5ZGVDR0VqMllJdDhNdWJCMkV0ZGR1Q1p2MHRIcXhyNlQ3M3dQaDA3cTB6b0Y5Qkh0dWdsa01yVXRYQk5JQXltckF4c2ZpNkluUWdJd3EwanlBZzg4amlGRzBSelRxcmctRHJrSmxkVWRFMWRDX0pBckhJ0gGgAkFVX3lxTFBFVmlYalktTjQwVUliQW9NV256eHA2WEdkLXotZlN5UWF2Vk1EN1k2RjU2UlpaLUI4NUFUZzA1ZW5wcDZhUWVvMlZzX1dXQmpEaVRDelhIZkY4SXJZTER6S2ZnaGxrcWhSMjRUc0xKMlpzYngtQ05RdzBNQWM3a2dhVnV0NDlIbXRWa25SRU5DcE14TzFUQjJkRVBDODFzN2RuVGhnaXpfN0J5VVNVMTZXVlpFUEpmajBJeks4V3drdkMxSlBhU244eFNaNFdvQVFlUC1oLWg5YUNRb3JrTmtqMi1UMTR3b2JFUWh1VzIxQkZQd1BIX29IRE93VTJHM0s0U1lrSUZaT19KRDdsTFJtZ0NPWGxLamswQjRZQjQ2QQ?oc=5" target="_blank" rel="noopener">Read&nbsp;article</a></span></li><li class="summary-item"><strong class="summary-title">Why aren’t Indigenous leaders demanding an audit? - The Australian</strong><p class="summary-desc">Why aren’t Indigenous leaders demanding an audit?  The Australian</p><span class="summary-meta">The Australian &middot; 08 Apr 2026, 05:03 AM &middot; <a href="https://news.google.com/rss/articles/CBMi0AFBVV95cUxQWUNteUpCbE1sQlBOaURPaGJqWGtyZ3pYck9sWVlOc2c3X1RPcU9EMlVCbWxKWnZGVnFyOG9vT2tMNnh3RUoxd29HVzNmN3F5VFpBNlM0YkJWVXlVY0d2T0JMZFd2clpLVXk5WVpGeWtwYkR5cUwxWUNfV0hzVlViZnNMLXphVDVYM0wtdHpHYUhjQkJpb2EyRGtOSE04SU90VGhtYzZyTGd1RE9ZRzk1ZXVfM0xUSndqWjM2QllZVUEzZEdPRDdOQmJBVkpyNnlm0gHWAUFVX3lxTE5iVTRXcXBNR2UyX0R6T3h4SXlFYUZ5TjhTaHNEZ3d1SHR5bWxldmhzUHFHdHNxZkUxMnROV3R0OXRrUVlGdlRvb1ZuTm1hTGgxenVCUC1jX2w2bTFsaFhxbzREdVBBTm9oeHBobzhHOEdWbWk2R3lKc2dtTExuVVdKMGstMy1nVGh6NE00NF9URVM0eFBNVXU5elNyYlJoQUJpd25KTTg2UV9YTndpVXFCU1NnRDhkWVo1dUtFbkFaQ0hrUGxNcE1qX1FucTZPY2hxdDh1Z1E?oc=5" target="_blank" rel="noopener">Read&nbsp;article</a></span></li></ul></section>
+        </div>
+
+        <div class="news-grid hidden" id="newsGrid">
             
-        <article class="news-card" data-sector="aged_care">
-            <div class="card-accent" style="background: #00338D"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00338D15; color: #00338D">🏥 Aged Care</span>
-                    <span class="card-date">08 Apr 2026, 07:07 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMijwFBVV95cUxQVW9pWUdhbHg4TngxSVZsbDJQMFV2ZTlvSjlySlBtRE5xNmsyVTZkV0xvcUQ5NzZYcHZSREI4TzlESXk1cGJiQ0tfVUJoUjhGeTI2RjYyVkdJSGQ3YVBfYmxmY0VYRjltSUM5MHFWLUk4dkJubGJHc2ZLMHQ2X1VUbGZ0YktNZEhKaVNZOTdyZw?oc=5" target="_blank" rel="noopener">Nurse prescribing offers a roadmap for reform - australianpharmacist.com.au</a></h3>
-                <p class="card-desc">Nurse prescribing offers a roadmap for reform  australianpharmacist.com.au</p>
-                <div class="card-source">australianpharmacist.com.au</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="aged_care">
-            <div class="card-accent" style="background: #00338D"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00338D15; color: #00338D">🏥 Aged Care</span>
-                    <span class="card-date">08 Apr 2026, 06:56 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMingFBVV95cUxPbXNYOXIzcjVnSnJSZEtTcFA1cUtIUFJjRVJwdlJnbnhwbVphZENCOXk5M2Q1OHIwMW52MndzQTZiYmUwVnlZdG4xR2hCUjlJdzU0Ukh0d2k0MmlHdkpaTXVKUTF1cjNhc3hDQXp1Y214dlVTVC1la2VBeUtmclExTWlUa0VLTU84TzV2WGgwSVFvcEtDZFBhQ3I3d1o5QQ?oc=5" target="_blank" rel="noopener">Whiddon Temora unveils $25.6m redevelopment backed by federal funding - Inside Ageing</a></h3>
-                <p class="card-desc">Whiddon Temora unveils $25.6m redevelopment backed by federal funding  Inside Ageing</p>
-                <div class="card-source">Inside Ageing</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="aged_care">
-            <div class="card-accent" style="background: #00338D"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00338D15; color: #00338D">🏥 Aged Care</span>
-                    <span class="card-date">08 Apr 2026, 04:22 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMirwFBVV95cUxNLWFGLXlvc0lLMzYyQkhmdXQtNFhrZWNnb1lYX2ROSWdjUHFOaHc4TDFBUXI3a0NjWDJTRGpjOEtqWUpPTEg2dWFORVpweEFyXzIwY3g4N0NxZnB3aFpiUHRKcG5EN2dfSUpPd2lvQWRhVWhRcTFHTC1wbC1xR1haLVhyYkEzRFV5NUFZa29xQk93MlhQSVpTS2ZXZEUxWDhNWjcxLXBQLUdjaDJQYmJJ?oc=5" target="_blank" rel="noopener">NSW Capital Markets | Inflation, geopolitics and the new rate path ahead - Property Council Australia</a></h3>
-                <p class="card-desc">NSW Capital Markets | Inflation, geopolitics and the new rate path ahead  Property Council Australia</p>
-                <div class="card-source">Property Council Australia</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="aged_care">
-            <div class="card-accent" style="background: #00338D"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00338D15; color: #00338D">🏥 Aged Care</span>
-                    <span class="card-date">08 Apr 2026, 02:24 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMiwAFBVV95cUxOQUJhRmZCdzhsWUE2X19WcWtoS0EwRXFTbTRPRTY0cC1OdTNTZWtGOTBWUGxrQ2RSbF9NMTJCbzhvSEZscTdaclBhYk9JMnNkM1pEcjV4ME8tT0Izc3ZNTUNiOUc4bnJpS09Ud1dUT0xGNjhaWkR3S2I4R3ZNSDBzck4xdW5odUNiS0FpSnlvb1ZrbzhPNHEwdmJ3bXo4bW9TZlhYOFZmdEUxWTRoWjBrVmhLVGlON2QyX2hsWHZxYlQ?oc=5" target="_blank" rel="noopener">What are human assessors good for if an algorithm makes Support at Home decisions? - Medical Republic</a></h3>
-                <p class="card-desc">What are human assessors good for if an algorithm makes Support at Home decisions?  Medical Republic</p>
-                <div class="card-source">Medical Republic</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="aged_care">
-            <div class="card-accent" style="background: #00338D"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00338D15; color: #00338D">🏥 Aged Care</span>
-                    <span class="card-date">08 Apr 2026, 01:03 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMiigFBVV95cUxNdVlCendVRFNQd3hqZzcxUEJzazNHREhodTRnWThWMFVxa3dwT3FKalN3WTZfWTJDbWFNRzQxamlnbUxVZmI3SHFqSUFjRG13a2EwUi12SE5SZFRBQTlQV1hQaWd2OG0zXzFfY0hGbFFmVi1jRm5Vc1F3ZmNaclNZLVE4VnFNYVVUYXc?oc=5" target="_blank" rel="noopener">Site Tour | Anzac Park East Office Precinct - Property Council Australia</a></h3>
-                <p class="card-desc">Site Tour | Anzac Park East Office Precinct  Property Council Australia</p>
-                <div class="card-source">Property Council Australia</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="aged_care">
-            <div class="card-accent" style="background: #00338D"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00338D15; color: #00338D">🏥 Aged Care</span>
-                    <span class="card-date">08 Apr 2026, 12:31 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxNLXpRTHZXc0ZBRlJhWVNfaG9aVXBUbGJyWDZFc3lFTG1XUmxGWFgydVdrS3BKd1NKRTRsQlNiekR3NDhkVDhCSTU5MnZNN3hWV05xYlJ6UVByWGtsQXRlVGdjQU5VMWoyTzYwZVFESDFXNjJlUFEwS0sxODNpb2poQXVlUlZRME91QllfcFdZNExEc2EzdTlGbmhLSHpFV29MRzA5QzJ0VjR6Ylk?oc=5" target="_blank" rel="noopener">Metro homes may lose $11m in quarterly funding shortfall - Australian Ageing Agenda</a></h3>
-                <p class="card-desc">Metro homes may lose $11m in quarterly funding shortfall  Australian Ageing Agenda</p>
-                <div class="card-source">Australian Ageing Agenda</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="aged_care">
-            <div class="card-accent" style="background: #00338D"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00338D15; color: #00338D">🏥 Aged Care</span>
-                    <span class="card-date">07 Apr 2026, 10:51 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMisgFBVV95cUxNQ0duYkNTbjJHeUptay1YX201dHJLNUtzWWNKd2NZT2VMQ0lELTB5N0Rmd0xNbjJCVnZCTFJsNTY0RV81b0UtUzRUTU5vTWw5dUNfRExGVldzMjBfOUprMmd5UG1XUUVoeEY1dHNJamllM3hYSjBUcnowWkhnR0dfSkx2VUpNdUM5Y0N0ejFaQWhtVU1GbUZOVjFGNUNfQXVWMmM5bHBDQXF6THhEZ1dMU1dB?oc=5" target="_blank" rel="noopener">Strong consumer protections are critically important - Australian Ageing Agenda</a></h3>
-                <p class="card-desc">Strong consumer protections are critically important  Australian Ageing Agenda</p>
-                <div class="card-source">Australian Ageing Agenda</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="aged_care">
-            <div class="card-accent" style="background: #00338D"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00338D15; color: #00338D">🏥 Aged Care</span>
-                    <span class="card-date">07 Apr 2026, 10:51 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMipgFBVV95cUxOOXFYalcxbmtBOTZaMDFzY3JTMWZDMTduRENRYzBwUkNZVDhXWXBGdEgyOElNTEtqRjlVZ0g2S0pnQldLazJxNEZhbGk1X1M2UDd6aS1SZm4xbkRUNEY1aWRVSUVfNXpwWExpNUNwU0NndVdsZTExTEVZTEEwOGEtVUhUVWR0OVNGd2F0XzNmd0RrU084QU1QazJoY1J2TmFkMGVJSXh3?oc=5" target="_blank" rel="noopener">Vasey gets $32k for medical equipment - Australian Ageing Agenda</a></h3>
-                <p class="card-desc">Vasey gets $32k for medical equipment  Australian Ageing Agenda</p>
-                <div class="card-source">Australian Ageing Agenda</div>
-            </div>
-        </article>
         <article class="news-card" data-sector="ndis">
             <div class="card-accent" style="background: #00B8F5"></div>
             <div class="card-body">
                 <div class="card-meta">
                     <span class="sector-badge" style="background: #00B8F515; color: #00B8F5">♿ NDIS & Disability</span>
-                    <span class="card-date">08 Apr 2026, 06:15 AM</span>
+                    <span class="card-date">08 Apr 2026, 05:37 AM</span>
                 </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMirgFBVV95cUxONld1b2EwX21GTHJiUlNET2hDQlJGVjBGUXpGN2NRal9TNndDVEdTWldKMjZjcUtPcVI0dGNjdWUxcHRNY3piRktjNS0xTWVNNk52VXJsbHNSeFBuZkQ3TTd4RmJHbFFfTlZxaWRnWTBNU3BFTVVkNWVRRjAzZXk2dFROck82UE9MUHVldmU3UlRGWFdLOG9pekZkTFhZbldidzVpdXRTMm9scERmR0E?oc=5" target="_blank" rel="noopener">The sector where jobs have soared over the last five years - AFR</a></h3>
-                <p class="card-desc">The sector where jobs have soared over the last five years  AFR</p>
-                <div class="card-source">AFR</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="ndis">
-            <div class="card-accent" style="background: #00B8F5"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00B8F515; color: #00B8F5">♿ NDIS & Disability</span>
-                    <span class="card-date">08 Apr 2026, 12:51 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMioAFBVV95cUxOOGQwU3BEcElkSE41eG52cEdvZ0w4WXVQX1BmVVBYeTU2d2IwajVkRjRjRkhlZTRaVHZrWUJEYWJTN0RzeFhqaHJfZGZzaGEyV0VQcTdTT25nM1J0a3VDNGQ5bzAwMkluTHdIczFXYlhPTVBjdTN6WV9US195eFMwRnc4c1k1eVZFaFRCSnRxRlhPTWF1MHpGSHpSMXlMemRV?oc=5" target="_blank" rel="noopener">People don’t plan to become carers – workplaces should be prepared - womensagenda.com.au</a></h3>
-                <p class="card-desc">People don’t plan to become carers – workplaces should be prepared  womensagenda.com.au</p>
-                <div class="card-source">womensagenda.com.au</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="ndis">
-            <div class="card-accent" style="background: #00B8F5"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00B8F515; color: #00B8F5">♿ NDIS & Disability</span>
-                    <span class="card-date">07 Apr 2026, 12:03 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMizgFBVV95cUxNaURmTC05WXVvMGozRHJpTDVNNENzSkR6ZHl0VFdYR1R0T1FUbEhpQ1pjUDM4MkI5bkdvdjNSYzMtRjFaNDJ1bGVNcUlBLXJVRElaeFpwS3RuRHhrUW0wdXNUR1N4ckJVeUJPWmRIZF9McWNXUGo5SHFsUFFWYksyZHZwS0pDMDRneDhlRVc1WnBUWkNpc2tPMHlpazFmMmhBTDltOWpkUkd3NDFPeE90X2tTek1XZUkyYmtIVmlhcGhoSFUwNDByajVJOE5uQdIBzgFBVV95cUxNaURmTC05WXVvMGozRHJpTDVNNENzSkR6ZHl0VFdYR1R0T1FUbEhpQ1pjUDM4MkI5bkdvdjNSYzMtRjFaNDJ1bGVNcUlBLXJVRElaeFpwS3RuRHhrUW0wdXNUR1N4ckJVeUJPWmRIZF9McWNXUGo5SHFsUFFWYksyZHZwS0pDMDRneDhlRVc1WnBUWkNpc2tPMHlpazFmMmhBTDltOWpkUkd3NDFPeE90X2tTek1XZUkyYmtIVmlhcGhoSFUwNDByajVJOE5uQQ?oc=5" target="_blank" rel="noopener">Don’t blame autistic kids: The truth about NDIS ‘misuse’ - The Courier Mail</a></h3>
-                <p class="card-desc">Don’t blame autistic kids: The truth about NDIS ‘misuse’  The Courier Mail</p>
-                <div class="card-source">The Courier Mail</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="ndis">
-            <div class="card-accent" style="background: #00B8F5"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00B8F515; color: #00B8F5">♿ NDIS & Disability</span>
-                    <span class="card-date">07 Apr 2026, 12:00 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMimAFBVV95cUxNajBoTG5zV1A1dTdNaWlpeVh6VGJydlhZQ25TckoxQUNHVmlYaks0V2tFdkszMG5idjl6WnFOaExvYVBTb0xTZzMxdExDMzZYcl9oLXQ3eEtZa3ZpeGR1TnpUYzB2OTJCLW1iUkY4YWxJOWZJZjBlQUxuU0ZPbG5RQXItRDI1LXN2YjVuR2hkZWVFUWRpYXNYcQ?oc=5" target="_blank" rel="noopener">Industry leaders to inform Australia’s next National Cultural Policy - Office for the Arts</a></h3>
-                <p class="card-desc">Industry leaders to inform Australia’s next National Cultural Policy  Office for the Arts</p>
-                <div class="card-source">Office for the Arts</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="ndis">
-            <div class="card-accent" style="background: #00B8F5"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00B8F515; color: #00B8F5">♿ NDIS & Disability</span>
-                    <span class="card-date">07 Apr 2026, 07:00 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMirAFBVV95cUxQdWdrano1b0FoOEswb0Jrck5ySXFyYkN1d24tTkhqbXplUVFtYlRNemtHWHFxQzJONmNXcGUxbFYxYjZySHkzakFfOW9XazN5T3AwQjcwVzFPaUxsa29pTXlXanFnLUhJSkxYMm5hUWNBR1BBYnBJdUVkbU02dW1ibzRjLXJnZDRLVjZ0ZHRYYUR6QUxZU01teVQ4TXFHR1VrMVVwb3M4WWtRTjF3?oc=5" target="_blank" rel="noopener">Sky News Australia. . Shadow Minister for the NDIS Melissa McIntosh says the government’s spending on NDIS is “way out of control”. - facebook.com</a></h3>
-                <p class="card-desc">Sky News Australia. . Shadow Minister for the NDIS Melissa McIntosh says the government’s spending on NDIS is “way out of control”.  facebook.com</p>
-                <div class="card-source">facebook.com</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="ndis">
-            <div class="card-accent" style="background: #00B8F5"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00B8F515; color: #00B8F5">♿ NDIS & Disability</span>
-                    <span class="card-date">07 Apr 2026, 06:21 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMilAFBVV95cUxPdTRBOUVPQW9MS25NR0lyU1BzVG1xbVN4R0FUR09mS2V4SU9vWGZKUWxVcHpOQ0FXOHJkVjA3LU1mTHItbTFKN0JUa2VMWTlibE9jdzdHZ1ZrWXNJMWdIM0NEb3VwY3R4SEpmSExDaXhLTWpMV1NzcHJKcXd6RnNDLTNNZDUwTjF0TG5KZWhYOUJJbHht?oc=5" target="_blank" rel="noopener">| Kyabram Free Press - Kyabram Free Press</a></h3>
-                <p class="card-desc">| Kyabram Free Press  Kyabram Free Press</p>
-                <div class="card-source">Kyabram Free Press</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="ndis">
-            <div class="card-accent" style="background: #00B8F5"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00B8F515; color: #00B8F5">♿ NDIS & Disability</span>
-                    <span class="card-date">07 Apr 2026, 06:01 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMiwwFBVV95cUxPNDR0ZlJYR2c1cnpkeWZOZVczN0VnOXdjZ1pieWNRcV95RU9fME9CN0Z6UDRqN0JKaFl3WERDMjNnM3VyZ1NYWEpOaXI0RGF1M28xOU90NDNVWl9wQmVqY2JsU3hZangxX2dyVThONDRyTWRYWmhYbjV3MU91UzJNQ2U2X2NXSm1nUTh3TndrY2RNQndkZ21Ca2NvTndiVGpOYjJBLVY0UHhWbGR5eUZlekdIVlF0blI4VUhQR3h2TGs3LTg?oc=5" target="_blank" rel="noopener">Crossbench MPs warn Labor against slashing NDIS growth in budget - SMH.com.au</a></h3>
-                <p class="card-desc">Crossbench MPs warn Labor against slashing NDIS growth in budget  SMH.com.au</p>
-                <div class="card-source">SMH.com.au</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="ndis">
-            <div class="card-accent" style="background: #00B8F5"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00B8F515; color: #00B8F5">♿ NDIS & Disability</span>
-                    <span class="card-date">07 Apr 2026, 05:58 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMijgFBVV95cUxQdVUzek1raExjdnNUaUY4U0Q4MmRENS1xOTB4bDFWZG9yR2dvWjZ2dVY0UnJ0NHBxQ0cxYWY0a0dITlZqZVAzVkxsaFN4U0tPeDVqWkFYQWZZbDctcHBqRG8wR3dBaTd5T3ZXTEJHdDBpTFpkSFNuQkNKY3BXTk5ZaGJqaTM2SGhiQXVTb0tn?oc=5" target="_blank" rel="noopener">NDIS holds the key to budget sustainability - MacroBusiness</a></h3>
-                <p class="card-desc">NDIS holds the key to budget sustainability  MacroBusiness</p>
-                <div class="card-source">MacroBusiness</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="health">
-            <div class="card-accent" style="background: #1E49E2"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #1E49E215; color: #1E49E2">⚕️ Health</span>
-                    <span class="card-date">08 Apr 2026, 04:37 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMilwFBVV95cUxONEJibHJKUVNTRko4ZFR6dFp6dHRGLWtVbEd6LW5BN2s0aUM3bElTNkJ1QThMaWRFUFdlczdNV3VNd3VhU2dIdXJKRml0UmozZUY4N25iVEtmUW1rUWFGSDd0MDZQRnQ0ekhONDNvRHNZNTlPV1VCZm9tcEppZ1lQNFhjckdkWnVlVU1BczhBWm5JcXVjS09v?oc=5" target="_blank" rel="noopener">newsGP - New clinical guideline for youth acute mental health - Royal Australian College of General Practitioners (RACGP)</a></h3>
-                <p class="card-desc">newsGP - New clinical guideline for youth acute mental health  Royal Australian College of General Practitioners (RACGP)</p>
-                <div class="card-source">Royal Australian College of General Practitioners (RACGP)</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="health">
-            <div class="card-accent" style="background: #1E49E2"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #1E49E215; color: #1E49E2">⚕️ Health</span>
-                    <span class="card-date">08 Apr 2026, 03:31 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMiwAFBVV95cUxQWG9jaXJmeDJDRDBKWlRKSXIyRVpldDdMc3ljVWdUbkdreVVOcklaQ285Ujk5VUVVUEhLSGstaUVKR0RLYk4yOHN1bU1TSy1xcWJ4ME9scGNJLXlEblRnUVVzcHRGY1BZc3NGczBBTVdxaG9PUVhGNFJvam9DTVREQmZIN0kzbkVBZnAtN2JDTTZtYnVHT0RyOEtPX0FLa3RzYXRDUy1TNnBybGRRU0o3dGVRNFdBaFV4Vk5QRnc3WHU?oc=5" target="_blank" rel="noopener">Internationally renowned researcher named new executive director at The Kids - UWA</a></h3>
-                <p class="card-desc">Internationally renowned researcher named new executive director at The Kids  UWA</p>
-                <div class="card-source">UWA</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="health">
-            <div class="card-accent" style="background: #1E49E2"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #1E49E215; color: #1E49E2">⚕️ Health</span>
-                    <span class="card-date">08 Apr 2026, 01:30 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMiqgFBVV95cUxPc2ZjVklCMnlFMzZSa0ducDA2TERYU3NLUVQzQjl0Ry1xU2ZrWlRLRnBoQjBTTUhzR3NhS25uaU81T3V5TjI1YUwxeFBmV2hIOXpXb2FFSGdGcTVBNXFzSXVhQ3g0c2Z6cUhEdDVrWmRrUGh1dG1IWkIyYktaOEgtd0VlcUxkVXBiYVlzcUZhekdGWDNtaGN0T0dKTzJYLV80RTRYX2x6TmhVQQ?oc=5" target="_blank" rel="noopener">Medicinal cannabis demand for mental health soars, evidence lags - Monash Lens</a></h3>
-                <p class="card-desc">Medicinal cannabis demand for mental health soars, evidence lags  Monash Lens</p>
-                <div class="card-source">Monash Lens</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="health">
-            <div class="card-accent" style="background: #1E49E2"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #1E49E215; color: #1E49E2">⚕️ Health</span>
-                    <span class="card-date">08 Apr 2026, 01:22 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMitwFBVV95cUxOYkJBLUhQMkJTTmZtMVE3cHJZbmJxZlQxY2o0UjNRN2lYUDBZRXZBazhsVm91N0pXSXRJdmRFQWNQakRvRTJwTmZqaTVUNjNfeENTQWtfTmZaazVOOGQ1akFjenI0bWF1RjQ3TUc2bWlfVzZuUmRJWklHeEVmV0RNX2I4NDFjelpyaThNbzJWR2toSm1NZVpRYVFnVDhrS011ZUFFQWFwbjZ0cUV3WnlOOWxBSGgwcVE?oc=5" target="_blank" rel="noopener">Poor mental health may increase susceptibility to misinformation, report finds - retailpharmacymagazine.com.au</a></h3>
-                <p class="card-desc">Poor mental health may increase susceptibility to misinformation, report finds  retailpharmacymagazine.com.au</p>
-                <div class="card-source">retailpharmacymagazine.com.au</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="health">
-            <div class="card-accent" style="background: #1E49E2"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #1E49E215; color: #1E49E2">⚕️ Health</span>
-                    <span class="card-date">08 Apr 2026, 12:02 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMi8gFBVV95cUxPTDRaeURGaDRQWnJUWURoUlp5NUV0R2FBaURpQXM0eUtZVWFESlVEb2k0eUxNRU04TzVWUzE0T05DdGpRVV9EczJCbnZpZDhyV3BpclRENVE0ZFE5U3RCWW02amtpOHJ5RGZ6Nk9QSlAtdk10bU5ELWFIVlZoYnI1aWpmN1Bvc1J2VEdPa3dRTm9vTTQtcm9JVTJyRzhHM1E4RUVCbklzUExkMG1Wemo0RkV6dzhJTFZKcGQ1RjBmUG1USXlIMmxTTWhTUDdTT3I3M0hqalJHRGhMM0dZTDZ5X2k5NWdWTU96WGd0eEJqYXhpUQ?oc=5" target="_blank" rel="noopener">Australia: Blend insurance Solutions appoints new Head of Accident and Health - Asia Insurance Review</a></h3>
-                <p class="card-desc">Australia: Blend insurance Solutions appoints new Head of Accident and Health  Asia Insurance Review</p>
-                <div class="card-source">Asia Insurance Review</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="health">
-            <div class="card-accent" style="background: #1E49E2"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #1E49E215; color: #1E49E2">⚕️ Health</span>
-                    <span class="card-date">07 Apr 2026, 11:48 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMirgFBVV95cUxNclNJbkRVTW1QbXM1blR1cWZoNjV1OV9MU3hLaWY1WFBhanNUMW1XRXB1ZElvNERRWUtKWWVEYXJ6bFBlS3JTVnRKNTM3bzB1QWF2SFB4b0ZoWkd5eGZRQVNKUlpCTFBBQ2Ztdk5scS1kVURNWnJ4dldEN1htb293SjR2ZmViNkNVejZBMkhMcjlPSUxjZ1RveVA0eWpyN1lZOHh5NVQ4d3R0b0QyWXc?oc=5" target="_blank" rel="noopener">Ryde Medicare Mental Health Centre now open - Australian Government Department of Health, Disability and Ageing</a></h3>
-                <p class="card-desc">Ryde Medicare Mental Health Centre now open  Australian Government Department of Health, Disability and Ageing</p>
-                <div class="card-source">Australian Government Department of Health, Disability and Ageing</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="health">
-            <div class="card-accent" style="background: #1E49E2"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #1E49E215; color: #1E49E2">⚕️ Health</span>
-                    <span class="card-date">07 Apr 2026, 05:30 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMiiwFBVV95cUxPa1kzWkZYZXJjcExoNy1TN2t3dDBzOGRQQU5PWEZfVWh1VUd0TnFaYUlDVDhKR2JTZ2E4VDhpMHJnMWNZU25rT0FkRlV1bVhxTHpQbjlJWWtQZEtIVktMaHJ1Ym5wYzNZTlIyYUtLTDVGVUhNdGw4VlpycFdka0FQb2l6WTFVQnVqMVYw?oc=5" target="_blank" rel="noopener">Nationals leader&#x27;s vision for &#x27;Australia on steroids&#x27; - aapnews.aap.com.au</a></h3>
-                <p class="card-desc">Nationals leader&#x27;s vision for &#x27;Australia on steroids&#x27;  aapnews.aap.com.au</p>
-                <div class="card-source">aapnews.aap.com.au</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="health">
-            <div class="card-accent" style="background: #1E49E2"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #1E49E215; color: #1E49E2">⚕️ Health</span>
-                    <span class="card-date">07 Apr 2026, 03:40 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMiswFBVV95cUxOOGt0UDZfZm9xSmMxQ1ptN3RHZDhjVjJTS2hiY3U3ckZLYkpIUHhVUi1kNklRaC03N1dhbFpoX2dINm5KZ3BJUXYwaUJlWlVTQ2s3QkNxekFUcUUzc0kzQ1RnSElzSXMxcXlSRWQ2dS1IU3p5XzMtVnRXMHpsb3ZLSUVabUNZQkZQS1NwWVJVdkEwVFZ2QUs0MU5ocHhXV3JqZ0RpYVN6ampRNlpjZWxBeTJUQQ?oc=5" target="_blank" rel="noopener">Research Alert: Medicare Advantage: Investors Cheer 2027 Rate Update, Star Ratings Reform - moomoo.com</a></h3>
-                <p class="card-desc">Research Alert: Medicare Advantage: Investors Cheer 2027 Rate Update, Star Ratings Reform  moomoo.com</p>
-                <div class="card-source">moomoo.com</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="child_protection">
-            <div class="card-accent" style="background: #7213EA"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #7213EA15; color: #7213EA">🛡️ Child Protection</span>
-                    <span class="card-date">08 Apr 2026, 02:17 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxORmNWMjk3eVF5djRkZnpOOEhBU3VSVkoyQ1JEQ0ZtbW1mdWJWQWs5WEF5VE1BM2cyLVZTdGo5RkFQYmRzQXAwM1ZEb083Q25xYWhnQkZPM2ZjRVBsSjY1bi1yZXZNSHRQUklpZnd3dGdpT2lqLVlraC01bVZxLWQtXzlEYmVBcEg5QTd1b1U0U1BzLU1tdGplVmE0WDRxVEhRRXlfVURNekluSFU?oc=5" target="_blank" rel="noopener">Australian children&#x27;s data at risk through approved school apps - UNSW Sydney</a></h3>
-                <p class="card-desc">Australian children&#x27;s data at risk through approved school apps  UNSW Sydney</p>
-                <div class="card-source">UNSW Sydney</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="child_protection">
-            <div class="card-accent" style="background: #7213EA"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #7213EA15; color: #7213EA">🛡️ Child Protection</span>
-                    <span class="card-date">08 Apr 2026, 01:22 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMiswFBVV95cUxNX2R5c255Z2JKbUxmWkFLWElpU0NXWlJtSm0zWGhybHQyMTBuQTk4ak5TYWhidEhKTnFpbkE3WWFSeGViTzVSSmpMbVNfaG5TN2JsaDJGN1lXNFVnNnpOQVlxamctQy1lVnVWUWEzLVlhUjJObTB1amdLOWkyWTh5bm4zZmxOeHpLVEtXQXFfYUIzWHc3bVB2c19DWnpQd0hmTlZ3MVB2XzY0XzNxWkNMZUJsRQ?oc=5" target="_blank" rel="noopener">New Shoalhaven service aims to safely keep vulnerable families together - South Coast Register</a></h3>
-                <p class="card-desc">New Shoalhaven service aims to safely keep vulnerable families together  South Coast Register</p>
-                <div class="card-source">South Coast Register</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="child_protection">
-            <div class="card-accent" style="background: #7213EA"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #7213EA15; color: #7213EA">🛡️ Child Protection</span>
-                    <span class="card-date">08 Apr 2026, 12:17 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMidEFVX3lxTE1JM1Y3UFpfRE12aXVtamIxcjN0TGNSMFhoSEpPQUlONDlqQlNQSkd6X1lud05WLVNIR19vWlJqV3VuR1J1M2FaQVhrUlU5Z01uRTdPbXA0WTY5Zmk5YUVEdzJlVnVDNGNhMVp0eUhSNDE4dkNu?oc=5" target="_blank" rel="noopener">Aussie Politician Says &quot;Everything Has Been Taken Away&quot; in Call for Motor Neurone Disease Donations - Little Black Book | LBBOnline</a></h3>
-                <p class="card-desc">Aussie Politician Says &quot;Everything Has Been Taken Away&quot; in Call for Motor Neurone Disease Donations  Little Black Book | LBBOnline</p>
-                <div class="card-source">Little Black Book | LBBOnline</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="child_protection">
-            <div class="card-accent" style="background: #7213EA"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #7213EA15; color: #7213EA">🛡️ Child Protection</span>
-                    <span class="card-date">07 Apr 2026, 09:15 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxNOFB1eHMwUzFhcE92eHJUdlA3eDdXd3JxUy1nS0ZYTmFlUlN6Z0lSdXV3eVM0TFpGR21kVXVwMTVFUDBtcHloNVRsaDRhYTRfOGptb19Tb1BlcjFMejJYeDJhX01JMEJsM2Faa0g1ek1OVUo4WDJFT0JZd2EzeDJ6Szl5ZVR6UHFrSG43cTczUDNodVdYTzlhdTBKY19JQjI4UTFCZkpic1MtQ3M?oc=5" target="_blank" rel="noopener">Husband&#x27;s dying wish for more kids an impossible choice in childcare desert - Australian Broadcasting Corporation</a></h3>
-                <p class="card-desc">Husband&#x27;s dying wish for more kids an impossible choice in childcare desert  Australian Broadcasting Corporation</p>
-                <div class="card-source">Australian Broadcasting Corporation</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="child_protection">
-            <div class="card-accent" style="background: #7213EA"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #7213EA15; color: #7213EA">🛡️ Child Protection</span>
-                    <span class="card-date">07 Apr 2026, 08:03 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMi2AFBVV95cUxPNGVVMEt3YVFJTVp5M1lmaTNmWl9xT0tsZUdoQWhmZkxQUWRRZTRGS1JkMTkwRTVhMTc3NzBhTmc5UG5IMF9ocFpkYlFwM3p4TU50SzFUMkxRNXplSTFoLVYyMVpxclVDMlJFYmc2Q1lTZThYRkZQNkM5UXZFa3RKLXBrM3BhQXRjNnV5c21DQ25BdWY1VHN5akg0dWdNTjFkOHd0dGtPY2NPblV2cF9HTWo2d0dWZ1pnS1Z3cGlWS3VoODl4ZnpOUnJza183amh6UTdmWU5wdzc?oc=5" target="_blank" rel="noopener">Ex-commissioner defends claims of child sex trafficking in Canberra - The Canberra Times</a></h3>
-                <p class="card-desc">Ex-commissioner defends claims of child sex trafficking in Canberra  The Canberra Times</p>
-                <div class="card-source">The Canberra Times</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="child_protection">
-            <div class="card-accent" style="background: #7213EA"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #7213EA15; color: #7213EA">🛡️ Child Protection</span>
-                    <span class="card-date">07 Apr 2026, 08:00 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMikAFBVV95cUxQMmRnY1E3QTRBQVhRZXdRbDIwM29yLThLY29jdXRPdk5tVU5jYmNJT25fMmxTbTRwbXY1czVuRHN2Vmt2NkU0RmJWb1hrSnlEbWdqdGJ2RFowNlhRTEc1OXFTQWNPOUVTemtXR2lQWkhIZWNnUDFVaHNaZEtBT18xWFYtMjJkQWNIbE1pUlpxX1Y?oc=5" target="_blank" rel="noopener">| Deniliquin Pastoral Times - Deniliquin Pastoral Times</a></h3>
-                <p class="card-desc">| Deniliquin Pastoral Times  Deniliquin Pastoral Times</p>
-                <div class="card-source">Deniliquin Pastoral Times</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="child_protection">
-            <div class="card-accent" style="background: #7213EA"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #7213EA15; color: #7213EA">🛡️ Child Protection</span>
-                    <span class="card-date">07 Apr 2026, 07:30 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMilAFBVV95cUxQSHd5XzhCemNOd2tDb3pOSUFhMGFQRFFjUHItR240bXFFczNyY0Nuc3B2Rm9SS0wwQzU2TXpBelh5LThLODE4QkpjYTZtcHNJeUdtelRzNFA2UV9KQVJwYjR0VVN6QlZsRXEtaXVHR0xJVlpRZ1FSVUUzUEY2V28ybTkxZEs0SC03T0JpaEN3N1RYOG03?oc=5" target="_blank" rel="noopener">Tasmania Police told authority it was not part of mandatory child abuse reporting - Australian Broadcasting Corporation</a></h3>
-                <p class="card-desc">Tasmania Police told authority it was not part of mandatory child abuse reporting  Australian Broadcasting Corporation</p>
-                <div class="card-source">Australian Broadcasting Corporation</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="child_protection">
-            <div class="card-accent" style="background: #7213EA"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #7213EA15; color: #7213EA">🛡️ Child Protection</span>
-                    <span class="card-date">07 Apr 2026, 05:55 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMitgFBVV95cUxNUVh3cHlSRHc4ME5CckpIMERZa0VIQ3ROaTdHdUtCeFF2d0ctdmJLTHJjRlduZkNWUUpZdnJlYm9lN2ZKcFlXb0NCRHlpWUxPRGE3bms2M0tXajFGcld6M2YxWHpOLVlxcFJnb0hRcDhhTWZ1c3RBeFU1bUtYQ05HTG9ud1gzOXd6VGRPQnFWWU1ud3h3VHJVdHVVSWRQdDBxY0dJblVNb3pmRlZzQXhPSU9RcFdNZw?oc=5" target="_blank" rel="noopener">Child safety system confronts ‘financial catastrophe’ - SMH.com.au</a></h3>
-                <p class="card-desc">Child safety system confronts ‘financial catastrophe’  SMH.com.au</p>
-                <div class="card-source">SMH.com.au</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="education">
-            <div class="card-accent" style="background: #76D2FF"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #76D2FF15; color: #76D2FF">🎓 Education</span>
-                    <span class="card-date">08 Apr 2026, 05:21 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxQNnBMNkxrMWlJRkxwZTJYUzZTOGZOZGpfbGR4VzJKM1RTRjE4NF93T1k1VjVjRFpJbUF4QlE0YUNPc3djNk9XUzZaYWZpV21jb09YWG96NWJ2eVhjckw3cDJqRkhXc09ZRTNUeC1Dd3Rzd3pNd3k2dFlkNzdjQlZTU2ZBZ1htSEF4eVpHZDVKQ0VfQlV1ai16TUEtWmx3MTBMVTBUMVNrOFJwZFU?oc=5" target="_blank" rel="noopener">When will housing completions in Australia overtake population growth? - Pearls and Irritations</a></h3>
-                <p class="card-desc">When will housing completions in Australia overtake population growth?  Pearls and Irritations</p>
-                <div class="card-source">Pearls and Irritations</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="education">
-            <div class="card-accent" style="background: #76D2FF"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #76D2FF15; color: #76D2FF">🎓 Education</span>
-                    <span class="card-date">07 Apr 2026, 10:10 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMinAFBVV95cUxQNWlrQklvOEw4aUZJZXZFVlFaUjE5UGc1UDBUeWJJaDBuSW9FcEVrX3luVlVSQi1SSEd2cURaMlZjV1N0MERxMzNlRjJkWFdiUVNab2R0UWtSR1lScDdsZjNlaDRIOEw3QU9LU3YyLWNwYnlBSVdHYklBaHd1aXlNelp5ZzZrbnpnYW5RV2tkakhiMTVIbkNDYk54WU8?oc=5" target="_blank" rel="noopener">Australian sector braces for ‘more control’ in looming strategy - timeshighereducation.com</a></h3>
-                <p class="card-desc">Australian sector braces for ‘more control’ in looming strategy  timeshighereducation.com</p>
-                <div class="card-source">timeshighereducation.com</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="education">
-            <div class="card-accent" style="background: #76D2FF"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #76D2FF15; color: #76D2FF">🎓 Education</span>
-                    <span class="card-date">07 Apr 2026, 07:02 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMiigFBVV95cUxPOTcxWGpxNGgzNW83aERSQm9HaVVBbXdsWmw1cnQtRVd6T1ZUdGdkTTFZTGFYdmpRUko1TmgwUTdrNVVXYmJGNndmQVlQZy1RVzMybGhBYzAtYV9OVzUybFdzZVdRMzVTWi0wRk1IakpucFNqMHctWXVYSWNZZUV0Y1Z3T1gxSTlIWkE?oc=5" target="_blank" rel="noopener">Financial reporting deadline approaches for large ECEC providers - The Sector</a></h3>
-                <p class="card-desc">Financial reporting deadline approaches for large ECEC providers  The Sector</p>
-                <div class="card-source">The Sector</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="education">
-            <div class="card-accent" style="background: #76D2FF"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #76D2FF15; color: #76D2FF">🎓 Education</span>
-                    <span class="card-date">07 Apr 2026, 02:03 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMiwwFBVV95cUxNNGNkVUpSaEt1TUJKeE9Ibkw5b0RFd1FQcnQ5S3NmcWEzNkV2N0FicmNCTy0xVGFVcW8wUGhFeFF6Zk8tUTc3RkVXVzViNHdzdURaeXdLNVdUQUV0RDJENHY5UGY2bHlVVk5OMU1jR0F3elpzck5YRl9xcDZEOElaWE1NTWo3Q00zeDFXUkcyZDFJN1RyV0V2UDdtRVRmcnRCSF9RWG1BN05YQVJEUGNvVk8yVzBOMmhGbXh0c0JHSV9LeU0?oc=5" target="_blank" rel="noopener">Is your school among Australia’s best? Nominations for 5-Star Schools now open - The Educator</a></h3>
-                <p class="card-desc">Is your school among Australia’s best? Nominations for 5-Star Schools now open  The Educator</p>
-                <div class="card-source">The Educator</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="education">
-            <div class="card-accent" style="background: #76D2FF"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #76D2FF15; color: #76D2FF">🎓 Education</span>
-                    <span class="card-date">07 Apr 2026, 08:57 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMiswFBVV95cUxPWHVlZ0pJM0RndVhzLVJBNEFxU1ppMWU0Qk9PUUo2TUltRVROeTNNSU5FcTlOajRTeTZ0VldxNEJIeFZ5aFdxWm1KTS12ZkVqd3Z1czJHby0tQ0ZDellwdUNFSWJqZjQ3SnU4UjBwNjIwZUZVVDVrY2hqc0l6d19ZWGRCRno1SExWOXJ0clE1UHFsazB2UFJ0OXlEM09pTjBNTEJRaEJRbW9iaWpVNVhBMDdiTQ?oc=5" target="_blank" rel="noopener">How AI Is Reshaping Athletic Development in Australian Schools - EducationDaily</a></h3>
-                <p class="card-desc">How AI Is Reshaping Athletic Development in Australian Schools  EducationDaily</p>
-                <div class="card-source">EducationDaily</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="education">
-            <div class="card-accent" style="background: #76D2FF"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #76D2FF15; color: #76D2FF">🎓 Education</span>
-                    <span class="card-date">07 Apr 2026, 06:22 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMimgFBVV95cUxNMnB4QmNjQWZJZFhOV3RqV1hkZTN3Yld4TzZxaWNFSjZtWEtqWW1tRWdoSDc2SE1ZcF9jWVlaamt1RUFsWWUyMHVZTjhKZFlMUl9qU1VXN2VBUjBtRWVhbmZucVVwNGp5SmhDMFF0MXNmdzhDMXQ2N0pVOF9UWW1iVnNPZi1JWTNPVHlUZ1YwOS1jMzJtTjFhNVdR?oc=5" target="_blank" rel="noopener">Victoria ECEC inquiry interim report highlights safety, governance and reform priorities l The Sector - The Sector</a></h3>
-                <p class="card-desc">Victoria ECEC inquiry interim report highlights safety, governance and reform priorities l The Sector  The Sector</p>
-                <div class="card-source">The Sector</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="education">
-            <div class="card-accent" style="background: #76D2FF"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #76D2FF15; color: #76D2FF">🎓 Education</span>
-                    <span class="card-date">06 Apr 2026, 11:24 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMilAFBVV95cUxNX2Z3UmJRYTRsbE0taXJjUmxqcm12OWlxN2UwUG8zbVVFSzViVnFyT0YxZFFtbnlEcjV1aENzWG1Iamw0R1hmODRibXlJR0FIckNhWml1NnNueVdSRjdQTXNINTlnNWZKUmk1WGFSZEV4ajJOV3dod2xiUVJ1dExrWjJxeVVoRmFwSm13RW1vN2ZWSVZu?oc=5" target="_blank" rel="noopener">Schooling shortfall at Olympic venue&#x27;s housing project - EducationHQ</a></h3>
-                <p class="card-desc">Schooling shortfall at Olympic venue&#x27;s housing project  EducationHQ</p>
-                <div class="card-source">EducationHQ</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="education">
-            <div class="card-accent" style="background: #76D2FF"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #76D2FF15; color: #76D2FF">🎓 Education</span>
-                    <span class="card-date">06 Apr 2026, 07:06 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMinwFBVV95cUxNSzJXZHpwVmNBeXNReElkbUlZc2ItQ09memxhdzUzZUF3ckRZdDVZbmh2TTVuSC0zUktYYVdfUHJiMzZXQ2NFOUZ1MG50a1RrVUtlbDZUSUxIY2FaV1pzc2FSR3daUnAtNDVnem5FZ0hEUTZTQXhyRWcwdWJNcUF0d1dSaFMwdlZaUWExc3IyazlfclMtTHZLX0lpOU1NUkk?oc=5" target="_blank" rel="noopener">New tertiary education commission set to reshape ECEC workforce pathways - The Sector</a></h3>
-                <p class="card-desc">New tertiary education commission set to reshape ECEC workforce pathways  The Sector</p>
-                <div class="card-source">The Sector</div>
+                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMijgFBVV95cUxOUDhTaTRUaXU0QWJTUjVrNDlYNG9BSWU4VU1Wc3VXR2NWMXgxTlppT2NhRmMzR2YyTnFiNmpVLU1oRDNidnNSTVBZR2FKa1l5dmF0ek16QlpSMmRKMG1LQnFZUUdlbmM4MDBQdS1GbENpNU5KN3l3eFh6SnYzZXVReTU5UzR4bHc3eUZVSzZR?oc=5" target="_blank" rel="noopener">Central agencies offer redundancies across APS - The Mandarin</a></h3>
+                <p class="card-desc">Central agencies offer redundancies across APS  The Mandarin</p>
+                <div class="card-source">The Mandarin</div>
             </div>
         </article>
         <article class="news-card" data-sector="housing">
@@ -899,211 +500,19 @@
             <div class="card-body">
                 <div class="card-meta">
                     <span class="sector-badge" style="background: #00C0AE15; color: #00C0AE">🏠 Housing & Homelessness</span>
-                    <span class="card-date">08 Apr 2026, 06:16 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxObXNRUkRRR292U2ZXWmhyTXo3N2ZzQmhoUTVuSC1CSl85aWhlTHptcHhrWkM4YktrRXltYkRCTmlfU2pqeWNyZ0Juc2xTN0R2Nm9wZk50bzBkUWFpd1BhdUxYRHhxek1vVVlLRklEVUZIaHNmTDluYllvTXhhSHR6SGNzLUU0UkhBZkxjUkYzdVdHS0Vna3NYQlFybTBmb0sxd05WNEdoNnE3bTQ?oc=5" target="_blank" rel="noopener">Victoria selling off social housing while falling behind Queensland, NSW - realestate.com.au</a></h3>
-                <p class="card-desc">Victoria selling off social housing while falling behind Queensland, NSW  realestate.com.au</p>
-                <div class="card-source">realestate.com.au</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="housing">
-            <div class="card-accent" style="background: #00C0AE"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00C0AE15; color: #00C0AE">🏠 Housing & Homelessness</span>
-                    <span class="card-date">08 Apr 2026, 05:28 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMif0FVX3lxTE5JTXhfbWNMd0xHZlU4RmpIT2xMTUpwUURKMkVHNFNWV2w0cTFsSlJuNWVoZm0xTGo5RFhoTmJJdms1c3FUdlREc0tSY0ZSeHFSMW82eXlOa0swSFEwRVU4dEhmYlYtM011WXd3SzM2SF90NE5MQ2FxVjhieE9XNk0?oc=5" target="_blank" rel="noopener">NSW Home Construction Hits 7-Year High - Mirage News</a></h3>
-                <p class="card-desc">NSW Home Construction Hits 7-Year High  Mirage News</p>
-                <div class="card-source">Mirage News</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="housing">
-            <div class="card-accent" style="background: #00C0AE"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00C0AE15; color: #00C0AE">🏠 Housing & Homelessness</span>
-                    <span class="card-date">08 Apr 2026, 05:01 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMirgFBVV95cUxNVEdWQmVtWHFud3BLNWhEU2pHQlNEZkZkclNlYmVOakVkWjdqc0gyR192TGlmMnYwLVY5bXdNVVl2TjQyc0VRTllTQUcyaWI0V0h5eHRwZzhzdlNmY3FEZmkzQThwRGdPbU9MNkRkS1BjVzJOTzk4UTFva25tcDlpd1Q0TXlxaXo2ZkhSRkxkUDhpOVZuYjM4WFFHbDd2b09lMzliZVkweEd3eWRsRUE?oc=5" target="_blank" rel="noopener">Should co-operatives deliver what conventional housing cannot? - thefifthestate.com.au</a></h3>
-                <p class="card-desc">Should co-operatives deliver what conventional housing cannot?  thefifthestate.com.au</p>
-                <div class="card-source">thefifthestate.com.au</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="housing">
-            <div class="card-accent" style="background: #00C0AE"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00C0AE15; color: #00C0AE">🏠 Housing & Homelessness</span>
-                    <span class="card-date">08 Apr 2026, 04:43 AM</span>
+                    <span class="card-date">08 Apr 2026, 02:43 PM</span>
                 </div>
                 <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMiqgFBVV95cUxNekY3TkZFaDRCSW5hN1RmVDlLOTRoV3JsbE5jcUxqNndmbmxHQVRXaENFVWkwUTlFTVdUNXpmbVoyRm1ZWW05ZlFSVjZ0MEJKY0pmUHlwbS1iaW1QVUZkcWRaM21TQmpoTlBkb0szdnY1UUc4enBhcV92bEQ3d1c0ZDBXX09tTE5RdFY1dDN0bjRYcjNudWhvVnpxWUw0Q1AtYXlzNEhjSDdBUQ?oc=5" target="_blank" rel="noopener">Belconnen set for new 420-unit complex as build-to-rent gains traction - The Canberra Times</a></h3>
                 <p class="card-desc">Belconnen set for new 420-unit complex as build-to-rent gains traction  The Canberra Times</p>
                 <div class="card-source">The Canberra Times</div>
             </div>
         </article>
-        <article class="news-card" data-sector="housing">
-            <div class="card-accent" style="background: #00C0AE"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00C0AE15; color: #00C0AE">🏠 Housing & Homelessness</span>
-                    <span class="card-date">08 Apr 2026, 04:12 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMif0FVX3lxTE5iOC04c3lkSkktUGZNWlpTT0ZoejAzQXRqZ3EyRVBwWnp2MUhUV1BFS3hFdnRJbVpxdC1CSWNPTlJQUzJtcF9jeTFWUDNldlhvTXpCREtfUmlydkg3czFJYXUweE5tTVRKem1meHE4NXl5QWc2ZmdQbEFWeHBBcjg?oc=5" target="_blank" rel="noopener">Vacancy tax - shelterwa.org.au</a></h3>
-                <p class="card-desc">Vacancy tax  shelterwa.org.au</p>
-                <div class="card-source">shelterwa.org.au</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="housing">
-            <div class="card-accent" style="background: #00C0AE"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00C0AE15; color: #00C0AE">🏠 Housing & Homelessness</span>
-                    <span class="card-date">08 Apr 2026, 03:35 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMizgFBVV95cUxPR1lVT2xacnpsVW5mcE1lNmZKRUhEcEVaVm5TTkVSRlZ6aHdzR3BlajZwMk13ekpybDZLLWhKQ0dmeE02aUlTMFYyMkxiclkteFlwNEhZUHFKRHd5YUxUQkp6NDBjdkJDMU8yUGJ0QXpzQk5MUUhhd3ZXOGZpRVdqQ0ZHMEhXb3VhSnhnOW9ldy1oakdZcFJydUpvY1ozSmp0b0JjbXctMTdXVm8wN1E4TnlSSTJ2amlGeDU5cXdZNGZCOENmTFRHWXBJRFB1QQ?oc=5" target="_blank" rel="noopener">Aussie council swoops on illegal campers as residents lash out over &#x27;very uncomfortable&#x27; scene - Yahoo News Australia</a></h3>
-                <p class="card-desc">Aussie council swoops on illegal campers as residents lash out over &#x27;very uncomfortable&#x27; scene  Yahoo News Australia</p>
-                <div class="card-source">Yahoo News Australia</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="housing">
-            <div class="card-accent" style="background: #00C0AE"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00C0AE15; color: #00C0AE">🏠 Housing & Homelessness</span>
-                    <span class="card-date">08 Apr 2026, 02:39 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMilwFBVV95cUxOOWh3Y2R5Sk45cjhFaGhNYm1tTHFIU3p1cllhYWhiYWFmSzZwYURkYlBzMUt5bDJJbjZBQWhqY0Y0SnlZb1FBT1loU092LWcxWDJtMkRnOVgwbGc3WVcxaGxHX3BvZG51U1JRYzhwcnpmSDhHZGpZNWFDV1MyWkNuLUEtaGZTSjcyNG5yd1B2dkZQeHVFZGR3?oc=5" target="_blank" rel="noopener">Federal Budget looms: 61% of investors may pull back amid tax shake-up - Elite Agent</a></h3>
-                <p class="card-desc">Federal Budget looms: 61% of investors may pull back amid tax shake-up  Elite Agent</p>
-                <div class="card-source">Elite Agent</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="housing">
-            <div class="card-accent" style="background: #00C0AE"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #00C0AE15; color: #00C0AE">🏠 Housing & Homelessness</span>
-                    <span class="card-date">08 Apr 2026, 02:10 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMiwAFBVV95cUxPZDMtQkZKT2hFMmoyZXFRb1NkblQwZ2VtS0UybHVmSFFIMHdTMkFkTW1IQ2tFYWkwUG53dmoycjVtSWFzTExjTFFuUzVxWVlzZzQ4OGxPSm5RY3l5NlJyWU1ZRFg3d3hkd2JPX2Y4OHJlTkozMTd6Wk9xT3NGUzh2RUE1WGFvT005SGg3LUhzSjRhclN5UDZnWlZMYkZfVWJCWmlzRFB1d1ktWnZRak5QSWowd2RmemFNSzNQczY1Nno?oc=5" target="_blank" rel="noopener">Housing scheme under fire as 48,000 permanent residents access 5% deposit program - The Indian Sun</a></h3>
-                <p class="card-desc">Housing scheme under fire as 48,000 permanent residents access 5% deposit program  The Indian Sun</p>
-                <div class="card-source">The Indian Sun</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="infrastructure">
-            <div class="card-accent" style="background: #AB0D82"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #AB0D8215; color: #AB0D82">🏗️ Infrastructure</span>
-                    <span class="card-date">08 Apr 2026, 04:22 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMiU0FVX3lxTE9iRUNQbVp2NHR6OHJyX0dISWZZZ2hJOF81QkMzVnplYnN6NFZ3bmNLOERyUF9qcm9ZN1VxUy1IdE1OT21LNU1ZZHZNNV9IU01wUEZJ?oc=5" target="_blank" rel="noopener">Jensen Huang Invests in Another Startup with a Valuation of $37.7 Billion - 36 Kr</a></h3>
-                <p class="card-desc">Jensen Huang Invests in Another Startup with a Valuation of $37.7 Billion  36 Kr</p>
-                <div class="card-source">36 Kr</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="infrastructure">
-            <div class="card-accent" style="background: #AB0D82"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #AB0D8215; color: #AB0D82">🏗️ Infrastructure</span>
-                    <span class="card-date">08 Apr 2026, 04:09 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMikAFBVV95cUxQREVNTUxSX2xBNlNBSGZHNlR3aDJkT05jLTRFSU93NHJjdEpoWDNiRC1DdWZBcm9CMXdGdVhYdF9EZlNva2UzSzYwdXY4S3g1QTAwc3pnNlZLWHNSVXBpTGxPM0FjSG55cUl5RldmbVFBb1l6X3Ywb1JOSXZDNWwyaUFvRFVERnlNTklUWnluclo?oc=5" target="_blank" rel="noopener">Townsville Infrastructure Upgrade Drives Critical Minerals Growth in 2025 - Discovery Alert</a></h3>
-                <p class="card-desc">Townsville Infrastructure Upgrade Drives Critical Minerals Growth in 2025  Discovery Alert</p>
-                <div class="card-source">Discovery Alert</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="infrastructure">
-            <div class="card-accent" style="background: #AB0D82"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #AB0D8215; color: #AB0D82">🏗️ Infrastructure</span>
-                    <span class="card-date">08 Apr 2026, 02:33 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMimwFBVV95cUxOaDZnRmV6cGRQZDlQcFd1MHFxSVYxckNycTUxN2hFLS1Ec01fZWRjVTd1M2hPUlA5SmNMQzhrNllnVjM0MHBVYWRUa3Fzdkk2akd2djdFTzNhNEFGRE9lS3JOR1dnYUFGVlJqRFFtN0RuRHRvZXFYdmJKbENzdlNjV3VINzAyUVVCNkpTYXhtX0hoNlowOEo5RDAyRQ?oc=5" target="_blank" rel="noopener">Dean Ormston Among Government Cultural Policy Advisory Group - The Music Network</a></h3>
-                <p class="card-desc">Dean Ormston Among Government Cultural Policy Advisory Group  The Music Network</p>
-                <div class="card-source">The Music Network</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="infrastructure">
-            <div class="card-accent" style="background: #AB0D82"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #AB0D8215; color: #AB0D82">🏗️ Infrastructure</span>
-                    <span class="card-date">08 Apr 2026, 01:40 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxQYnJvS01kZHZiNkh6N0NWcTZvM1VuaHJDN1pVQnQ3SjBPMkE5RENiWm9jUU5oX091WUZBbFM0RDdtV1Ewclo4NVh2emNGR2MtLV9aZ3gxU0JsRmdpQkxBMnhLU2hwai1ZdDlVc2duYlN3cE1qN3FSVndnSlRoY0JSWmVEX0htUWNJTEc5M3BRNFFnNDZGZzRKZWlpd2ZEZHNLWDFhYWN5Z3R0c1ZkZ09RWWpSeE9yc29DczBkVmhRMA?oc=5" target="_blank" rel="noopener">Zeekr&#x27;s groundbreaking EV tech to take on BYD and Tesla in China&#x27;s ultra fast charging infrastructure race - CarsGuide</a></h3>
-                <p class="card-desc">Zeekr&#x27;s groundbreaking EV tech to take on BYD and Tesla in China&#x27;s ultra fast charging infrastructure race  CarsGuide</p>
-                <div class="card-source">CarsGuide</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="infrastructure">
-            <div class="card-accent" style="background: #AB0D82"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #AB0D8215; color: #AB0D82">🏗️ Infrastructure</span>
-                    <span class="card-date">07 Apr 2026, 10:33 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMisAFBVV95cUxPM0ZyUmQtR3YxWmd3R2ZCQk5EOHJNbHJRNHFwMzQ5OXc4Sm8teWVRZkg0d3hia3QyT0hRcTVWdnlBWlRVMExOU1Z1WlRXTG93by1KRUZtTndXRmZoOVJuNlFQWElzZmVySlYyeXA3bENHTjZHZk9iOGZVaDBIQ2tDQjdLclFXdWpja1V3bEtLREpLTk1hSGdhaHZ6am5KMFdlQTdnZVAwTTdBMkpnSEJjag?oc=5" target="_blank" rel="noopener">Navigating infrastructure and behavioural hurdles in the circular economy - Waste Management Review</a></h3>
-                <p class="card-desc">Navigating infrastructure and behavioural hurdles in the circular economy  Waste Management Review</p>
-                <div class="card-source">Waste Management Review</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="infrastructure">
-            <div class="card-accent" style="background: #AB0D82"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #AB0D8215; color: #AB0D82">🏗️ Infrastructure</span>
-                    <span class="card-date">07 Apr 2026, 09:40 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMifEFVX3lxTE1peWlXX0JBM3RaQ09TUVNtQVp5RFpsZ1MzYzBjY0s3S0lpMnZ2OGg4TDAyMEg5Z3Q3OFhjTkRPUHpTbk85b2oyc2FHX1V2OTdhalFYd2lGMDdGdV8tQU1jdlZ5alZaQ2dfTzhjVlA0RTRuMHl2S0lrXzNfT18?oc=5" target="_blank" rel="noopener">Watch TODAY - Season 2026 - Iran war is a wakeup call for Australian policy makers - 9Now</a></h3>
-                <p class="card-desc">Watch TODAY - Season 2026 - Iran war is a wakeup call for Australian policy makers  9Now</p>
-                <div class="card-source">9Now</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="infrastructure">
-            <div class="card-accent" style="background: #AB0D82"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #AB0D8215; color: #AB0D82">🏗️ Infrastructure</span>
-                    <span class="card-date">07 Apr 2026, 06:09 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMirwFBVV95cUxOZEtmcGdMb3c0M0ppLUVjQmlDcUpGdmtidTliY0FiWVBUczVoVEEtUnEzTVpoeDRnUldJQ2VJb2k4UkxXanRuaXdLOVZMdDRMTktIeFpIRURCSHZaTEM2SEdtT2pWNFBjcEhNaGkwRmpJTUttbjRrUDdjX2MzbGstUlcyS3p0ZDJDOFZ6dWw5YVZRTmNMSUd2NEZCX3Z1NUZlNzJ6dXE2NVhybTRrdEg4?oc=5" target="_blank" rel="noopener">House paint price rises add to home-building pain - AFR</a></h3>
-                <p class="card-desc">House paint price rises add to home-building pain  AFR</p>
-                <div class="card-source">AFR</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="infrastructure">
-            <div class="card-accent" style="background: #AB0D82"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #AB0D8215; color: #AB0D82">🏗️ Infrastructure</span>
-                    <span class="card-date">07 Apr 2026, 06:00 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMitwFBVV95cUxOLVpfOHdfNDZaU0JkaXJGR2ZoU3J0ZnJUczI4YkRPTVctNTU4SHM1S21NdUpsMlBOS2hpTTQ3WXN2Y2Rjai1BX1ZqSmI1RDQyWnBwbC1mRUl1bG1Ma05CX2lOaWJKQXUxYVFROEtUSUgzSXBLeWYySE1ndERuMnJ6N0U4SDRUTDdWT0JOdGtTQ3l1bi16Um1NbmdUeDRjZGYtTWpSMnlrWEhGSU1Lemx3Q2FVVnFLWTQ?oc=5" target="_blank" rel="noopener">Australia isn’t ready for war – and infrastructure is the problem - AFR</a></h3>
-                <p class="card-desc">Australia isn’t ready for war – and infrastructure is the problem  AFR</p>
-                <div class="card-source">AFR</div>
-            </div>
-        </article>
         <article class="news-card" data-sector="public_service">
             <div class="card-accent" style="background: #B497FF"></div>
             <div class="card-body">
                 <div class="card-meta">
                     <span class="sector-badge" style="background: #B497FF15; color: #B497FF">🏛️ Public Service & Budget</span>
-                    <span class="card-date">07 Apr 2026, 11:05 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMijgFBVV95cUxON2FJbTlreWNyNlJRR0Q2MkJ4RGktNUJJU3BEbUxrUUFpS0lYYUhvb2d6UGQ0S19fSlpaNmQ1aUpMVmF0SnJBaW0wVmE4TGJGVVNoLVJjRlN0R0lkQWVtbVFETnpqRHU0dmhWejFVb2dVX3ZOT1FCeVlUeXV1Wm9ZNkRyMFZlQ1V2VXRmdk5B?oc=5" target="_blank" rel="noopener">Reform requires trust – and trust requires openness - Pearls and Irritations</a></h3>
-                <p class="card-desc">Reform requires trust – and trust requires openness  Pearls and Irritations</p>
-                <div class="card-source">Pearls and Irritations</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="public_service">
-            <div class="card-accent" style="background: #B497FF"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #B497FF15; color: #B497FF">🏛️ Public Service & Budget</span>
-                    <span class="card-date">07 Apr 2026, 09:05 PM</span>
+                    <span class="card-date">08 Apr 2026, 07:05 AM</span>
                 </div>
                 <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMimwJBVV95cUxOUG1BNHhoRW5iSFFrbjN6LXh2Y29MSFBlaEFiUTMyTWtmWmh6X0h4NnRxSjNhTmx6VnNfWUNWM2FEeXotU3dJUGZKeTdvUENuc3d3R1FFaWxueHh1ZXphTUV5UkhsX0hpajZQbnl0dVlQSjIySXh4cmxQd3hEVGtvazJGc3E0ai1DeERqaWtnS3VpZXhWYnozVjFVWmNWMVljTzFOQXJkb2h5ZGVDR0VqMllJdDhNdWJCMkV0ZGR1Q1p2MHRIcXhyNlQ3M3dQaDA3cTB6b0Y5Qkh0dWdsa01yVXRYQk5JQXltckF4c2ZpNkluUWdJd3EwanlBZzg4amlGRzBSelRxcmctRHJrSmxkVWRFMWRDX0pBckhJ0gGgAkFVX3lxTFBFVmlYalktTjQwVUliQW9NV256eHA2WEdkLXotZlN5UWF2Vk1EN1k2RjU2UlpaLUI4NUFUZzA1ZW5wcDZhUWVvMlZzX1dXQmpEaVRDelhIZkY4SXJZTER6S2ZnaGxrcWhSMjRUc0xKMlpzYngtQ05RdzBNQWM3a2dhVnV0NDlIbXRWa25SRU5DcE14TzFUQjJkRVBDODFzN2RuVGhnaXpfN0J5VVNVMTZXVlpFUEpmajBJeks4V3drdkMxSlBhU244eFNaNFdvQVFlUC1oLWg5YUNRb3JrTmtqMi1UMTR3b2JFUWh1VzIxQkZQd1BIX29IRE93VTJHM0s0U1lrSUZaT19KRDdsTFJtZ0NPWGxLamswQjRZQjQ2QQ?oc=5" target="_blank" rel="noopener">Odds firm on new CGT property rate - The Australian</a></h3>
                 <p class="card-desc">Odds firm on new CGT property rate  The Australian</p>
@@ -1115,71 +524,11 @@
             <div class="card-body">
                 <div class="card-meta">
                     <span class="sector-badge" style="background: #B497FF15; color: #B497FF">🏛️ Public Service & Budget</span>
-                    <span class="card-date">07 Apr 2026, 08:45 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMi0gFBVV95cUxOelhmanlsYVVFZm1GNXU3dXdwNV9sNjQyU09aX0tBTnh4ci1lb0NraC1mdWhtZDBET29kZmQzLVRhWk9adDRGSXFIT2Y4WnBxbW03LXdwS3k0TlFMQnVQemE3Z3ExaTZ0NG5sWV9QZVRNeHY2MkowOGZWekd4LUxVRTBwZlRTTXBwQ3k0NTVvQ3F1bDBMUkZObXlHVTk4cnpRQ0RyczJweUV1VWpHQncxSEwwY201S29SQVdpcm1ST0JtaE1xVGNoZXNoWVA4eW9ZMHc?oc=5" target="_blank" rel="noopener">NSW advances battery reform with manufacturing responsibility to address fires and pollution - Australian Manufacturing</a></h3>
-                <p class="card-desc">NSW advances battery reform with manufacturing responsibility to address fires and pollution  Australian Manufacturing</p>
-                <div class="card-source">Australian Manufacturing</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="public_service">
-            <div class="card-accent" style="background: #B497FF"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #B497FF15; color: #B497FF">🏛️ Public Service & Budget</span>
-                    <span class="card-date">07 Apr 2026, 08:05 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMic0FVX3lxTE16dF9WM1RTeWljREhiRzJmbGxFYWpBOS1sdkJNZVpnSkhsOHhGUUdVcHNtNG9hQ1VqRTZKYjhaZjJyQkFLQU45ak9KUmRlZkhPNDVQcG52VjdGbzI3eE1sX0hEWTFUQ1BFUDVCRllsM3RDdGM?oc=5" target="_blank" rel="noopener">Superannuation performance in PNG - Devpolicy Blog from the Development Policy Centre</a></h3>
-                <p class="card-desc">Superannuation performance in PNG  Devpolicy Blog from the Development Policy Centre</p>
-                <div class="card-source">Devpolicy Blog from the Development Policy Centre</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="public_service">
-            <div class="card-accent" style="background: #B497FF"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #B497FF15; color: #B497FF">🏛️ Public Service & Budget</span>
-                    <span class="card-date">07 Apr 2026, 07:37 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMijgFBVV95cUxOUDhTaTRUaXU0QWJTUjVrNDlYNG9BSWU4VU1Wc3VXR2NWMXgxTlppT2NhRmMzR2YyTnFiNmpVLU1oRDNidnNSTVBZR2FKa1l5dmF0ek16QlpSMmRKMG1LQnFZUUdlbmM4MDBQdS1GbENpNU5KN3l3eFh6SnYzZXVReTU5UzR4bHc3eUZVSzZR?oc=5" target="_blank" rel="noopener">Central agencies offer redundancies across APS - The Mandarin</a></h3>
-                <p class="card-desc">Central agencies offer redundancies across APS  The Mandarin</p>
-                <div class="card-source">The Mandarin</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="public_service">
-            <div class="card-accent" style="background: #B497FF"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #B497FF15; color: #B497FF">🏛️ Public Service & Budget</span>
-                    <span class="card-date">07 Apr 2026, 07:03 PM</span>
+                    <span class="card-date">08 Apr 2026, 05:03 AM</span>
                 </div>
                 <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMi0AFBVV95cUxQWUNteUpCbE1sQlBOaURPaGJqWGtyZ3pYck9sWVlOc2c3X1RPcU9EMlVCbWxKWnZGVnFyOG9vT2tMNnh3RUoxd29HVzNmN3F5VFpBNlM0YkJWVXlVY0d2T0JMZFd2clpLVXk5WVpGeWtwYkR5cUwxWUNfV0hzVlViZnNMLXphVDVYM0wtdHpHYUhjQkJpb2EyRGtOSE04SU90VGhtYzZyTGd1RE9ZRzk1ZXVfM0xUSndqWjM2QllZVUEzZEdPRDdOQmJBVkpyNnlm0gHWAUFVX3lxTE5iVTRXcXBNR2UyX0R6T3h4SXlFYUZ5TjhTaHNEZ3d1SHR5bWxldmhzUHFHdHNxZkUxMnROV3R0OXRrUVlGdlRvb1ZuTm1hTGgxenVCUC1jX2w2bTFsaFhxbzREdVBBTm9oeHBobzhHOEdWbWk2R3lKc2dtTExuVVdKMGstMy1nVGh6NE00NF9URVM0eFBNVXU5elNyYlJoQUJpd25KTTg2UV9YTndpVXFCU1NnRDhkWVo1dUtFbkFaQ0hrUGxNcE1qX1FucTZPY2hxdDh1Z1E?oc=5" target="_blank" rel="noopener">Why aren’t Indigenous leaders demanding an audit? - The Australian</a></h3>
                 <p class="card-desc">Why aren’t Indigenous leaders demanding an audit?  The Australian</p>
                 <div class="card-source">The Australian</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="public_service">
-            <div class="card-accent" style="background: #B497FF"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #B497FF15; color: #B497FF">🏛️ Public Service & Budget</span>
-                    <span class="card-date">07 Apr 2026, 07:00 PM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMiygFBVV95cUxOOUk5WnUwejBmNXVKU0dXazlkZFNUa2lxMDNJcUF5eUw1cTJLWEdUQ2dGQlFUMFRoekdGNkp3ajRJU3FBemExdlFYSWN0RUJUSXVBSWpYS1ZBY1N6aUdpYkNvMmJpOTZkNEpMemptTDd2Y3NZMVdhSi16UGNHdGNsWHQ5RUFPajJtYVViQ1ExXy1neUhPVFBFcGRHNEl0VmNhSVJteVJyMzlVV2c5Ukk0eUxINWhHLXZqUlhrWmtHTS0zbjdqUGZ5Zi1B?oc=5" target="_blank" rel="noopener">Australia has a chance to avoid Europe’s innovation trap - capitalbrief.com</a></h3>
-                <p class="card-desc">Australia has a chance to avoid Europe’s innovation trap  capitalbrief.com</p>
-                <div class="card-source">capitalbrief.com</div>
-            </div>
-        </article>
-        <article class="news-card" data-sector="public_service">
-            <div class="card-accent" style="background: #B497FF"></div>
-            <div class="card-body">
-                <div class="card-meta">
-                    <span class="sector-badge" style="background: #B497FF15; color: #B497FF">🏛️ Public Service & Budget</span>
-                    <span class="card-date">07 Apr 2026, 11:33 AM</span>
-                </div>
-                <h3 class="card-title"><a href="https://news.google.com/rss/articles/CBMiwwFBVV95cUxNamRuTlhuZHpzSXV2WHNjY2h4VkpfV0xiTU9TVEVJOWR6TmV1MlhKU0ZGYURBcm9Cem04a0pVOWRIYUc1R3JLa2RVOHRacnJOb1ZaWVdQcEc3RTB3TGR4V2k0R2VsaE5RR1o4Vl9NWUdIZVNScUNVRU5ISlU2VXM1T0ROc3BSQ29IQWdSdG9OVk1Lek5Pam9wd0ROQ3RtM0RBM3FwV1pLRWhTZEJYZ002S2V1TjRIeGt0d0hmS3dwUHpDSTjSAcgBQVVfeXFMUEJXUTZUeFF5bmVNdUZPQlhlalFQMVJVTllxU1RIWldyV21mSDJIdUhESTByRW83aTFsTTdyQlRuN1lnT3JiOXFXSERYVVNKR0pROFRiMWpIbVBfd3lsbkh0Z2xvbG5WNHdFeWRyNHcwY3R6OExJQ1FzUTlDLWdHTURXQ2plc0J3c21jZVk1Ni1iWUN0N09xdGhuWHlzWURBQjdsM01uS2lpUno3VTNuanVaaHpoc0dhejVYWi00XzB6TkZRSkg2S2M?oc=5" target="_blank" rel="noopener">Australia sets the rules: what the new data centre policies mean for the water sector - Smart Water Magazine</a></h3>
-                <p class="card-desc">Australia sets the rules: what the new data centre policies mean for the water sector  Smart Water Magazine</p>
-                <div class="card-source">Smart Water Magazine</div>
             </div>
         </article>
         </div>
@@ -1192,34 +541,69 @@
 
     <footer class="footer" role="contentinfo">
         <div class="footer-classification">INTERNAL USE ONLY</div>
-        <p>PEPI News Dashboard &mdash; auto-generated 08 April 2026 at 07:38 UTC</p>
+        <p>PEPI News Dashboard &mdash; auto-generated 08 April 2026 at 17:49 AEST</p>
         <p>Sources: Google News RSS (Australian edition). Articles are aggregated for internal awareness only.</p>
         <p>&copy; 2026 KPMG, an Australian partnership. All rights reserved.</p>
     </footer>
 
     <script>
-        // Filter and search logic
+        // Elements
         const cards = document.querySelectorAll('.news-card');
+        const summaries = document.querySelectorAll('.sector-summary');
         const filterBtns = document.querySelectorAll('.filter-btn');
+        const viewBtns = document.querySelectorAll('.view-btn');
         const searchInput = document.getElementById('searchInput');
         const emptyState = document.getElementById('emptyState');
+        const summariesContainer = document.getElementById('summariesContainer');
+        const newsGrid = document.getElementById('newsGrid');
+
         let activeSector = 'all';
+        let activeView = 'summary';
 
         function applyFilters() {
             const query = searchInput.value.toLowerCase().trim();
-            let visible = 0;
-            cards.forEach(card => {
-                const sector = card.dataset.sector;
-                const text = card.textContent.toLowerCase();
-                const matchSector = activeSector === 'all' || sector === activeSector;
-                const matchSearch = !query || text.includes(query);
-                const show = matchSector && matchSearch;
-                card.classList.toggle('hidden', !show);
-                if (show) visible++;
-            });
-            emptyState.classList.toggle('visible', visible === 0);
+
+            if (activeView === 'summary') {
+                // Filter summary sections
+                let visibleSections = 0;
+                summaries.forEach(sec => {
+                    const sector = sec.dataset.sector;
+                    const text = sec.textContent.toLowerCase();
+                    const matchSector = activeSector === 'all' || sector === activeSector;
+                    const matchSearch = !query || text.includes(query);
+                    sec.style.display = (matchSector && matchSearch) ? '' : 'none';
+                    if (matchSector && matchSearch) visibleSections++;
+                });
+                emptyState.classList.toggle('visible', visibleSections === 0);
+            } else {
+                // Filter card grid
+                let visible = 0;
+                cards.forEach(card => {
+                    const sector = card.dataset.sector;
+                    const text = card.textContent.toLowerCase();
+                    const matchSector = activeSector === 'all' || sector === activeSector;
+                    const matchSearch = !query || text.includes(query);
+                    const show = matchSector && matchSearch;
+                    card.classList.toggle('hidden', !show);
+                    if (show) visible++;
+                });
+                emptyState.classList.toggle('visible', visible === 0);
+            }
         }
 
+        // View toggle
+        viewBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                viewBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeView = btn.dataset.view;
+                summariesContainer.classList.toggle('hidden', activeView !== 'summary');
+                newsGrid.classList.toggle('hidden', activeView !== 'cards');
+                applyFilters();
+            });
+        });
+
+        // Sector filter
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 filterBtns.forEach(b => b.classList.remove('active'));
