@@ -1,49 +1,1303 @@
 {
-  "updated": "2026-04-08T17:49:14.073542+10:00",
-  "window_hours": 24,
-  "trusted_sources_only": true,
+  "updated": "2026-04-08T18:09:02.249636+10:00",
+  "cards_window_days": 30,
+  "summary_window_days": 7,
+  "summary_trusted_sources_only": true,
   "sectors": {
-    "aged_care": [],
-    "ndis": [
+    "aged_care": [
       {
-        "title": "Central agencies offer redundancies across APS - The Mandarin",
-        "link": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOUDhTaTRUaXU0QWJTUjVrNDlYNG9BSWU4VU1Wc3VXR2NWMXgxTlppT2NhRmMzR2YyTnFiNmpVLU1oRDNidnNSTVBZR2FKa1l5dmF0ek16QlpSMmRKMG1LQnFZUUdlbmM4MDBQdS1GbENpNU5KN3l3eFh6SnYzZXVReTU5UzR4bHc3eUZVSzZR?oc=5",
-        "source": "The Mandarin",
-        "description": "Central agencies offer redundancies across APS  The Mandarin",
-        "date": "08 Apr 2026, 05:37 AM",
-        "date_iso": "2026-04-08T05:37:45+10:00"
-      }
-    ],
-    "health": [],
-    "child_protection": [],
-    "education": [],
-    "housing": [
-      {
-        "title": "Belconnen set for new 420-unit complex as build-to-rent gains traction - The Canberra Times",
-        "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNekY3TkZFaDRCSW5hN1RmVDlLOTRoV3JsbE5jcUxqNndmbmxHQVRXaENFVWkwUTlFTVdUNXpmbVoyRm1ZWW05ZlFSVjZ0MEJKY0pmUHlwbS1iaW1QVUZkcWRaM21TQmpoTlBkb0szdnY1UUc4enBhcV92bEQ3d1c0ZDBXX09tTE5RdFY1dDN0bjRYcjNudWhvVnpxWUw0Q1AtYXlzNEhjSDdBUQ?oc=5",
-        "source": "The Canberra Times",
-        "description": "Belconnen set for new 420-unit complex as build-to-rent gains traction  The Canberra Times",
-        "date": "08 Apr 2026, 02:43 PM",
-        "date_iso": "2026-04-08T14:43:33+10:00"
-      }
-    ],
-    "infrastructure": [],
-    "public_service": [
-      {
-        "title": "Odds firm on new CGT property rate - The Australian",
-        "link": "https://news.google.com/rss/articles/CBMimwJBVV95cUxOUG1BNHhoRW5iSFFrbjN6LXh2Y29MSFBlaEFiUTMyTWtmWmh6X0h4NnRxSjNhTmx6VnNfWUNWM2FEeXotU3dJUGZKeTdvUENuc3d3R1FFaWxueHh1ZXphTUV5UkhsX0hpajZQbnl0dVlQSjIySXh4cmxQd3hEVGtvazJGc3E0ai1DeERqaWtnS3VpZXhWYnozVjFVWmNWMVljTzFOQXJkb2h5ZGVDR0VqMllJdDhNdWJCMkV0ZGR1Q1p2MHRIcXhyNlQ3M3dQaDA3cTB6b0Y5Qkh0dWdsa01yVXRYQk5JQXltckF4c2ZpNkluUWdJd3EwanlBZzg4amlGRzBSelRxcmctRHJrSmxkVWRFMWRDX0pBckhJ0gGgAkFVX3lxTFBFVmlYalktTjQwVUliQW9NV256eHA2WEdkLXotZlN5UWF2Vk1EN1k2RjU2UlpaLUI4NUFUZzA1ZW5wcDZhUWVvMlZzX1dXQmpEaVRDelhIZkY4SXJZTER6S2ZnaGxrcWhSMjRUc0xKMlpzYngtQ05RdzBNQWM3a2dhVnV0NDlIbXRWa25SRU5DcE14TzFUQjJkRVBDODFzN2RuVGhnaXpfN0J5VVNVMTZXVlpFUEpmajBJeks4V3drdkMxSlBhU244eFNaNFdvQVFlUC1oLWg5YUNRb3JrTmtqMi1UMTR3b2JFUWh1VzIxQkZQd1BIX29IRE93VTJHM0s0U1lrSUZaT19KRDdsTFJtZ0NPWGxLamswQjRZQjQ2QQ?oc=5",
-        "source": "The Australian",
-        "description": "Odds firm on new CGT property rate  The Australian",
-        "date": "08 Apr 2026, 07:05 AM",
-        "date_iso": "2026-04-08T07:05:42+10:00"
+        "title": "Metro homes may lose $11m in quarterly funding shortfall - Australian Ageing Agenda",
+        "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNLXpRTHZXc0ZBRlJhWVNfaG9aVXBUbGJyWDZFc3lFTG1XUmxGWFgydVdrS3BKd1NKRTRsQlNiekR3NDhkVDhCSTU5MnZNN3hWV05xYlJ6UVByWGtsQXRlVGdjQU5VMWoyTzYwZVFESDFXNjJlUFEwS0sxODNpb2poQXVlUlZRME91QllfcFdZNExEc2EzdTlGbmhLSHpFV29MRzA5QzJ0VjR6Ylk?oc=5",
+        "source": "Australian Ageing Agenda",
+        "description": "Metro homes may lose $11m in quarterly funding shortfall  Australian Ageing Agenda",
+        "date": "08 Apr 2026, 10:31 AM",
+        "date_iso": "2026-04-08T10:31:12+10:00"
       },
       {
-        "title": "Why aren’t Indigenous leaders demanding an audit? - The Australian",
-        "link": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQWUNteUpCbE1sQlBOaURPaGJqWGtyZ3pYck9sWVlOc2c3X1RPcU9EMlVCbWxKWnZGVnFyOG9vT2tMNnh3RUoxd29HVzNmN3F5VFpBNlM0YkJWVXlVY0d2T0JMZFd2clpLVXk5WVpGeWtwYkR5cUwxWUNfV0hzVlViZnNMLXphVDVYM0wtdHpHYUhjQkJpb2EyRGtOSE04SU90VGhtYzZyTGd1RE9ZRzk1ZXVfM0xUSndqWjM2QllZVUEzZEdPRDdOQmJBVkpyNnlm0gHWAUFVX3lxTE5iVTRXcXBNR2UyX0R6T3h4SXlFYUZ5TjhTaHNEZ3d1SHR5bWxldmhzUHFHdHNxZkUxMnROV3R0OXRrUVlGdlRvb1ZuTm1hTGgxenVCUC1jX2w2bTFsaFhxbzREdVBBTm9oeHBobzhHOEdWbWk2R3lKc2dtTExuVVdKMGstMy1nVGh6NE00NF9URVM0eFBNVXU5elNyYlJoQUJpd25KTTg2UV9YTndpVXFCU1NnRDhkWVo1dUtFbkFaQ0hrUGxNcE1qX1FucTZPY2hxdDh1Z1E?oc=5",
+        "title": "Coaching Program Provides Mental Health Support For Older Adults In Sa... - The Sacramento Observer",
+        "link": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOZGg5LTRUTUZzTEw5NGtRVTRDdVJIWTY3dHlCQzd5c1RsRzk0VlQ5VWEtQTJ2RGdOTlJ1TG5vdW8tTGdrc3ZOTGZMbzJQbkpLRzJvSUo3T0VPdFJCVFJTaThBbV9ZbkVpbjBFUkVzczd6YXNBVkxwYTVGU1JGVGdnMmNBUmpYQ1VHSDRaZUJFMmNXMWtTZWxxZldXbExvWFkzYVdZLVdEMmtKTVFLVS11VjdYcEYzbDMyWnZkMThB?oc=5",
+        "source": "The Sacramento Observer",
+        "description": "Coaching Program Provides Mental Health Support For Older Adults In Sa...  The Sacramento Observer",
+        "date": "06 Apr 2026, 11:44 PM",
+        "date_iso": "2026-04-06T23:44:35+10:00"
+      },
+      {
+        "title": "‘Letting the algorithm rip’: no legal basis for lack of human override of aged care funding tool, inquiry hears - The Guardian",
+        "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQcHRfNUdVdXhUWGE0c0ZzWG5pR2lpYkFNWkh5cDctVHBmYTg3VzlJSllGdU1NV3hsTFpRbzdFNFFyeGJCXzRvLUJVaUZhUDhiMDlGVHNtQjQ0V2h0alAtZ3NUUU5NYWtaOG50NmhHWUxsbGVwTDVEY28wUGwwRm5RU2FObGN6MFV4ZGZSTHVxWktjQjNRWGo3YTRDUjZYMGs?oc=5",
+        "source": "The Guardian",
+        "description": "‘Letting the algorithm rip’: no legal basis for lack of human override of aged care funding tool, inquiry hears  The Guardian",
+        "date": "03 Apr 2026, 01:00 AM",
+        "date_iso": "2026-04-03T01:00:00+11:00"
+      },
+      {
+        "title": "Help shape in-home aged care pricing - National Seniors Australia",
+        "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQYXkxZzhyM2FzeVRUMEFuNVBBTjVQa2Q5SE5zOGRFUnVUTThpdGZORDU2bjZ2TFFYN1NWd2p5YVZCd3o0WXI4RE1WY1ZvZnhPWjFvUW5KZXBPbW9XaXJJZ0x4aEFkQ0ZNMEVkMEZIQmtMb0l2WGlLQUI0a2NSV05YQjdvQnFNa3Vzc1g1QQ?oc=5",
+        "source": "National Seniors Australia",
+        "description": "Help shape in-home aged care pricing  National Seniors Australia",
+        "date": "02 Apr 2026, 03:45 PM",
+        "date_iso": "2026-04-02T15:45:00+11:00"
+      },
+      {
+        "title": "Politicians slam Labor’s ‘botched’ aged care overhaul - Aged Care Insite",
+        "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxObjFEdTkyNi1TSElQei0tOTZ1eUplZEdzWDZ3R3MzOTY5NHc5SWlpNGxsYUlCQTItR05qRVAtZmE4b1I5V08xSHdqVzlOZlVtR0ZyZHRxY0dUYXpBd1J4OEtId1NObFhGM1lxdHN2VXZQRmFBN3BWWVAxV2R3NUljSWlSaUhoWjRldW45ek50Ykd1SW5mUnNPaA?oc=5",
+        "source": "Aged Care Insite",
+        "description": "Politicians slam Labor’s ‘botched’ aged care overhaul  Aged Care Insite",
+        "date": "02 Apr 2026, 10:29 AM",
+        "date_iso": "2026-04-02T10:29:00+11:00"
+      },
+      {
+        "title": "Coaching program provides mental health support for older adults in Sacramento - capradio.org",
+        "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPT0FNVkpjemZmajNydGN4cmxNemVMaUZENjB4RUxCWG0zQmFKSHpEUVk3dWpKWGlhVG12NlZFWWtUc2pWVml0VE05TThhTUlkSy1nWWVsRU1Bc3BFWGdycmh0YnhLLWYwZFF4YTlFNkkxZW1Ca3lNUEdxeUhDRE5hOEJpTFZ1MEhVazdDQ05KTzhYMjJRZ2YyYWtTV19WN2xuTERKZTh6MDFJNlhzbkpwbUR4TDJjc3Qzc1M2VXZFdnllUQ?oc=5",
+        "source": "capradio.org",
+        "description": "Coaching program provides mental health support for older adults in Sacramento  capradio.org",
+        "date": "02 Apr 2026, 04:10 AM",
+        "date_iso": "2026-04-02T04:10:55+11:00"
+      },
+      {
+        "title": "Changing Home Care Package claims - Services Australia",
+        "link": "https://news.google.com/rss/articles/CBMiekFVX3lxTFBLYW9sdjItR2xhSzVvZjhIS3RFekdMbFp2TnlzMWNfeDF1TFJOcXZJcnA4YVN5R21SVmREV29fNXpuUVk1SFdua3JxdTVXVHNUcW9hTlllMzdCV0NvLTUxMF9ESXNuYmlmSlc4NTZqc05HNkpWelVQYVVn?oc=5",
+        "source": "Services Australia",
+        "description": "Changing Home Care Package claims  Services Australia",
+        "date": "01 Apr 2026, 11:00 PM",
+        "date_iso": "2026-04-01T23:00:00+11:00"
+      },
+      {
+        "title": "'Unacceptable' failure: the algorithm denying aged care at home - thesenior.com.au",
+        "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOQkxvUURqb2Q0MlFkT2h1elFWQWhKd0Q0RlQ2VzJobW1nLXg2SFZxRUlBTVNWYk83ZTktaEF6LVI0Q09FbnI1NDVUQlM4dnlfMnp0QlNBc040UXZTQnBiYTJyYWZlbGU3T2l6TW1uc3RzelBBN2VycmhiWGVlNnJreEpkb3dvRjBBSVFUTHVoMGFTNDFjNzV4TEloYmtpRjljVjNRbVpnMnJ6MXd1M0E?oc=5",
+        "source": "thesenior.com.au",
+        "description": "'Unacceptable' failure: the algorithm denying aged care at home  thesenior.com.au",
+        "date": "01 Apr 2026, 12:09 PM",
+        "date_iso": "2026-04-01T12:09:22+11:00"
+      },
+      {
+        "title": "Care minute penalties from 1 April could force bed closures - The Weekly Source",
+        "link": "https://news.google.com/rss/articles/CBMimwFBVV95cUxORzRKN1MtaXQyMVRvZDJYb2VOYUI2dFVaVzFKbWcyZTdOVFcxNVlCUF9kRy02WTNEYmpwNzJEMi12Qndtemd5MWZXMnlQMHJUMEw4U3hkM1FMS0RwaE5uRm85VEt5MEdrVGxLeEdWUkZwVFZZZzY5SnRhNXFrQWEtbWVDNXhsdHJuLTYwM2JmNmJWUTJmeVBHMDZITQ?oc=5",
+        "source": "The Weekly Source",
+        "description": "Care minute penalties from 1 April could force bed closures  The Weekly Source",
+        "date": "01 Apr 2026, 11:17 AM",
+        "date_iso": "2026-04-01T11:17:51+11:00"
+      },
+      {
+        "title": "Help shape in-home aged care pricing - Australian Ageing Agenda",
+        "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxPN2J6YWdKeXVNNExRQXl2aXNOblJQQS1Zbk5BSngtRzRWd1FXRDhEaE1JcWRwNVJ5NENzcjNfZU1heURhZ21yd1JEYXl5UHVlWGh1bGRudTJEVDQ2TU1Xc2k2RTNBMjVheDlCbzlJR0RKSU5xREcyZlhSODlodXdOLVEyVmVoa2hyS1F0NVo3S2l0VTJHM2x0Tmlid0RhQQ?oc=5",
+        "source": "Australian Ageing Agenda",
+        "description": "Help shape in-home aged care pricing  Australian Ageing Agenda",
+        "date": "31 Mar 2026, 04:44 PM",
+        "date_iso": "2026-03-31T16:44:19+11:00"
+      },
+      {
+        "title": "How Star Ratings works - Australian Government Department of Health, Disability and Ageing",
+        "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPWXFXSmZRTGtnMFMyRFlOSzdvZzZHSEY3QW9SQW95eVFTakNROVZPb1JCV3FBTk93YWEzN1JwN1NqemVvNVk0STJ2REFabC03RlNMS2hVZVI4aWk4Z2Izd05fYXNmb2p2aVNHQXhnbDUxVmZaX1FLbkhNdGt6SlM2VVZNSnJKZHhhOGFfakR3bUxhWGFEcHpnWDk1SG0?oc=5",
+        "source": "Australian Government Department of Health, Disability and Ageing",
+        "description": "How Star Ratings works  Australian Government Department of Health, Disability and Ageing",
+        "date": "30 Mar 2026, 12:51 PM",
+        "date_iso": "2026-03-30T12:51:43+11:00"
+      },
+      {
+        "title": "Aussies reveal shocking aged care truth - The Weekly Times",
+        "link": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxPUEpDTFVEWGMwamFTRWs2SmNZRlpTTmZZeXpKTmNkc0dfVDhDLWI2eGNqY2E3V2R6SmJpZWlpc29DU2dpRHV2YjJCaktHWVQ1SnpaajZveHBiNk1RdnpnRnFoSUN2VllzVkVJWmptSlpJR09ZWjk3a2hyV2xlZ2c5QzhVYmtNZVo2aWV6bk9JRkZPOFA3M2JRUGd1djRIbjRrZElqb0J1WVBkTldQNlViZHBUeElYU1lvWVh5WDJldHNxNnJFeUY3UFY5STgyLWdJQ0ZHVHV5allQTTljc1MzbTZ2eGJXbUhiQjQ4dndmdVI3Z9IB9wFBVV95cUxPN0VNcGJ5a04xR3h0ZTczZElEZkx4Vk1lNHdZYlRIaG1yTU1fbFFkWGR6ck9XZ3R6NHlmY1Z2c0x5VGVrY2Q0a3loZVE5ZVpJcVcyeVVWaU1XdUZsbnd3NmIxblJBTUtUdXh1RjIzTUNYUDQ3dUtvUjJmSGpuanZGWGIxeTFPcnVSZDE2aUtuQTFMQWxKRUhqS05LNDJpVTlFOEtveW9sWFE0cnV6UWdtYjFYQTkxc3ZHODVjUkZaRU9wTjZYR3VrWlNvRXpjX1BjWlNvZTNUQl9rZ08zRFBVVHE0VWI4Nlk5NUlqaHlrWlF0SE03RnhB?oc=5",
+        "source": "The Weekly Times",
+        "description": "Aussies reveal shocking aged care truth  The Weekly Times",
+        "date": "30 Mar 2026, 05:04 AM",
+        "date_iso": "2026-03-30T05:04:42+11:00"
+      },
+      {
+        "title": "Specialist treating amputees may move to Oz over ACC delays as she 'needs to make a living' - NZ Herald",
+        "link": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxQVlY4d2l3XzNCNUU3ZFl0NGpyaGMwYnhwYWg0djhBZmJJN3RDeHlGZUhhbWU5aUp0T3F4N0VlSmRacGRjSHVsV1BXN3NWQW8tb3M3ZkRmOWFPeHh3V1h2b0FjeDdOb0JGbVloRG10Qm9neWdTVFB6aE1hYjJySVp0U2drRVJfdzZLXzJibV9iTkR4UzlVWTY0Y0ZmcDRQTG51T0FuVmxET0dxYmZub2tZMEpxVTB2SlJSZ1N1Rm8tTmpqRllyUkZxamhPQmpLMmlQVmlKTkJYcEJPeUpaWmhVZF93QQ?oc=5",
+        "source": "NZ Herald",
+        "description": "Specialist treating amputees may move to Oz over ACC delays as she 'needs to make a living'  NZ Herald",
+        "date": "29 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-29T18:00:00+11:00"
+      },
+      {
+        "title": "NEWS: Victor Harcourt published in Aged Care Today, an Ageing Australia publication - Russell Kennedy",
+        "link": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxNR3lUQTVjZlNzS3dBUGhvVkhlLTdPQWstYnlER1VtSUlNZjl5eHI3bjByUmJMNUE4WGdiMklqLVFNR05zdDFwdXBYQk1OemxyVzN0NkF5MjhDTS1UcmNON0hFTGxlcGExdVhqZk1jei1MaURVWVVnZ0RDRWlsRVJZMVJXYTVVZHE5MURnODU1TnBsRmRsLTB2Y2NZUjA5bFI0RmwyRDJjSnlQS3kwRy0zdlUxY1VrRHpxMlhOZGsyejNJci1QdmVON1BFS0tYZzVUMHc?oc=5",
+        "source": "Russell Kennedy",
+        "description": "NEWS: Victor Harcourt published in Aged Care Today, an Ageing Australia publication  Russell Kennedy",
+        "date": "25 Mar 2026, 09:26 PM",
+        "date_iso": "2026-03-25T21:26:11+11:00"
+      },
+      {
+        "title": "‘Darling, I’m not going anywhere’: The rise of at-home care - afr.com",
+        "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQS2k0M2otaldpNVFXdHRTMVNtZVhyUDV4VTNIcE5FSnFRaHNubGNQQzBVbllnNTktNGhrZ1lndzV5V1FpUS01SklRaTZmZHJkRzVsQmlsdEVmenZ4U2x6U01NeXdIMktBUW94TUE3R3FoLUxVcVhsVFI0SjVQVUFaZldnd3prMWMyaVRWX2J4aUdfQ25KWHpaLUlqSnhvQmM2TTRRQldGbm8tclFYRDA0TVdnU2g3QQ?oc=5",
+        "source": "afr.com",
+        "description": "‘Darling, I’m not going anywhere’: The rise of at-home care  afr.com",
+        "date": "24 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-24T18:00:00+11:00"
+      },
+      {
+        "title": "newsGP - Foundation’s Major Research Grant round opens - Royal Australian College of General Practitioners (RACGP)",
+        "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPTjE2Mi1hbTRKQWx2RkFHVnhlXzFpVzFhVUIxQkNzbGtOMjIxamFLLWtmUERycjZKVTQ3MjRZdlNDRkg1SlRxS1djd1VaOGhqdUxZT3hJek15VmtHLXBFVUZCNGdvX3Q4endWQ1ExdTlyTXVnejF4ZFNYX3I3bC11dzFkcG42UW02ZlZjT1ZCVnpSalZMN0E?oc=5",
+        "source": "Royal Australian College of General Practitioners (RACGP)",
+        "description": "newsGP - Foundation’s Major Research Grant round opens  Royal Australian College of General Practitioners (RACGP)",
+        "date": "24 Mar 2026, 04:27 PM",
+        "date_iso": "2026-03-24T16:27:04+11:00"
+      },
+      {
+        "title": "Aged care reforms failing Aboriginal and Torres Strait Islander Elders, sector warns - National Indigenous Times",
+        "link": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNRmg2RzFXSnNpUlNqdFB2RUxoRkR2WERqRk52VjNub0hZUWZ3S3FHamItZGdFVUpRM2tqZTlIcWxRcndOcXJrVmdfRlBBc1NmTThuNHdOeC1iUHhFVzJHVzgtVzN2bmt6TDI3QTdMbHo0bXdqakpoZkM2dm9pdTlCTE9VWG82MUQ3U0FKb0RkbjRtbEZsRTRaRmFSVzZ3VEV3ZGp0U2tNMFNFanFmaWJxN3lsLXNnTmplZ3hZ?oc=5",
+        "source": "National Indigenous Times",
+        "description": "Aged care reforms failing Aboriginal and Torres Strait Islander Elders, sector warns  National Indigenous Times",
+        "date": "24 Mar 2026, 03:30 AM",
+        "date_iso": "2026-03-24T03:30:00+11:00"
+      },
+      {
+        "title": "Have your say on the aged care reforms - Australian Government Department of Health, Disability and Ageing",
+        "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE54eDVQVklJQ3liQUdNOF9FMXBEbnYtdjRReDFjWWxFRnFKZmpuYm5UOUFnT0lFMVFIdW5JZzY2S1VxNUlhSU5CckJWcGNCbFNSd0c2cW9FYUIxZWJmN1Y5NF82YjFGemZJV0cyOTNONTNvRGNqSGZBSUM3QQ?oc=5",
+        "source": "Australian Government Department of Health, Disability and Ageing",
+        "description": "Have your say on the aged care reforms  Australian Government Department of Health, Disability and Ageing",
+        "date": "23 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-23T18:00:00+11:00"
+      },
+      {
+        "title": "ABC investigators targeting the aged care reforms – and they want to hear from you - hellocare.com.au",
+        "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPc200SkR6dzRGRV9HcWE2eWlKVUVWTTdSenpPT3FpYWlZUWl0aHBDTGRudU9nb1BtRW1oamNmQVY4VkJZUlcyWThHSmJHNklyUllpLWZzOWtUcjdmV2xqV1IydGxONnJMOGNEbXpud3puSjBzX0FiUnV0dHV2TWFETmVMYVVXVUc1TDdVUUtIQWZZNW01SU1XMDNuY2xvOHJtQmNOUnJ2cTBrUdIBsgFBVV95cUxNS0czLTJlSXlHNVI2UDUxTzVkbkQxd3BqaTAzbHdpVUFwdEFWZnE3U1Rub1ctWVp4eFduUkQ5NGJhTlF6T3p0RUY5d2F5U2FXemo0SjNLMUFhcWhYQlBNXzZLNjVtRjFNVVNpZF9ZMTF6QTNBT2w2S2k2ZUF2blJfZ0NSU1NQdnIxei1jVTRUdU55QkZleDdvbnl3Y21mLXJVb292ck1IelZ6UERlX2VWZlJ3?oc=5",
+        "source": "hellocare.com.au",
+        "description": "ABC investigators targeting the aged care reforms – and they want to hear from you  hellocare.com.au",
+        "date": "23 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-23T18:00:00+11:00"
+      },
+      {
+        "title": "Clinicians told to not override aged care algorithm - Australian Broadcasting Corporation",
+        "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQeUZfQUtMS3hZTTJoYV9Yb1E1R3RpTllPQXozRndQSk9ZemVIa1pMSUx6VkV0VzFJbkRJVXpzR1k3ZGJuR0RmWFhIeHdUZjJMamJRMFZFZzIzSGlMZVBiUjk0OEVnbGJwWUtsY0xKYUlRTnd6cHRPeXhXaFpIWHFjd0dMMnp0cXdhQ2wyRHM0cWRSUGlXak1pbw?oc=5",
+        "source": "Australian Broadcasting Corporation",
+        "description": "Clinicians told to not override aged care algorithm  Australian Broadcasting Corporation",
+        "date": "23 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-23T18:00:00+11:00"
+      }
+    ],
+    "ndis": [
+      {
+        "title": "Calls to force NDIS providers to register as Labor eyes savings - Australian Broadcasting Corporation",
+        "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQZDg3WE4wTXdyTE10V21ZcHFRZTJkdnBLcENWNHMtaXlWTHN3dUx6el82bHA4TE0xWmpSVDdZVTdhc01udTVxdjRKNmplbWFIQncxU1o5TEVtMGNqZlRaQW9odTYxZVZYRDgwa093bEpRRWQ3eGc5SW9uT3JWb2JjWnJockdYd3NXZGZvRjR4U3dUNVcwaUtoYnpzREFxTG5GdUs1YXdLVGNZQQ?oc=5",
+        "source": "Australian Broadcasting Corporation",
+        "description": "Calls to force NDIS providers to register as Labor eyes savings  Australian Broadcasting Corporation",
+        "date": "08 Apr 2026, 05:00 AM",
+        "date_iso": "2026-04-08T05:00:29+10:00"
+      },
+      {
+        "title": "Don’t blame autistic kids: The truth about NDIS ‘misuse’ - The Courier Mail",
+        "link": "https://news.google.com/rss/articles/CBMizgFBVV95cUxNaURmTC05WXVvMGozRHJpTDVNNENzSkR6ZHl0VFdYR1R0T1FUbEhpQ1pjUDM4MkI5bkdvdjNSYzMtRjFaNDJ1bGVNcUlBLXJVRElaeFpwS3RuRHhrUW0wdXNUR1N4ckJVeUJPWmRIZF9McWNXUGo5SHFsUFFWYksyZHZwS0pDMDRneDhlRVc1WnBUWkNpc2tPMHlpazFmMmhBTDltOWpkUkd3NDFPeE90X2tTek1XZUkyYmtIVmlhcGhoSFUwNDByajVJOE5uQdIBzgFBVV95cUxNaURmTC05WXVvMGozRHJpTDVNNENzSkR6ZHl0VFdYR1R0T1FUbEhpQ1pjUDM4MkI5bkdvdjNSYzMtRjFaNDJ1bGVNcUlBLXJVRElaeFpwS3RuRHhrUW0wdXNUR1N4ckJVeUJPWmRIZF9McWNXUGo5SHFsUFFWYksyZHZwS0pDMDRneDhlRVc1WnBUWkNpc2tPMHlpazFmMmhBTDltOWpkUkd3NDFPeE90X2tTek1XZUkyYmtIVmlhcGhoSFUwNDByajVJOE5uQQ?oc=5",
+        "source": "The Courier Mail",
+        "description": "Don’t blame autistic kids: The truth about NDIS ‘misuse’  The Courier Mail",
+        "date": "07 Apr 2026, 10:03 PM",
+        "date_iso": "2026-04-07T22:03:40+10:00"
+      },
+      {
+        "title": "Industry leaders to inform Australia’s next National Cultural Policy - Office for the Arts",
+        "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNajBoTG5zV1A1dTdNaWlpeVh6VGJydlhZQ25TckoxQUNHVmlYaks0V2tFdkszMG5idjl6WnFOaExvYVBTb0xTZzMxdExDMzZYcl9oLXQ3eEtZa3ZpeGR1TnpUYzB2OTJCLW1iUkY4YWxJOWZJZjBlQUxuU0ZPbG5RQXItRDI1LXN2YjVuR2hkZWVFUWRpYXNYcQ?oc=5",
+        "source": "Office for the Arts",
+        "description": "Industry leaders to inform Australia’s next National Cultural Policy  Office for the Arts",
+        "date": "07 Apr 2026, 10:00 PM",
+        "date_iso": "2026-04-07T22:00:00+10:00"
+      },
+      {
+        "title": "Sky News Australia. . Shadow Minister for the NDIS Melissa McIntosh says the government’s spending on NDIS is “way out of control”. - facebook.com",
+        "link": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQdWdrano1b0FoOEswb0Jrck5ySXFyYkN1d24tTkhqbXplUVFtYlRNemtHWHFxQzJONmNXcGUxbFYxYjZySHkzakFfOW9XazN5T3AwQjcwVzFPaUxsa29pTXlXanFnLUhJSkxYMm5hUWNBR1BBYnBJdUVkbU02dW1ibzRjLXJnZDRLVjZ0ZHRYYUR6QUxZU01teVQ4TXFHR1VrMVVwb3M4WWtRTjF3?oc=5",
+        "source": "facebook.com",
+        "description": "Sky News Australia. . Shadow Minister for the NDIS Melissa McIntosh says the government’s spending on NDIS is “way out of control”.  facebook.com",
+        "date": "07 Apr 2026, 05:00 PM",
+        "date_iso": "2026-04-07T17:00:40+10:00"
+      },
+      {
+        "title": "Labor MPs break ranks on budget disability reform - au.news.yahoo.com",
+        "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE93X2VoRG9LNURnd2l5VkUwdV9qOEVVM21nQUU4emY2UjdvX0dnNk43TV9lSUE3cG8tUVZZd3lxRGc2TURIcTdaellhM1V1VXpyLWhSSG1LUmFxYjNQeGw4R0hvRkdtdWlkRFJJeDlkNFNiNV9HTGxCMUdMOGk0UQ?oc=5",
+        "source": "au.news.yahoo.com",
+        "description": "Labor MPs break ranks on budget disability reform  au.news.yahoo.com",
+        "date": "07 Apr 2026, 04:21 PM",
+        "date_iso": "2026-04-07T16:21:00+10:00"
+      },
+      {
+        "title": "Crossbench MPs warn Labor against slashing NDIS growth in budget - SMH.com.au",
+        "link": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxPNDR0ZlJYR2c1cnpkeWZOZVczN0VnOXdjZ1pieWNRcV95RU9fME9CN0Z6UDRqN0JKaFl3WERDMjNnM3VyZ1NYWEpOaXI0RGF1M28xOU90NDNVWl9wQmVqY2JsU3hZangxX2dyVThONDRyTWRYWmhYbjV3MU91UzJNQ2U2X2NXSm1nUTh3TndrY2RNQndkZ21Ca2NvTndiVGpOYjJBLVY0UHhWbGR5eUZlekdIVlF0blI4VUhQR3h2TGs3LTg?oc=5",
+        "source": "SMH.com.au",
+        "description": "Crossbench MPs warn Labor against slashing NDIS growth in budget  SMH.com.au",
+        "date": "07 Apr 2026, 04:01 PM",
+        "date_iso": "2026-04-07T16:01:28+10:00"
+      },
+      {
+        "title": "NDIS holds the key to budget sustainability - MacroBusiness",
+        "link": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQdVUzek1raExjdnNUaUY4U0Q4MmRENS1xOTB4bDFWZG9yR2dvWjZ2dVY0UnJ0NHBxQ0cxYWY0a0dITlZqZVAzVkxsaFN4U0tPeDVqWkFYQWZZbDctcHBqRG8wR3dBaTd5T3ZXTEJHdDBpTFpkSFNuQkNKY3BXTk5ZaGJqaTM2SGhiQXVTb0tn?oc=5",
+        "source": "MacroBusiness",
+        "description": "NDIS holds the key to budget sustainability  MacroBusiness",
+        "date": "07 Apr 2026, 03:58 PM",
+        "date_iso": "2026-04-07T15:58:37+10:00"
+      },
+      {
+        "title": "Two Labor MPs – both of them doctors – say the NDIS must be redesigned - SMH.com.au",
+        "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxPTmhINTZPRUowdUNjOTN1N0tFVGhOeVdGeTFvUDMtRnJDTEZPcnRyamV6dk1sM25EbzRTSHZsRmlpc05jOVZQOHN3Vy1HbnVELVVyRDlrN2J3Z3BSQzNZcFBYY3lVaTczLVFTVVlxVW5HdXBFRUVfeE1aZzVITlkwdThOVmM5aXRnUmFMc044alkwWXlBN2RVNFZPUkdEMlI2V2lqS2ZQN2xDSlhoVjdiNGFIRVhsRE9Gd0Q1NWlua1d3V1RRMWc?oc=5",
+        "source": "SMH.com.au",
+        "description": "Two Labor MPs – both of them doctors – say the NDIS must be redesigned  SMH.com.au",
+        "date": "06 Apr 2026, 05:01 PM",
+        "date_iso": "2026-04-06T17:01:53+10:00"
+      },
+      {
+        "title": "Sky News Australia. . Labor is reportedly planning to slow the expansion of the NDIS as part of efforts to secure additional savings before next month’s federal budget. - facebook.com",
+        "link": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPR2tqcVd0TFNrMGwwNlg0OFlHRWhsRVdLbVcxNWxPeUtDdl8xVDMzT3FNLVlKTHJPcVVQZzl2RUVRalhTSmJlWTBQaWNCcmJwM3ZGQ0dpdmtWOFJRMC1TNUdYV2ctWnNUN0xyeEN6WG56Q2J0U3puUk1ISkVCM3poVkRUWlhVenY0eW1BbHozZC1tVGw5WDA5RU8yTDBSWGZUeGNfaUNnWDZRTGpxLTlEVlB5eVg?oc=5",
+        "source": "facebook.com",
+        "description": "Sky News Australia. . Labor is reportedly planning to slow the expansion of the NDIS as part of efforts to secure additional savings before next month’s federal budget.  facebook.com",
+        "date": "06 Apr 2026, 04:14 PM",
+        "date_iso": "2026-04-06T16:14:25+10:00"
+      },
+      {
+        "title": "Health Minister Mark Butler says NDIS is off track, ‘out of control’ - afr.com",
+        "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNYjBfZVJxQ0tvd1d2ZFRxWG9kMk5kd0U3a3RlOWNuazJaYmRnbEZDLVZlZXRhT3FsczNBVUx0V25CS0RTZk9YSVByRVQzQTNxa2pSU2FtaVZsdDFnNEhxWWZLcVhsMEdEUDBmS1JJQ3lhQm5YYVc4OXVJYWFabElzTEg2RzlkRXhEU25lOUhzNTJzOEVuSVF6R0c4VUVSal9kV0ZVRGcxQWdzM2ZSajJfem1FdWxvaWstMndsTjVKQng3anpiVFpGcA?oc=5",
+        "source": "afr.com",
+        "description": "Health Minister Mark Butler says NDIS is off track, ‘out of control’  afr.com",
+        "date": "30 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-30T18:00:00+11:00"
+      },
+      {
+        "title": "The $50b NDIS question is the elephant in the hospital waiting room - afr.com",
+        "link": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOSjM3U2dBMENwcUJERFVHb2ZSZXc2c1VpdGFLTHVpN0FmZGpoWW5TWHB3eWkwNTVUbnEzV0NSMTNKdFp6LXpIVWk4bDVKZ3VqRndpd0pxWk1NWldad2V4Ym5oM3VIaTR6Z3JVWjVwQ2tlRmxqQnZKMHZuY085Y1hhdmtDel9yR0k1MjMzbEhvX2tWTHd4OXFVMUJKaUltNHU2WW9UMkdHT2tkd1ZiNTFMdmtpRS0?oc=5",
+        "source": "afr.com",
+        "description": "The $50b NDIS question is the elephant in the hospital waiting room  afr.com",
+        "date": "30 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-30T18:00:00+11:00"
+      },
+      {
+        "title": "National Disability Data Asset Council’s first Annual Report is now available - Australian Government Department of Health, Disability and Ageing",
+        "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPSkswV3pNMHFrWXhZdUd1ZHphV3JRNnhHLXMyOEdXVmpaTVNEZFA2cURHV29SUF85T1lCU0Y1cFI3WEY5bnNocnc4ejNYdnhpN0pMSjdTVU5BRnc0aWlLRDZBVFBxcTZ6R09HYVlhUS1iM0d4UFBKNHRmRDJTcW1TUXpfam5YaER4RkdKVnFBSS1iN2lNRndaY0VOMU1VVHBSejdMUXR4M05DQTQ?oc=5",
+        "source": "Australian Government Department of Health, Disability and Ageing",
+        "description": "National Disability Data Asset Council’s first Annual Report is now available  Australian Government Department of Health, Disability and Ageing",
+        "date": "30 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-30T18:00:00+11:00"
+      },
+      {
+        "title": "Our executive - DCCEEW",
+        "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9fQ2o4dWhkNzZHVzB3NVJaWHJnZHdKS1RlWDJOVml2eUhrOERudnBubFprNnVTS2NmelBubm9waXJxNE01aVhJR2U5ODhLeVdZbzJ1TjRRUzQwR3ltQW1mTzc3Snk5UjA?oc=5",
+        "source": "DCCEEW",
+        "description": "Our executive  DCCEEW",
+        "date": "30 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-30T18:00:00+11:00"
+      },
+      {
+        "title": "What a Human Rights Act could mean for people living with disability - Disability Support Guide",
+        "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNRzZVbU4zVnRUN3hoR3F4M0pKaUlXTHB5bzVnbjdYenlvQm9UY1plUTlZTUZsQmQtRDJSTkVnNTdWVzBSZkpYZGs0UXJRVDJVTEQ5Rk9NMU8tUFNzdlNMc3Qtd0xqOGl2QlhSUWViMElFVFlnR0JfZ0hfdndHTDhrTU1DNl9icTlIN09GdnREeXk5SjlVa0VMWUNFNS1MT1E1aF9ZQUJ6ZmFPVnN2UV85SmFJVV9Fb0FNY1ppa1psT0lrc3BLWW1FMg?oc=5",
+        "source": "Disability Support Guide",
+        "description": "What a Human Rights Act could mean for people living with disability  Disability Support Guide",
+        "date": "23 Mar 2026, 02:09 PM",
+        "date_iso": "2026-03-23T14:09:29+11:00"
+      },
+      {
+        "title": "Report: Towards a sustainable disability services sector - The Mandarin",
+        "link": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQQzVRd29jWDhwRGJIRGl3QWM0WlFVRFRzWDZ0MkJUMndTUjUwN19wOUlGeDZCU3hJNjRPQ3ktanZ5UlZuLW1IeW9vWHRTU2paZlFrRjhpX2MyRmo1LWU3RDdUc1JXQVBsLVdoS0JZeVNHQUZNVUVXNlloQ05UNHlTVzdLOTl6Y1VkblJTSmtoOUZzMFd4SDlPYS1B?oc=5",
+        "source": "The Mandarin",
+        "description": "Report: Towards a sustainable disability services sector  The Mandarin",
+        "date": "23 Mar 2026, 09:21 AM",
+        "date_iso": "2026-03-23T09:21:24+11:00"
+      },
+      {
+        "title": "Travel costs 'chew up' NDIS funding in regional areas, worker says - Australian Broadcasting Corporation",
+        "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPLWZ4ejF1MEdxaFVZWUdOSTlDa1V1Q2hsU0cyY0NxUnBBMmNRRXhSUmdzamlOQWhTRkNOTFlQeWZtSHptQTY3UjhJb1RVQ2tQU3FfU0R6RmIwTVp5cHh6OGJhWU13ODI0Sld3Q2Npa01wVFA4amJrVDFpdmFrUV9QMHh4clBlQ3dkQ3RpSmlaR3pIY2FBeG1tZWRiVzVCM1U?oc=5",
+        "source": "Australian Broadcasting Corporation",
+        "description": "Travel costs 'chew up' NDIS funding in regional areas, worker says  Australian Broadcasting Corporation",
+        "date": "22 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-22T18:00:00+11:00"
+      },
+      {
+        "title": "NDIS reforms to reshape disability support system - Local Ipswich News",
+        "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1tQ3hwTG9FZ3JTd19OWGVsNndHYXJuNW9WVTl1SUQ2WHRuamRnMVpaRGZLcGNCUlZ2OTlDZXVFcU5XSlZqcUpmSTF3WHlKV3oyQW9nbmtON0JWQmF3M0tHVWdxUzJrLUFvLWJWNA?oc=5",
+        "source": "Local Ipswich News",
+        "description": "NDIS reforms to reshape disability support system  Local Ipswich News",
+        "date": "20 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-20T18:00:00+11:00"
+      },
+      {
+        "title": "Centrelink cash boost: Millions of Australians to receive Services Australia payment increase - 7NEWS",
+        "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQVHlaX1NqUEFTR0pXVjdiWDFsMUN2U1lEWnozWEQ2RnJGZzFVZFh0SHVNSTROUVZrU193Yzc2OXVDaTg0QVJzMl9oVnJocFVVWEU0UEM2UUdLX0NtN2wzLUtxbWJPczJsT2IwSERWQkllWm5OOXVHRVktUmJ4MnNwNVliTTFkMjVCbmxQYU40WDdxR0hXSTFwUWl4MV8xNzh3ZFQ5akE1bldKTHgwOTc0WENVMUJ1cHZiOWFxQWxLcnVrU1YwQ1V4LdIBzgFBVV95cUxOQVNQZENWb19UZzFCLU53cjN0S1BzVHdDLTdMdFFpSzBjS3FrTEQ4M01XeEgxTU4wc1dMU2pSX0hrbHF6djBWNEdCd2s2OWZlcUEzS3JTNk1vWDRENjg1NGtZS2ZJSHhlLWRwYUdmOHljcWR3UnJZTDB0LXVQbWJhZlFvdlV6TlNaN0FuNm8xTkkweFRLNHhSQnI2WW40NkVOM0VEUXlHSmU4Z3NGSHJiTlBNU2RJN3pYaU92ZUphd1BKNHRZbm5DTTR6aFB3QQ?oc=5",
+        "source": "7NEWS",
+        "description": "Centrelink cash boost: Millions of Australians to receive Services Australia payment increase  7NEWS",
+        "date": "19 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-19T18:00:00+11:00"
+      },
+      {
+        "title": "NDIS spends $12b on support for walks, movies, haircuts - afr.com",
+        "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPTFEzNm9yN1p5dFlxcEhnaUpiR0FCRFNSSnZleVNibG5tREFHLWpRQVF3VlRXcGRtdzlZUG01blJKS2QxNzdRdlVZSWNjRFdtTjV0WHZfbGpBNW9qdW0yZmY2TzBNN0xnVVZrNFFzdmQ5eGFjN2doejlNRkltZkE5cTZKWTFUTVNBNXlhN0JjbE5qUzVDRmZRQVZaQkN0bE10VXlzdklR?oc=5",
+        "source": "afr.com",
+        "description": "NDIS spends $12b on support for walks, movies, haircuts  afr.com",
+        "date": "15 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-15T18:00:00+11:00"
+      },
+      {
+        "title": "The Great Rort - The Spectator Australia",
+        "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE53dzd6Qm8wRG1TY2l4cGdNQ2FOSEpVX1VNajZiVGpBQUNMWlRJdmlzSWtnM2twWkJHMU9FbjVaYkZXSVg4eGx0NDZfQXlVQnB0QVg0X0Y5QmJoQ0doc2JTb1Bn?oc=5",
+        "source": "The Spectator Australia",
+        "description": "The Great Rort  The Spectator Australia",
+        "date": "14 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-14T18:00:00+11:00"
+      }
+    ],
+    "health": [
+      {
+        "title": "Nursing Body Demands Urgent Medicare Overhaul for Remote Australia - Back Country Bulletin",
+        "link": "https://news.google.com/rss/articles/CBMizgFBVV95cUxObUJLTUJlcFhuZmRCNUM3bmhYQjNvenJxTUxaMVd0VjJNOG9aUkxRdEJ6QlNHTTIyc05wcTljX09ycW92ZURVWVQ4V1BHLVpqQmNRUnV4aVp6aEQweUVCYmtTOGl2LVc4RUNuNkx1bDB4WG9CVkt4dnZTTzl4b0prQkxkaV9ta1hPYlRLdjYxUF9YNE1OWGRGS1lwU2t2RUQwOGtsU2JOVGtYbGMzT25xcWtIZ0hTaHRuU1VNeUZySnMyc1AzYVB4OUZhYlAzdw?oc=5",
+        "source": "Back Country Bulletin",
+        "description": "Nursing Body Demands Urgent Medicare Overhaul for Remote Australia  Back Country Bulletin",
+        "date": "05 Apr 2026, 06:02 AM",
+        "date_iso": "2026-04-05T06:02:00+10:00"
+      },
+      {
+        "title": "‘Medicare By Choice’ Plans Could Work, But More Details Needed - au.news.yahoo.com",
+        "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPdnVxZ0RuQVppR3pOWV9BbV83cW85RzZYM2hjZGhTVE1POFkwMUJIbEZyaUFoRmNUZEUtUml5SVR5RUQ5RVpVOTh3UEZWeEI1V0RfR1FndTMwTy1kOF9abndLRUppazBTVjZSVkp2WnlobzVYeEpaNTNjbG5KRzFWWA?oc=5",
+        "source": "au.news.yahoo.com",
+        "description": "‘Medicare By Choice’ Plans Could Work, But More Details Needed  au.news.yahoo.com",
+        "date": "04 Apr 2026, 01:52 AM",
+        "date_iso": "2026-04-04T01:52:53+11:00"
+      },
+      {
+        "title": "AMA Demands Reform Amid Rising Private Health Strain - Mirage News",
+        "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOYjZ2UkpRYU1VTFVDTWd0NXBwYlBVX1dMLXhKWEFMUlBrdDhIVjVKcHhuemVoOHVycklSbmUzdFFqZ2RScFJhNVVsaDVrX0JmNTN1dUl1c2V2LXZJb2hla1YzRkxyVjRxUnI3VnpvSU5vcHhFdVpIWGtyb2N3RXVoajFvTFBzOG1S?oc=5",
+        "source": "Mirage News",
+        "description": "AMA Demands Reform Amid Rising Private Health Strain  Mirage News",
+        "date": "02 Apr 2026, 08:04 AM",
+        "date_iso": "2026-04-02T08:04:00+11:00"
+      },
+      {
+        "title": "Just one in three patients have heard of MyMedicare - Medical Republic",
+        "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQNnlZU1h1Z1lBSVJfVnpDQmlNclpsbzV5LWkxUjZaTVZOcUVoakRpVTZ2UnBkT1dnb1hTMW41SzJ0MmpLN010bXdLNnJNZXJsamp1ZVlIMHFtMU9Tb2p3aGpCdWNBWWwxMmloUURUc0p2YVlSV3d3Ml9CNGhZV3RINFN6eHhIR3ZfRFFNNzZoS3dmRXdVNGIwWQ?oc=5",
+        "source": "Medical Republic",
+        "description": "Just one in three patients have heard of MyMedicare  Medical Republic",
+        "date": "01 Apr 2026, 04:13 PM",
+        "date_iso": "2026-04-01T16:13:30+11:00"
+      },
+      {
+        "title": "How your health (and genetic results) affects your life, travel and health insurance - The Conversation",
+        "link": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQdnBmY2t6WERGWjZkeVJuaHh2SS02RmllakdVZGc2YnN2VVk0Q1gtdFFnTlBXa1lZQ19ubnNLNzZPbmdzTjFPc3Y5bG1TLXVTOHVoZnc5Q0lpZTBVcWV4bjRaWlJfYjRfTlJOdmJ3TWlQUTVTZm5rNnlRUWc2eFFJRFlPWkpna0E1Ump4WXpDNW9FUUxoWUN5bU82YXRwWXdUbF9NbkNWSEhjYXRJYWxSMVJrXy1ONjA?oc=5",
+        "source": "The Conversation",
+        "description": "How your health (and genetic results) affects your life, travel and health insurance  The Conversation",
+        "date": "01 Apr 2026, 11:07 AM",
+        "date_iso": "2026-04-01T11:07:00+11:00"
+      },
+      {
+        "title": "Will medicinal cannabis help my mental health? Here are the evidence and the risks - The Conversation",
+        "link": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNTk1TQUVJeDA4dDJ1cGNtV2dGaW80aWVoeVFhUW5Ndkh6YzdPVzhtOWtBdGQ4b016QmNwVlI0ejVQQWFhNmdhaVlGTk5JUEpkVndtdERrMlAwemtXdUZRWS1TdGR3NUlCaWtJY29WWFNEdnpIclRQUV9wUnFiSUsyWS1ITkdpVzE3WDg0Sk95dV8tQVM5Y1N3eUhrS0Z1SkVHNzFBeF9aTXVfRGN1RS1lU0Y0ZFRiazA?oc=5",
+        "source": "The Conversation",
+        "description": "Will medicinal cannabis help my mental health? Here are the evidence and the risks  The Conversation",
+        "date": "01 Apr 2026, 06:11 AM",
+        "date_iso": "2026-04-01T06:11:18+11:00"
+      },
+      {
+        "title": "newsGP - RACGP slams Government’s ‘cherry picked’ bulk-billing intervention - Royal Australian College of General Practitioners (RACGP)",
+        "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQUUI5X0piVS1pQlNUSTlEM1JSQmpGczJIT2JxV05kdEdqRHhtNkVyal9vSVBLWXZ3alZyR3pjQXhyVFRVRE52UGowYmYxR2EtQTJkSlBtQUcwR0dKMVJrR0VxWjZKTmVhcXFfSFNENW5tR1Jqd0Y3SHBEbVhvYzRoblg3RncwdE1ndXpFREE1aEhyWGQzZUVoaEwwSnA?oc=5",
+        "source": "Royal Australian College of General Practitioners (RACGP)",
+        "description": "newsGP - RACGP slams Government’s ‘cherry picked’ bulk-billing intervention  Royal Australian College of General Practitioners (RACGP)",
+        "date": "31 Mar 2026, 04:28 PM",
+        "date_iso": "2026-03-31T16:28:42+11:00"
+      },
+      {
+        "title": "newsGP - Affordable healthcare remains elusive for many: Report - Royal Australian College of General Practitioners (RACGP)",
+        "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNQWt2NWVQbm9tVVFWNWVpRlR3RlhFWDQtRlE5SnBjWG5iV1U2WVowdmNxbGNkTzVfd01wbFpxeG55SEZWazJ4M0VEWGVZc0cwejRIeGRXdUNmeUc0UHhjNFFIOVJFNXc4cDlNVVNTNHVRdWRYMTk1UnkzUjBKR1NzdlBFZFBoVkVzTml3eUZ4XzMyaGU2MkpWTmVfSk4?oc=5",
+        "source": "Royal Australian College of General Practitioners (RACGP)",
+        "description": "newsGP - Affordable healthcare remains elusive for many: Report  Royal Australian College of General Practitioners (RACGP)",
+        "date": "31 Mar 2026, 04:08 PM",
+        "date_iso": "2026-03-31T16:08:39+11:00"
+      },
+      {
+        "title": "'I'm sick of it': One in two Australians priced out of healthcare system - Australian Broadcasting Corporation",
+        "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxOUTRubmtmWWs5WjVYOXI2LVhQN3VvNEJNd01pYVVKMmwtYjF1RFdndXlIeHVUTFdSWnYwamZqN0ZjMDdWZVBFYVMzNjV6V09CSlJnZEJRendQVXRzejRvWUliTUp0RTdxRHNRWFNHVkhHbkF3dTlpX2FSM3pwR2IyU2RTdG9XSGNWZmdEZEl1RFdzWHNLeGxXeA?oc=5",
+        "source": "Australian Broadcasting Corporation",
+        "description": "'I'm sick of it': One in two Australians priced out of healthcare system  Australian Broadcasting Corporation",
+        "date": "30 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-30T18:00:00+11:00"
+      },
+      {
+        "title": "Free online mental health service now available - Australian Government Department of Health, Disability and Ageing",
+        "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNVVRyZFB5ZDd1XzdvVHJwTlNqLUd1YmFQa1hBUFVSdW5xUzdaN1VmcGlnaU4wTjhWTC1PQnJMLWI2NDRySzRZUlNsZnVubVVRdmE1MFlqaUlwRFJrX0RNa012aFZMc3MzeWUzOEd2TEgtVFBxQU1fam03RW5heDliQ0c5YmY?oc=5",
+        "source": "Australian Government Department of Health, Disability and Ageing",
+        "description": "Free online mental health service now available  Australian Government Department of Health, Disability and Ageing",
+        "date": "30 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-30T18:00:00+11:00"
+      },
+      {
+        "title": "Medical group renews reform call as April health insurance premiums rise - Insurance Business",
+        "link": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxQYnRMa3EzaDVrVzgycEZJSUtGaG41OXcyOUdmTnVNQnBGQ29VQWUxcmNuZ1pMSjV5UmxKTndnV2l0UmhQQ2lsYU5jVzNsRnlpLWxqdmhnbVYySkpneHI0LWxUMG9ZZnVrMUNUMl90a3NKUkFYY3dsRE9RbjZISGV1dGIyLTdIM2Y0TUJDbC1ZOWRHVzRsZFhyazRhdEtSMmpFbXR6cTJkamdiNXIzMmRZYlVYMTRHWWJuMDZpRnFkSlNqY0FfMzh0dEFCNXNlUU8yZHVnQW1XWHRYczN2?oc=5",
+        "source": "Insurance Business",
+        "description": "Medical group renews reform call as April health insurance premiums rise  Insurance Business",
+        "date": "30 Mar 2026, 04:54 PM",
+        "date_iso": "2026-03-30T16:54:53+11:00"
+      },
+      {
+        "title": "Super funds and insurers confront escalating mental health claims crisis - Investment Magazine",
+        "link": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNNmJRUG02bDMxZE1ZbXl1T1NwampwY1ZqbnRGYUdJNDZXTk0zczBtY3ZnQ292Q3gxOHlJMTYwR0l1QU9DVVl1dzdBbVU1bFJubWF4OTZsbG9Jb3d4UDJuMURWdUtOdjVfczlCQjJQaXljb3dySTJ0ZEtwdTItbmxERlROaVlRdW1KOWdwT2hoTloyU3hfMFhTMW42b0l2LWhUajZNWDd4VW5Bejkxc1pVT2JSV1psdlFxcExB?oc=5",
+        "source": "Investment Magazine",
+        "description": "Super funds and insurers confront escalating mental health claims crisis  Investment Magazine",
+        "date": "30 Mar 2026, 01:50 PM",
+        "date_iso": "2026-03-30T13:50:34+11:00"
+      },
+      {
+        "title": "Private health reform ‘gap’ leaves patients paying the price - Australian Medical Association",
+        "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxNNk9LNk42ZDRVdm8teUd6a1AyT19ldzY3Tm44bXAzeWNnNWRPRi1iWER4UERkOEdGZGtDeFlFMlFWNEotcGNlckpnYXhueG9peGxUaXd0eHBUZzVodGJpSlpLTnJUdFRRM0N6SDVnb1hsOHZib2Y1ZTdDVThqVjU4aVZka2VLaXQ3ZjVZ?oc=5",
+        "source": "Australian Medical Association",
+        "description": "Private health reform ‘gap’ leaves patients paying the price  Australian Medical Association",
+        "date": "30 Mar 2026, 07:10 AM",
+        "date_iso": "2026-03-30T07:10:00+11:00"
+      },
+      {
+        "title": "Mental health is too important to be healthcare’s poor relation - afr.com",
+        "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOLTNvTmtkZk5lekNOb2V4ckUzLTd0N0hrdEJBTS10MDN5UXFhTUdQSzJiX21JVDgxOURtR1BqWktIWW03b19NT3N4eWdoQXlvMDlpWnlnQ0JON0JJWlg2UWZFaW84NkJvRmJJOTdSX2VjcVZJT3NiVnAxS1dTbHFLZGVnUEpUY20tSHZ1WmtWdEhpRkxyeFdLLURzUUZmcDB1blJZVGN2el9WQTFhM1NyMHN2WTlmSzFNUjYxQ1Q1Q1pBOTlmU3c?oc=5",
+        "source": "afr.com",
+        "description": "Mental health is too important to be healthcare’s poor relation  afr.com",
+        "date": "29 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-29T18:00:00+11:00"
+      },
+      {
+        "title": "Refugee and migrant health - World Health Organization (WHO)",
+        "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNVXhvTjJqT2d1VDFwaHo0UzRxX2s4MkxGT1JEMUNMQzNqd3o3U19LX1lNbUJBNWc1c3FrbERsQmxGS0hCeFEyUzE5S1V2bndmSFpSWDNyXzdtcnNxMzFVNmcyaEpPU2xtTzFNV3pYa1VicWh5NnBjY0FmbmpMREVmaQ?oc=5",
+        "source": "World Health Organization (WHO)",
+        "description": "Refugee and migrant health  World Health Organization (WHO)",
+        "date": "25 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-25T18:00:00+11:00"
+      },
+      {
+        "title": "Eight million Australians cut health insurance costs before April rise - Insurance Business",
+        "link": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxQWUZDWUt1dVplb0J2RVc4dGVHZG1aWkRMUTB2bGs0R0FzOG5aV2prUnpYOUZXNWhBUnNoZGx6WDVEZTJiMFFmbUpRUzdoZGhhVXB5NWFIQzRxMGpuVFoxeWl5QUpMNDlLTnRHbjVfY21WSjN1TldFN2RhOVpRRGFPUTUtWkRCcWRvQVlMbDkxYkFSQndCX0pJckE2OWJPNmtRUUV6aFY4cjU0T2E4X2t1YmVfUXROVnV2SHlLWElKNEo1V29UMGlNOWpLaVphSDJ1RFNXNjFuaGVKZw?oc=5",
+        "source": "Insurance Business",
+        "description": "Eight million Australians cut health insurance costs before April rise  Insurance Business",
+        "date": "24 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-24T18:00:00+11:00"
+      },
+      {
+        "title": "Online mental health treatment program improves depression and anxiety in people with MS - MS Australia",
+        "link": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQMFctUUZVQ05ZMXkxSkxINW5MTkpSTTFTYmY1ZnNWbV95MXpmSXlpQ2JJTWdFR3hWcHNyWm5EdWdnTnFHWHB4RmlUUlNFVXFzbkNrZGdFU3NtWmJGdUlzQVJuRVVhYzRYSjBPTWV0TjZodzBTcnowTXByTkYwWmFnWHFuVnprcnhFUDVBcnZOc2RyaFRucjhvaEhxSVhKSENMLURoSUZuMWRxYWgzc3FzY1ZWb3MtcjJyS1pfWVpxTEJPdEk?oc=5",
+        "source": "MS Australia",
+        "description": "Online mental health treatment program improves depression and anxiety in people with MS  MS Australia",
+        "date": "24 Mar 2026, 03:04 PM",
+        "date_iso": "2026-03-24T15:04:09+11:00"
+      },
+      {
+        "title": "Crucial tactics eight million Australians are using to save on health insurance - Sky News Australia",
+        "link": "https://news.google.com/rss/articles/CBMiqwJBVV95cUxNVnNfU3k5b0tCS005eDRzdG9xM3RDYzg0VG4zOUZlYzB3UkExeTlTbVF6cFpQZ21CODNQMEhaYVR3dTdIaTktY29iU2pfNTRMUmlBbElIVTRTcjFocFN3U3FQd3Y3M1VCTC1EV2ktWmdST09QOUI5OWdBZzI2U2h1MkhWS2NCTnFsTWVpR0MwbEZlOWRWZXFNdFdnTThWTzViVHpQTkxZRnREZ1ZYV0FEcFVTLXJMQlZhUEx5Q0w2QUxZd2x1Q2Z5ZTBwT0M4OUVsbWFpNlMyMnpON1htdHdJdkdITHlaSjVEOTR3cVFYZUlBSXl6UWdOLWQwejAwbF84U1g2LTF6VzYtNGc1R3NwbDYyeG93MHpSaEd0UElfU1VZRU1fVkcxZG1iWdIBsAJBVV95cUxPQmJYb3BxcUNCMVFIckQtc0c2aGh0UTJLallfRmt5UmkyNkUtU0tJVXVDa2RhMHBHQzF1dHc2elp2aDI4djA4QUgtY2RFOVRoRnAxOERGbkU5SzJJN25wOGdlNFJJSkRqSnRnUlpobkFtaGhUTk9rY2stTUdWQlhLSUpKSjBsWWx1OXhVdlBhQl9KRThqOXBSenJlWi1tZEdidjA1aU00dUhMSzdGdTFaLVM3R3lmTlNpR3FYdE9WVG0xeTZMYnlMR0J1R0RkM2dVckNuWGs5M2dVYnp6U002OFZtV3poYnVfMzI0LXN0V0tWU0VLNjNNOTJTdUItRDdQTWhRX2FhdlFTTkRPMzZlRUN6YVh4OXBNWGk4T2l2MjlyaHB3ZEY2VEYwMkhJUDJR?oc=5",
+        "source": "Sky News Australia",
+        "description": "Crucial tactics eight million Australians are using to save on health insurance  Sky News Australia",
+        "date": "23 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-23T18:00:00+11:00"
+      },
+      {
+        "title": "9 in 10 Australian workers distressed, report finds - hcamag.com",
+        "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPdnU0SmdVN3JJYzVMakdhOTlPbW5xNWxES3FMV19MbHhWODYyTlZKQ3pqUDFNMG5RZkxINkJTcnZ3M05sTndwVXo1dUxwMnEzc1ZIWDdGNmZxajlMbEJEUXVJQW5ZcExFQnFjcDczQXRYNjRnRF93bHlzWnFVUjNGbHB6R1JLMEdNWG1nZ1V5MGc1U0I0WFhMMm9LQzdyYWhPNV84Y1NKRzdOaUNTaDRTenlR?oc=5",
+        "source": "hcamag.com",
+        "description": "9 in 10 Australian workers distressed, report finds  hcamag.com",
+        "date": "23 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-23T18:00:00+11:00"
+      },
+      {
+        "title": "One in five suffers extreme work distress - theaustralian.com.au",
+        "link": "https://news.google.com/rss/articles/CBMi8wFBVV95cUxPTnlYay1vYktfZGJNWHJ5VEFXV3U3WVhiN3dYTEx1cUVHWnpkcy1XRS1tMDYyZHhxbXBlT3VWUzllbXNjOWNPcWJFNGNSRzV0c1MzVnJ1LWVkSVhtT29wSHIwZ1dlT21CMmd6SHVnT0QxUllpb2tVOG9XRy04bEZKZkwtSTdFUndfc3h4TG1sWGpTaTJiU3pXeUVlZXBXRVFqYVdNMnRrUS12aDFsX2ZGTjhBbUdzSm9zZ0VGZHpSa1Q5MS1wYk5YRDc2THJ0SFdIMEsxVUpoc2x2OEZkWTRDV3F1SVVFMDc0Y0lvVjc1cFNKX2vSAfgBQVVfeXFMTzB6Snd1TE1INE5MSF92ODBPYlZabEpjQ2hOZjVoTjZmT08xcFMyMzQ3U25pQnVJYzZhZUtybkFiU1JyM0IwTkZvVUJUeEJlR1VCZVgwM05zdnRvVTNxZ2JIYl9kMUVpN3pKV04yRnAtOHczdXE2a1ZMTVZIb0NZRUI0LTB5WTVjZXlnVllwVlYzOHVaR0JfeTV6SGphYUE2bUJXN00xcW9tckQyUzRpanRaWkR5NEJ2UjgzQVlwRUJSQ1pRMjh4Rk5LR0lacXlOdWFMUVE0SFRGN08tc2FvWWE0VlNBZTQtckNUNk1RRkJmc0EzWWY3Yzk?oc=5",
+        "source": "theaustralian.com.au",
+        "description": "One in five suffers extreme work distress  theaustralian.com.au",
+        "date": "22 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-22T18:00:00+11:00"
+      }
+    ],
+    "child_protection": [
+      {
+        "title": "Educator strain a key theme in child safety report - Lilydale Star Mail",
+        "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQYm1NZkdwZV9MX18zNHQwOWI1LXhGNjBtQXp2eEJQY2kwTGY3QU9weWVLVk5pRkNHYjZiZTJadFV5STFlTUtxNnhNMUxlcDRBVE5CNnZscHYzbG1MclAxdzlqaUp3eVk3X0ZMOFhjSEtKVjVFdDAwdGpWNXFGZ3ZvaFdjdnd5WmxpRUg3aVQ3YjZBU1FvQVR6al96anJHc1dUNWM0ekpPUWE?oc=5",
+        "source": "Lilydale Star Mail",
+        "description": "Educator strain a key theme in child safety report  Lilydale Star Mail",
+        "date": "08 Apr 2026, 05:00 PM",
+        "date_iso": "2026-04-08T17:00:41+10:00"
+      },
+      {
+        "title": "Protecting children’s digital rights: understanding Australia’s new children’s online privacy code - thesector.com.au",
+        "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPbkZGSWFIT2tWcy1aczV1dmFmZFdYS3h6MXpXUzVOVEtIZDNUWnU5aE9FR1JQMl9FeXV6ZlRTanllRWRFRDNQNk9aZ0Vjd0tqYk5wV3hiX0hXa0FBbUJlOC1lMklJNDMwNTE3XzdFY1FrU09NRFVRX25qcFZHZnN3LTJxbkthVE5nZDFfTVhJUjZCQlFVdlp3?oc=5",
+        "source": "thesector.com.au",
+        "description": "Protecting children’s digital rights: understanding Australia’s new children’s online privacy code  thesector.com.au",
+        "date": "08 Apr 2026, 05:02 AM",
+        "date_iso": "2026-04-08T05:02:43+10:00"
+      },
+      {
+        "title": "Strengthening child safety capability in Queensland: what the RECS program means for early childhood services - thesector.com.au",
+        "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTFBZbFZIbUJsdENrVU02LVJHM01hNF9IVW13dHFNamdKZm9rMGZCeGNzSHN6bDNlZWV1Y05uZ2ZzZTZ5MUVhU0R3THY0dkJQeVZkOU9lSVRtMHNUUmlpem1OTjhNQUlSUjNERnAtX1pnSUd1NGxaOWdxSmM1NkNZOXM?oc=5",
+        "source": "thesector.com.au",
+        "description": "Strengthening child safety capability in Queensland: what the RECS program means for early childhood services  thesector.com.au",
+        "date": "08 Apr 2026, 05:02 AM",
+        "date_iso": "2026-04-08T05:02:38+10:00"
+      },
+      {
+        "title": "Life-saving foster care system hits breaking point - The Courier Mail",
+        "link": "https://news.google.com/rss/articles/CBMikgJBVV95cUxPWVZ1REktdGZEX2x2ZFFXSlMzcTFyX09SdnlmMmU2TmxFbVB0aXQ0ajB6a0tpQkR4UjkzYThrR2tBcjgtakZoeGlLX3lDYm81V3ZZM2hBNkdVUC0tVFVtbTdvSHdvTG9EMmEyM0x6bVl0cXVPcnlHZ1cta0FBRElZYXNfeVJ3NHRhTWNtaHh3MndFWEdRUGk5b0ZFTzlzQjdyZVZIMGVZc3ZuX2ZRUzRReW9RTXNDcW15VUF0c1JDN0F2WFRzSTNtN1RzTnZFeTJTa0tDd25nLU1Fd2ZsN21oVzAxc2JsMWRNY1FuaTl0UkNuTGdGOTljLWl6eXc5bDV5T1RDX3MyRVBBa3E5aUNqTE5n0gGXAkFVX3lxTE4zd3g3eS1lT1pfd3RNdGVjaHNSU3dNblZRNGI5UHIySmhMaFE4T04yTEdodzljb2k5eGw1a29KeE1uZVA1R1NnZ2hxYW5CMGtObGhMSXpKWHBtczFveWY3UVkzVVVENURlSU1jMVFZRHZEMkh1YmtvWWFka3BSX3BLdEx6XzNQNGVpZ2tZQ2dIcTd5R3d4TkJoVGp2RmZCTy1KWWVrbzZQbjNtcnV0UzBBaEpHM0lhZGJzZHZGZV9rZkJlNjk0M05NbVpLLTNRazd4OUtOQVotRUZtajNub1I1T3VoYWZDNE1na0k4Sjh0aC1WU0c2Sy1qSEdFdEx3LUhuaklTdHBTVWlPT0NNSnEyZUYzQ3hCZw?oc=5",
+        "source": "The Courier Mail",
+        "description": "Life-saving foster care system hits breaking point  The Courier Mail",
+        "date": "06 Apr 2026, 05:05 AM",
+        "date_iso": "2026-04-06T05:05:13+10:00"
+      },
+      {
+        "title": "UNSW researchers honoured with prestigious NHMRC awards - UNSW Sydney",
+        "link": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOdnctRnRRWmxacmdUZ2taODI0Y0NNaWVSYXpYSW55aGhsYmoyX3VzZzZSemFPLUdrdzhyWW42WC1oeXdrU1FfUm9LMk5HTW5QTlh0a0ZDbGVGVDN6VzdVcEZEdU4tOVNZSEZLak0xbGtfdWNPUW5MVkpRUk9kbk1mWlM4Ry1XemZJWVNGQ2lubXpUWnBITFdFSUM1WGc5dUd6TExF?oc=5",
+        "source": "UNSW Sydney",
+        "description": "UNSW researchers honoured with prestigious NHMRC awards  UNSW Sydney",
+        "date": "02 Apr 2026, 07:00 PM",
+        "date_iso": "2026-04-02T19:00:33+11:00"
+      },
+      {
+        "title": "Implementing Queensland’s Child Safe Standards: from compliance to culture in 2026 - thesector.com.au",
+        "link": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPY1NESWNrWXhpcE5ET0RPaGhNX0I5YmhMRk5pcUxneDlPM1E1NHNmdXFMNjJWZWk3eDN4TXI5Z0lWUU42VGZVRzJHOEY1R2F6Znc3bDlVcGZNajNYQ0JXcVBKQ3FZeGk5akozQXNLVmlLZzRyM0tsOWNmZWsxRWFQdHQ3eHctTV9yOXVjMlA1clhSLTgxYjRIVTl3?oc=5",
+        "source": "thesector.com.au",
+        "description": "Implementing Queensland’s Child Safe Standards: from compliance to culture in 2026  thesector.com.au",
+        "date": "02 Apr 2026, 08:07 AM",
+        "date_iso": "2026-04-02T08:07:56+11:00"
+      },
+      {
+        "title": "Greater police powers urged for childcare sector safety - au.news.yahoo.com",
+        "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOWUU2ZVVkSEZySFVnbktvMWk3Q2tBbzBjUHVLRUtnaUotNTk1a0puc0dNUk51YTJvWUdvSFVRLTRKLWE0cTVHczNndnZ1OUt4TUloWU5UaU04Z3RMWWR0dWJveTlrQWFkMTNxeGZEX0FDMnMzVHRJbGtOekU3aUw5Rkd2Q2Q?oc=5",
+        "source": "au.news.yahoo.com",
+        "description": "Greater police powers urged for childcare sector safety  au.news.yahoo.com",
+        "date": "31 Mar 2026, 06:30 PM",
+        "date_iso": "2026-03-31T18:30:12+11:00"
+      },
+      {
+        "title": "UNICEF welcomes draft Children’s Online Privacy Code to protect children - UNICEF Australia",
+        "link": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxOTDd4YTNYd0lRVlFySzdnLWtnWVJyQlFheVlpNHdXTGNLVzlhS0ZHTFI0cEc5YTNoQkhvTUNoMDhvdnhhOEpybGtFTE9pUXpMNThfSUg5QUszR2d0Zkh1N1hvNVAyYXRLUHd2RnkxdjBrbXdfbjJOaVpVVW0xU1d3YTU2NkRMQ0RXajBnWUZtMGJGNkpyY0prN2JuRGVGZmRrUUFUMWlHaFhjVHZwaWZFOWpoQ0Vfb1VHdnRj?oc=5",
+        "source": "UNICEF Australia",
+        "description": "UNICEF welcomes draft Children’s Online Privacy Code to protect children  UNICEF Australia",
+        "date": "31 Mar 2026, 11:14 AM",
+        "date_iso": "2026-03-31T11:14:51+11:00"
+      },
+      {
+        "title": "UNICEF welcomes draft Children’s Online Privacy Code to protect children - unicef.org.au",
+        "link": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxOTDd4YTNYd0lRVlFySzdnLWtnWVJyQlFheVlpNHdXTGNLVzlhS0ZHTFI0cEc5YTNoQkhvTUNoMDhvdnhhOEpybGtFTE9pUXpMNThfSUg5QUszR2d0Zkh1N1hvNVAyYXRLUHd2RnkxdjBrbXdfbjJOaVpVVW0xU1d3YTU2NkRMQ0RXajBnWUZtMGJGNkpyY0prN2JuRGVGZmRrUUFUMWlHaFhjVHZwaWZFOWpoQ0Vfb1VHdnRj?oc=5",
+        "source": "unicef.org.au",
+        "description": "UNICEF welcomes draft Children’s Online Privacy Code to protect children  unicef.org.au",
+        "date": "31 Mar 2026, 11:14 AM",
+        "date_iso": "2026-03-31T11:14:51+11:00"
+      },
+      {
+        "title": "Roblox, YouTube caught in major children’s privacy overhaul - SMH.com.au",
+        "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPaTJONVJQb2dDOFVlS1gxa0xGa00zVUF2Y0NFYUFlMjlyeXY1YTRrVW5CYVI2VkhFSnVGTTNCdWRpQnVKak5GSGw0Z1FCQXZNeG5ZRm9yRjVOUHBfS0tNZlQ1UXJMeUNrazlKMlVyYnlubDFrQnhFYmt0LWxyZ0hzU1I1SXlkSzNKR1pSRDUyajY3QmtaZ1B3VDFOVzRvWkxTR2dULW9WdGZnQjdXWmtmLWx2OA?oc=5",
+        "source": "SMH.com.au",
+        "description": "Roblox, YouTube caught in major children’s privacy overhaul  SMH.com.au",
+        "date": "31 Mar 2026, 05:00 AM",
+        "date_iso": "2026-03-31T05:00:00+11:00"
+      },
+      {
+        "title": "International Study Compares Indigenous Out-of-home Placement Rates in Four Countries - The Imprint",
+        "link": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQUXlybk9ON05UWGlZdlNtOVZ5RURObDE1ZkNKaHRqdHc5VEZEdjNOR25Od21jX2FRdFYtRUh0dzUzVXFhNVU0clI1WFl3c0d2Wm1xRENqN3ZWamxXRllUS0M5aWNWbmlCelAzUUZBOTVTNlRDQ2xmdF8tZzUwWC13bzh3WFY0S01MOHRiazFwNkY3MnFlZlp0bl9RcWp1Wl90Zkh5WEVZcVZJaDlrTF83N3JoLWw5VTg?oc=5",
+        "source": "The Imprint",
+        "description": "International Study Compares Indigenous Out-of-home Placement Rates in Four Countries  The Imprint",
+        "date": "30 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-30T18:00:00+11:00"
+      },
+      {
+        "title": "Advocates push for digital duty of care to stop livestreamed child sex abuse - 9News",
+        "link": "https://news.google.com/rss/articles/CBMihgJBVV95cUxPRlNQdC1HWFlmdWRUamdGUDdfbkRBZmRMMG5DN3g4UURsa2lfdXlKTEs1TEFxUGZaS3ptRG1lc1VRVlBGbFd6aHVfTTRJMXpRbm41X05IQUVSM1AzamJzYmhHVjNxcDQ5TkZudWZBOE1tejF5amJnZGZOXzlFZ3l2YXY5UnZ0RmRMY3B0QmVOQ0RURXlHRU84b3FhNlpLUFFudmRrRTB1NWNwTGd5ZzE4UTg5TG5UbVhWM3NGeGpGMkxZV05oUURaSnM0Zmk4dC1XWHoyZkVwT05sR0FzT3JoTFlEcjMwS0RFMU9kUlJ5cm1DRWFVQlVqOUR6bmdlYTBMSlBVeVNB0gF4QVVfeXFMT1B5SWJSUjhYMDNRQVRkN0JTZUZWNWxhYnpHLVlkNU5LYzlQYUdHQXMtZW0wTFc5bzBzSmgtcm44cmdVRi1fbTRKeTZ3NWtEbUxiX1Z0b294bEdmeW1CM2U0RDc4NmRSOVExNU5JVXRIeEJEbFlGSnFM?oc=5",
+        "source": "9News",
+        "description": "Advocates push for digital duty of care to stop livestreamed child sex abuse  9News",
+        "date": "30 Mar 2026, 03:42 PM",
+        "date_iso": "2026-03-30T15:42:57+11:00"
+      },
+      {
+        "title": "Program that helped Tarnika keep her child out of care is going statewide - Australian Broadcasting Corporation",
+        "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPbHRuWllJZDNISTlLWkFURDNKRS1CR3NYMmhQUklyZU4zMVdOZWdUOWdBUzRIbDZZOHQzTHRweUV2Nmh1c0ZBMVFuLVdQZlRKV19fSmtQTkFGNDZVQnBKUFRpNDlnTHR3RFZWaUF2VFQtcFBGUFVaNHZRUFZnRXhUcTh5R1lVYmppSWpQdjcxdXNmdFFUMWtGMFJMdENWc0ozNXlhNnBwclJEU21mN3AzbUhn?oc=5",
+        "source": "Australian Broadcasting Corporation",
+        "description": "Program that helped Tarnika keep her child out of care is going statewide  Australian Broadcasting Corporation",
+        "date": "28 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-28T18:00:00+11:00"
+      },
+      {
+        "title": "Advocates urge overhaul of South Australia’s 'broken' child protection system - National Indigenous Times",
+        "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNUTFGM0szTHhQVlQxRzE4UlQ3U091WXF2RkZzS253Y3RkUU9tbWpWOUE5RnJkQmlpNlNhVVlVR3BTNkYzb0MwR1I2XzVtZmpKZWVJbS1oOEFBNXZCd2RhRkRFM1FYcldyb1hEYVN1OEJUSlZiV3JFSTVMWDJ0cENsbkZjZm5EdkFEV2VLMENPOUhoVXNIZ1E3OFFTUVFGMjlmdVlaNm91Ty1SWXNvUWZN?oc=5",
+        "source": "National Indigenous Times",
+        "description": "Advocates urge overhaul of South Australia’s 'broken' child protection system  National Indigenous Times",
+        "date": "27 Mar 2026, 01:00 PM",
+        "date_iso": "2026-03-27T13:00:00+11:00"
+      },
+      {
+        "title": "Child protection and child safety training in early childhood - www.vic.gov.au",
+        "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTFB5VFdsTEFUem9DR2tmalhRVVgteUt1NnlsbFQ5ZUhuSFJPVjI1LVJ4a2NEbHNsSVI2VXhMUGtzQklacFNFRk9ZZ3NCdGo4TGJiYVBsNnhhODJuVUZSRUsyc21RZDZGUVllLXhjZTNhOEMyVmtSUEIxQlVGbw?oc=5",
+        "source": "www.vic.gov.au",
+        "description": "Child protection and child safety training in early childhood  www.vic.gov.au",
+        "date": "26 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-26T18:00:00+11:00"
+      },
+      {
+        "title": "Indigenous kids are still overrepresented in out-of-home care. This alliance says its time for reform - sbs.com.au",
+        "link": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxQUWZTZmFQbWVWSTRUVFc4N0ZackhnTUYwYVdOTC10Z1hSZlg4Q1U1Yl90SDVwcy1vbjNUX1NoYzR2ZWRRNW40NzNDZVhxMkVOeGFkeHRqaVpxYmhGek93dW1hTkQ2VmtBOWdlM01hczIxcUpJVFpMNWRVS2pseEd0MjFWa3BwRkxETlBCRFVJbzZ4RHhDYWFXSjBaNjh0OVZkcnJGdWpwNjdTQ212N0pIZV9ETFg0TmFfMGhheEtSbW1TRmluMTZYUEVyWDlOSmhkd3RMNzVkb1kyNkswcDdfVENKUEQ?oc=5",
+        "source": "sbs.com.au",
+        "description": "Indigenous kids are still overrepresented in out-of-home care. This alliance says its time for reform  sbs.com.au",
+        "date": "26 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-26T18:00:00+11:00"
+      },
+      {
+        "title": "What can Australia do about reports of child criminal exploitation? - The Conversation",
+        "link": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQWDdmaGRSd2xmMGQzRmY5cEhCcThyQzNGVUdnbXpDaTZqc1g0ZXA0ZDBuYzItc2NfSmdyZzRoRE5JYVRHRndfd1dtTW5YN2hKc01jNktjNXdSVmg1eFZXd09FYXp4Tm1mNnlVRF9wdklPNjVtWjEtZm1wcXVkcmtWWF96QmFKdXhjN1U4ekRDR3ppNk1sOHBrOTliaklCYlNzMTIw?oc=5",
+        "source": "The Conversation",
+        "description": "What can Australia do about reports of child criminal exploitation?  The Conversation",
+        "date": "25 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-25T18:00:00+11:00"
+      },
+      {
+        "title": "New ‘voice’ for First Nations kids - The Australian",
+        "link": "https://news.google.com/rss/articles/CBMi8wFBVV95cUxOeEZHeVVYYUgzZjZiaFFLQXZiNFZXTWdKanVGNVIwd2JDUFNoa0VYWW5xVUNZaWVsOV9YVnNRaUhxTUVjYjY3YkdqM1FyTHozRWx2Z0lLNGFWbm43b1Q4UlBZXzRweHhENGM5dkJ1M3BZMU5aTldTT3NyY3hyZm1vVkt1S2ZuWTYwdzhzY21zc1AteXM1X0VMZWJ3ZHFhWmFRQlpBSXV6eDdPV1ItSndaajZTZ0haVjMtb2tiOW5COXBlODUtUnJSdEJjVDY1bFVIa3pXTGM2akI5bEVLdEFDb3NmbzhzMER6amNxY2lCd2hNV0HSAfgBQVVfeXFMT2JrRFpLME5Fc1Y4dkRIT0VmTHAtN2JNeWxyOUlzbFBEaV80REhra0d3QXRfZGMyVml0OFdFbGlUNHZKSTdZVjVzVGZva25UMkUxdlBIQW1tYnNvd0ZzZ1hXdmRpUTVwQ20tZ2tBbUtJU0tOc0Zkc0pUOEVVdkZZYVkyc0VvdzFieWExS0VEd0RPV3JlMXFVOUM4NzE2eFBKaFpNVk5aMTE2dUJlVTZFREVrdHd0TmtvaFk2T05FTnhxeURXcGNQVi05REJwWTVLR2dpZ1JoQW90YlloOWxIRWZqZnV4OXk4Wmp5MkFhUGtENGR5ZF91dGo?oc=5",
         "source": "The Australian",
-        "description": "Why aren’t Indigenous leaders demanding an audit?  The Australian",
-        "date": "08 Apr 2026, 05:03 AM",
-        "date_iso": "2026-04-08T05:03:30+10:00"
+        "description": "New ‘voice’ for First Nations kids  The Australian",
+        "date": "25 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-25T18:00:00+11:00"
+      },
+      {
+        "title": "What the manosphere debate is really about: the systems we built and the children inside them - Medianet News Hub",
+        "link": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxNc3JoVlg5cl9aaTA0Y3NzdTlXQU9KeUJDZHAydHBzODluQUN4c1ZvZkpHMXBqMVdHWmFiU3Y5bkVPYjUyVXBNNDh6ZDNBbGdyUTlRZUhzLWhzbm9PTXltVTM3NUFzaGhoSGpLTXUtT3g1R0N4cEpVZk5PNUVaSnVoLTVnMElXeF9TWk5ZV0ZibGxvWUVFRWgzRWNSZUdNWWRwM3YwMGNWNG1ST3pmOG9TaHI1SF9WdmpGV3UtZ0lNVzZqRmFJNi1kdUtvZWwyTlFtSVRIWFZIYw?oc=5",
+        "source": "Medianet News Hub",
+        "description": "What the manosphere debate is really about: the systems we built and the children inside them  Medianet News Hub",
+        "date": "25 Mar 2026, 11:22 AM",
+        "date_iso": "2026-03-25T11:22:25+11:00"
+      },
+      {
+        "title": "Child safety reforms – new laws take effect to strengthen safeguards - www.vic.gov.au",
+        "link": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOQWp4bmYwU2lSSDZscGVSWTFJUDVibWNIRXZMeGtLWG1JcUJMYnN5aXhvMXMwWjN0X1dsQkIzSDZGak9Bekh6VkVvRlRfRW94d3pPYy15d3lsVmxBVElQNVFXamJLX3R0RnFkV3JEamJrRnZuUnlEdDgtb2JHYmcyNEc3YXphTkNKOVhIdWR2U1ZYTEdXSUJRUkx3SlMwOG4zRWR5Rzl3S3Ztczd4UHBHc0plOW1rZzBXMXhmXw?oc=5",
+        "source": "www.vic.gov.au",
+        "description": "Child safety reforms – new laws take effect to strengthen safeguards  www.vic.gov.au",
+        "date": "17 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-17T18:00:00+11:00"
+      }
+    ],
+    "education": [
+      {
+        "title": "Australian children's data at risk through approved school apps - UNSW Sydney",
+        "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxORmNWMjk3eVF5djRkZnpOOEhBU3VSVkoyQ1JEQ0ZtbW1mdWJWQWs5WEF5VE1BM2cyLVZTdGo5RkFQYmRzQXAwM1ZEb083Q25xYWhnQkZPM2ZjRVBsSjY1bi1yZXZNSHRQUklpZnd3dGdpT2lqLVlraC01bVZxLWQtXzlEYmVBcEg5QTd1b1U0U1BzLU1tdGplVmE0WDRxVEhRRXlfVURNekluSFU?oc=5",
+        "source": "UNSW Sydney",
+        "description": "Australian children's data at risk through approved school apps  UNSW Sydney",
+        "date": "08 Apr 2026, 12:17 PM",
+        "date_iso": "2026-04-08T12:17:07+10:00"
+      },
+      {
+        "title": "Australian sector braces for ‘more control’ in looming strategy - timeshighereducation.com",
+        "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQNWlrQklvOEw4aUZJZXZFVlFaUjE5UGc1UDBUeWJJaDBuSW9FcEVrX3luVlVSQi1SSEd2cURaMlZjV1N0MERxMzNlRjJkWFdiUVNab2R0UWtSR1lScDdsZjNlaDRIOEw3QU9LU3YyLWNwYnlBSVdHYklBaHd1aXlNelp5ZzZrbnpnYW5RV2tkakhiMTVIbkNDYk54WU8?oc=5",
+        "source": "timeshighereducation.com",
+        "description": "Australian sector braces for ‘more control’ in looming strategy  timeshighereducation.com",
+        "date": "08 Apr 2026, 08:10 AM",
+        "date_iso": "2026-04-08T08:10:49+10:00"
+      },
+      {
+        "title": "New tertiary education commission set to reshape ECEC workforce pathways - thesector.com.au",
+        "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNSzJXZHpwVmNBeXNReElkbUlZc2ItQ09memxhdzUzZUF3ckRZdDVZbmh2TTVuSC0zUktYYVdfUHJiMzZXQ2NFOUZ1MG50a1RrVUtlbDZUSUxIY2FaV1pzc2FSR3daUnAtNDVnem5FZ0hEUTZTQXhyRWcwdWJNcUF0d1dSaFMwdlZaUWExc3IyazlfclMtTHZLX0lpOU1NUkk?oc=5",
+        "source": "thesector.com.au",
+        "description": "New tertiary education commission set to reshape ECEC workforce pathways  thesector.com.au",
+        "date": "07 Apr 2026, 05:06 AM",
+        "date_iso": "2026-04-07T05:06:38+10:00"
+      },
+      {
+        "title": "Regulatory action in South Australia sharpens focus on governance, safety and workforce capability in ECEC - thesector.com.au",
+        "link": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQN3R6VXd0cWl0ZWZtM3IxZVdKTmtvYVI5c3U5RWVHNDU5OTVHNmRuenVFNTU1ZHhTVktET0p4NTk2NG1GNlNVcXZjNUJvcHh4LWFPbFNlUl8yTWV6UXEwVW5kWXBEODdKZFExdGdBckMtOWxqWnI0RVR3blE3YVJOWUZsX09HLTlfT2t5YUZ6bTBlRDMxbURNQ2puZXpwbW9X?oc=5",
+        "source": "thesector.com.au",
+        "description": "Regulatory action in South Australia sharpens focus on governance, safety and workforce capability in ECEC  thesector.com.au",
+        "date": "07 Apr 2026, 05:01 AM",
+        "date_iso": "2026-04-07T05:01:25+10:00"
+      },
+      {
+        "title": "Childcare reform debate intensifies amid cost, access and quality concerns - MSN",
+        "link": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxNVDRhcktFbklPVHhEZ2NselU5T0lZLThEQk1OeEtPVFBCRGptdm5DZUJKOERXeDgzQ2cydks0Yld6dUhhQjdKcWV6dk9zQnNuZnJsaUgxWDN1blVybllxcHFtekdHcm5UTkZPbGFjNjY0a2xWYWhIel9NdkRvNnVKZTU1QzlZRHNqY0o5aWhzZnNRN2wxUDdWMWVuNzhqQ1FxTTRWOWVhSlJKeHk5bWhqRGxTYnR2dVY1cUJySUdjTXdpdmRvUFdtWkozR0gwaFBlVjJBTG1RdGFkZWpIRDNLZnFkNGhPZHVhM2lDdVhPbU5YMlFLN0E?oc=5",
+        "source": "MSN",
+        "description": "Childcare reform debate intensifies amid cost, access and quality concerns  MSN",
+        "date": "06 Apr 2026, 11:09 PM",
+        "date_iso": "2026-04-06T23:09:55+10:00"
+      },
+      {
+        "title": "Don’t gaslight stressed-out parents over childcare. Just fix it - SMH.com.au",
+        "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPQXNiT252MllSbTlQcUFnVlU3VndEbXNISVJIWVdoSmMxb1A1dThmSkE0dFlFaHNobUtUSjlmakNRUHoyWFdvTTR6Yjlqb0xzOUEyZWpoN3pTMUdXTTFCNmlnaWpPdjZlNFFiN1dob0I0ZTd5eUpZTWpYcDRXZGxJQjdwalZ0a3ZSMzBEd2VKVU5jSVZOdVdtMWJfOFU2VDVSeFdzWnE5ZG1uMDdBdUFkUzVqTnFBQQ?oc=5",
+        "source": "SMH.com.au",
+        "description": "Don’t gaslight stressed-out parents over childcare. Just fix it  SMH.com.au",
+        "date": "06 Apr 2026, 04:30 PM",
+        "date_iso": "2026-04-06T16:30:00+10:00"
+      },
+      {
+        "title": "A Crisis of Perception: The Story Australia Is Telling Itself About International Students - The Koala News",
+        "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNTDFnMkp1TTFUUlo2U2EwS1U0Q0dPN21yU19GTmZidFRrOFBDMG5mSEdWN3dRWG8zQk9JUzFDRjdTSnFrc0s2Ul9GeU9jS3pqREx4R2h3QkVkblFJcnY1YjRHNjc5TzBPRUV6dEo2bTVUdTdyZ3JPaWV5VDJhY3k3MkxzcjZqRDZvVlVyMzg2VUxKWUxqYkM0czBYNnI0T1ctTHN6ZUNnb2Ezb3BoOURkMS1kSHYzQQ?oc=5",
+        "source": "The Koala News",
+        "description": "A Crisis of Perception: The Story Australia Is Telling Itself About International Students  The Koala News",
+        "date": "05 Apr 2026, 05:00 PM",
+        "date_iso": "2026-04-05T17:00:00+10:00"
+      },
+      {
+        "title": "The 'enshitification' of the system has left Australia's unis at a crossroad - Australian Broadcasting Corporation",
+        "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNZnVFZDRXMmEwTUF3YjVFNW1qYjdkRHJDTTFBRFFnSms3ZWxTUS1NMHpTcjVkUkRKQk13dWdDTFNvWmtxUVlTX3FkSTRZcGxEN3pWZFlIXzFzbmVPemp5Q2x6UENIdVA3cWxSaDlMWW9OVUVFTTVGNVpTcEI3OTN6NlRXU19TYzB6N3VrN243ZUxPLWUzbkNOTzhEbVNyNF8yLWtlVWp6QWV3NlpkSXVF?oc=5",
+        "source": "Australian Broadcasting Corporation",
+        "description": "The 'enshitification' of the system has left Australia's unis at a crossroad  Australian Broadcasting Corporation",
+        "date": "05 Apr 2026, 04:00 AM",
+        "date_iso": "2026-04-05T04:00:00+10:00"
+      },
+      {
+        "title": "“Four Corners” covers up Labor and union role in Australian university restructuring - World Socialist Web Site",
+        "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5wNVhQRDNJdHZCNjU5RG0zOGhOZGJKRmZic0RUTGlFSWRwUzZUdG9fcFRpakYza1lOenFmR2Q4WFRrTmQ2N0syS1gzWVBKNVdSLTBUWEVxQlZUYUpTSkRjczFIb0FqZHpE?oc=5",
+        "source": "World Socialist Web Site",
+        "description": "“Four Corners” covers up Labor and union role in Australian university restructuring  World Socialist Web Site",
+        "date": "03 Apr 2026, 02:52 PM",
+        "date_iso": "2026-04-03T14:52:06+11:00"
+      },
+      {
+        "title": "ATEC legislation passing Parliament, SERD, Horizon Europe: Latest rundown of higher education - linkedin.com",
+        "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxOaWh2YVcwd2JNZkVMX1J3LWc4NGFVZEhOWHhJbHdjbkFPcVRfZ2FiZnNSeW5fZEg1ejBtRGMtSkpfMTBXaUFuSWFoM1ZOcG9pdFFSSENMUVpLTnB2eUU1YmN2cXVOYlJKUHlfaFZYVWZCdnZLN0xVb3ZZYms5SHptUTIySU5NMjl2Mk84bQ?oc=5",
+        "source": "linkedin.com",
+        "description": "ATEC legislation passing Parliament, SERD, Horizon Europe: Latest rundown of higher education  linkedin.com",
+        "date": "02 Apr 2026, 01:56 PM",
+        "date_iso": "2026-04-02T13:56:06+11:00"
+      },
+      {
+        "title": "What Australia’s New Tertiary Commission Means for Universities - educationdaily.au",
+        "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxONl9ncHg1MWUyYzBRVjlHeUlaRXA4TTB5eW9MaE1fMjA3Ri0zWmFLZXdKS2dnejc5SFUyTGdXdnRidnp1elV3VzNwX0Vpc2hrWkVWMEpwYXFhTmJEdlJHc0d6NGhGaElFMnFlWVVVQ0s0YlQ1eUVNRWMtODAtUnZnZTlSUTZzZTVEaFVRdWFJRW1aZDhadk4tYldCNkFfems?oc=5",
+        "source": "educationdaily.au",
+        "description": "What Australia’s New Tertiary Commission Means for Universities  educationdaily.au",
+        "date": "01 Apr 2026, 09:46 PM",
+        "date_iso": "2026-04-01T21:46:53+11:00"
+      },
+      {
+        "title": "New Australian higher education commission gets research brief - Research Professional News",
+        "link": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxNYmdUS2V0Y1ozdHFWaVBxb3lMdXZrRFU2cHRidEtWaE81SG91MlpVd2U4anFLRmFDX0NnVU9DXzY4RzBEcXlCeUxQNVFiczQ3SERQQzVKMThfQ09OWEw0NGJvOVFZSWZhWGhZRHFIQWh1S0pvV1Jqb0Jma3RfRVdrbVZweTdUZ3BSNkF4ODVET3hJbUItX1o0aktDSmNvNldPM09oWTNUZUNZMWIyYUg4cmYtRUxVV1RCSmpqSzk0RGRVMWhfcG96UE1JRFM2TjFkaG9abVU3UW1MUQ?oc=5",
+        "source": "Research Professional News",
+        "description": "New Australian higher education commission gets research brief  Research Professional News",
+        "date": "01 Apr 2026, 09:35 PM",
+        "date_iso": "2026-04-01T21:35:46+11:00"
+      },
+      {
+        "title": "SA primary school principals' association queries free public school policy - Australian Broadcasting Corporation",
+        "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQM0NMZmZJMURjVEtVM1c2RmV6LWIzNUdIQW4xLVhvZDdpdjk2MEhIblRFMm1iTndpaE5jdVl0bzNvN1FUVkg5NEgxdzlEN1liRk5iVHRvaFpDcTBXcGRKU3B0MVE2T00wUXVGcHJrMFIzZV9mWlo1aDFpc3BEQTY5MU5TbkYyY2d5eVlhZ1dqNFRBdF84T1FR?oc=5",
+        "source": "Australian Broadcasting Corporation",
+        "description": "SA primary school principals' association queries free public school policy  Australian Broadcasting Corporation",
+        "date": "01 Apr 2026, 12:17 PM",
+        "date_iso": "2026-04-01T12:17:27+11:00"
+      },
+      {
+        "title": "Inside the culture of ‘gatekeeping’ holding Australia’s schools back - The Educator",
+        "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxOZzZkQmZwWUFOeFZoejdRbkJiV2dRZko3YkVUWW9pNTBQc2tFUTZuUkd6RTF0NVZqTkFjdHJlWEt3OEtiS3V2MERxY1ZvU3d4VG9zTGZGR19UdWZpUTlucXEtbS0tTThyeWl0WWxjOTRjaXVqVXVvaWR0MGVwUE5nQ0xRY2M4S0VxaU9NZUNIc19xckxjUXF5cnF1MU1ObEctd3BmaEdzQ2s0MjA2THpsSU5oMDZ6dw?oc=5",
+        "source": "The Educator",
+        "description": "Inside the culture of ‘gatekeeping’ holding Australia’s schools back  The Educator",
+        "date": "01 Apr 2026, 06:01 AM",
+        "date_iso": "2026-04-01T06:01:41+11:00"
+      },
+      {
+        "title": "Australia’s new tertiary education authority clears parliament - The PIE News",
+        "link": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPcmpnczF0OVFHR3VwYkdEM1NheFR0XzFpVmFGc05USzd3Yl92OHVmS3BLbDc0RGpBUUtLWTZDNkZzYXdqYjYxSnc4MDZHSmZENGM3TzJfczdZdWlzUWJGX3JfaWhkb3AxQ2EtWDRPa2FVZHFBU3JKMFI4aTEycEtSZlZSNFpLbUxUQTlLeWp3?oc=5",
+        "source": "The PIE News",
+        "description": "Australia’s new tertiary education authority clears parliament  The PIE News",
+        "date": "01 Apr 2026, 01:20 AM",
+        "date_iso": "2026-04-01T01:20:59+11:00"
+      },
+      {
+        "title": "Labor accused of avoiding promise to rein in controversial Morrison-era university fees scheme - The Guardian",
+        "link": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPU25LM2dWNXJTUUR6bXRXZ2UxQmcySVU0d2FkTG5CMEZmQzA5Nzh2Y3FwSEl0VTlBQnl1NWlYNzloUUsxcW5lT0toSjVYb0xMNWs1clZ6MjBTQWkxMjg4RWtGdFVjbXA4NjRQRVdZY1dGUTBWMWRMWWRtRGRDSzd2b1ZDd0RVdU1YYm8xVFhqMmk4OU1YcVU2NGZvaVo1Vl83V013?oc=5",
+        "source": "The Guardian",
+        "description": "Labor accused of avoiding promise to rein in controversial Morrison-era university fees scheme  The Guardian",
+        "date": "31 Mar 2026, 03:54 PM",
+        "date_iso": "2026-03-31T15:54:00+11:00"
+      },
+      {
+        "title": "ASQA cancels RTO registration and moves to revoke qualifications in major integrity crackdown - thesector.com.au",
+        "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxQY09qSGNPZHpoTGVXYjJ6bllvTmt0bWpqTkgzWDhsSTl4THhuZEhVVkstTnJibXpGZ1QxcHozVHpfT0xHeUpWak5MODNDYTRwSVFaRm54VzhNU0FCczZpZHJ3T2IxTjltLWdnTjBLazBnRmJQODdFa2pORWtKMy1MVUs3VFBvVF9tQ0NPSnZFdw?oc=5",
+        "source": "thesector.com.au",
+        "description": "ASQA cancels RTO registration and moves to revoke qualifications in major integrity crackdown  thesector.com.au",
+        "date": "29 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-29T18:00:00+11:00"
+      },
+      {
+        "title": "Cross-scheme fraud case highlights strengthening compliance environment for CCS and NDIS - thesector.com.au",
+        "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNTUVsVnFNV3libFR6X1F1aERiRFZIemdOd0c2MEFyQjdabmlZMGRpSjF6UW9laWVBcmlHR1JJR1dJQ2MzMnFLZ2RwYnlaYnk4cW5paWlVQkFZNUxNVU5NbjBOVjFoX0pJSWlKN0ZxcFFCLWkwdndBZ1BOTU1VM3FfZk5B?oc=5",
+        "source": "thesector.com.au",
+        "description": "Cross-scheme fraud case highlights strengthening compliance environment for CCS and NDIS  thesector.com.au",
+        "date": "29 Mar 2026, 02:44 PM",
+        "date_iso": "2026-03-29T14:44:36+11:00"
+      },
+      {
+        "title": "Education Week: 150 years of facts - www.vic.gov.au",
+        "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1iV0JHM3FIb0JVTXNaRHVQMlVGS290d3JTXzQtTE9iYnpZMzgweVFMUVN5YlNnRkEzbnZlYVU5ejVHS3JVZ1A4dVFKOUJQSEZrRGg2QzZnR2ZjaGtuSlB6ZEZDWQ?oc=5",
+        "source": "www.vic.gov.au",
+        "description": "Education Week: 150 years of facts  www.vic.gov.au",
+        "date": "26 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-26T18:00:00+11:00"
+      },
+      {
+        "title": "The Best Start, Best Life reforms - www.vic.gov.au",
+        "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE43U25FZGtMbk5hUVlfN3hyZWwxVjZZTXpaTDl0M2hQSzRQQlJQUlFJeUJPNmdFWmJ5elFpdVdsWU5SdVNpTG1WRTF5eGlUVFBkQ1VUQmI0WFB2eTFXR25WXw?oc=5",
+        "source": "www.vic.gov.au",
+        "description": "The Best Start, Best Life reforms  www.vic.gov.au",
+        "date": "26 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-26T18:00:00+11:00"
+      }
+    ],
+    "housing": [
+      {
+        "title": "Victoria selling off social housing while falling behind Queensland, NSW - realestate.com.au",
+        "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxObXNRUkRRR292U2ZXWmhyTXo3N2ZzQmhoUTVuSC1CSl85aWhlTHptcHhrWkM4YktrRXltYkRCTmlfU2pqeWNyZ0Juc2xTN0R2Nm9wZk50bzBkUWFpd1BhdUxYRHhxek1vVVlLRklEVUZIaHNmTDluYllvTXhhSHR6SGNzLUU0UkhBZkxjUkYzdVdHS0Vna3NYQlFybTBmb0sxd05WNEdoNnE3bTQ?oc=5",
+        "source": "realestate.com.au",
+        "description": "Victoria selling off social housing while falling behind Queensland, NSW  realestate.com.au",
+        "date": "08 Apr 2026, 04:16 PM",
+        "date_iso": "2026-04-08T16:16:52+10:00"
+      },
+      {
+        "title": "Victoria set to fall further behind the rest of Australia on social housing without major investment - Medianet News Hub",
+        "link": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxONUIyY2lxeUxlcngwUEFZRVpqTGw1RUc2ekRMNkF0MGI5c0RSZ1U0WEFobXFSZ0c5RUFOM014UFFmWk9WbDVxSmtuZDJRMmhQQzZRcGdNb0lQb2FfSmhFZTVNTWZndGV4cFV1NjBMM0xibno2Z0lGOEVuRHJQcHhwREFxMnJxRElHMk5CbWpKa0lncjhDb3lycG9wZjZBSnBvN0ZuUzVyRlo0UGpPMkVQVEZ4YVJXOVJocXVtRnVGdlR3UHAxelFWQWFHaTZhMTN3TXpDUDJpbUJtbzNnd29rbU9R?oc=5",
+        "source": "Medianet News Hub",
+        "description": "Victoria set to fall further behind the rest of Australia on social housing without major investment  Medianet News Hub",
+        "date": "06 Apr 2026, 06:31 AM",
+        "date_iso": "2026-04-06T06:31:15+10:00"
+      },
+      {
+        "title": "Australia: Labor government targets the elderly in public housing tower demolition - World Socialist Web Site",
+        "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE4tdHBpWmZMdWpJNEF1U2J3RU5lMTVveWx6emRpeDljTEc0LXkyQ2dsZlRmTHhzc2ZNZFBlT0R0dmNoMlMxY3gybm9QY1p0WG1NZUlvSi1DVGRXZkRNc25pZTZMeUdHMXZi?oc=5",
+        "source": "World Socialist Web Site",
+        "description": "Australia: Labor government targets the elderly in public housing tower demolition  World Socialist Web Site",
+        "date": "03 Apr 2026, 02:42 PM",
+        "date_iso": "2026-04-03T14:42:04+11:00"
+      },
+      {
+        "title": "Housing Australia’s flexible funding model supporting 85 homes in Sunshine North Victoria - Gilbert + Tobin",
+        "link": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQd1R6bVh0WmIyUnhXSHRzbDdyUDZDa0x2X2hzSUZRbUhHOVdXZzltZU9IN25zN3R4M2I2dDhSMDJ3cUdqV21ZZER1czRhd0ZXS0x1RW1VMkJqSHdnQ19fZUZtV2lUT2FwN0d1Rm1HcDh4TXVGUHp5VlNEQlpsdXVYaHc5bjgwLURPQWJnOVBOQ0NERVlDUVU0SksyMXUtZlQ1X3dBNVQta3BVMURHZ2hMRVlBRFpVOVFVR0E?oc=5",
+        "source": "Gilbert + Tobin",
+        "description": "Housing Australia’s flexible funding model supporting 85 homes in Sunshine North Victoria  Gilbert + Tobin",
+        "date": "03 Apr 2026, 04:41 AM",
+        "date_iso": "2026-04-03T04:41:52+11:00"
+      },
+      {
+        "title": "East Perth Common Ground Welcomes Its First Tenants - Mirage News",
+        "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNd19KU1ZzLV9sbWw1N0hNWUhqRXlia09EcDlMUnpSaXdZWFBpWFZQc3VIX2hrdG9ia1B4c2FXNXdjUHJFdF9Td0pRRXRLR3ljdnJBOWRoZTdpV2pmU3lvTFRZbGVxSV9YeDRtSld6T0F6SVhfTG12VVEtXzM4WE01S2lnUTltZw?oc=5",
+        "source": "Mirage News",
+        "description": "East Perth Common Ground Welcomes Its First Tenants  Mirage News",
+        "date": "01 Apr 2026, 03:12 PM",
+        "date_iso": "2026-04-01T15:12:00+11:00"
+      },
+      {
+        "title": "Capital gains discount and negative gearing turbocharged property speculation and pushed up prices, analysis finds - The Guardian",
+        "link": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQRkxDR2dQZWJhN1VaZXJCSXVpUEotWWNxUGlKbnBFOGFyU0FzMjROT0pMUVJQWmFJdWMxNU1CQXVvU2lQUUhMMVJqNUg4a085MnFYNVBjNGxibnNma2lWaVk1NmZxMTJMMUptS3FWNVlBbi11d1pZM1dYdVg5MzlPVkZXYnZDN3R2YXoxVnRSbjFBWEV5aml0bUxxZV9KUUx3MzlrWnBvcFZ6MHBPSTFkQWlNTHBrMGpudEE?oc=5",
+        "source": "The Guardian",
+        "description": "Capital gains discount and negative gearing turbocharged property speculation and pushed up prices, analysis finds  The Guardian",
+        "date": "01 Apr 2026, 12:00 AM",
+        "date_iso": "2026-04-01T00:00:00+11:00"
+      },
+      {
+        "title": "Helping homelessness in Australia - GoFundMe",
+        "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBvRDAtVGZHOVRPVHFHUWpTUENrUzVhQUh2bUxuaFdzdUgxdVBJTVNsV2JLWFN4VUdiRWdoS1lSLTJKUWJwdjNKaTlZX1dlaTlST25PSnFBWkwxQmNfQ3BFbURfeTc3T2ZJcUJrN19BQkJtb09yUmRmamhYdw?oc=5",
+        "source": "GoFundMe",
+        "description": "Helping homelessness in Australia  GoFundMe",
+        "date": "31 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-31T18:00:00+11:00"
+      },
+      {
+        "title": "Australia’s housing opportunity is real. So is our delivery gap - Property Council Australia",
+        "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxOemI5eDl0QUlwX09lMDBTWV8wQTBGWk1pTVVndFFGU1Q4VUMyMHJXc0xJb0czVFE2VkJOXy14Ujd2ZXR1TXVVVlhvQU96c3JpYXd2SThYQWJLNGhkZHMzQ0dNMGRkcG9PVTVVczBVb3EyRXl1Wkx5bmNaNERUZTZvYTI3Ylo2MzVzZVhtM3lsRHd6dnFpZ1VMZXZqUndtQVVURjRRVzBRcWgtSDRwY3Z5ckIxVkh0UQ?oc=5",
+        "source": "Property Council Australia",
+        "description": "Australia’s housing opportunity is real. So is our delivery gap  Property Council Australia",
+        "date": "31 Mar 2026, 04:15 PM",
+        "date_iso": "2026-03-31T16:15:04+11:00"
+      },
+      {
+        "title": "'Generous’ $1m gift to help Aussies facing homelessness amid domestic violence crisis - realestate.com.au",
+        "link": "https://news.google.com/rss/articles/CBMiugFBVV95cUxOOWRQbHN0UE1HVVc3QVlXYVA0SXp1aDRpZE9YMHl3V3hheGlDdVNVS2R1bi15SDZoQ3RoTklnUGhHNDMwakdRbmhnNl9Cdk1sX1l0V1J6a29wZHplSC1TNnpjc3lYMi1KZTZFcHY3cVNFUlFHMFRTNlktVl9Kb25rSEEycmZUMTlXQjctME5CZ2RiVkVmcFp2LTZOVHNwRldaZ2dVWUlVU1pIRjl1Vnc5NFVXYktpak52UXc?oc=5",
+        "source": "realestate.com.au",
+        "description": "'Generous’ $1m gift to help Aussies facing homelessness amid domestic violence crisis  realestate.com.au",
+        "date": "26 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-26T18:00:00+11:00"
+      },
+      {
+        "title": "Changing the tax rules for property investors won’t improve housing supply - Raine & Horne",
+        "link": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOeVQzNWNUZjMwbnp3bGJDZVFOcFRMQXctVm9CeGZ4T1hkNXFvWlBtM3hnVU9UQ3d1UnZibExQZmxRX0xVZzBJREpKQzBfRHl5a0V3RVRRT09uZjh0a1FTeHVkb3ZBVi1MSEV4cEdPUEtGekxHZDU2RHpOdWxneHYtb1IxZnRoLUlqZjdtREdJYXdSLWRpWUZXeVJPaEJnNkdweF9Nc3ppS3BFVF9IaWZZellPTk9PN0Q1UlQ2bGVBcW4?oc=5",
+        "source": "Raine & Horne",
+        "description": "Changing the tax rules for property investors won’t improve housing supply  Raine & Horne",
+        "date": "26 Mar 2026, 10:49 AM",
+        "date_iso": "2026-03-26T10:49:49+11:00"
+      },
+      {
+        "title": "They lived in spare rooms and motels, their teen years 'stripped away' - Australian Broadcasting Corporation",
+        "link": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOMDdXRk80RmlOQTRRbWtkbVBFWjBYcmhSSnpxWFQzMUdVWEpVb0NzLXBNaHJUWklreEJpdE9kQkVWYTJycXNEU3l0Y1FhTnBPWWNTZFVhZjZTWU4tR1hoVXdyeFZCcTN4dHhqOUdiZ2dMM0ZfOGNpYmRoSHlJRlhDV09XYlZpXzRfM3ZKT2taRDJZbC1JQjhlMzVZc0llMEw3?oc=5",
+        "source": "Australian Broadcasting Corporation",
+        "description": "They lived in spare rooms and motels, their teen years 'stripped away'  Australian Broadcasting Corporation",
+        "date": "24 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-24T18:00:00+11:00"
+      },
+      {
+        "title": "'I've been homeless and slept rough': Adelaide renter's warning on One Nation - News - InDaily",
+        "link": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxPRTNrRVFyZzZIblhYeEJBcEwwTXY3cEhINlUtRTFoVE1aeTFZNjVWQUI4SGE5MGFXbnpObG1lN2FXVjh5VWw5WVpfR1pNVnpMT2Z6eW9BbkxDYmxFOV9rSkxpODdrZEFmLWhfcE4xY0lScXJENWNvYndONWtoaHZlYXQxRFg2NXZjQUZmaFZxR0MtejRwNlQwTVRHUUp0VTktYkF1RmZUSkU0NnprMnRNVXZxTEEwSm5sNlJhbDUzSy1VTmtpNkdrcmpOeXFHTHotZ3ZBU3U5cWFoZ1U?oc=5",
+        "source": "InDaily",
+        "description": "'I've been homeless and slept rough': Adelaide renter's warning on One Nation - News  InDaily",
+        "date": "24 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-24T18:00:00+11:00"
+      },
+      {
+        "title": "'It's pretty shit': The reality of living in Wollongong's dunes for six months - Illawarra Mercury",
+        "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNOFMySzVJNkhMWFdXRkpTb0I3WUlYMEhEWmVmNnF0dU9kUzg0X0RYRkFMNmhFRTF4VlZFNTdpTXhOSGlMYmo5M203dWd2NXpzTWFwVWVVV2tEZ2VLUFprVTRyOGFFVGJWZXlJa1NXWDlGZ2ZVRnlCXzY5TkNRYV9RY3NTLTRuVXR1aHRFX0t3RG1jTllpVS1yWHQ4YnNLb0NaQjdzWHE3T0ZHVVVVWlg5RjdR?oc=5",
+        "source": "Illawarra Mercury",
+        "description": "'It's pretty shit': The reality of living in Wollongong's dunes for six months  Illawarra Mercury",
+        "date": "22 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-22T18:00:00+11:00"
+      },
+      {
+        "title": "Migration is also part of the housing solution - theaustralian.com.au",
+        "link": "https://news.google.com/rss/articles/CBMi-gFBVV95cUxOU09pODNjOFFRQTc1SkFqRkU3Unp2amNSd3NCU3JyNThRbVNoLTQ5ZHN6RTVUVnlscEhWUWszNEUxbDNVLU5zQVlvYkJlY25mQlNocVR4aUQtT1hLZEY0Z2ZTTjhPd3JBVnhJOF9DcVdvNUt1UHU0bHNQVGxmX0xTS2JzTkZIXzZ3bi05bjRPUXg0MVZuNFVweUx5SUEwY0RldE5CVjdSY3lvWGZQV0ZHeXlaNHQ2NTFSVC1TNGNkcFlxdHN0Q0xMTC1YOENiTEdhb2xGN0ZMa1gxS0E1eFpjWkdpaDFOYXpwRWxEUjdBeERwX1Z0VFBPYlB30gH_AUFVX3lxTFBORGZ2V1JHMUxYQjhQY2Q4Z0VBaHJ0cUdMbUNnTUNJelJFMXN1RWZsRmgxczI5TW5JalJRcldsdUhoaHNVZl90LTljUW8wZ2RqcUk2SmhsNVhtYkIxT0YxUGRWblUzdjVubU5VRzROWWRyTTRWbXlGUUpFbUJYT2pWcXNETTZzMjhtZi1mdVowWFYxTW1zQmp3aEJpQ1FQbWpHY25nSVBFbDZYLXVyV3lnN2VFVU0xYXc2WXRYYXBVNmdMQWF4NERXaUs0YkQyUDdJOWpBRzFwQTlIWEJja2Nob0U3YW04UkczRUVqaFBJR0phdThfRFpXWFZ4ajlIVQ?oc=5",
+        "source": "theaustralian.com.au",
+        "description": "Migration is also part of the housing solution  theaustralian.com.au",
+        "date": "21 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-21T18:00:00+11:00"
+      },
+      {
+        "title": "Affordability mandate dropped from Qld housing supply scheme - Australian Broadcasting Corporation",
+        "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQSEhoN2Z5dEJfUDZqMS1EX3NJQTdYMktNMzVvOHlBaXFJdjZ1dDNmOTl5bEZjbHFoVkNwelpybWl5eFRFMTY2aXFUNlA1Nl9XY2U3a2xwZ1NoVlVJMTdTaXlGUzhjTGxuM3A3Mk5fTHROR1lrU3A5ZEI1UHBVTDMxTmd6OGxQcThnU093M1BYRkZ0dkc3UG5KVA?oc=5",
+        "source": "Australian Broadcasting Corporation",
+        "description": "Affordability mandate dropped from Qld housing supply scheme  Australian Broadcasting Corporation",
+        "date": "20 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-20T18:00:00+11:00"
+      },
+      {
+        "title": "Groundbreaking works begin on new social housing project - PerthNow",
+        "link": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxNMkNvSE50YkRUaW1zQlFxejJTRXZEMnRjVXFSaTZGVGVTSG0zWTBjUU0yS0JqZXRsTzQwcTV5UE92UXFRS1JIR1pPeEFsSzBFem9HYzBPZktWRHNYQ1owUkJfd3E0Z2xrMnRlbUM5SWRpWWZjMUM4VnBSYWtPa3pqSnhqOVdVOFA1QXZCd1J3eWgwSktwM3p1eWlvSTlzbDFoS2ZCUmdrc2hzNTBRanFrcnhYaG5QRkdBTmRUMDAyeGxpVXpJeEVLSjJkV1RnVjZsTUFFVmVwNUk5czh3R3dDTnNxQ0M1MExHb1lSenNfSQ?oc=5",
+        "source": "PerthNow",
+        "description": "Groundbreaking works begin on new social housing project  PerthNow",
+        "date": "18 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-18T18:00:00+11:00"
+      },
+      {
+        "title": "A response to claims that Australia “has enough homes” - Housing Industry Association | HIA",
+        "link": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxPZlVHSmpxWklrTEJ1cVJlTE1OUEs0azNROWtuZW56NjZJZlJmcWFoWE1NOWpFOFFJUHRpeV9IU2dUVDRpWkZRNFpKNlJSSXZXMFU0TzcxUHFHd1NkMXU2Y3lHazhsNjI2aUx6Q0FidEJfR1NfNmM3MGpQQnVLejBrRVJTMXJrYW9JclVNeWpWYjhiQXY2ZXNmQXpUU3p0ZUdieHYxTnpybWI0dF9zWHV1UGktbXVPMU5tM0YzZlUtVENmTkpNX1o3dHhJb2pnNjRn?oc=5",
+        "source": "Housing Industry Association | HIA",
+        "description": "A response to claims that Australia “has enough homes”  Housing Industry Association | HIA",
+        "date": "16 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-16T18:00:00+11:00"
+      },
+      {
+        "title": "Spotlight on: Cammeray Social Housing Project - Housing Australia",
+        "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPeU1wbUY2bmpCQWRwYnIxZ0t6bXU5Yk5CMUVIR2Uya05qVlVqdVljVjRGVERoVEtkSTBJejFnejBhanFGZklNS0ExaGdtVVRMMWJ0bUVmU2xaRWFsaTVJV3Y1UGZBQnZic0FuV2gxWGE3SUU5TjBYRXE5RDJsTUJhTllfdFhUUkRVbjROS1cxTzJIclFy?oc=5",
+        "source": "Housing Australia",
+        "description": "Spotlight on: Cammeray Social Housing Project  Housing Australia",
+        "date": "16 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-16T18:00:00+11:00"
+      },
+      {
+        "title": "More social and affordable homes coming to Belconnen - ACT Government",
+        "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNUUl5ZV9hb0Ruay13STNTOTVuU3gtQlpOLVR4ZTg1bEtJNm9ZNTEycWJTYW5mRWtJd2xJQy05aDZKR0lEcDF2OHJDd0pqYlMyXzl0OGpGZnJIYi02Q1BtMXFuTUtQNldLSVhqQnYyQmxFdlU1LTJidlBtU2w5VG9TWVNtVm9HaFp3cDQ3Tnlmck9kb1N0elZHR3lBcjVBY0s4X3pITTRXV1luSU4tcTh6MA?oc=5",
+        "source": "ACT Government",
+        "description": "More social and affordable homes coming to Belconnen  ACT Government",
+        "date": "16 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-16T18:00:00+11:00"
+      },
+      {
+        "title": "Sydney has a big youth homelessness problem – here's how you can help - Time Out",
+        "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPYzdHYTBVNjJVbmlwTGYwcXZHTzE1YXJfSUpENXZrSUpicTlyUTJGb2JmcWxCcUFuNkY2Y0YtQ1lOZHRIZjR3UlQxaVEySmVRVmRGNEZlc3I2VDJvaGR2eEVGZll0Z0hSVXhNcHZDVnBscWViT0RkVDd1cXF3SzhnOWN1alY3UW9kR1BWS0xzSElxa2tPcTcwRHFuWHFuWWI0VDNTcTZTOFNfX29sc0E?oc=5",
+        "source": "Time Out",
+        "description": "Sydney has a big youth homelessness problem – here's how you can help  Time Out",
+        "date": "16 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-16T18:00:00+11:00"
+      }
+    ],
+    "infrastructure": [
+      {
+        "title": "Charging queues return as Easter road trips test Australia’s EV infrastructure - techAU",
+        "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQMWxYem9zMUcwVTBPUE11UHB3M1ZKd2xsN1ptbXB5WU94YWkxOWh4TXlTdWdxaWw4TDdkR18tN2ExNjExVHY5bVg1UlJ6MWQ0NzJJQUdycU1XN1Y1ejRmT3lVd0duN1IzU29RMWNLMG9oU1dVOVl2SVg1YXYxODNucWlQLWZTa0ZtTEJQYnNWUGN3OW9fRXd5WFV1YVhvYWtjOUE?oc=5",
+        "source": "techAU",
+        "description": "Charging queues return as Easter road trips test Australia’s EV infrastructure  techAU",
+        "date": "06 Apr 2026, 06:58 PM",
+        "date_iso": "2026-04-06T18:58:57+10:00"
+      },
+      {
+        "title": "Closing Soon: Applications for Linkage Infrastructure, Equipment and Facilities 2027 - Australian Research Council (ARC)",
+        "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOSTh0ZEp2OUYzMURQeWhhbXNXV1lnOWJVZDN0TkZwNG9KMnFnckFjVGFIZTVuT2paUXAxNGpIOWhDX3MxXzZmR2hmSmNkZmZwaC1MbElNU2JWYUZKUWtQV01VbFJ1UHB0WGdMMWw2dl9CWHZCSWE4STRCbEFVSXp6WS1UM290RExpcm5fY1FsaWFNY1lYaDdxYkVuVk9pTnRrWWV2bDIzazlaN0QzWVBYN2g5dE51VDdnLWc4ZHduSl9yeWxnY2phMA?oc=5",
+        "source": "Australian Research Council (ARC)",
+        "description": "Closing Soon: Applications for Linkage Infrastructure, Equipment and Facilities 2027  Australian Research Council (ARC)",
+        "date": "02 Apr 2026, 11:34 AM",
+        "date_iso": "2026-04-02T11:34:48+11:00"
+      },
+      {
+        "title": "Australia’s Urgent Gas Market Reform Tackles Energy Security Challenges - discoveryalert.com.au",
+        "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNejY2eWVieEJmY25PZm4tLVFEZ1RKem51WXNIcTRBQm5URlRrWURpY1MzSWt3QzVEZTFXbGp2RmxjZ0l3S3FEeGVkSWtoUHNtdXUtclR0MndNb2hMVHZJNHRJMWcwWXktM2gydDV4MlM1MDV6Y0JkQmVGR2ZMMWVXUjFxRXlUZXltc1llOHhDUGxKYkUz?oc=5",
+        "source": "discoveryalert.com.au",
+        "description": "Australia’s Urgent Gas Market Reform Tackles Energy Security Challenges  discoveryalert.com.au",
+        "date": "01 Apr 2026, 11:57 PM",
+        "date_iso": "2026-04-01T23:57:45+11:00"
+      },
+      {
+        "title": "Department of Home Affairs Website - Department of Home Affairs Website",
+        "link": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxQNDJCT21pM1kxM2RpWHphM3pDOGN2X0JaMGJQVWpBeEFaX1hFSC1NMnkwTDRUUVJKOW9WQkFsUERxX0ZkZkczVkttN3dmbFprVnc1WFpfYjdQNUVWa09DMG5VLW5uckp0ai1HQ2dMUGJ2V2pyOWdONHl6SjhDOXR6S0JaQTlmZmVkZ2hTVzBaczVOTkJMYnAwb2RfZlU1eUpsMDVwamc2aDN4WEFQYllkbGJmSktCeHF0N2MyYVl3LTFrS1p5ZFBFRVBJY0R1ejZGcHJrOEd6cDNuZUhJa3dQN0VaWDZJVHR4V2c?oc=5",
+        "source": "Department of Home Affairs Website",
+        "description": "Department of Home Affairs Website  Department of Home Affairs Website",
+        "date": "30 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-30T18:00:00+11:00"
+      },
+      {
+        "title": "MCA's $44B Infrastructure Plan for Northern Australia - discoveryalert.com.au",
+        "link": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOSXNWd1lSTUdjWDhLNXFPQWtVTktyOHUxSlVPN0V1UEZFd1hQSVdDRG9ZLXVZRGk4YTB0YVVXWFdIOFRVQlIwT3d0NmE1Nmg3dnRqbXdGamxqN0lDZkVTSFZnM1paYWdZS19tOGJMV0ZLYWRiMklndWNsdUpxMF9jYVlFOXdBMmRHd2xDM1p6ZWpSNWx4a2JsN3hQU1kwdXJh?oc=5",
+        "source": "discoveryalert.com.au",
+        "description": "MCA's $44B Infrastructure Plan for Northern Australia  discoveryalert.com.au",
+        "date": "27 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-27T18:00:00+11:00"
+      },
+      {
+        "title": "Consultation on enhancements to the Critical Infrastructure Risk Management Program (CIRMP) Rules - Department of Home Affairs Website",
+        "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQczBSekgzM1BoUVplekF1bTIxaHVsd2NtWmZLMERmRXA5djlHbFlSaUM1cGluWk9SVWc0UlpOc1JfTno2ZllFRllXQXBDMl9fRGpfT3JoSXhlSTlXN0lWQW9leDEzaGFXRDZldWM1VEM4MG40LTVGZ3RWdlY1cklodVJaZElJMmlyNVZ0UjJzUUFyU0otYzdZR3JoV19UUFRHeVVWWEk4NDBrQ09RU3liTk04cnF0LWdfMG5oWEJhcw?oc=5",
+        "source": "Department of Home Affairs Website",
+        "description": "Consultation on enhancements to the Critical Infrastructure Risk Management Program (CIRMP) Rules  Department of Home Affairs Website",
+        "date": "26 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-26T18:00:00+11:00"
+      },
+      {
+        "title": "The Economic Contribution of the Cement Concrete and Aggregates Industry in Australia - Oxford Economics",
+        "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxNMUd0R3lfdF91WWVtQWczbjl1cDNtVXo2NlgyNW54NWNWLWNaZEFXZHZoYkRCV29tSV95bGhRQlNMZm02VU14ZGJfWTl6YnBhSFlMM0ZZSzNUZ01MR0FEMzNJLTlVOFlOQzJEY3hDbUV1bmQtZ3lLeUdkSHZkWHZiaDlhbnBCZV9GWTdvaHdKeUJkdUY5ZU5tX0ZPZkJxZzJOWXc?oc=5",
+        "source": "Oxford Economics",
+        "description": "The Economic Contribution of the Cement Concrete and Aggregates Industry in Australia  Oxford Economics",
+        "date": "26 Mar 2026, 11:23 AM",
+        "date_iso": "2026-03-26T11:23:38+11:00"
+      },
+      {
+        "title": "News archive - Department of Home Affairs Website",
+        "link": "https://news.google.com/rss/articles/CBMieEFVX3lxTFBLX1MzeFMwY3FOYkFCX2N6bXBJSG1zc2FYLWg3Zkg3NVdObW9WRkR3ZHRyTW94NFBBaXl0V25tS213endmRnNMTW54cTJXNkZjOFJhVy1NeHQtOTBNZ1BiRkxhOU4wT3pPYWNEM1p5YUhNREZIR2lBZw?oc=5",
+        "source": "Department of Home Affairs Website",
+        "description": "News archive  Department of Home Affairs Website",
+        "date": "25 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-25T18:00:00+11:00"
+      },
+      {
+        "title": "Speech After Acacia: The Next Era of Financial System Innovation? - rba.gov.au",
+        "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1sOGxUSkE0cGE2OGhhQkd2SUwwdGdUbThsMk5hLTE4WWFFSzcwTGhOQUsyVVNjMFNfTlZDS2hVMm9FZ196UmhKNGJWaDRvZTh1SG9UNXhJSnMxNEd3bFNnaEd3QlNFWU9kQ1E?oc=5",
+        "source": "rba.gov.au",
+        "description": "Speech After Acacia: The Next Era of Financial System Innovation?  rba.gov.au",
+        "date": "25 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-25T18:00:00+11:00"
+      },
+      {
+        "title": "Australia's critical infrastructure security laws \"toothless\" - iTnews",
+        "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQWXZ4SUxfVEZ5RjJ3WjdGakVFYnJ4R0JnaTktQVZ2dnBGemU5UGZObm9IaFVsSGVIdlduWDNZU05ncHJsLWpBTHZwUTRwZjVnUWV4eUNsRTF1ZWFEeTVhNENBcklUTUVQOHk1RlRNdXVZYzR3ejgzSS11ZThEeDN4UktoOFA3dk1LZW9OZ1FqalpJZFl2Qkt4d1l3ZU8?oc=5",
+        "source": "iTnews",
+        "description": "Australia's critical infrastructure security laws \"toothless\"  iTnews",
+        "date": "25 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-25T18:00:00+11:00"
+      },
+      {
+        "title": "Consultation Opens On Critical Infrastructure Reforms - Mirage News",
+        "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOUzkwbDhjMUR6TnlwcTR4dnJxNGNOdXR2aTNpcXF3Vkt1OEZDWXhuN0FEUFctcTUzVTBJQUJ6aW1QY2t6MkQ4Nkd6aDEyOXVPaVA5S2FrTHJ0Sy16SmZsSkxKNVNldEJZOEhOT21CbUJId2w3RVpGMkkzTWVaa19DODZ5M3IwWVFK?oc=5",
+        "source": "Mirage News",
+        "description": "Consultation Opens On Critical Infrastructure Reforms  Mirage News",
+        "date": "25 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-25T18:00:00+11:00"
+      },
+      {
+        "title": "Australia’s Critical Minerals Parliamentary Inquiry: Policy and Development Framework - discoveryalert.com.au",
+        "link": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOTzY3YVBKZlcxdmlCd1Ayd0RtSVk0cERXQkZiS2VfRHVhWW9QVWphc3g0bldjdW83Z05XWWdXYmtBUElnU0J2NTJtMHUwQ0pQVTVLWVZ5LXR6dWdwNUF3M3NHWjBPSzVUVFNDbTV4Z1RLSmhKelZwM2FjODdqUlQ3YjVFZFVXZDdjelQ1SVBR?oc=5",
+        "source": "discoveryalert.com.au",
+        "description": "Australia’s Critical Minerals Parliamentary Inquiry: Policy and Development Framework  discoveryalert.com.au",
+        "date": "25 Mar 2026, 04:54 PM",
+        "date_iso": "2026-03-25T16:54:46+11:00"
+      },
+      {
+        "title": "As global oil prices surge, should Australia increase its renewable energy use? - Your climate transition questions answered - The Guardian",
+        "link": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxOQmdvQlExVjZoVy1NMzBQZG9yNUd6cFpaMkd5Vlc0LW1jbkFBSXJ2X2w4WGZTOG9LSW5LNnkwRDU4Z1hTTjVzZFVQNXhEMkQtbXhQcDY5dzM0MUJWNEQ5NGl5SVNhc1BhRmFFOW1PcVZqbmhYOGI1bG9DUEtzb2NpaWczVjdUTWxzTDBNV2hVbU9qbHZoZEpPU1RWaWxaZnlFa3E1SGctVENvelZCcWhkajFtZm8xa2QxRGVqTjkzWGliV2hFUGpoZWF4YVprS1U2dDA4?oc=5",
+        "source": "The Guardian",
+        "description": "As global oil prices surge, should Australia increase its renewable energy use? - Your climate transition questions answered  The Guardian",
+        "date": "24 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-24T18:00:00+11:00"
+      },
+      {
+        "title": "PwC response to the Australian Government’s expectations for data centres and AI infrastructure developers - PwC Australia",
+        "link": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQdWdURFQ0U3d0YVBxOHV3R1hkUlV0MkRCUWZvVkxHaFlvMXo4dWhHdGZyNy1TWjlNQ1RkNU04eUVpYW1lMU50elhvRmtVMGFSa094WWlJV0lMVTYySTZCLUFhbGEydUNfMmpmZ1RITmkzUzZhYVpnQ2pXeHZBazVyZEpFNVBoZlo4Z0FvSjRnMWJHMDBkeF9RazVRdnFDLVlUcHJwam43SHZyY1VuNzBKalNDVkc?oc=5",
+        "source": "PwC Australia",
+        "description": "PwC response to the Australian Government’s expectations for data centres and AI infrastructure developers  PwC Australia",
+        "date": "24 Mar 2026, 05:50 PM",
+        "date_iso": "2026-03-24T17:50:07+11:00"
+      },
+      {
+        "title": "New data centre expectations help bring the benefit of AI to all Australians - industry.gov.au",
+        "link": "https://news.google.com/rss/articles/CBMioAFBVV95cUxObENwWlkydmd0ZUl6V2haNWdRMUt1RHFQMklOVWI2b3h1LVRjNXYtbjlLSG82cHZhXzlCYVM5bUpMemQyZnlEY0JPRTMyVzdxVmQyWXg0azF4UFJvZkpVN3BlZHc1OW5wTGhFSjNYVThaWVd6X2JESzdOMHdGTUFqMzgybUtzcDdnZ2FDMzNtYi12bEV2ei02ZlJoUkgxVUxI?oc=5",
+        "source": "industry.gov.au",
+        "description": "New data centre expectations help bring the benefit of AI to all Australians  industry.gov.au",
+        "date": "23 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-23T18:00:00+11:00"
+      },
+      {
+        "title": "Labor’s data centre rules spur fears billions could flow elsewhere - afr.com",
+        "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNLVVjcUh5dVJoaG4zalIxbmlNNTBwRGNaaEtLRXRvRkczb0FjaG5kbklUSHFsMFlUVDdBOVhlNXB1U01laDIxd0JvM1U4Y29BXzUwZzJTbjhVYjV6NWRBMUdyTnVmN2V0V0V0MzJ2N2lsT0l2OG9nams2YlN6ZkJaaVFEazdhM2NHN0pEdWVfVWN6SmRfdm8zX0IwZVFtRW9zS0o3OF9oMW9rVkNrWHQ2dW0zbXdzaENGNGdTVGJuWEt4VDJJMEE?oc=5",
+        "source": "afr.com",
+        "description": "Labor’s data centre rules spur fears billions could flow elsewhere  afr.com",
+        "date": "23 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-23T18:00:00+11:00"
+      },
+      {
+        "title": "Strict new rules for AI and data centres - News.com.au",
+        "link": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxPeS1kWHpyVE12VTY3VHZTd1ZnLWZGQVVoaFFDamFvMHBRa2x4UmY1UWQ2dUtOek9lQzl6OFdLM3poLXMwUEtTMnpkWjBqVGhkbXMwRTBsOFBpVko2ZFVMZndSV3FRazlEMC10c3lTYjVfd1hmU2szcEdYZ1FyelhoeS1hZDNld1Fpem9CcEVhOXpzc1pnOW5HVnhVcHh4WHJpSzM5allITHRRTU1xbnNMelBDZk94c1dnVzRHU0hhb0o5QnFnNlFxT05ZRWFfXzE4bHVpd0VTWXYycnpiTDllRnpJMNIB6AFBVV95cUxNeGZkTmlhWVlMSkphNmxkNEFkd29WVFRKN01OeGJHdl9mSFpMd3BTZTJDM0FLbUhuMXYtYUdDNE9ZRDVSSmQ0MXh2WWJub0M5cHpfck0yems1dVE2Mmg2Y2FUcm5jUElrcFpCY0pDV2R0TmRaUEpmdVhfRjh5TExIV3FXWXI1RDc0NjFIendheU05RmhGeVRrVzgtX184OHk0ZmJ1bDUyNGU0VXR2UFJNZWlRNzNRMnV6SkRfVnpsLXJJLTNfRFRXQ3VzQUlicHRDWUlkYjUwZGp5X0JBMjRZZDFXY0c2c09u?oc=5",
+        "source": "News.com.au",
+        "description": "Strict new rules for AI and data centres  News.com.au",
+        "date": "22 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-22T18:00:00+11:00"
+      },
+      {
+        "title": "Has Australia wasted the last 30 years? - Morningstar Australia",
+        "link": "https://news.google.com/rss/articles/CBMiigFBVV95cUxPVzZVMVdacUI5UlF0d3BmMlQ5S04wRmNnSS1SWUp3LUdkejlScmJILW5rTTdjQUhYS1l0b1FTMjBJX1RkODFRUE5xMzRkTk9OZ0pyOHdHQ2VsNGJmYVNOREhLc2RYalJ6TFZNNzJ4TXlXLTJFQTRGaC1BNWJPMDR4T0J5cnlka3phaHc?oc=5",
+        "source": "Morningstar Australia",
+        "description": "Has Australia wasted the last 30 years?  Morningstar Australia",
+        "date": "18 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-18T18:00:00+11:00"
+      },
+      {
+        "title": "Picton Road upgrade - Picton Road projects - Transport for NSW",
+        "link": "https://news.google.com/rss/articles/CBMioAFBVV95cUxNbWxLUWxvN2ZMX05uWDUwNks2VmhUS3FYZUhPYjV4MkM4dE1yNVBadlRYX2JpdHMxdlBlUnEzd1dsaUpSY2N3aGZPYk5xMXBBUUJGR1ZrMXVCdHBTdXlNY3JjMW5ieGN3czlGckJpY0wwS1lVaEVfcGRNQ2FDNEJTWjFYZWFzRzVFVmpKOWdEMEY3TGxsTUJWOHNRNUZIUnRK?oc=5",
+        "source": "Transport for NSW",
+        "description": "Picton Road upgrade - Picton Road projects  Transport for NSW",
+        "date": "17 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-17T18:00:00+11:00"
+      },
+      {
+        "title": "COP31 still offers Australia and the Pacific a chance to reset global climate ambition - Lowy Institute",
+        "link": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPZGhrNWE0RVF2QmdMUHQ3MXdkZVdsU0lqQjFjNVQ1SFBRUlJha3FLMi1OZEZTZ3ItWUFfcHhaUnBuc2x1YjFYSGkxM0o4Y0M3SlExTUgtQTN4RDdoT196SDJHQTRHX29OSFJNeS1FaXdiMTJEOE1WazlOei1EdW1WUER4azBnY2wxM3dMbFJKRk9QejJzREd2VVRmdFE1RWNhVEh2ZDJ2Y015UnF1RUlEeExPRlNRWmhhejc0?oc=5",
+        "source": "Lowy Institute",
+        "description": "COP31 still offers Australia and the Pacific a chance to reset global climate ambition  Lowy Institute",
+        "date": "12 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-12T18:00:00+11:00"
+      }
+    ],
+    "public_service": [
+      {
+        "title": "Why aren’t Indigenous leaders demanding an audit? - theaustralian.com.au",
+        "link": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQWUNteUpCbE1sQlBOaURPaGJqWGtyZ3pYck9sWVlOc2c3X1RPcU9EMlVCbWxKWnZGVnFyOG9vT2tMNnh3RUoxd29HVzNmN3F5VFpBNlM0YkJWVXlVY0d2T0JMZFd2clpLVXk5WVpGeWtwYkR5cUwxWUNfV0hzVlViZnNMLXphVDVYM0wtdHpHYUhjQkJpb2EyRGtOSE04SU90VGhtYzZyTGd1RE9ZRzk1ZXVfM0xUSndqWjM2QllZVUEzZEdPRDdOQmJBVkpyNnlm0gHWAUFVX3lxTE5iVTRXcXBNR2UyX0R6T3h4SXlFYUZ5TjhTaHNEZ3d1SHR5bWxldmhzUHFHdHNxZkUxMnROV3R0OXRrUVlGdlRvb1ZuTm1hTGgxenVCUC1jX2w2bTFsaFhxbzREdVBBTm9oeHBobzhHOEdWbWk2R3lKc2dtTExuVVdKMGstMy1nVGh6NE00NF9URVM0eFBNVXU5elNyYlJoQUJpd25KTTg2UV9YTndpVXFCU1NnRDhkWVo1dUtFbkFaQ0hrUGxNcE1qX1FucTZPY2hxdDh1Z1E?oc=5",
+        "source": "theaustralian.com.au",
+        "description": "Why aren’t Indigenous leaders demanding an audit?  theaustralian.com.au",
+        "date": "08 Apr 2026, 05:08 AM",
+        "date_iso": "2026-04-08T05:08:03+10:00"
+      },
+      {
+        "title": "Spending cuts, tax reforms flagged in next month's federal budget - 9News",
+        "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxOX0s4YV9Kd1R2QU1HdmVDLUMyZldaazJuR3BMOTV3czFBcHROc21vRjNtNk5rN1pkOWw4dmdzc2hPLVlWMXhaOVFzREl3TFBNdnRnendQUWFHN3NXYTgxZXI3MUVib0YtWVBScUZsSDB1dkpBWFhWUmJCYVZ5MnpPQzhtWmpCaWx1TEtjQ3JPVk1YWmktYW10X0c4M2FlamFYNG5Lakc5cUrSAXhBVV95cUxPN0Q1NERhQktMNDI2NWc3ZV9zWndPdnNNRVJPMTZ1MXFkWHNGN1dTRV9SdXdBSURCUGNvSHRlYzdWQVh3WHdEMHh0ZXJ0VWExQUNkZ1doNlBXZEJ3NW1EWktNZzFFc1lVT1lYa2xTZlcyLTZlX0VqcE4?oc=5",
+        "source": "9News",
+        "description": "Spending cuts, tax reforms flagged in next month's federal budget  9News",
+        "date": "05 Apr 2026, 03:18 PM",
+        "date_iso": "2026-04-05T15:18:59+10:00"
+      },
+      {
+        "title": "Liberal Senator cautions Labor over negative gearing, CGT changes - Sky News Australia",
+        "link": "https://news.google.com/rss/articles/CBMijwJBVV95cUxOQlFONnA2a1h2cUhJNVVFVmNFYkY2NmZPSjMtMGJqRTBOaHRvM1ltSEdhOHMyQ1ZERXhoU3hyZlZNVTlvSm8wLVRwQ21MTUtVcU1lZmFrWkhpSlhJb04zR3R1OXZaRTJwbThSVG5fWXoxQm11aVM1aWZuOEhWajd5WDJKVkJBNm9qeHNIcHVWdDlqV19BQzc5MDlvQ1RaSjZpdzV1b3RBLWxaLVpYYjlLT3EyTDQ1Z3hBTldodXJFQ0ItYVNwd0ZSWTZGRkdhaS1Wb2hsV2ZuZ1pJa2llZTZ4aUxIUDNyN2YtOFZVdl9KNjF3Y2ZYdUlfU2ltZzlCa0E1M1BZT05Wel9CQkl6WkxR0gGUAkFVX3lxTE0tUUp1c0Zyd3Q2eG83d2ZDUEgzNU9NWG1uMGZFamdhYlR3WW9OSWdoVTJuTVVmR0JfT3htTDBheUJ0dHc2dGdKRldPSlBQLVJwcGxPZlE5OWNta1lBbERPZUQ5b0hZczd0X0pJNzBVMkZtZjUzV2ZMVlJ6Um54ekU5Tl9Td1JRRHF3MFd4Q3d1aGtXUnlYRXhHQU5aSGtvOWpfaFpyY1NrMzZVLTQ0MEtqcGpCeEhQcVV6OFl0amdOQlN5Q1czdVo3aF9VQkk1dmpCc1NqOExDY0pkU3Y3Rnk0UkFlZURBSUk2cU1NWE1zb2tHMWxTLVNvVldyazZXMndpOXlpLWtJZU9hNmxmM085WHJKZA?oc=5",
+        "source": "Sky News Australia",
+        "description": "Liberal Senator cautions Labor over negative gearing, CGT changes  Sky News Australia",
+        "date": "05 Apr 2026, 03:04 PM",
+        "date_iso": "2026-04-05T15:04:44+10:00"
+      },
+      {
+        "title": "How property investors can beat the coming CGT wealth tax - theaustralian.com.au",
+        "link": "https://news.google.com/rss/articles/CBMijgJBVV95cUxPWWlPR0RJVkZZRm9WeHhFYXFSd3RUZE5ZVFJKQjloSmZ4b3YwYUVUeFVjVmtScVU3SG5BYktpWG1Vb1FwRjM5N2hPWUZiLWh3RVl5RnR4MXpycVhoQmpOUkVpaTZhdFlIQ25Vdk95QndOTlVSdFZVVkQtdDN2clE0Rm5YR1dNdkhSaUNXS2prUUc0cjc1LWIwR0tzMGw0UlpMVDN2TFlRem1GY2RfdGpOQmx6Vkd6YUQ5a2NWSC1qdTFOOWNMWTJhczBMUnppM3Q2VW9jeTV2d3VvLUZGWnJZd1dXdDl5dEhwcUVMMUtTWlEwZ3Y2R2RzdDIwekVVX1hVZzh4d3pUdVJRYThvVnfSAZMCQVVfeXFMUHlwNWVOSGpWckM3QXhXdUZWZThnMzNreVFVTXlxSjZUeEZtc0ZfdU5TZndEOVhWdkRUV1hKLUIyb1NRWHo0RFhsTlpfdWRmeTFVY0Z4NXRBcHNjZmJVNFZremo3T3BzM2xGN0xqRXVhbUFFZnRFZlItQWJ0djNEclZNMVJuMUN2dmRtNkk2RTBrV2lobWdjUVV0bHVqdnE1cTRHUmRGY2RLWFR2Yll1Wk9VbjBJeDRVMjJQWlphLV9UVUtFQkVrZ1Bkd0NxTVBaTTVoZXBKQ0tNYzREUGk4bWxKbFZJdzk0eHA2em55WGFUWmN0WlAyek85Tk5HUXFXT3BTLVNnaFk4QWpHclI1eFhLWms?oc=5",
+        "source": "theaustralian.com.au",
+        "description": "How property investors can beat the coming CGT wealth tax  theaustralian.com.au",
+        "date": "05 Apr 2026, 11:31 AM",
+        "date_iso": "2026-04-05T11:31:00+10:00"
+      },
+      {
+        "title": "Treasurer mum on huge tax move - News.com.au",
+        "link": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxPZmNKQVFGR3JPUzdVb0JNQmxsN0VoUC1ab1UxZHpxTUk2bVFJbm85RVFrSm04MU5lOFk5Q2ZoUnhjam5SOWh2Q2hWTnNmRkdaWWMzT0k1eHYtZVVhSGxZNDk1Qy1ZRGhfU19yN2pfOHhtLWR4dFF2ZzNIQ0F0RDVmYUZFZjBTQU1za0p0ekFFSThZekxwVlJOYlJhdHlaWDNFdnFQVm9QVG05NHBXbGthM3ZLNGRfRGI5OG5PcU91QlprbTVmTEs2T19heVhiczVqbVVxWkE0elBGQkhSdUxhaDZyNNIB6AFBVV95cUxPUi1nUEl3ZTBmSG1UR1h5SEw1NThKWnp4RG81dmszNll5eVQzWkxpSWdzVVcwczNGdU5qX0dVVHZrRDM1V1JQNk4yTF96ZU96MWFla01MQWlqVGg3ZzhaSXJYaFd6Mm8xbmRFazc3amRYQ0pFazVnY0xuRks4SjlrS1RmeWZYc28tcFpBN2loR2JKWGExbExFd0REbFNuVXhsVGM5bzFrY1lqWHRBMDFibWpwc1c2cy1yX2lPcEdaX0RFZEJTYjVvNjFUeFBfVHBWTFpTdjFQcEc2NS1hWVBGajhPS2JWbzUw?oc=5",
+        "source": "News.com.au",
+        "description": "Treasurer mum on huge tax move  News.com.au",
+        "date": "05 Apr 2026, 10:33 AM",
+        "date_iso": "2026-04-05T10:33:31+10:00"
+      },
+      {
+        "title": "Report warns of problematic age gap in Australian SMEs - SmartCompany",
+        "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPS2wwejNRei16V0VBVnZVV0U5aklrLVFVb21YbVg1aERYbWwyZUZlc05oS1B3U0dnMzlJNlM1RFo1T01ROEVVSEhpRFJ3SlN5MF9vV2NQSkUzakI2MDJpWVo1S2RKUEoyQ1FybU9HYUF0RWRZUVJaU0JKMFRmZkhfLWdEbUdQSlhRY2UwWHlHTGtrbTRia2F6dw?oc=5",
+        "source": "SmartCompany",
+        "description": "Report warns of problematic age gap in Australian SMEs  SmartCompany",
+        "date": "02 Apr 2026, 04:18 PM",
+        "date_iso": "2026-04-02T16:18:16+11:00"
+      },
+      {
+        "title": "Forget the small-market excuse – Australia must learn from Sweden - afr.com",
+        "link": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOc2xGXzlvaW50XzJGcVZZbnk2b0RWNDVMY1Zsa3kyM2ZBbVlzd0oxN1RtRUFBeklYYVJVYlQ4ZEdpLUpnVk1MZFBwYVZiTWFqckpHYkJHM0pKbnA2T3lsY0wtRWI4a3Qzb2F2RE0yY05NVGpyNUxBa0JiVVJRejY5MGhCLTVUaG5qTkRjblVfR1pHYVMzM256VDVwRFlXU3F3UEVuVDZiX0dJLW44WnoxSWx2eTk?oc=5",
+        "source": "afr.com",
+        "description": "Forget the small-market excuse – Australia must learn from Sweden  afr.com",
+        "date": "02 Apr 2026, 12:00 PM",
+        "date_iso": "2026-04-02T12:00:00+11:00"
+      },
+      {
+        "title": "‘Wasting’: Issue costing Australia $9bn pa - News.com.au",
+        "link": "https://news.google.com/rss/articles/CBMilAJBVV95cUxPcXpFeS1iZExKZV9qZlZLZXFSMHltTXk1bU5CU0ZhdHBoVHpBbWpaNGp5Sm82RUV6WWpuZF82dy15UDN0VjhENVpkbkV3TGEtdUVIcWhMbERvSlk2aXFYUlJ3U3Ftby1fdENkVFloRnRzMmg1UkVCOFJaaFJFYjVsb2l2eGFiLTNZaDhlRjJQYzBMNmZ1XzQxdkFzZzFsWmVyTnk0RkVoOHAyMmpDeVRHVGtOLTl5bTlZZEpGaFRIOXRZWjJSMExBcE1qc3pLeTYtSWRxb2Z0ZHRiMmVVUUV4a3I1Z1lvSHBIdE9BMG9iakt5WDdmUDZ5cUZPTUpxSDZ5RUFSY1RBVkNGMUROTFA3QkVMRDnSAZoCQVVfeXFMTXAzcmhGTDh1YUtUNXpzaTE0b1h1ZWpSSTB1cjZqdHJBdGZITVNhemQxR2ZldW00MzVwODFHb2dTWG9ndV93RkVxWFU5Yy12R1NKTDNmZkJYb01kSlRwQl9aeEVQbGowV2VlSFpQLVJtOXFfbkdveHRvc0dZSTc2UThFdjZxV1RXNldzeGktUWZMaTk3TGpJTFc1M2pIWFgzYzU5VUtaeEx3aFNPcWNJaDI2M3hCUnhGZ1YydkdJZkVQTlVlYWQ0bWxwUFRfTlVMZkdzVEtYWkdIMmJPNk1TdC1zTE9VWHNpWGZLa0xCaFl1a1o0MVBGMHJGbF9PcnhLUWhsRUdRbGdJZ1R1SjFfZHN5NjdyVHZJalZ3?oc=5",
+        "source": "News.com.au",
+        "description": "‘Wasting’: Issue costing Australia $9bn pa  News.com.au",
+        "date": "01 Apr 2026, 03:50 PM",
+        "date_iso": "2026-04-01T15:50:15+11:00"
+      },
+      {
+        "title": "Lacklustre December productivity growth spurs PC to double down on reform calls - accountingtimes.com.au",
+        "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQRUVKeDhnNlE1dzNzWF9JbndBZzc0NWRLQU5RRjd3V3ZsRmFWbFUwajl4SGw0bkJHcDNwUnp2WG5UcmJFNXdPdEh5MTV2MEFBbEQzUEdSYmw5VFZWa0syNk1hNURkN0tjbHcyMEoycHhoTGpLclNqckprWXNKb0VMMjdITG5iSTZoYVV0dEowLTBDZldsS2NnWGVjMjdxaktySlNkNXhPTmQ1TmxGaHpTaXlsTDhzWTNwZG0tQmk0OA?oc=5",
+        "source": "accountingtimes.com.au",
+        "description": "Lacklustre December productivity growth spurs PC to double down on reform calls  accountingtimes.com.au",
+        "date": "30 Mar 2026, 11:00 AM",
+        "date_iso": "2026-03-30T11:00:46+11:00"
+      },
+      {
+        "title": "Government backs down on FOI law reforms - Law Society Journal",
+        "link": "https://news.google.com/rss/articles/CBMieEFVX3lxTFBpNG82U3NGaVdZQm1QVV9OTVY5WkdQTGxubWhINjBHQVdhTVJ2V3VpTzVsRWJqYkJFWEx5dkVLZms0bzZZWkRWZmdZSm1fSzl6Tk9tQWJCMjduU3BrZTFWejZ6ek4xRWpIa3lyOGctako5NXRDajFaMw?oc=5",
+        "source": "Law Society Journal",
+        "description": "Government backs down on FOI law reforms  Law Society Journal",
+        "date": "25 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-25T18:00:00+11:00"
+      },
+      {
+        "title": "The GST is broken, and hurting NSW and Victoria badly - SMH.com.au",
+        "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOTDBaampaQnBnTExEMldoLUI4MlFLSXRGSVJEWDVzNlhfdTRYUm5DQ3g5ckdrdmJjWmwzdDU4V3kzcHZ4Q056Tnc4SFZMUlNFNEpUaDE1dlVGVVMwNTdsNGRXTDNiYUNrN05NSHBIbF9jTEthdWxyZ25vaDhrUjNDYXRSWHZIMGhMbXo4UGw0RzNPVTRKSFg5VS1qLWpDQzFZOVhUZkRzSk9DVmY2OEJEdEkyMA?oc=5",
+        "source": "SMH.com.au",
+        "description": "The GST is broken, and hurting NSW and Victoria badly  SMH.com.au",
+        "date": "25 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-25T18:00:00+11:00"
+      },
+      {
+        "title": "Commissions for strata managers could be banned under proposed model - Australian Broadcasting Corporation",
+        "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQckNieUdNNEZBZkpVaVllNkZNYlVqVldRTXRGNkIyWHJoSWtQdkpXSHBEQ0pQOEVDR0lyNVltZ3hBUHRNYnZieldjVnd1MlpMQUVpSmswNFZOTzhfUmdsRGNUekp1c1NVUmphdktESVJJMHV5YUUxckR2aHpfUU80dzlwbEZZbi1tZkw0a1hJY0s4RjBhZnkwMERUeE9HYjBTcElJT2daZkQzMVl3Q2hhMQ?oc=5",
+        "source": "Australian Broadcasting Corporation",
+        "description": "Commissions for strata managers could be banned under proposed model  Australian Broadcasting Corporation",
+        "date": "24 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-24T18:00:00+11:00"
+      },
+      {
+        "title": "Commissions for strata managers should be banned ‘sooner rather than later’, NSW productivity commissioner says - The Guardian",
+        "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxONnhjS3ZxNnFkcTdfYU1MZzlGYXVFZVU1YWJmemxKZTN3ZFFJbUxicFJycmdVeWdCQWhyRFE3UTVDc3NvOFYyTHlkZ3RrRVBQc1F5SDBaSzdYdzRNVVdNcmpmTzNzVVRFcmRLNWZCRk8zQXZCNXdyaXp2WHRtT1UxSXFzVTJMMFI5UGpMR3ZqYjFBRzlHYlNYLVhqMC1wODRaU3VnQ2JDM1Z6M28?oc=5",
+        "source": "The Guardian",
+        "description": "Commissions for strata managers should be banned ‘sooner rather than later’, NSW productivity commissioner says  The Guardian",
+        "date": "24 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-24T18:00:00+11:00"
+      },
+      {
+        "title": "Chalmers told to cut record $137b to meet saving target - afr.com",
+        "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxNUll3ZjltaGlsbU9XeFVXLWFFaFZyaDhILUFHMlF3eVYzWUF1OUhzYkRMckJEZmZ4TUNYdEhGeEVZeUlUM09kTnBRZXlkb1cxcm9UV0dCa1pMSnFjeFNLWm9DNXN5M1N3Yy1OZzA1eXZ0NmUtay1FMnc0YmtvWXRGZkpmeHZGY0g5QlhlOGMyRnltdUVxY1Y3REZiMzRTeHpfTWFaVzlUdHo?oc=5",
+        "source": "afr.com",
+        "description": "Chalmers told to cut record $137b to meet saving target  afr.com",
+        "date": "23 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-23T18:00:00+11:00"
+      },
+      {
+        "title": "The future of the Data Availability and Transparency Act: Insights from the Final review - Holding Redlich",
+        "link": "https://news.google.com/rss/articles/CBMiugFBVV95cUxOZVE4ZHJtNEJqYUtudTVmUE1VUndadGJZVldNeXVDRzM0akJyRGNxTndHbmJyYXd3eGdPUmlmVnpmSEpQdzN5eW03bUJqRXRYSEFLajBqS3AtaGZsclVCVjkwcVBBXzRPamtZYW0yOURaenRBYkNFbUZuUkFmZnVwREwxV2xMRk85MzNJaDNZelVfU3d2OFJnaDVSV1Nfb0ZuWU9rU05HdHhtVGlGVEk1aVhhWmFKVklCd3c?oc=5",
+        "source": "Holding Redlich",
+        "description": "The future of the Data Availability and Transparency Act: Insights from the Final review  Holding Redlich",
+        "date": "23 Mar 2026, 11:00 AM",
+        "date_iso": "2026-03-23T11:00:50+11:00"
+      },
+      {
+        "title": "Media Release: NSA releases 2026 Federal Budget recommendations - National Seniors Australia",
+        "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNdm5DYTFnUHVmVzFUa3I0TjZudm16R2xkYW5DbzBKd29DekpQSHdsSzNZc3BWOVhoNmpyYXNxaHJNV1Nkdm9wY29SZ3h4UldLQ0Mtc0tpZ012Zk1RaUN3MFF2RE03YlVnVGJTd3BiYlVSZ3M1WnNlQzUyZUhKRUkzNjlTRHlXVmZGNV9XaE9jSU1FTENsTV9FUzUzdkdLZEwzcmYzbWJXaE05enV6ZkRXM0Rn?oc=5",
+        "source": "National Seniors Australia",
+        "description": "Media Release: NSA releases 2026 Federal Budget recommendations  National Seniors Australia",
+        "date": "23 Mar 2026, 01:00 AM",
+        "date_iso": "2026-03-23T01:00:00+11:00"
+      },
+      {
+        "title": "Federal Budget action urged as energy costs squeeze households - ANMJ",
+        "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOSzhTeDBiR3k5ei1DZkpQZmY3d2MwM3Bkd3FucVpnSHl1dFdTT2FUWmVLN3pCQndSbmxoR1owUFZDNkJhVzJmblpmU2ZvaW5NMHFUYlUyeFZYTE5pWW9UVGtyb3R0SmJlR29Yc0U3RG9sWWFFV2lGU3FBUndOQ204TU9nbDFDMEZqN1lF?oc=5",
+        "source": "ANMJ",
+        "description": "Federal Budget action urged as energy costs squeeze households  ANMJ",
+        "date": "20 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-20T18:00:00+11:00"
+      },
+      {
+        "title": "Misguided ‘tough on crime’ policies leading to Closing the Gap failures: Jesuit Social Services - Medianet News Hub",
+        "link": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxQbzh0bG43N0FkRWdYci1VUm5tem11Ti0tSF9pcE1fdmJCeno5blRRRk1xOVlHeEV5bDl4S2Fjek1uN0xqbGpUdUxZRjMxWDZ6UnlFdlVDY2xlbU5pWFliaUwyMmotVmhBM2hMZlc2d1dreTJoVzVTc1hGRTg3cUtxdHF1UDFrX3ZKR2toVXFnaVNyTlJ6LVBSTVlOSjRhLXFjZkdaUGJ2alQ4ZDc1bFp3RlRhQllDeXY2enNrcy1XYlVFSmJXQVJxcXBlYWV5OWg5b3VHWmd2Yw?oc=5",
+        "source": "Medianet News Hub",
+        "description": "Misguided ‘tough on crime’ policies leading to Closing the Gap failures: Jesuit Social Services  Medianet News Hub",
+        "date": "19 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-19T18:00:00+11:00"
+      },
+      {
+        "title": "Australian government pressed to legislate Comcare reforms - hcamag.com",
+        "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxPeS1TVWtsODBDZVhxTDZDSDYyMnZ5RUdvRU5JbE9DUjlZNjJrcHRNWGc1My03d2R5bjFOWC1PU05hNW5zN3pySnVfT0xUWkprazNWSGhabE0yYllZVTdKZWhDTFNoWTFWRTFRSEJ5ampNSFg5aktRMjRKSUpvYXZFQ3E0NlFBbmlfb3kycktaMURQS2s5MFdZOXpXNkNIejBKOW8xcEs2NUpydXU2WmN2SU92dGhFWDg1NnVCZW9DX1c0VG01TFE?oc=5",
+        "source": "hcamag.com",
+        "description": "Australian government pressed to legislate Comcare reforms  hcamag.com",
+        "date": "13 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-13T18:00:00+11:00"
+      },
+      {
+        "title": "Chalmers and his boffins face some tough budget decisions due to Iran - Australian Broadcasting Corporation",
+        "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQMWZfMnBRMUxKczdwekEyVGpLT3FYellZaF9CUGdsckdmbEZjQzN1UXRwd284cndkOVlnd2tkdFFORFJQeXRCQUZDLWhGbUh0Q1VUakY5MFVfSWJuRFQxMnRXbmY0LVFzY3ZYcVBCM2xYeXduWjNDSXQ4UmxMczJhdFJYWjljM1N5UXVCWlhLdkVzY1hvN3E5X19JLVRNOTVrSWw1VEw4OA?oc=5",
+        "source": "Australian Broadcasting Corporation",
+        "description": "Chalmers and his boffins face some tough budget decisions due to Iran  Australian Broadcasting Corporation",
+        "date": "13 Mar 2026, 06:00 PM",
+        "date_iso": "2026-03-13T18:00:00+11:00"
       }
     ]
   }
