@@ -48,6 +48,48 @@ function dimDisplayName(dim) {
   return dim.replace(/_/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
 }
 
+// Group CTH gaps (which have comparison_type) by metric name
+function _groupGapsByMetric(gaps) {
+  var byMetric = {};
+  var order = [];
+  for (var i = 0; i < gaps.length; i++) {
+    var m = gaps[i].metric;
+    if (!byMetric[m]) { byMetric[m] = {}; order.push(m); }
+    byMetric[m][gaps[i].comparison_type] = gaps[i];
+  }
+  return order.map(function(m) { return { metric: m, rows: byMetric[m] }; });
+}
+
+var _CT_LABELS = { best: 'Best', median: 'Median', worst: 'Worst' };
+var _CT_COLORS = { best: '#007A6E', median: '#00338D', worst: '#AB0D82' };
+
+// Render a grouped gaps table for CTH opportunities (best / median / worst)
+function _renderGroupedGapTable(groups, tableClass) {
+  var h = '<table class="' + tableClass + ' gaps-grouped">';
+  h += '<thead><tr><th>Metric</th><th>Jurisdiction</th><th>Value</th><th>National</th><th>Gap</th></tr></thead>';
+  h += '<tbody>';
+  for (var i = 0; i < groups.length; i++) {
+    var g = groups[i];
+    var types = ['best', 'median', 'worst'];
+    for (var t = 0; t < types.length; t++) {
+      var ct = types[t];
+      var row = g.rows[ct];
+      if (!row) continue;
+      var gapVal = row.gap_pct || 0;
+      var color = _CT_COLORS[ct];
+      h += '<tr class="gaps-row--' + ct + (t === 0 ? ' gaps-row--first' : '') + '">';
+      h += '<td>' + (t === 0 ? escapeHtml(formatMetricName(g.metric)) : '') + '</td>';
+      h += '<td><span class="gaps-tag gaps-tag--' + ct + '">' + _CT_LABELS[ct] + '</span> ' + escapeHtml(row.jurisdiction_a || '') + '</td>';
+      h += '<td>' + escapeHtml(String(row.value_a || '')) + '</td>';
+      h += '<td>' + (t === 0 ? escapeHtml(String(row.value_b || '')) : '') + '</td>';
+      h += '<td style="color:' + color + ';font-weight:bold">' + (gapVal >= 0 ? '+' : '') + gapVal.toFixed(1) + '%</td>';
+      h += '</tr>';
+    }
+  }
+  h += '</tbody></table>';
+  return h;
+}
+
 /* ============================================================
    2. LOAD DETAIL
    ============================================================ */
@@ -361,17 +403,28 @@ function renderDetail(opp) {
 
   // Gaps Section
   html += '<div class="detail-section">';
+  var hasCTypes = gaps.length > 0 && gaps[0].comparison_type;
   var gapsTitleSuffix = '';
   if (gaps.length > 0) {
-    var mixedJuris = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
-    var jurisA = mixedJuris ? 'Mixed' : (gaps[0].jurisdiction_a || 'State');
     var jurisB = gaps[0].jurisdiction_b || 'National';
-    gapsTitleSuffix = ' — ' + escapeHtml(jurisA) + ' vs ' + escapeHtml(jurisB);
+    if (hasCTypes) {
+      gapsTitleSuffix = ' — State Spread vs ' + escapeHtml(jurisB);
+    } else {
+      var mixedJuris = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
+      var jurisA = mixedJuris ? 'Mixed' : (gaps[0].jurisdiction_a || 'State');
+      gapsTitleSuffix = ' — ' + escapeHtml(jurisA) + ' vs ' + escapeHtml(jurisB);
+    }
   }
   html += '  <div class="detail-section__header"><span class="detail-section__title">Jurisdiction Gaps' + gapsTitleSuffix + '</span></div>';
   html += '  <div class="detail-section__body">';
   html += '    <div class="gaps-chart" id="detail-gaps-chart" style="width:100%;height:340px;"></div>';
-  if (gaps.length > 0) {
+  if (gaps.length > 0 && hasCTypes) {
+    // CTH grouped table: best / median / worst per metric
+    var gapsByMetric = _groupGapsByMetric(gaps);
+    html += _renderGroupedGapTable(gapsByMetric, 'data-table');
+  } else if (gaps.length > 0) {
+    // State-level: simple table
+    var mixedJuris = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
     var colA = mixedJuris ? 'Jurisdiction' : escapeHtml(gaps[0].jurisdiction_a || 'State');
     var colB = escapeHtml(gaps[0].jurisdiction_b || 'National');
     html += '    <table class="data-table">';
@@ -550,7 +603,116 @@ function renderDetailGaps(gaps) {
 
   if (!gaps || gaps.length === 0) return;
 
-  // Sort by |gap_pct| descending, take top 8
+  var hasCT = gaps[0].comparison_type;
+  var jB = gaps[0].jurisdiction_b || 'National';
+
+  var chart = echarts.init(el, 'kpmg');
+  APP.charts.detailGaps = chart;
+
+  if (hasCT) {
+    _renderRangeGapChart(chart, gaps, jB, { fontSize: 14, subFontSize: 11, height: 340 });
+  } else {
+    _renderSimpleGapChart(chart, gaps, jB, { fontSize: 14, subFontSize: 11 });
+  }
+}
+
+// Range chart for CTH: shows worst→best spread with median diamond per metric
+function _renderRangeGapChart(chart, gaps, jB, opts) {
+  var groups = _groupGapsByMetric(gaps);
+  // Sort by median |gap_pct| descending, take top 8
+  groups.sort(function(a, b) {
+    var aMed = a.rows.median ? Math.abs(a.rows.median.gap_pct || 0) : 0;
+    var bMed = b.rows.median ? Math.abs(b.rows.median.gap_pct || 0) : 0;
+    return bMed - aMed;
+  });
+  groups = groups.slice(0, 8);
+
+  var metrics = [];
+  var worstVals = [];
+  var bestVals = [];
+  var medianVals = [];
+  var tooltipData = [];
+  for (var i = 0; i < groups.length; i++) {
+    var g = groups[i];
+    metrics.push(formatMetricName(g.metric));
+    var w = g.rows.worst ? g.rows.worst.gap_pct : 0;
+    var b = g.rows.best ? g.rows.best.gap_pct : 0;
+    var m = g.rows.median ? g.rows.median.gap_pct : 0;
+    worstVals.push(w);
+    bestVals.push(b);
+    medianVals.push(m);
+    tooltipData.push({
+      worst: g.rows.worst, best: g.rows.best, median: g.rows.median
+    });
+  }
+
+  chart.setOption({
+    title: [
+      { text: 'State Spread vs ' + jB, left: 'center', top: 0,
+        textStyle: { fontSize: opts.fontSize, fontWeight: 'bold', color: '#00338D' } },
+      { text: 'Range from worst to best performing state (diamond = median)',
+        left: 'center', top: 22,
+        textStyle: { fontSize: opts.subFontSize, fontWeight: 'normal', color: '#666666' } }
+    ],
+    legend: {
+      data: ['Worst', 'Median', 'Best'],
+      bottom: 0, left: 'center',
+      itemWidth: 14, itemHeight: 10,
+      textStyle: { fontSize: opts.subFontSize, color: '#333333' }
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'shadow' },
+      formatter: function(params) {
+        if (!params || !params.length) return '';
+        var idx = params[0].dataIndex;
+        var td = tooltipData[idx];
+        var h = '<strong>' + escapeHtml(metrics[idx]) + '</strong>';
+        if (td.best) h += '<br/><span style="color:#007A6E">Best:</span> ' + escapeHtml(td.best.jurisdiction_a) + ' ' + (td.best.gap_pct >= 0 ? '+' : '') + td.best.gap_pct.toFixed(1) + '%';
+        if (td.median) h += '<br/><span style="color:#00338D">Median:</span> ' + escapeHtml(td.median.jurisdiction_a) + ' ' + (td.median.gap_pct >= 0 ? '+' : '') + td.median.gap_pct.toFixed(1) + '%';
+        if (td.worst) h += '<br/><span style="color:#AB0D82">Worst:</span> ' + escapeHtml(td.worst.jurisdiction_a) + ' ' + (td.worst.gap_pct >= 0 ? '+' : '') + td.worst.gap_pct.toFixed(1) + '%';
+        return h;
+      }
+    },
+    grid: { left: 220, right: 80, top: 48, bottom: 36 },
+    xAxis: {
+      type: 'value',
+      axisLabel: { formatter: function(v) { return v + '%'; }, fontSize: 10 }
+    },
+    yAxis: {
+      type: 'category', data: metrics,
+      axisLabel: { fontSize: 11, width: 195, overflow: 'truncate', ellipsis: '…', margin: 16 }
+    },
+    series: [
+      {
+        name: 'Worst', type: 'bar', barMaxWidth: 18, barGap: '-100%',
+        z: 1, itemStyle: { color: 'rgba(171,13,130,0.18)', borderColor: '#AB0D82', borderWidth: 1 },
+        data: worstVals.map(function(v) { return { value: v }; }),
+        label: { show: true, position: 'left', distance: 8,
+          formatter: function(p) { return p.value != null ? p.value.toFixed(0) + '%' : ''; },
+          fontSize: 9, color: '#AB0D82' }
+      },
+      {
+        name: 'Best', type: 'bar', barMaxWidth: 18, barGap: '-100%',
+        z: 2, itemStyle: { color: 'rgba(0,122,110,0.18)', borderColor: '#007A6E', borderWidth: 1 },
+        data: bestVals.map(function(v) { return { value: v }; }),
+        label: { show: true, position: 'right', distance: 8,
+          formatter: function(p) { return p.value != null ? (p.value >= 0 ? '+' : '') + p.value.toFixed(0) + '%' : ''; },
+          fontSize: 9, color: '#007A6E' }
+      },
+      {
+        name: 'Median', type: 'scatter', z: 3,
+        symbol: 'diamond', symbolSize: 12,
+        itemStyle: { color: '#00338D', borderColor: '#FFFFFF', borderWidth: 1 },
+        data: medianVals,
+        label: { show: false }
+      }
+    ]
+  });
+}
+
+// Simple bar chart for state-level opportunities (original behaviour)
+function _renderSimpleGapChart(chart, gaps, jB, opts) {
   var sorted = gaps.slice().sort(function(a, b) {
     return Math.abs(b.gap_pct || 0) - Math.abs(a.gap_pct || 0);
   }).slice(0, 8);
@@ -558,48 +720,29 @@ function renderDetailGaps(gaps) {
   var metrics = [];
   var fullMetrics = [];
   var values = [];
-  var barColors = [];
   for (var i = 0; i < sorted.length; i++) {
     var fullName = formatMetricName(sorted[i].metric);
     fullMetrics.push(fullName);
     metrics.push(fullName);
-    var gv = sorted[i].gap_pct || 0;
-    values.push(gv);
-    barColors.push(gv >= 0 ? '#007A6E' : '#AB0D82');
+    values.push(sorted[i].gap_pct || 0);
   }
 
-  // Build comparison subtitle for chart
-  var gapSubtitle = '';
   var mixedJ = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
   var jA = mixedJ ? 'Mixed' : (gaps[0].jurisdiction_a || 'State');
-  var jB = gaps[0].jurisdiction_b || 'National';
-  gapSubtitle = jA + ' vs ' + jB;
-
-  var chart = echarts.init(el, 'kpmg');
-  APP.charts.detailGaps = chart;
 
   chart.setOption({
     title: [
-      {
-        text: jA + '  vs  ' + jB,
-        left: 'center',
-        top: 0,
-        textStyle: { fontSize: 14, fontWeight: 'bold', color: '#00338D' }
-      },
-      {
-        text: 'Gap as % difference from ' + jB + ' benchmark',
-        left: 'center',
-        top: 22,
-        textStyle: { fontSize: 11, fontWeight: 'normal', color: '#666666' }
-      }
+      { text: jA + '  vs  ' + jB, left: 'center', top: 0,
+        textStyle: { fontSize: opts.fontSize, fontWeight: 'bold', color: '#00338D' } },
+      { text: 'Gap as % difference from ' + jB + ' benchmark',
+        left: 'center', top: 22,
+        textStyle: { fontSize: opts.subFontSize, fontWeight: 'normal', color: '#666666' } }
     ],
     legend: {
       data: ['Above ' + jB, 'Below ' + jB],
-      bottom: 0,
-      left: 'center',
-      itemWidth: 14,
-      itemHeight: 10,
-      textStyle: { fontSize: 11, color: '#333333' }
+      bottom: 0, left: 'center',
+      itemWidth: 14, itemHeight: 10,
+      textStyle: { fontSize: opts.subFontSize, color: '#333333' }
     },
     tooltip: {
       trigger: 'axis',
@@ -619,49 +762,27 @@ function renderDetailGaps(gaps) {
       axisLabel: { formatter: function(v) { return v + '%'; }, fontSize: 10 }
     },
     yAxis: {
-      type: 'category',
-      data: metrics,
-      axisLabel: {
-        fontSize: 11,
-        width: 195,
-        overflow: 'truncate',
-        ellipsis: '…',
-        margin: 16
-      }
+      type: 'category', data: metrics,
+      axisLabel: { fontSize: 11, width: 195, overflow: 'truncate', ellipsis: '…', margin: 16 }
     },
     series: [
       {
-        name: 'Above ' + jB,
-        type: 'bar',
-        barMaxWidth: 22,
-        barCategoryGap: '40%',
-        data: values.map(function(v, idx) {
+        name: 'Above ' + jB, type: 'bar', barMaxWidth: 22, barCategoryGap: '40%',
+        data: values.map(function(v) {
           return v >= 0 ? { value: v, itemStyle: { color: '#007A6E' } } : { value: null };
         }),
-        label: {
-          show: true,
-          position: 'right',
-          distance: 12,
+        label: { show: true, position: 'right', distance: 12,
           formatter: function(p) { return p.value == null ? '' : '+' + p.value.toFixed(1) + '%'; },
-          fontSize: 10,
-          color: '#333333'
-        }
+          fontSize: 10, color: '#333333' }
       },
       {
-        name: 'Below ' + jB,
-        type: 'bar',
-        barMaxWidth: 22,
-        data: values.map(function(v, idx) {
+        name: 'Below ' + jB, type: 'bar', barMaxWidth: 22,
+        data: values.map(function(v) {
           return v < 0 ? { value: v, itemStyle: { color: '#AB0D82' } } : { value: null };
         }),
-        label: {
-          show: true,
-          position: 'left',
-          distance: 12,
+        label: { show: true, position: 'left', distance: 12,
           formatter: function(p) { return p.value == null ? '' : p.value.toFixed(1) + '%'; },
-          fontSize: 10,
-          color: '#333333'
-        }
+          fontSize: 10, color: '#333333' }
       }
     ]
   });
@@ -984,16 +1105,24 @@ function renderBrief(brief) {
   })());
 
   // 7. Jurisdiction Gaps
+  var briefHasCT = gaps.length > 0 && gaps[0].comparison_type;
   var briefGapsTitle = 'Jurisdiction Gaps';
   if (gaps.length > 0) {
-    var briefMixedJ = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
-    var briefJA = briefMixedJ ? 'Mixed' : (gaps[0].jurisdiction_a || 'State');
     var briefJB = gaps[0].jurisdiction_b || 'National';
-    briefGapsTitle += ' — ' + escapeHtml(briefJA) + ' vs ' + escapeHtml(briefJB);
+    if (briefHasCT) {
+      briefGapsTitle += ' — State Spread vs ' + escapeHtml(briefJB);
+    } else {
+      var briefMixedJ = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
+      var briefJA = briefMixedJ ? 'Mixed' : (gaps[0].jurisdiction_a || 'State');
+      briefGapsTitle += ' — ' + escapeHtml(briefJA) + ' vs ' + escapeHtml(briefJB);
+    }
   }
   html += _briefSection(briefGapsTitle, (function() {
     var s = '<div class="brief-gaps-chart" id="brief-gaps-chart" style="width:100%;height:280px;"></div>';
-    if (gaps.length > 0) {
+    if (gaps.length > 0 && briefHasCT) {
+      var gapsByMetric = _groupGapsByMetric(gaps);
+      s += _renderGroupedGapTable(gapsByMetric, 'brief-table');
+    } else if (gaps.length > 0) {
       var mixedJ = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
       var hdrA = mixedJ ? 'Jurisdiction' : escapeHtml(gaps[0].jurisdiction_a || 'State');
       var hdrB = escapeHtml(gaps[0].jurisdiction_b || 'National');
@@ -1147,119 +1276,17 @@ function renderBriefGaps(gaps) {
 
   if (!gaps || gaps.length === 0) return;
 
-  var sorted = gaps.slice().sort(function(a, b) {
-    return Math.abs(b.gap_pct || 0) - Math.abs(a.gap_pct || 0);
-  }).slice(0, 8);
-
-  var metrics = [];
-  var fullMetrics = [];
-  var values = [];
-  var barColors = [];
-  for (var i = 0; i < sorted.length; i++) {
-    var fullName = formatMetricName(sorted[i].metric);
-    fullMetrics.push(fullName);
-    metrics.push(fullName);
-    var gv = sorted[i].gap_pct || 0;
-    values.push(gv);
-    barColors.push(gv >= 0 ? '#007A6E' : '#AB0D82');
-  }
-
-  // Build comparison subtitle
-  var briefMixJ = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
-  var briefChartJA = briefMixJ ? 'Mixed' : (gaps[0].jurisdiction_a || 'State');
-  var briefChartJB = gaps[0].jurisdiction_b || 'National';
-  var briefChartSub = briefChartJA + ' vs ' + briefChartJB;
+  var hasCT = gaps[0].comparison_type;
+  var jB = gaps[0].jurisdiction_b || 'National';
 
   var chart = echarts.init(el, 'kpmg');
   APP.charts.briefGaps = chart;
 
-  chart.setOption({
-    title: [
-      {
-        text: briefChartJA + '  vs  ' + briefChartJB,
-        left: 'center',
-        top: 0,
-        textStyle: { fontSize: 13, fontWeight: 'bold', color: '#00338D' }
-      },
-      {
-        text: 'Gap as % difference from ' + briefChartJB + ' benchmark',
-        left: 'center',
-        top: 20,
-        textStyle: { fontSize: 10, fontWeight: 'normal', color: '#666666' }
-      }
-    ],
-    legend: {
-      data: ['Above ' + briefChartJB, 'Below ' + briefChartJB],
-      bottom: 0,
-      left: 'center',
-      itemWidth: 12,
-      itemHeight: 8,
-      textStyle: { fontSize: 10, color: '#333333' }
-    },
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: { type: 'shadow' },
-      formatter: function(params) {
-        var p = params[0] || params[1];
-        if (!p) return '';
-        var idx = p.dataIndex;
-        var val = values[idx];
-        var dir = val >= 0 ? 'above' : 'below';
-        return '<strong>' + escapeHtml(fullMetrics[idx]) + '</strong><br/>' + briefChartJA + ' is ' + Math.abs(val).toFixed(1) + '% ' + dir + ' ' + briefChartJB;
-      }
-    },
-    grid: { left: 195, right: 95, top: 44, bottom: 34 },
-    xAxis: {
-      type: 'value',
-      axisLabel: { formatter: function(v) { return v + '%'; }, fontSize: 9 }
-    },
-    yAxis: {
-      type: 'category',
-      data: metrics,
-      axisLabel: {
-        fontSize: 10,
-        width: 170,
-        overflow: 'truncate',
-        ellipsis: '…',
-        margin: 14
-      }
-    },
-    series: [
-      {
-        name: 'Above ' + briefChartJB,
-        type: 'bar',
-        barMaxWidth: 18,
-        barCategoryGap: '40%',
-        data: values.map(function(v) {
-          return v >= 0 ? { value: v, itemStyle: { color: '#007A6E' } } : { value: null };
-        }),
-        label: {
-          show: true,
-          position: 'right',
-          distance: 10,
-          formatter: function(p) { return p.value == null ? '' : '+' + p.value.toFixed(1) + '%'; },
-          fontSize: 9,
-          color: '#333333'
-        }
-      },
-      {
-        name: 'Below ' + briefChartJB,
-        type: 'bar',
-        barMaxWidth: 18,
-        data: values.map(function(v) {
-          return v < 0 ? { value: v, itemStyle: { color: '#AB0D82' } } : { value: null };
-        }),
-        label: {
-          show: true,
-          position: 'left',
-          distance: 10,
-          formatter: function(p) { return p.value == null ? '' : p.value.toFixed(1) + '%'; },
-          fontSize: 9,
-          color: '#333333'
-        }
-      }
-    ]
-  });
+  if (hasCT) {
+    _renderRangeGapChart(chart, gaps, jB, { fontSize: 13, subFontSize: 10, height: 280 });
+  } else {
+    _renderSimpleGapChart(chart, gaps, jB, { fontSize: 13, subFontSize: 10 });
+  }
 }
 
 

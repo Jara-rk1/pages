@@ -1020,6 +1020,27 @@ a:hover {
     background: rgba(0, 51, 141, 0.02);
 }
 
+/* Grouped gap table (best / median / worst per metric) */
+.gaps-grouped th { font-size: 10px; }
+.gaps-row--first td { border-top: 2px solid var(--border); }
+.gaps-row--first td:first-child { font-weight: 600; }
+.gaps-grouped tr:not(.gaps-row--first) td:first-child { border-bottom: none; }
+.gaps-grouped tr:not(.gaps-row--first) td { border-bottom-color: rgba(229,229,229,0.4); }
+
+.gaps-tag {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-right: 4px;
+    vertical-align: middle;
+}
+.gaps-tag--best { background: rgba(0,122,110,0.12); color: #007A6E; }
+.gaps-tag--median { background: rgba(0,51,141,0.10); color: #00338D; }
+.gaps-tag--worst { background: rgba(171,13,130,0.12); color: #AB0D82; }
 
 /* ============================================================
    BUTTONS
