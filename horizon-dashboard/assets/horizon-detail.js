@@ -428,20 +428,21 @@ function renderDetail(opp) {
     var colA = mixedJuris ? 'Jurisdiction' : escapeHtml(gaps[0].jurisdiction_a || 'State');
     var colB = escapeHtml(gaps[0].jurisdiction_b || 'National');
     html += '    <table class="data-table">';
-    html += '      <thead><tr><th>Metric</th><th>' + colA + '</th><th>' + colB + '</th><th>Gap</th></tr></thead>';
+    html += '      <thead><tr><th>Metric</th><th>' + colA + '</th><th>' + colB + '</th><th>Gap</th><th>Year</th></tr></thead>';
     html += '      <tbody>';
     for (var gi = 0; gi < gaps.length; gi++) {
       var gap = gaps[gi];
       var gapPctVal = gap.gap_pct || 0;
       var gapColor = gapPctVal >= 0 ? '#007A6E' : '#AB0D82';
       var cellA = mixedJuris
-        ? escapeHtml(gap.jurisdiction_a || '') + ' ' + escapeHtml(String(gap.value_a || ''))
-        : escapeHtml(String(gap.value_a || ''));
+        ? escapeHtml(gap.jurisdiction_a || '') + ' ' + formatGapValue(gap.value_a)
+        : formatGapValue(gap.value_a);
       html += '      <tr>';
       html += '        <td>' + escapeHtml(formatMetricName(gap.metric)) + '</td>';
       html += '        <td>' + cellA + '</td>';
-      html += '        <td>' + escapeHtml(String(gap.value_b || '')) + '</td>';
+      html += '        <td>' + formatGapValue(gap.value_b) + '</td>';
       html += '        <td style="color:' + gapColor + ';font-weight:bold">' + (gapPctVal >= 0 ? '+' : '') + gapPctVal.toFixed(1) + '%</td>';
+      html += '        <td>' + escapeHtml(String(gap.data_year || '')) + '</td>';
       html += '      </tr>';
     }
     html += '      </tbody>';
@@ -592,6 +593,15 @@ function formatMetricName(raw) {
     .replace(/\b\w/g, function(c) { return c.toUpperCase(); });
 }
 
+function formatGapValue(val) {
+  if (val == null || val === '') return '';
+  var n = Number(val);
+  if (isNaN(n)) return String(val);
+  if (Math.abs(n) >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+  if (Math.abs(n) >= 1000) return (n / 1000).toFixed(1) + 'K';
+  return n.toLocaleString();
+}
+
 function renderDetailGaps(gaps) {
   var el = document.getElementById('detail-gaps-chart');
   if (!el) return;
@@ -681,7 +691,7 @@ function _renderRangeGapChart(chart, gaps, jB, opts) {
     },
     yAxis: {
       type: 'category', data: metrics,
-      axisLabel: { fontSize: 11, width: 195, overflow: 'truncate', ellipsis: '…', margin: 16 }
+      axisLabel: { fontSize: 11, width: 180, overflow: 'truncate', ellipsis: '…', margin: 8 }
     },
     series: [
       {
@@ -763,7 +773,7 @@ function _renderSimpleGapChart(chart, gaps, jB, opts) {
     },
     yAxis: {
       type: 'category', data: metrics,
-      axisLabel: { fontSize: 11, width: 195, overflow: 'truncate', ellipsis: '…', margin: 16 }
+      axisLabel: { fontSize: 11, width: 180, overflow: 'truncate', ellipsis: '…', margin: 8 }
     },
     series: [
       {
