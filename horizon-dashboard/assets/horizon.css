@@ -250,7 +250,7 @@ a:hover {
     line-height: 1.2;
 }
 
-.kpi-card__value--pacific { color: var(--kpmg-pacific); }
+.kpi-card__value--pacific { color: var(--kpmg-cobalt); }
 .kpi-card__value--cobalt  { color: var(--kpmg-cobalt); }
 .kpi-card__value--purple  { color: var(--kpmg-purple); }
 .kpi-card__value--warm    { color: var(--kpmg-cobalt); }
