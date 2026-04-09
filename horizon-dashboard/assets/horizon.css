@@ -599,7 +599,7 @@ a:hover {
 
 .sensitivity-badge--standard {
     background: rgba(0, 192, 174, 0.1);
-    color: var(--kpmg-teal);
+    color: #007A6E; /* Darkened teal for WCAG AA 4.5:1 on light teal bg */
 }
 
 .sensitivity-badge--elevated {
@@ -2010,7 +2010,7 @@ a:hover {
 .method-badge--open {
     background: #FFFFFF;
     border-left: 3px solid #269924;
-    color: #269924;
+    color: #1B7A19; /* Darkened green for WCAG AA 4.5:1 on white */
 }
 
 .method-badge--selective,
