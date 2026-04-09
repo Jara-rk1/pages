@@ -733,7 +733,7 @@ function loadSchedulerStatus() {
 
         if (refreshEl) {
             var now = new Date();
-            refreshEl.textContent = 'Updated ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            refreshEl.textContent = 'Updated ' + now.toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', timeZone: 'Australia/Melbourne' });
         }
 
         // Set tooltip on scheduler container
@@ -752,7 +752,7 @@ function loadSchedulerStatus() {
         if (text) text.textContent = 'Manual';
         if (refreshEl) {
             var now = new Date();
-            refreshEl.textContent = 'Updated ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            refreshEl.textContent = 'Updated ' + now.toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', timeZone: 'Australia/Melbourne' });
         }
     });
 }
