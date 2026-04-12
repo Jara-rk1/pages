@@ -691,7 +691,7 @@ function _renderRangeGapChart(chart, gaps, jB, opts) {
     },
     yAxis: {
       type: 'category', data: metrics,
-      axisLabel: { fontSize: 11, width: 180, overflow: 'truncate', ellipsis: '…', margin: 8 }
+      axisLabel: { fontSize: 11, width: 170, overflow: 'truncate', ellipsis: '…', margin: 40 }
     },
     series: [
       {
@@ -773,7 +773,7 @@ function _renderSimpleGapChart(chart, gaps, jB, opts) {
     },
     yAxis: {
       type: 'category', data: metrics,
-      axisLabel: { fontSize: 11, width: 180, overflow: 'truncate', ellipsis: '…', margin: 8 }
+      axisLabel: { fontSize: 11, width: 170, overflow: 'truncate', ellipsis: '…', margin: 40 }
     },
     series: [
       {
