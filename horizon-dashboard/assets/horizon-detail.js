@@ -60,8 +60,24 @@ function _groupGapsByMetric(gaps) {
   return order.map(function(m) { return { metric: m, rows: byMetric[m] }; });
 }
 
+// Validate comparison_type consistency across all gap rows.
+// Returns true (use range chart) only if ALL rows have comparison_type set.
+// Falls back to simple chart with a console warning if data is inconsistent.
+function _detectComparisonMode(gaps) {
+  if (!gaps || gaps.length === 0) return false;
+  var firstHas = gaps[0].comparison_type != null;
+  if (!firstHas) return false;
+  for (var i = 1; i < gaps.length; i++) {
+    if (gaps[i].comparison_type == null) {
+      console.warn('Inconsistent comparison_type in gap data at index ' + i + ' — falling back to simple chart');
+      return false;
+    }
+  }
+  return true;
+}
+
 var _CT_LABELS = { best: 'Best', median: 'Median', worst: 'Worst' };
-var _CT_COLORS = { best: '#007A6E', median: '#00338D', worst: '#AB0D82' };
+var _CT_COLORS = { best: '#098E7E', median: '#00338D', worst: '#AB0D82' };
 
 // Render a grouped gaps table for CTH opportunities (best / median / worst)
 function _renderGroupedGapTable(groups, tableClass) {
@@ -403,7 +419,7 @@ function renderDetail(opp) {
 
   // Gaps Section
   html += '<div class="detail-section">';
-  var hasCTypes = gaps.length > 0 && gaps[0].comparison_type;
+  var hasCTypes = _detectComparisonMode(gaps);
   var gapsTitleSuffix = '';
   if (gaps.length > 0) {
     var jurisB = gaps[0].jurisdiction_b || 'National';
@@ -411,6 +427,7 @@ function renderDetail(opp) {
       gapsTitleSuffix = ' — State Spread vs ' + escapeHtml(jurisB);
     } else {
       var mixedJuris = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
+      if (mixedJuris) console.warn('Mixed jurisdictions in state-level gap table');
       var jurisA = mixedJuris ? 'Mixed' : (gaps[0].jurisdiction_a || 'State');
       gapsTitleSuffix = ' — ' + escapeHtml(jurisA) + ' vs ' + escapeHtml(jurisB);
     }
@@ -433,7 +450,7 @@ function renderDetail(opp) {
     for (var gi = 0; gi < gaps.length; gi++) {
       var gap = gaps[gi];
       var gapPctVal = gap.gap_pct || 0;
-      var gapColor = gapPctVal >= 0 ? '#007A6E' : '#AB0D82';
+      var gapColor = gapPctVal >= 0 ? '#098E7E' : '#AB0D82';
       var cellA = mixedJuris
         ? escapeHtml(gap.jurisdiction_a || '') + ' ' + formatGapValue(gap.value_a)
         : formatGapValue(gap.value_a);
@@ -583,13 +600,21 @@ function renderDetailRadar(scores) {
   });
 }
 
+// Known metric display names — avoids fragile regex expansion.
+// Unknown metrics fall through to simple title-casing.
+var METRIC_DISPLAY_NAMES = {
+  'ed_hosp_wait_median_mins': 'ED Hospital Wait Median Mins',
+  'ambulance_response_p90_mins': 'Ambulance Response P90 Mins',
+  'child_protection_resubstantiation_pct': 'Child Protection Resubstantiation %',
+  'homelessness_rate_per_10k': 'Homelessness Rate per 10k',
+  'year_12_completion_pct': 'Year 12 Completion %',
+  'est_resident_population': 'Est. Resident Population'
+};
+
 function formatMetricName(raw) {
   if (!raw) return '';
+  if (METRIC_DISPLAY_NAMES[raw]) return METRIC_DISPLAY_NAMES[raw];
   return raw.replace(/_/g, ' ')
-    .replace(/\bpct\b/gi, '%')
-    .replace(/\bper 10k\b/gi, 'per 10k')
-    .replace(/\bed\b/gi, 'ED')
-    .replace(/\bhosp\b/gi, 'Hospital')
     .replace(/\b\w/g, function(c) { return c.toUpperCase(); });
 }
 
@@ -613,7 +638,7 @@ function renderDetailGaps(gaps) {
 
   if (!gaps || gaps.length === 0) return;
 
-  var hasCT = gaps[0].comparison_type;
+  var hasCT = _detectComparisonMode(gaps);
   var jB = gaps[0].jurisdiction_b || 'National';
 
   var chart = echarts.init(el, 'kpmg');
@@ -678,7 +703,7 @@ function _renderRangeGapChart(chart, gaps, jB, opts) {
         var idx = params[0].dataIndex;
         var td = tooltipData[idx];
         var h = '<strong>' + escapeHtml(metrics[idx]) + '</strong>';
-        if (td.best) h += '<br/><span style="color:#007A6E">Best:</span> ' + escapeHtml(td.best.jurisdiction_a) + ' ' + (td.best.gap_pct >= 0 ? '+' : '') + td.best.gap_pct.toFixed(1) + '%';
+        if (td.best) h += '<br/><span style="color:#098E7E">Best:</span> ' + escapeHtml(td.best.jurisdiction_a) + ' ' + (td.best.gap_pct >= 0 ? '+' : '') + td.best.gap_pct.toFixed(1) + '%';
         if (td.median) h += '<br/><span style="color:#00338D">Median:</span> ' + escapeHtml(td.median.jurisdiction_a) + ' ' + (td.median.gap_pct >= 0 ? '+' : '') + td.median.gap_pct.toFixed(1) + '%';
         if (td.worst) h += '<br/><span style="color:#AB0D82">Worst:</span> ' + escapeHtml(td.worst.jurisdiction_a) + ' ' + (td.worst.gap_pct >= 0 ? '+' : '') + td.worst.gap_pct.toFixed(1) + '%';
         return h;
@@ -704,11 +729,11 @@ function _renderRangeGapChart(chart, gaps, jB, opts) {
       },
       {
         name: 'Best', type: 'bar', barMaxWidth: 18, barGap: '-100%',
-        z: 2, itemStyle: { color: 'rgba(0,122,110,0.18)', borderColor: '#007A6E', borderWidth: 1 },
+        z: 2, itemStyle: { color: 'rgba(9,142,126,0.18)', borderColor: '#098E7E', borderWidth: 1 },
         data: bestVals.map(function(v) { return { value: v }; }),
         label: { show: true, position: 'right', distance: 8,
           formatter: function(p) { return p.value != null ? (p.value >= 0 ? '+' : '') + p.value.toFixed(0) + '%' : ''; },
-          fontSize: 9, color: '#007A6E' }
+          fontSize: 9, color: '#098E7E' }
       },
       {
         name: 'Median', type: 'scatter', z: 3,
@@ -738,6 +763,15 @@ function _renderSimpleGapChart(chart, gaps, jB, opts) {
   }
 
   var mixedJ = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
+  if (mixedJ) {
+    var seen = {};
+    var unique = [];
+    for (var j = 0; j < gaps.length; j++) {
+      var ja = gaps[j].jurisdiction_a;
+      if (!seen[ja]) { seen[ja] = true; unique.push(ja); }
+    }
+    console.warn('Gap data contains multiple jurisdictions for state-level chart:', unique.join(', '));
+  }
   var jA = mixedJ ? 'Mixed' : (gaps[0].jurisdiction_a || 'State');
 
   chart.setOption({
@@ -779,7 +813,7 @@ function _renderSimpleGapChart(chart, gaps, jB, opts) {
       {
         name: 'Above ' + jB, type: 'bar', barMaxWidth: 22, barCategoryGap: '40%',
         data: values.map(function(v) {
-          return v >= 0 ? { value: v, itemStyle: { color: '#007A6E' } } : { value: null };
+          return v >= 0 ? { value: v, itemStyle: { color: '#098E7E' } } : { value: null };
         }),
         label: { show: true, position: 'right', distance: 12,
           formatter: function(p) { return p.value == null ? '' : '+' + p.value.toFixed(1) + '%'; },
@@ -1115,7 +1149,7 @@ function renderBrief(brief) {
   })());
 
   // 7. Jurisdiction Gaps
-  var briefHasCT = gaps.length > 0 && gaps[0].comparison_type;
+  var briefHasCT = _detectComparisonMode(gaps);
   var briefGapsTitle = 'Jurisdiction Gaps';
   if (gaps.length > 0) {
     var briefJB = gaps[0].jurisdiction_b || 'National';
@@ -1134,6 +1168,7 @@ function renderBrief(brief) {
       s += _renderGroupedGapTable(gapsByMetric, 'brief-table');
     } else if (gaps.length > 0) {
       var mixedJ = gaps.some(function(g) { return g.jurisdiction_a !== gaps[0].jurisdiction_a; });
+      if (mixedJ) console.warn('Mixed jurisdictions in brief gap table');
       var hdrA = mixedJ ? 'Jurisdiction' : escapeHtml(gaps[0].jurisdiction_a || 'State');
       var hdrB = escapeHtml(gaps[0].jurisdiction_b || 'National');
       s += '<table class="brief-table">';
@@ -1142,7 +1177,7 @@ function renderBrief(brief) {
       for (var i = 0; i < gaps.length; i++) {
         var g = gaps[i];
         var gPct = g.gap_pct || 0;
-        var gCol = gPct >= 0 ? '#007A6E' : '#AB0D82';
+        var gCol = gPct >= 0 ? '#098E7E' : '#AB0D82';
         var valA = mixedJ
           ? escapeHtml(g.jurisdiction_a || '') + ' ' + escapeHtml(String(g.value_a || ''))
           : escapeHtml(String(g.value_a || ''));
@@ -1286,7 +1321,7 @@ function renderBriefGaps(gaps) {
 
   if (!gaps || gaps.length === 0) return;
 
-  var hasCT = gaps[0].comparison_type;
+  var hasCT = _detectComparisonMode(gaps);
   var jB = gaps[0].jurisdiction_b || 'National';
 
   var chart = echarts.init(el, 'kpmg');
