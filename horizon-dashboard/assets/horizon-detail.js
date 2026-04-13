@@ -76,7 +76,7 @@ function _detectComparisonMode(gaps) {
   return true;
 }
 
-var _CT_LABELS = { best: 'Best', median: 'Median', worst: 'Worst' };
+var _CT_LABELS = { best: 'Highest', median: 'Median', worst: 'Lowest' };
 var _CT_COLORS = { best: '#098E7E', median: '#00338D', worst: '#AB0D82' };
 
 // Render a grouped gaps table for CTH opportunities (best / median / worst)
@@ -685,12 +685,12 @@ function _renderRangeGapChart(chart, gaps, jB, opts) {
     title: [
       { text: 'State Spread vs ' + jB, left: 'center', top: 0,
         textStyle: { fontSize: opts.fontSize, fontWeight: 'bold', color: '#00338D' } },
-      { text: 'Range from worst to best performing state (diamond = median)',
+      { text: 'Range from lowest to highest performing state (diamond = median)',
         left: 'center', top: 22,
         textStyle: { fontSize: opts.subFontSize, fontWeight: 'normal', color: '#666666' } }
     ],
     legend: {
-      data: ['Worst', 'Median', 'Best'],
+      data: ['Lowest', 'Median', 'Highest'],
       bottom: 0, left: 'center',
       itemWidth: 14, itemHeight: 10,
       textStyle: { fontSize: opts.subFontSize, color: '#333333' }
@@ -703,9 +703,9 @@ function _renderRangeGapChart(chart, gaps, jB, opts) {
         var idx = params[0].dataIndex;
         var td = tooltipData[idx];
         var h = '<strong>' + escapeHtml(metrics[idx]) + '</strong>';
-        if (td.best) h += '<br/><span style="color:#098E7E">Best:</span> ' + escapeHtml(td.best.jurisdiction_a) + ' ' + (td.best.gap_pct >= 0 ? '+' : '') + td.best.gap_pct.toFixed(1) + '%';
+        if (td.best) h += '<br/><span style="color:#098E7E">Highest:</span> ' + escapeHtml(td.best.jurisdiction_a) + ' ' + (td.best.gap_pct >= 0 ? '+' : '') + td.best.gap_pct.toFixed(1) + '%';
         if (td.median) h += '<br/><span style="color:#00338D">Median:</span> ' + escapeHtml(td.median.jurisdiction_a) + ' ' + (td.median.gap_pct >= 0 ? '+' : '') + td.median.gap_pct.toFixed(1) + '%';
-        if (td.worst) h += '<br/><span style="color:#AB0D82">Worst:</span> ' + escapeHtml(td.worst.jurisdiction_a) + ' ' + (td.worst.gap_pct >= 0 ? '+' : '') + td.worst.gap_pct.toFixed(1) + '%';
+        if (td.worst) h += '<br/><span style="color:#AB0D82">Lowest:</span> ' + escapeHtml(td.worst.jurisdiction_a) + ' ' + (td.worst.gap_pct >= 0 ? '+' : '') + td.worst.gap_pct.toFixed(1) + '%';
         return h;
       }
     },
@@ -720,7 +720,7 @@ function _renderRangeGapChart(chart, gaps, jB, opts) {
     },
     series: [
       {
-        name: 'Worst', type: 'bar', barMaxWidth: 18, barGap: '-100%',
+        name: 'Lowest', type: 'bar', barMaxWidth: 18, barGap: '-100%',
         z: 1, itemStyle: { color: 'rgba(171,13,130,0.18)', borderColor: '#AB0D82', borderWidth: 1 },
         data: worstVals.map(function(v) { return { value: v }; }),
         label: { show: true, position: 'left', distance: 8,
@@ -728,7 +728,7 @@ function _renderRangeGapChart(chart, gaps, jB, opts) {
           fontSize: 9, color: '#AB0D82' }
       },
       {
-        name: 'Best', type: 'bar', barMaxWidth: 18, barGap: '-100%',
+        name: 'Highest', type: 'bar', barMaxWidth: 18, barGap: '-100%',
         z: 2, itemStyle: { color: 'rgba(9,142,126,0.18)', borderColor: '#098E7E', borderWidth: 1 },
         data: bestVals.map(function(v) { return { value: v }; }),
         label: { show: true, position: 'right', distance: 8,
