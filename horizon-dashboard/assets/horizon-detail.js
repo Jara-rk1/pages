@@ -77,7 +77,7 @@ function _detectComparisonMode(gaps) {
 }
 
 var _CT_LABELS = { best: 'Highest', median: 'Median', worst: 'Lowest' };
-var _CT_COLORS = { best: '#098E7E', median: '#00338D', worst: '#AB0D82' };
+var _CT_COLORS = { best: '#077164', median: '#00338D', worst: '#AB0D82' };
 
 // Render a grouped gaps table for CTH opportunities (best / median / worst)
 function _renderGroupedGapTable(groups, tableClass) {
@@ -450,7 +450,7 @@ function renderDetail(opp) {
     for (var gi = 0; gi < gaps.length; gi++) {
       var gap = gaps[gi];
       var gapPctVal = gap.gap_pct || 0;
-      var gapColor = gapPctVal >= 0 ? '#098E7E' : '#AB0D82';
+      var gapColor = gapPctVal >= 0 ? '#077164' : '#AB0D82';
       var cellA = mixedJuris
         ? escapeHtml(gap.jurisdiction_a || '') + ' ' + formatGapValue(gap.value_a)
         : formatGapValue(gap.value_a);
@@ -703,7 +703,7 @@ function _renderRangeGapChart(chart, gaps, jB, opts) {
         var idx = params[0].dataIndex;
         var td = tooltipData[idx];
         var h = '<strong>' + escapeHtml(metrics[idx]) + '</strong>';
-        if (td.best) h += '<br/><span style="color:#098E7E">Highest:</span> ' + escapeHtml(td.best.jurisdiction_a) + ' ' + (td.best.gap_pct >= 0 ? '+' : '') + td.best.gap_pct.toFixed(1) + '%';
+        if (td.best) h += '<br/><span style="color:#077164">Highest:</span> ' + escapeHtml(td.best.jurisdiction_a) + ' ' + (td.best.gap_pct >= 0 ? '+' : '') + td.best.gap_pct.toFixed(1) + '%';
         if (td.median) h += '<br/><span style="color:#00338D">Median:</span> ' + escapeHtml(td.median.jurisdiction_a) + ' ' + (td.median.gap_pct >= 0 ? '+' : '') + td.median.gap_pct.toFixed(1) + '%';
         if (td.worst) h += '<br/><span style="color:#AB0D82">Lowest:</span> ' + escapeHtml(td.worst.jurisdiction_a) + ' ' + (td.worst.gap_pct >= 0 ? '+' : '') + td.worst.gap_pct.toFixed(1) + '%';
         return h;
@@ -729,11 +729,11 @@ function _renderRangeGapChart(chart, gaps, jB, opts) {
       },
       {
         name: 'Highest', type: 'bar', barMaxWidth: 18, barGap: '-100%',
-        z: 2, itemStyle: { color: 'rgba(9,142,126,0.18)', borderColor: '#098E7E', borderWidth: 1 },
+        z: 2, itemStyle: { color: 'rgba(7,113,100,0.18)', borderColor: '#077164', borderWidth: 1 },
         data: bestVals.map(function(v) { return { value: v }; }),
         label: { show: true, position: 'right', distance: 8,
           formatter: function(p) { return p.value != null ? (p.value >= 0 ? '+' : '') + p.value.toFixed(0) + '%' : ''; },
-          fontSize: 9, color: '#098E7E' }
+          fontSize: 9, color: '#077164' }
       },
       {
         name: 'Median', type: 'scatter', z: 3,
@@ -813,7 +813,7 @@ function _renderSimpleGapChart(chart, gaps, jB, opts) {
       {
         name: 'Above ' + jB, type: 'bar', barMaxWidth: 22, barCategoryGap: '40%',
         data: values.map(function(v) {
-          return v >= 0 ? { value: v, itemStyle: { color: '#098E7E' } } : { value: null };
+          return v >= 0 ? { value: v, itemStyle: { color: '#077164' } } : { value: null };
         }),
         label: { show: true, position: 'right', distance: 12,
           formatter: function(p) { return p.value == null ? '' : '+' + p.value.toFixed(1) + '%'; },
@@ -1177,7 +1177,7 @@ function renderBrief(brief) {
       for (var i = 0; i < gaps.length; i++) {
         var g = gaps[i];
         var gPct = g.gap_pct || 0;
-        var gCol = gPct >= 0 ? '#098E7E' : '#AB0D82';
+        var gCol = gPct >= 0 ? '#077164' : '#AB0D82';
         var valA = mixedJ
           ? escapeHtml(g.jurisdiction_a || '') + ' ' + escapeHtml(String(g.value_a || ''))
           : escapeHtml(String(g.value_a || ''));
