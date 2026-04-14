@@ -5,14 +5,15 @@
 // ================================================================
 
 var DB_NAME = 'horizon';
-var DB_VERSION = 1;
+var DB_VERSION = 2;
 var STORES = {
     opportunities: 'opportunities',
     details: 'details',
     briefs: 'briefs',
     stats: 'stats',
     scheduler: 'scheduler',
-    mutations: 'mutations'
+    mutations: 'mutations',
+    news: 'news'
 };
 
 // ----------------------------------------------------------------
@@ -45,6 +46,9 @@ function openDB() {
             }
             if (!db.objectStoreNames.contains(STORES.mutations)) {
                 db.createObjectStore(STORES.mutations, { autoIncrement: true });
+            }
+            if (!db.objectStoreNames.contains(STORES.news)) {
+                var newsStore = db.createObjectStore(STORES.news, { keyPath: '_sector' });
             }
         };
         req.onsuccess = function(e) { resolve(e.target.result); };
@@ -153,6 +157,22 @@ function seedDatabase() {
             }, 'current');
         });
     }).then(function() {
+        // Seed news
+        if (seed.news && seed.news.sectors) {
+            return openDB().then(function(db) {
+                var newsTx = db.transaction(STORES.news, 'readwrite');
+                var newsStore = newsTx.objectStore(STORES.news);
+                newsStore.clear();
+                for (var sid in seed.news.sectors) {
+                    newsStore.put({
+                        _sector: sid,
+                        articles: seed.news.sectors[sid],
+                        summaries: (seed.news.summaries || {})[sid] || []
+                    });
+                }
+            });
+        }
+    }).then(function() {
         delete self.SEED_DATA;
     });
 }
@@ -219,6 +239,29 @@ function handleApiGet(apiPath) {
             return idbGet(db, STORES.scheduler, 'current');
         }).then(function(data) {
             return jsonResponse(data || { running: false });
+        });
+    }
+
+    if (apiPath === '/api/news') {
+        return openDB().then(function(db) {
+            return new Promise(function(resolve) {
+                var tx = db.transaction(STORES.news, 'readonly');
+                var store = tx.objectStore(STORES.news);
+                var req = store.getAll();
+                req.onsuccess = function() {
+                    var sectors = {};
+                    var summaries = {};
+                    req.result.forEach(function(item) {
+                        sectors[item._sector] = item.articles || [];
+                        summaries[item._sector] = item.summaries || [];
+                    });
+                    resolve(new Response(JSON.stringify({
+                        updated: new Date().toISOString(),
+                        sectors: sectors,
+                        summaries: summaries
+                    }), { headers: { 'Content-Type': 'application/json' } }));
+                };
+            });
         });
     }
 

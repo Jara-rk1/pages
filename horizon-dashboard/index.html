@@ -27,7 +27,9 @@
     </div>
     <div class="horizon-header__right">
         <div class="horizon-header__nav">
-            <button class="btn-back" onclick="location.hash='#pipeline'" style="display:none" aria-label="Back to pipeline">&#8592; Pipeline</button>
+            <button class="nav-tab nav-tab--active" data-page="pipeline" onclick="location.hash='#pipeline'">Pipeline</button>
+            <button class="nav-tab" data-page="news" onclick="location.hash='#news'">News</button>
+            <button class="btn-back" onclick="history.back()" style="display:none" aria-label="Back">&#8592; Back</button>
         </div>
         <span class="header-scheduler" id="scheduler-status">
             <span class="scheduler-dot scheduler-dot--inactive" id="scheduler-dot"></span>
@@ -146,6 +148,21 @@
     </div>
 </div>
 
+<!-- ============================================================ -->
+<!-- Page 3: News                                                  -->
+<!-- ============================================================ -->
+<div id="view-news" class="page">
+    <div class="page-container">
+        <div id="news-summary-bar" class="kpi-row" role="list" aria-live="polite">
+            <div class="empty-state">Loading news…</div>
+        </div>
+        <div id="news-controls" class="news-controls"></div>
+        <div id="news-summaries" class="news-summaries"></div>
+        <div id="news-grid" class="news-grid hidden"></div>
+        <div id="news-empty-state" class="empty-state hidden">No articles match your filters.</div>
+    </div>
+</div>
+
 </main>
 
 <!-- ============================================================ -->
@@ -187,6 +204,8 @@
 <script src="assets/horizon-pipeline.js"></script>
 <script src="assets/horizon-map.js"></script>
 <script src="assets/horizon-detail.js"></script>
+<script src="assets/horizon-news-data.js"></script>
+<script src="assets/horizon-news.js"></script>
 
 <script>
 // Service Worker registration — enables offline API via IndexedDB

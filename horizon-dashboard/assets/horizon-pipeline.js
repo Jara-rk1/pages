@@ -125,6 +125,10 @@ function _resolveStatic(path) {
         return HORIZON_DATA.briefs ? HORIZON_DATA.briefs[briefMatch[1]] : undefined;
     }
 
+    if (clean === '/api/news') {
+        return (typeof HORIZON_NEWS_DATA !== 'undefined') ? HORIZON_NEWS_DATA : undefined;
+    }
+
     return undefined;
 }
 
@@ -215,23 +219,40 @@ function router() {
     var hash = window.location.hash || '';
     var pipelinePage = document.getElementById('view-pipeline');
     var detailPage   = document.getElementById('view-detail');
+    var newsPage     = document.getElementById('view-news');
     var btnBack      = document.querySelector('.btn-back');
+    var tabs         = document.querySelectorAll('.nav-tab');
 
-    // Parse hash
+    // Hide all pages
+    if (pipelinePage) pipelinePage.classList.remove('page--active');
+    if (detailPage)   detailPage.classList.remove('page--active');
+    if (newsPage)     newsPage.classList.remove('page--active');
+    if (btnBack)      btnBack.style.display = 'none';
+
+    // Reset tab active state
+    for (var i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove('nav-tab--active');
+    }
+
     var oppMatch = hash.match(/^#opportunity\/(\d+)$/);
 
     if (oppMatch) {
         // Detail page
-        if (pipelinePage) pipelinePage.classList.remove('page--active');
-        if (detailPage)   detailPage.classList.add('page--active');
-        if (btnBack)      btnBack.style.display = '';
+        if (detailPage) detailPage.classList.add('page--active');
+        if (btnBack) btnBack.style.display = '';
         var id = parseInt(oppMatch[1], 10);
         loadDetail(id);
+    } else if (hash === '#news') {
+        // News page
+        if (newsPage) newsPage.classList.add('page--active');
+        var newsTab = document.querySelector('.nav-tab[data-page="news"]');
+        if (newsTab) newsTab.classList.add('nav-tab--active');
+        if (typeof loadNews === 'function') loadNews();
     } else {
         // Pipeline page ('' or '#pipeline')
         if (pipelinePage) pipelinePage.classList.add('page--active');
-        if (detailPage)   detailPage.classList.remove('page--active');
-        if (btnBack)      btnBack.style.display = 'none';
+        var pipelineTab = document.querySelector('.nav-tab[data-page="pipeline"]');
+        if (pipelineTab) pipelineTab.classList.add('nav-tab--active');
         loadPipeline();
     }
 }
