@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NT Building Energy Efficiency CBA Dashboard | KPMG</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#E5E5E5;color:#333333}
+.header{background:#0C233C;padding:18px 40px;display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center}
+.header-title{color:#fff;font-size:14px;text-align:right;max-width:550px}
+.header-title h2{font-size:18px;margin-bottom:2px}
+.tabs{display:flex;background:#00338D;padding:0 40px;gap:0;flex-wrap:wrap}
+.tab{padding:14px 22px;color:rgba(255,255,255,.7);cursor:pointer;font-size:13px;font-weight:600;border-bottom:3px solid transparent;transition:.2s}
+.tab:hover{color:#fff;background:rgba(255,255,255,.08)}
+.tab.active{color:#fff;border-bottom:3px solid #00B8F5;background:rgba(255,255,255,.05)}
+.content{max-width:1280px;margin:24px auto;padding:0 24px}
+.panel{display:none}.panel.active{display:block}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px}
+.kpi{background:#fff;border-radius:4px;padding:22px;box-shadow:0 1px 4px rgba(0,0,0,.08);border-left:4px solid #269924}
+.kpi.blue{border-left-color:#00338D}.kpi.blue .kpi-value{color:#00338D}
+.kpi.teal{border-left-color:#098E7E}.kpi.teal .kpi-value{color:#098E7E}
+.kpi-label{font-size:12px;color:#666666;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.kpi-value{font-size:26px;font-weight:700;color:#269924}
+.kpi-sub{font-size:11px;color:#666666;margin-top:4px}
+.chart-card{background:#fff;border-radius:4px;padding:28px;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:24px}
+.chart-card h3{font-size:16px;color:#00338D;margin-bottom:16px;font-weight:700}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:800px){.two-col{grid-template-columns:1fr}}
+.source{font-size:11px;color:#666666;margin-top:12px;font-style:italic}
+.footer{text-align:center;padding:20px;color:#666666;font-size:11px;border-top:1px solid #E5E5E5;margin-top:40px;background:#fff}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px}
+th{background:#00338D;color:#fff;padding:10px 14px;text-align:left;font-weight:600}
+td{padding:10px 14px;border-bottom:1px solid #E5E5E5}
+tr:nth-child(even){background:#E5E5E5}
+.badge{display:inline-block;background:#00338D;color:#fff;padding:12px 24px;border-radius:4px;font-size:16px;font-weight:700;margin-bottom:24px}
+.compare-row{display:grid;grid-template-columns:1fr 60px 1fr;gap:0;align-items:center;margin-bottom:24px}
+.compare-card{background:#fff;border-radius:4px;padding:24px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.compare-card h4{font-size:14px;color:#666666;margin-bottom:12px}
+.compare-card .val{font-size:36px;font-weight:900}
+.compare-arrow{text-align:center;font-size:28px;color:#269924;font-weight:900}
+@media print {
+  .tabs, .tab { display: none !important; }
+  .panel { display: block !important; }
+  body { background: #FFFFFF; }
+  .header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .footer { page-break-before: always; }
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo"><svg fill="none" height="30" viewBox="0 0 77 30" width="77" xmlns="http://www.w3.org/2000/svg"><path fill="#FFFFFF" d="m59.4297.0894165v14.8992835l-.1935.157-.1935.157-.1855.1649-.1773.1648-.1693.1649-.1693.1727-.1613.1727-.1612.1727v-16.2259835h-16.9549v13.5647835h-1.4028v-13.5647835h-16.9549v13.5883835h-1.4028v-13.5883835h-16.95487v15.4880835l-4.329426 14.0436h3.805376l1.91075-6.2172h.54823l3.16039 6.2172h4.59545l-3.0636-6.2172h6.9496l-1.9269 6.2172h4.1521l1.9027-6.2015h.9191v-.0157h1.306.1049 7.8445l-1.8382 6.2015h4.1924l1.7817-6.2015h1.8866l.0483 6.2015h3.5152l4.0391-6.2015h2.6444l-1.3705 6.2015h4.1278l1.3464-6.2015h2.3864l-.0161.3533.0086.3611.0161.3453.0322.3455.0242.1648.0241.1649.0322.1648.0323.1649.0402.1648.0403.157.0484.157.0483.157.0565.157.0565.1492.0644.1491.0646.1413.0726.1492.0725.1413.0807.1334.0807.1413.0887.1335.0967.1256.0968.1334.1048.1178.1048.1256.1048.1177.1209.1178.121.1099.1531.1256.1532.1256.1613.1177.1693.1099.1693.1099.1693.1021.1774.0863.1854.0942.1774.0785.1854.0784.1854.0707.1935.0707.1935.0628.1935.055.1935.0549.1935.0471.387.0863.395.0629.387.0549.387.0471.3789.0314.3709.0157.3628.0158h.3466l.4677-.0075.4676-.0074.4756-.0236.4757-.0236.4757-.0392.4757-.0393.4756-.0471.4757-.055.4837-.0628.4838-.0707.4837-.0785.4837-.0785.4838-.0863.4837-.0942.4837-.0942.4918-.1099 1.4351-5.6284h4.7084v-23.3145573h-16.9549zm-53.50905 22.7335835.02417-.0863.05649.0863zm14.77005-8.3524-.2419.7929-2.2574 7.3005-.0887.259h-7.4173l-.5724-1.1932 7.9897-7.952h-5.1357l-6.2482 6.5547 2.02361-6.5547h-3.78924v-12.999627h15.73743v13.792427zm4.3777 6.1701-.1209.0075-.1129.0074-.1209.0075h-.129-.1693-.1451l-.1371.0074h-.129l-1.0077-.0074.4676-1.6799.2176-.8321.5322-1.9547h.1693.1773l.1693-.0074h.1613.782l.4757.0074.4353.0158.1935.0074.1855.0157.1773.0236.1613.0236.1451.0235.1371.0393.129.0393.1128.0471.0968.0471.0887.0629.0806.0628.0645.0785.0403.0629.0322.0628.0322.0707.0242.0785.0161.0863.0085.0863v.0942.102l-.0085.1099-.0076.1099-.0242.1256-.0241.1256-.0726.2669-.0887.2983-.0887.2512-.0968.2434-.1048.2276-.1129.212-.0565.0942-.0564.0942-.0646.0942-.0726.0863-.0726.0863-.0726.0785-.0806.0785-.0807.0706-.0887.0629-.0887.0707-.0967.0549-.1049.0628-.1048.055-.1128.0471-.1129.0471-.1209.0393-.129.0471-.1371.0314-.1451.0314-.1451.0313-.1613.0236-.1612.0236-.1693.0157-.1774.0157zm11.4645 2.1823 1.6528-5.7305.0645 5.7305h-1.7172zm2.5155-9.1688h-3.9344l-2.7089 9.1688h-4.1763l.1935-.0784.1935-.0785.1855-.0785.1854-.0863.1774-.0864.1693-.102.1693-.0942.1612-.1021.1613-.1099.1531-.1099.1452-.1098.1451-.1257.137-.1177.129-.1335.129-.1256.121-.1413.1209-.1334.1129-.1492.1048-.1413.1048-.157.0967-.157.0887-.1569.0888-.1649.0806-.1727.0807-.1727.0726-.1727.0644-.1806.0645-.1884.0484-.1884.0565-.1884.0402-.2041.0403-.1962.0565-.314.0483-.2983.0323-.2826.0241-.2669.0086-.2669-.0086-.2434-.0075-.2433-.0323-.2277-.0322-.2119-.0565-.212-.0565-.1962-.0806-.1884-.0887-.1806-.0968-.1805-.1128-.1649-.129-.157-.1049-.1099-.1048-.1099-.1128-.0942-.121-.0863-.129-.0863-.129-.0785-.137-.0706-.1371-.0629-.1451-.0628-.1451-.0471-.1532-.0472-.1532-.0471-.1612-.0393-.1613-.0313-.1612-.0314-.1693-.0236-.3467-.0471-.3467-.0235-.3547-.0236-.3628-.0074h-.7256-.7175-.2258-.4031-.4999-.5563-.5401-.4596-.3225-.1209v-12.976108h15.7375v12.976108zm9.5617 9.1688h-2.3622l3.5796-5.495zm8.7959-8.9097-.0085 3.1792-.2015.2748-.1855.2826-.1854.2826-.1693.2826-.1613.2826-.1612.2904-.1371.2826-.137.2826-.129.2748-.1129.2826-.1129.2747-.0967.2669-.0887.2669-.0807.2591-.0726.2512-.0645.2512-.0403.1648-.0403.1727-.0402.1649-.0323.1727-.0322.1648-.0242.1649-.0241.1648-.0161.1727h-2.3139l1.9753-9.1452-6.6594-.0075-5.958 9.1531h-.4354v-22.144827h15.7455v13.235127zm9.0781 12.6542-.3305.0549-.3387.0471-.3386.0471-.3305.0393-.3306.0314-.3305.0236-.3225.0157h-.3225-.2096l-.2096-.0074-.2016-.0158-.2015-.0235-.1935-.0314-.1855-.0314-.1854-.0393-.1774-.0471-.1693-.0549-.1693-.055-.1612-.0706-.1532-.0707-.1532-.0863-.1451-.0863-.1371-.0942-.129-.0942-.129-.1099-.1128-.1178-.1129-.1177-.1048-.1335-.0968-.1334-.0887-.1492-.0806-.1491-.0807-.157-.0645-.1649-.0565-.1805-.0483-.1806-.0484-.1884-.0322-.1962-.0242-.2041-.0161-.212-.0085-.2198h7.3366l-.8062 3.1636zm9.3038-3.7445h-3.9666l.653-2.5591h-7.9493l-.6531 2.5591h-3.8456v-.5259l.0483-.2198.0403-.2198.0483-.2355.0483-.2355.0726-.2591.0726-.259.0807-.2591.0887-.2512.0967-.2512.1049-.2512.1128-.2433.1129-.2434.129-.2433.129-.2277.1371-.2355.1531-.2198.1532-.2198.1532-.2119.1693-.2041.1774-.1963.1854-.1884.1854-.1727.2016-.1727.2015-.1648.2097-.1492.2257-.1413.2258-.1256.2338-.1177.2418-.1099.2499-.0942.258-.0785.2661-.0629.2741-.0549.2822-.0393.2902-.0235.2983-.0075.2338.0075.2338.0157.2338.0314.2258.0471.1129.0314.1048.0313.1048.0314.0967.0471.0968.0393.0967.055.0887.0549.0887.0549.0807.0707.0806.0707.0726.0706.0726.0863.0646.0785.0565.0942.0483.1021.0483.102.0403.1099.0322.1178.0242.1177.0242.1335.0085.1334v.1413.1492l-.0161.157h4.7406l.0726-.3219.0645-.3689.0322-.1963.0162-.2119.0161-.212v-.2198l-.0076-.2276-.0242-.2355-.0241-.1099-.0162-.1178-.0322-.1177-.0322-.1178-.0403-.1256-.0403-.1177-.0483-.1178-.0565-.1177-.0565-.1178-.0726-.1177-.0726-.1178-.0806-.1177-.0968-.1256-.1048-.1178-.1048-.1177-.1129-.1099-.1209-.1099-.129-.1021-.129-.0942-.137-.0942-.1452-.0942-.1451-.0785-.1532-.0784-.1612-.0785-.1612-.0707-.1694-.0707-.1773-.0628-.1774-.0629-.1774-.0549-.1935-.0471-.1854-.0471-.2015-.0471-.2016-.0393-.2016-.0393-.2096-.0314-.2177-.0236-.4434-.0471-.4515-.0393-.4756-.0157-.4838-.0074-.3628.0074-.3789.0075-.395.0235-.4112.0314-.4273.0471-.4354.0549-.4434.0707-.4515.0942-.2257.0471-.2338.0549-.2258.0629-.2338.0628-.2338.0707-.2338.0785-.2257.0785-.2338.0863-.2338.0942-.2338.102-.2258.1021-.2338.1099-.2257.1177-.2258.1256-.2257.1256-.2258.1413v-13.894463h15.7617v22.144863z"/></svg></div>
+  <div class="header-title">
+    <h2>NCC Section J Building Energy Efficiency — CBA</h2>
+    DeltaQ Consortium for NT Government, 2022
+  </div>
+</div>
+<div class="tabs">
+  <div class="tab active" onclick="showTab(0)">Executive Summary</div>
+  <div class="tab" onclick="showTab(1)">Standards Comparison</div>
+  <div class="tab" onclick="showTab(2)">Building Archetypes</div>
+  <div class="tab" onclick="showTab(3)">Location Analysis</div>
+  <div class="tab" onclick="showTab(4)">Benefit Streams</div>
+  <div class="tab" onclick="showTab(5)">Cumulative Benefits</div>
+</div>
+<div class="content">
+
+<!-- TAB 0 -->
+<div class="panel active" id="p0">
+  <div class="badge">NCC2019 delivers 2.7x the value of NCC2016</div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-label">NPV (NCC2019)</div><div class="kpi-value">$295M</div><div class="kpi-sub">Owner-occupier perspective</div></div>
+    <div class="kpi"><div class="kpi-label">BCR (NCC2019)</div><div class="kpi-value">3.8</div><div class="kpi-sub">Every $1 in costs yields $3.80 in benefits</div></div>
+    <div class="kpi teal"><div class="kpi-label">Energy Savings</div><div class="kpi-value">42%</div><div class="kpi-sub">Reduction in electricity consumption</div></div>
+    <div class="kpi teal"><div class="kpi-label">GHG Reduction</div><div class="kpi-value">35%</div><div class="kpi-sub">Greenhouse gas emission reduction</div></div>
+    <div class="kpi blue"><div class="kpi-label">Appraisal Period</div><div class="kpi-value">40 years</div><div class="kpi-sub">Economic life of buildings</div></div>
+    <div class="kpi blue"><div class="kpi-label">Regulatory Period</div><div class="kpi-value">FY23–FY30</div><div class="kpi-sub">8-year implementation window</div></div>
+  </div>
+  <div class="chart-card">
+    <h3>NCC2019 adoption nearly triples the net present value compared to NCC2016</h3>
+    <canvas id="execChart" height="100"></canvas>
+    <div class="source">Source: DeltaQ Consortium, NCC Section J in the NT: CBA Report (2022)</div>
+  </div>
+</div>
+
+<!-- TAB 1 -->
+<div class="panel" id="p1">
+  <div class="compare-row">
+    <div class="compare-card">
+      <h4>NCC2016</h4>
+      <div class="val" style="color:#00B8F5">$108M</div>
+      <div style="color:#666666;font-size:13px;margin-top:8px">BCR 2.0</div>
+    </div>
+    <div class="compare-arrow">→</div>
+    <div class="compare-card">
+      <h4>NCC2019</h4>
+      <div class="val" style="color:#269924">$295M</div>
+      <div style="color:#666666;font-size:13px;margin-top:8px">BCR 3.8</div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <h3>NCC2019 outperforms NCC2016 across every metric measured</h3>
+    <canvas id="compareChart" height="130"></canvas>
+  </div>
+  <div class="chart-card">
+    <h3>Standards comparison detail</h3>
+    <table>
+      <tr><th>Metric</th><th>NCC2016</th><th>NCC2019</th><th>Uplift</th></tr>
+      <tr><td>NPV</td><td>$108M</td><td>$295M</td><td>+173%</td></tr>
+      <tr><td>BCR</td><td>2.0</td><td>3.8</td><td>+90%</td></tr>
+      <tr><td>Energy savings</td><td>25% reduction</td><td>42% reduction</td><td>+68%</td></tr>
+      <tr><td>GHG reduction</td><td>18% reduction</td><td>35% reduction</td><td>+94%</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 2 -->
+<div class="panel" id="p2">
+  <div class="chart-card">
+    <h3>Healthcare buildings (Class 9a) deliver the highest BCR at 4.5 — energy-intensive uses benefit most</h3>
+    <canvas id="archetypeChart" height="160"></canvas>
+  </div>
+  <div class="chart-card">
+    <h3>Building archetype results (NCC2019)</h3>
+    <table>
+      <tr><th>Class</th><th>Description</th><th>NPV</th><th>BCR</th></tr>
+      <tr><td>Class 9a</td><td>Healthcare (hospitals, clinics)</td><td>$62M</td><td>4.5</td></tr>
+      <tr><td>Class 5</td><td>Office (commercial)</td><td>$78M</td><td>4.1</td></tr>
+      <tr><td>Class 3</td><td>Residential/accommodation</td><td>$52M</td><td>3.2</td></tr>
+      <tr><td>Class 6</td><td>Retail (shops, restaurants)</td><td>$45M</td><td>3.5</td></tr>
+      <tr><td>Class 9b</td><td>Assembly (schools, community)</td><td>$35M</td><td>3.0</td></tr>
+      <tr><td>Mixed/Other</td><td>Remaining building stock</td><td>$23M</td><td>3.8</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 3 -->
+<div class="panel" id="p3">
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>Darwin delivers nearly double the NPV of Alice Springs due to larger building stock</h3>
+      <canvas id="locationChart" height="200"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Location comparison (NCC2019)</h3>
+      <table>
+        <tr><th>Location</th><th>NPV</th><th>BCR</th></tr>
+        <tr><td>Darwin</td><td>$195M</td><td>4.0</td></tr>
+        <tr><td>Alice Springs</td><td>$100M</td><td>3.4</td></tr>
+        <tr><td><strong>Total NT</strong></td><td><strong>$295M</strong></td><td><strong>3.8</strong></td></tr>
+      </table>
+      <div class="source">Darwin's tropical climate drives higher cooling loads, making energy efficiency improvements more impactful per building.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 4 -->
+<div class="panel" id="p4">
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>Energy savings from reduced electricity consumption dominate at 70% of total benefits</h3>
+      <canvas id="benefitDonut"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Benefit categories</h3>
+      <table>
+        <tr><th>Category</th><th>Share</th><th>Est. Value (undiscounted)</th></tr>
+        <tr><td>Energy savings (reduced electricity)</td><td>70%</td><td>~$820M</td></tr>
+        <tr><td>Reduced GHG emissions</td><td>15%</td><td>~$175M</td></tr>
+        <tr><td>Reduced electricity system capacity</td><td>15%</td><td>~$175M</td></tr>
+        <tr><td><strong>Total</strong></td><td><strong>100%</strong></td><td><strong>~$1,170M</strong></td></tr>
+      </table>
+      <div class="source">Undiscounted values over 40-year building economic life. NT's reliance on gas-fired generation amplifies GHG benefits.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 5 -->
+<div class="panel" id="p5">
+  <div class="chart-card">
+    <h3>Cumulative NPV reaches $295M by end of regulatory period — benefits accelerate as building stock turns over</h3>
+    <canvas id="cumulChart" height="140"></canvas>
+  </div>
+  <div class="chart-card">
+    <h3>Year-by-year cumulative NPV (NCC2019)</h3>
+    <table>
+      <tr><th>Financial Year</th><th>Cumulative NPV</th><th>Annual Increment</th></tr>
+      <tr><td>FY2023</td><td>$15M</td><td>$15M</td></tr>
+      <tr><td>FY2024</td><td>$35M</td><td>$20M</td></tr>
+      <tr><td>FY2025</td><td>$62M</td><td>$27M</td></tr>
+      <tr><td>FY2026</td><td>$95M</td><td>$33M</td></tr>
+      <tr><td>FY2027</td><td>$135M</td><td>$40M</td></tr>
+      <tr><td>FY2028</td><td>$185M</td><td>$50M</td></tr>
+      <tr><td>FY2029</td><td>$240M</td><td>$55M</td></tr>
+      <tr><td>FY2030</td><td>$295M</td><td>$55M</td></tr>
+    </table>
+  </div>
+</div>
+
+</div>
+<div class="footer">© 2026 KPMG, an Australian partnership. All rights reserved. | Public</div>
+
+<script>
+const P=['#00338D','#00B8F5','#1E49E2','#76D2FF','#7213EA','#B497FF','#00C0AE','#AB0D82'];
+const DARK='#0C233C',GREY='#666666';
+Chart.defaults.font.family='Arial, Helvetica, sans-serif';Chart.defaults.color='#666666';Chart.defaults.borderColor='#E5E5E5';
+function showTab(i){document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',j===i));document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('active',j===i));}
+
+// Exec chart
+new Chart(document.getElementById('execChart'),{type:'bar',data:{labels:['NCC2016','NCC2019'],datasets:[{label:'NPV ($M)',data:[108,295],backgroundColor:[P[0],P[1]]},{label:'BCR',data:[200,380],backgroundColor:[P[0]+'66',P[1]+'66'],hidden:true}]},options:{responsive:true,plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>c.dataset.label+': '+(c.dataset.label.includes('BCR')?''+(c.raw/100).toFixed(1):'$'+c.raw+'M')}}},scales:{y:{ticks:{callback:v=>'$'+v+'M'}}}}});
+
+// Compare grouped bar
+new Chart(document.getElementById('compareChart'),{type:'bar',data:{labels:['NPV ($M)','BCR (×100)','Energy Savings (%)','GHG Reduction (%)'],datasets:[{label:'NCC2016',data:[108,200,25,18],backgroundColor:P[0]},{label:'NCC2019',data:[295,380,42,35],backgroundColor:P[1]}]},options:{responsive:true,plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>{const l=c.label;if(l.includes('NPV'))return c.dataset.label+': $'+c.raw+'M';if(l.includes('BCR'))return c.dataset.label+': '+(c.raw/100).toFixed(1);return c.dataset.label+': '+c.raw+'%'}}}}}});
+
+// Archetype chart
+new Chart(document.getElementById('archetypeChart'),{type:'bar',data:{labels:['Class 9a Healthcare','Class 5 Office','Class 3 Residential','Class 6 Retail','Mixed/Other','Class 9b Assembly'],datasets:[{label:'NPV ($M)',data:[62,78,52,45,23,35],backgroundColor:P[0],yAxisID:'y'},{label:'BCR',data:[4.5,4.1,3.2,3.5,3.8,3.0],backgroundColor:P[1],type:'line',borderColor:P[1],pointRadius:6,yAxisID:'y1'}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{position:'bottom'}},scales:{y:{position:'left'},y1:{position:'right',min:0,max:5,grid:{display:false}}}}});
+
+// Location chart
+new Chart(document.getElementById('locationChart'),{type:'bar',data:{labels:['Darwin','Alice Springs'],datasets:[{label:'NPV ($M)',data:[195,100],backgroundColor:[P[0],P[1]]},{label:'BCR',data:[4.0,3.4],backgroundColor:[P[0]+'66',P[1]+'66'],hidden:true}]},options:{responsive:true,plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>c.dataset.label.includes('BCR')?'BCR: '+c.raw:'NPV: $'+c.raw+'M'}}},scales:{y:{ticks:{callback:v=>'$'+v+'M'}}}}});
+
+// Benefit donut
+new Chart(document.getElementById('benefitDonut'),{type:'doughnut',data:{labels:['Energy Savings ~$820M','GHG Reduction ~$175M','System Capacity ~$175M'],datasets:[{data:[820,175,175],backgroundColor:[P[0],P[1],P[2]]}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
+
+// Cumulative area chart
+new Chart(document.getElementById('cumulChart'),{type:'line',data:{labels:['FY2023','FY2024','FY2025','FY2026','FY2027','FY2028','FY2029','FY2030'],datasets:[{label:'Cumulative NPV ($M)',data:[15,35,62,95,135,185,240,295],borderColor:P[0],backgroundColor:'rgba(0,51,141,.15)',fill:true,tension:.3,pointRadius:6,pointBackgroundColor:P[0]},{label:'Annual Increment ($M)',data:[15,20,27,33,40,50,55,55],borderColor:P[1],backgroundColor:'rgba(0,184,245,.1)',fill:true,tension:.3,pointRadius:4,borderDash:[6,3]}]},options:{responsive:true,plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.raw+'M'}}},scales:{y:{ticks:{callback:v=>'$'+v+'M'}}}}});
+</script>
+</body>
+</html>

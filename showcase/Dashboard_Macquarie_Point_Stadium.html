@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Macquarie Point Stadium CBA Dashboard | KPMG</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#E5E5E5;color:#333333}
+.header{background:#0C233C;padding:18px 40px;display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center}
+.header-title{color:#fff;font-size:14px;text-align:right;max-width:500px}
+.header-title h2{font-size:18px;margin-bottom:2px}
+.tabs{display:flex;background:#00338D;padding:0 40px;gap:0;flex-wrap:wrap}
+.tab{padding:14px 22px;color:rgba(255,255,255,.7);cursor:pointer;font-size:13px;font-weight:600;border-bottom:3px solid transparent;transition:.2s}
+.tab:hover{color:#fff;background:rgba(255,255,255,.08)}
+.tab.active{color:#fff;border-bottom:3px solid #00B8F5;background:rgba(255,255,255,.05)}
+.content{max-width:1280px;margin:24px auto;padding:0 24px}
+.panel{display:none}.panel.active{display:block}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px}
+.kpi{background:#fff;border-radius:4px;padding:22px;box-shadow:0 1px 4px rgba(0,0,0,.08);border-left:4px solid #00338D}
+.kpi.red{border-left-color:#ED2124}.kpi.green{border-left-color:#269924}.kpi.amber{border-left-color:#F1C44D}
+.kpi-label{font-size:12px;color:#666666;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.kpi-value{font-size:26px;font-weight:700;color:#00338D}
+.kpi.red .kpi-value{color:#ED2124}
+.kpi-sub{font-size:11px;color:#666666;margin-top:4px}
+.chart-card{background:#fff;border-radius:4px;padding:28px;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:24px}
+.chart-card h3{font-size:16px;color:#00338D;margin-bottom:16px;font-weight:700}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:800px){.two-col{grid-template-columns:1fr}}
+.source{font-size:11px;color:#666666;margin-top:12px;font-style:italic}
+.footer{text-align:center;padding:20px;color:#666666;font-size:11px;border-top:1px solid #E5E5E5;margin-top:40px;background:#fff}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px}
+th{background:#00338D;color:#fff;padding:10px 14px;text-align:left;font-weight:600}
+td{padding:10px 14px;border-bottom:1px solid #E5E5E5}
+tr:nth-child(even){background:#E5E5E5}
+.tag{display:inline-block;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;color:#fff}
+.tag-red{background:#ED2124}.tag-green{background:#269924}.tag-amber{background:#F1C44D;color:#333333}
+.slider-group{margin:16px 0}
+.slider-group label{display:block;font-size:13px;color:#666666;margin-bottom:6px}
+.slider-group input[type=range]{width:100%;accent-color:#00338D}
+.slider-val{font-weight:700;color:#00338D;font-size:15px}
+.callout{background:#E5E5E5;border-left:4px solid #F1C44D;padding:16px;border-radius:4px;margin-bottom:20px;font-size:13px}
+@media print {
+  .tabs, .tab { display: none !important; }
+  .panel { display: block !important; }
+  body { background: #FFFFFF; }
+  .header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .footer { page-break-before: always; }
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo"><svg fill="none" height="30" viewBox="0 0 77 30" width="77" xmlns="http://www.w3.org/2000/svg"><path fill="#FFFFFF" d="m59.4297.0894165v14.8992835l-.1935.157-.1935.157-.1855.1649-.1773.1648-.1693.1649-.1693.1727-.1613.1727-.1612.1727v-16.2259835h-16.9549v13.5647835h-1.4028v-13.5647835h-16.9549v13.5883835h-1.4028v-13.5883835h-16.95487v15.4880835l-4.329426 14.0436h3.805376l1.91075-6.2172h.54823l3.16039 6.2172h4.59545l-3.0636-6.2172h6.9496l-1.9269 6.2172h4.1521l1.9027-6.2015h.9191v-.0157h1.306.1049 7.8445l-1.8382 6.2015h4.1924l1.7817-6.2015h1.8866l.0483 6.2015h3.5152l4.0391-6.2015h2.6444l-1.3705 6.2015h4.1278l1.3464-6.2015h2.3864l-.0161.3533.0086.3611.0161.3453.0322.3455.0242.1648.0241.1649.0322.1648.0323.1649.0402.1648.0403.157.0484.157.0483.157.0565.157.0565.1492.0644.1491.0646.1413.0726.1492.0725.1413.0807.1334.0807.1413.0887.1335.0967.1256.0968.1334.1048.1178.1048.1256.1048.1177.1209.1178.121.1099.1531.1256.1532.1256.1613.1177.1693.1099.1693.1099.1693.1021.1774.0863.1854.0942.1774.0785.1854.0784.1854.0707.1935.0707.1935.0628.1935.055.1935.0549.1935.0471.387.0863.395.0629.387.0549.387.0471.3789.0314.3709.0157.3628.0158h.3466l.4677-.0075.4676-.0074.4756-.0236.4757-.0236.4757-.0392.4757-.0393.4756-.0471.4757-.055.4837-.0628.4838-.0707.4837-.0785.4837-.0785.4838-.0863.4837-.0942.4837-.0942.4918-.1099 1.4351-5.6284h4.7084v-23.3145573h-16.9549zm-53.50905 22.7335835.02417-.0863.05649.0863zm14.77005-8.3524-.2419.7929-2.2574 7.3005-.0887.259h-7.4173l-.5724-1.1932 7.9897-7.952h-5.1357l-6.2482 6.5547 2.02361-6.5547h-3.78924v-12.999627h15.73743v13.792427zm4.3777 6.1701-.1209.0075-.1129.0074-.1209.0075h-.129-.1693-.1451l-.1371.0074h-.129l-1.0077-.0074.4676-1.6799.2176-.8321.5322-1.9547h.1693.1773l.1693-.0074h.1613.782l.4757.0074.4353.0158.1935.0074.1855.0157.1773.0236.1613.0236.1451.0235.1371.0393.129.0393.1128.0471.0968.0471.0887.0629.0806.0628.0645.0785.0403.0629.0322.0628.0322.0707.0242.0785.0161.0863.0085.0863v.0942.102l-.0085.1099-.0076.1099-.0242.1256-.0241.1256-.0726.2669-.0887.2983-.0887.2512-.0968.2434-.1048.2276-.1129.212-.0565.0942-.0564.0942-.0646.0942-.0726.0863-.0726.0863-.0726.0785-.0806.0785-.0807.0706-.0887.0629-.0887.0707-.0967.0549-.1049.0628-.1048.055-.1128.0471-.1129.0471-.1209.0393-.129.0471-.1371.0314-.1451.0314-.1451.0313-.1613.0236-.1612.0236-.1693.0157-.1774.0157zm11.4645 2.1823 1.6528-5.7305.0645 5.7305h-1.7172zm2.5155-9.1688h-3.9344l-2.7089 9.1688h-4.1763l.1935-.0784.1935-.0785.1855-.0785.1854-.0863.1774-.0864.1693-.102.1693-.0942.1612-.1021.1613-.1099.1531-.1099.1452-.1098.1451-.1257.137-.1177.129-.1335.129-.1256.121-.1413.1209-.1334.1129-.1492.1048-.1413.1048-.157.0967-.157.0887-.1569.0888-.1649.0806-.1727.0807-.1727.0726-.1727.0644-.1806.0645-.1884.0484-.1884.0565-.1884.0402-.2041.0403-.1962.0565-.314.0483-.2983.0323-.2826.0241-.2669.0086-.2669-.0086-.2434-.0075-.2433-.0323-.2277-.0322-.2119-.0565-.212-.0565-.1962-.0806-.1884-.0887-.1806-.0968-.1805-.1128-.1649-.129-.157-.1049-.1099-.1048-.1099-.1128-.0942-.121-.0863-.129-.0863-.129-.0785-.137-.0706-.1371-.0629-.1451-.0628-.1451-.0471-.1532-.0472-.1532-.0471-.1612-.0393-.1613-.0313-.1612-.0314-.1693-.0236-.3467-.0471-.3467-.0235-.3547-.0236-.3628-.0074h-.7256-.7175-.2258-.4031-.4999-.5563-.5401-.4596-.3225-.1209v-12.976108h15.7375v12.976108zm9.5617 9.1688h-2.3622l3.5796-5.495zm8.7959-8.9097-.0085 3.1792-.2015.2748-.1855.2826-.1854.2826-.1693.2826-.1613.2826-.1612.2904-.1371.2826-.137.2826-.129.2748-.1129.2826-.1129.2747-.0967.2669-.0887.2669-.0807.2591-.0726.2512-.0645.2512-.0403.1648-.0403.1727-.0402.1649-.0323.1727-.0322.1648-.0242.1649-.0241.1648-.0161.1727h-2.3139l1.9753-9.1452-6.6594-.0075-5.958 9.1531h-.4354v-22.144827h15.7455v13.235127zm9.0781 12.6542-.3305.0549-.3387.0471-.3386.0471-.3305.0393-.3306.0314-.3305.0236-.3225.0157h-.3225-.2096l-.2096-.0074-.2016-.0158-.2015-.0235-.1935-.0314-.1855-.0314-.1854-.0393-.1774-.0471-.1693-.0549-.1693-.055-.1612-.0706-.1532-.0707-.1532-.0863-.1451-.0863-.1371-.0942-.129-.0942-.129-.1099-.1128-.1178-.1129-.1177-.1048-.1335-.0968-.1334-.0887-.1492-.0806-.1491-.0807-.157-.0645-.1649-.0565-.1805-.0483-.1806-.0484-.1884-.0322-.1962-.0242-.2041-.0161-.212-.0085-.2198h7.3366l-.8062 3.1636zm9.3038-3.7445h-3.9666l.653-2.5591h-7.9493l-.6531 2.5591h-3.8456v-.5259l.0483-.2198.0403-.2198.0483-.2355.0483-.2355.0726-.2591.0726-.259.0807-.2591.0887-.2512.0967-.2512.1049-.2512.1128-.2433.1129-.2434.129-.2433.129-.2277.1371-.2355.1531-.2198.1532-.2198.1532-.2119.1693-.2041.1774-.1963.1854-.1884.1854-.1727.2016-.1727.2015-.1648.2097-.1492.2257-.1413.2258-.1256.2338-.1177.2418-.1099.2499-.0942.258-.0785.2661-.0629.2741-.0549.2822-.0393.2902-.0235.2983-.0075.2338.0075.2338.0157.2338.0314.2258.0471.1129.0314.1048.0313.1048.0314.0967.0471.0968.0393.0967.055.0887.0549.0887.0549.0807.0707.0806.0707.0726.0706.0726.0863.0646.0785.0565.0942.0483.1021.0483.102.0403.1099.0322.1178.0242.1177.0242.1335.0085.1334v.1413.1492l-.0161.157h4.7406l.0726-.3219.0645-.3689.0322-.1963.0162-.2119.0161-.212v-.2198l-.0076-.2276-.0242-.2355-.0241-.1099-.0162-.1178-.0322-.1177-.0322-.1178-.0403-.1256-.0403-.1177-.0483-.1178-.0565-.1177-.0565-.1178-.0726-.1177-.0726-.1178-.0806-.1177-.0968-.1256-.1048-.1178-.1048-.1177-.1129-.1099-.1209-.1099-.129-.1021-.129-.0942-.137-.0942-.1452-.0942-.1451-.0785-.1532-.0784-.1612-.0785-.1612-.0707-.1694-.0707-.1773-.0628-.1774-.0629-.1774-.0549-.1935-.0471-.1854-.0471-.2015-.0471-.2016-.0393-.2016-.0393-.2096-.0314-.2177-.0236-.4434-.0471-.4515-.0393-.4756-.0157-.4838-.0074-.3628.0074-.3789.0075-.395.0235-.4112.0314-.4273.0471-.4354.0549-.4434.0707-.4515.0942-.2257.0471-.2338.0549-.2258.0629-.2338.0628-.2338.0707-.2338.0785-.2257.0785-.2338.0863-.2338.0942-.2338.102-.2258.1021-.2338.1099-.2257.1177-.2258.1256-.2257.1256-.2258.1413v-13.894463h15.7617v22.144863z"/></svg></div>
+  <div class="header-title">
+    <h2>Macquarie Point Multipurpose Stadium — CBA</h2>
+    KPMG for Tasmanian Government, September 2024
+  </div>
+</div>
+<div class="tabs">
+  <div class="tab active" onclick="showTab(0)">Executive Summary</div>
+  <div class="tab" onclick="showTab(1)">KPMG vs Independent Review</div>
+  <div class="tab" onclick="showTab(2)">Benefit Breakdown</div>
+  <div class="tab" onclick="showTab(3)">Scenario Comparison</div>
+  <div class="tab" onclick="showTab(4)">Hidden Costs</div>
+  <div class="tab" onclick="showTab(5)">Operating Assumptions</div>
+</div>
+<div class="content">
+
+<!-- TAB 0 -->
+<div class="panel active" id="p0">
+  <div class="callout">Both the KPMG analysis and the independent Gruen review find a BCR below 1.0 — costs exceed quantified benefits under all scenarios tested.</div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-label">Stated Investment</div><div class="kpi-value">$775M</div><div class="kpi-sub">Tasmanian Government figure</div></div>
+    <div class="kpi red"><div class="kpi-label">KPMG NPV (7%)</div><div class="kpi-value">−$237M</div><div class="kpi-sub">30-year appraisal period</div></div>
+    <div class="kpi red"><div class="kpi-label">KPMG BCR</div><div class="kpi-value">0.69</div><div class="kpi-sub"><span class="tag tag-red">Below 1.0</span></div></div>
+    <div class="kpi"><div class="kpi-label">Total Benefits (PV)</div><div class="kpi-value">$517M</div><div class="kpi-sub">6 benefit categories quantified</div></div>
+    <div class="kpi red"><div class="kpi-label">Gruen Central NPV</div><div class="kpi-value">−$795M</div><div class="kpi-sub">Independent review, broader cost base</div></div>
+    <div class="kpi red"><div class="kpi-label">Gruen BCR</div><div class="kpi-value">0.44</div><div class="kpi-sub">With excluded costs included</div></div>
+  </div>
+  <div class="chart-card">
+    <h3>Both analyses show costs exceeding benefits — the gap widens with fuller cost accounting</h3>
+    <canvas id="execBar" height="100"></canvas>
+    <div class="source">Source: KPMG CBA (Sept 2024); Dr Nicholas Gruen independent review</div>
+  </div>
+</div>
+
+<!-- TAB 1 -->
+<div class="panel" id="p1">
+  <div class="chart-card">
+    <h3>Independent review identifies significantly higher costs and lower BCR than KPMG analysis</h3>
+    <canvas id="compareChart" height="140"></canvas>
+  </div>
+  <div class="chart-card">
+    <h3>Key differences between KPMG and independent review</h3>
+    <table>
+      <tr><th>Metric</th><th>KPMG</th><th>Gruen Review</th><th>Difference</th></tr>
+      <tr><td>Total costs (PV)</td><td>$754M</td><td>$1,312M</td><td>+$558M (74% higher)</td></tr>
+      <tr><td>Total benefits (PV)</td><td>$517M</td><td>$517M</td><td>Same benefit base</td></tr>
+      <tr><td>NPV</td><td>−$237M</td><td>−$795M</td><td>−$558M worse</td></tr>
+      <tr><td>BCR</td><td>0.69</td><td>0.44</td><td>−0.25 lower</td></tr>
+      <tr><td>Land opportunity cost</td><td>Excluded</td><td>$155M included</td><td>Material omission</td></tr>
+      <tr><td>Interest costs</td><td>Excluded</td><td>$36M included</td><td>Financing excluded</td></tr>
+      <tr><td>Contingency gap</td><td>Excluded</td><td>$79M included</td><td>Under-provisioned</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 2 -->
+<div class="panel" id="p2">
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>Sports visitation accounts for 38% of total quantified benefits</h3>
+      <canvas id="benefitDonut"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Benefit categories (NPV at 7%)</h3>
+      <table>
+        <tr><th>Category</th><th>NPV ($M)</th><th>Share</th></tr>
+        <tr><td>Sports & cultural visitation</td><td>$198M</td><td>38%</td></tr>
+        <tr><td>AFL industry establishment</td><td>$88M</td><td>17%</td></tr>
+        <tr><td>Business events</td><td>$85M</td><td>16%</td></tr>
+        <tr><td>Tourism uplift</td><td>$66M</td><td>13%</td></tr>
+        <tr><td>Other (construction, amenity)</td><td>$50M</td><td>10%</td></tr>
+        <tr><td>Health & productivity</td><td>$30M</td><td>6%</td></tr>
+        <tr><td><strong>Total</strong></td><td><strong>$517M</strong></td><td><strong>100%</strong></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 3 -->
+<div class="panel" id="p3">
+  <div class="chart-card">
+    <h3>Every scenario tested returns a negative NPV — pessimistic case reaches −$1.13B</h3>
+    <canvas id="scenarioBar" height="160"></canvas>
+    <div class="source">Source: Dr Nicholas Gruen independent economic review</div>
+  </div>
+  <div class="chart-card">
+    <h3>Gruen scenario details</h3>
+    <table>
+      <tr><th>Scenario</th><th>NPV ($M)</th><th>BCR</th></tr>
+      <tr><td>Optimistic</td><td>−$495</td><td>0.603</td></tr>
+      <tr><td>Central</td><td>−$795</td><td>0.444</td></tr>
+      <tr><td>Pessimistic</td><td>−$1,130</td><td>0.344</td></tr>
+      <tr><td>Without roof</td><td>−$710</td><td>0.597</td></tr>
+      <tr><td>4% discount rate</td><td>−$778</td><td>0.360</td></tr>
+      <tr><td>10% discount rate</td><td>−$710</td><td>0.597</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 4 -->
+<div class="panel" id="p4">
+  <div class="chart-card">
+    <h3>$270M in costs excluded from the KPMG analysis are identified by the independent review</h3>
+    <canvas id="waterfallChart" height="140"></canvas>
+    <div class="source">Waterfall: KPMG stated costs + excluded items = Gruen total cost base</div>
+  </div>
+  <div class="chart-card">
+    <h3>Excluded cost items</h3>
+    <table>
+      <tr><th>Item</th><th>Value ($M)</th><th>Rationale for Inclusion</th></tr>
+      <tr><td>Opportunity cost of land</td><td>$155</td><td>Prime waterfront site has alternative development value</td></tr>
+      <tr><td>Contingency shortfall</td><td>$79</td><td>Inadequate provision vs comparable infrastructure projects</td></tr>
+      <tr><td>Interest on $375M borrowing</td><td>$36</td><td>State borrowing costs are a real economic cost</td></tr>
+      <tr><td>Goods Shed relocation</td><td>~$15</td><td>Heritage building requires relocation</td></tr>
+      <tr><td><strong>Total excluded</strong></td><td><strong>~$285M</strong></td><td></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 5 -->
+<div class="panel" id="p5">
+  <div class="chart-card">
+    <h3>Adjust operating assumptions to see impact on annual benefit estimates</h3>
+    <div class="slider-group">
+      <label>Core event days per year: <span class="slider-val" id="evVal">37</span></label>
+      <input type="range" id="evSlider" min="20" max="60" value="37" oninput="recalc()">
+    </div>
+    <div class="slider-group">
+      <label>Average attendees per event: <span class="slider-val" id="attVal">10,500</span></label>
+      <input type="range" id="attSlider" min="5000" max="25000" step="500" value="10500" oninput="recalc()">
+    </div>
+    <div class="slider-group">
+      <label>Business events per year: <span class="slider-val" id="bizVal">130</span></label>
+      <input type="range" id="bizSlider" min="50" max="250" value="130" oninput="recalc()">
+    </div>
+    <div class="slider-group">
+      <label>Jobs per event day: <span class="slider-val" id="jobVal">1,100</span></label>
+      <input type="range" id="jobSlider" min="500" max="2000" step="10" value="1100" oninput="recalc()">
+    </div>
+    <div class="kpi-row" style="margin-top:20px">
+      <div class="kpi"><div class="kpi-label">Est. Annual Attendees</div><div class="kpi-value" id="annAtt">388,500</div></div>
+      <div class="kpi"><div class="kpi-label">Est. Annual GSP Impact</div><div class="kpi-value" id="annGSP">$53M</div></div>
+      <div class="kpi"><div class="kpi-label">Est. Annual Jobs</div><div class="kpi-value" id="annJobs">40,700</div></div>
+      <div class="kpi"><div class="kpi-label">Implied 30yr Benefit (PV)</div><div class="kpi-value" id="impBen">$517M</div></div>
+    </div>
+  </div>
+</div>
+
+</div>
+<div class="footer">© 2026 KPMG, an Australian partnership. All rights reserved. | Public</div>
+
+<script>
+const P=['#00338D','#00B8F5','#1E49E2','#76D2FF','#7213EA','#B497FF','#00C0AE','#AB0D82'];
+const DARK='#0C233C',GREY='#666666';
+Chart.defaults.font.family='Arial, Helvetica, sans-serif';Chart.defaults.color='#666666';Chart.defaults.borderColor='#E5E5E5';
+function showTab(i){document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',j===i));document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('active',j===i));}
+
+// Exec bar
+new Chart(document.getElementById('execBar'),{type:'bar',data:{labels:['KPMG Analysis','Gruen Independent Review'],datasets:[{label:'Benefits (PV)',data:[517,517],backgroundColor:P[0]},{label:'Costs (PV)',data:[754,1312],backgroundColor:P[1]}]},options:{responsive:true,plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.raw+'M'}}},scales:{y:{ticks:{callback:v=>'$'+v+'M'}}}}});
+
+// Compare chart
+new Chart(document.getElementById('compareChart'),{type:'bar',data:{labels:['NPV','BCR (×100)'],datasets:[{label:'KPMG',data:[-237,69],backgroundColor:P[0]},{label:'Gruen Central',data:[-795,44],backgroundColor:P[1]}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>{let v=c.raw;if(c.dataIndex===1)return c.dataset.label+': BCR '+(v/100).toFixed(2);return c.dataset.label+': $'+v+'M'}}}}}});
+
+// Benefit donut
+new Chart(document.getElementById('benefitDonut'),{type:'doughnut',data:{labels:['Sports Visitation $198M','AFL Industry $88M','Business Events $85M','Tourism $66M','Other $50M','Health & Productivity $30M'],datasets:[{data:[198,88,85,66,50,30],backgroundColor:[P[0],P[1],P[2],P[3],P[4],P[5]]}]},options:{responsive:true,plugins:{legend:{position:'right'}}}});
+
+// Scenario bar
+new Chart(document.getElementById('scenarioBar'),{type:'bar',data:{labels:['Optimistic','Without Roof','10% Rate','Central','4% Rate','Pessimistic'],datasets:[{label:'NPV ($M)',data:[-495,-710,-710,-795,-778,-1130],backgroundColor:[P[0],P[1],P[2],P[3],P[4],P[5]]},{label:'BCR (×1000)',data:[603,597,597,444,360,344],backgroundColor:[P[0]+'66',P[1]+'66',P[2]+'66',P[3]+'66',P[4]+'66',P[5]+'66'],hidden:true}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>c.dataset.label.includes('BCR')?'BCR: '+(c.raw/1000).toFixed(3):'NPV: $'+c.raw+'M'}}},scales:{x:{ticks:{callback:v=>'$'+v+'M'}}}}});
+
+// Waterfall
+new Chart(document.getElementById('waterfallChart'),{type:'bar',data:{labels:['KPMG Stated Costs','+ Land Opportunity','+ Contingency Gap','+ Interest Costs','+ Goods Shed','Gruen Total Costs'],datasets:[{label:'Base',data:[0,754,909,988,1024,0],backgroundColor:'transparent'},{label:'Addition',data:[754,155,79,36,15,1039],backgroundColor:[P[0],P[1],P[1],P[1],P[1],DARK]}]},options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>{if(c.datasetIndex===0)return'';return'+$'+c.raw+'M'}}}},scales:{x:{stacked:true},y:{stacked:true,ticks:{callback:v=>'$'+v+'M'}}}}});
+
+// Sliders
+function recalc(){
+  const ev=+document.getElementById('evSlider').value;
+  const att=+document.getElementById('attSlider').value;
+  const biz=+document.getElementById('bizSlider').value;
+  const job=+document.getElementById('jobSlider').value;
+  document.getElementById('evVal').textContent=ev;
+  document.getElementById('attVal').textContent=att.toLocaleString();
+  document.getElementById('bizVal').textContent=biz;
+  document.getElementById('jobVal').textContent=job.toLocaleString();
+  const annAtt=ev*att;
+  const baseGSP=53;
+  const gspFactor=(ev/37)*(att/10500)*0.5+(biz/130)*0.3+(job/1100)*0.2;
+  const gsp=Math.round(baseGSP*gspFactor);
+  const annJobs=ev*job;
+  const benFactor=(annAtt/388500)*0.4+(biz/130)*0.3+(gsp/53)*0.3;
+  const ben=Math.round(517*benFactor);
+  document.getElementById('annAtt').textContent=annAtt.toLocaleString();
+  document.getElementById('annGSP').textContent='$'+gsp+'M';
+  document.getElementById('annJobs').textContent=annJobs.toLocaleString();
+  document.getElementById('impBen').textContent='$'+ben+'M';
+}
+</script>
+</body>
+</html>

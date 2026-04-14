@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Remote Laundries CBA Dashboard | KPMG</title>
+<!-- Premium Stack: ECharts 5, GSAP 3+ScrollTrigger, Gridstack 12, PptxGenJS, html2canvas, html2pdf, Mermaid 11 -->
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@12/dist/gridstack.min.css">
+<script src="https://cdn.jsdelivr.net/npm/gridstack@12/dist/gridstack-all.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@latest/dist/pptxgen.bundle.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+:root {
+  --kpmg-blue: #00338D;
+  --pacific-blue: #00B8F5;
+  --cobalt-blue: #1E49E2;
+  --light-blue: #76D2FF;
+  --purple: #7213EA;
+  --light-purple: #B497FF;
+  --green: #00C0AE;
+  --dark-pink: #AB0D82;
+  --dark-blue: #0C233C;
+  --red: #ED2124;
+  --amber: #F1C44D;
+  --dark-grey: #333333;
+  --mid-grey: #666666;
+  --light-grey: #E5E5E5;
+  --off-white: #E5E5E5;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial, Helvetica, sans-serif; background: var(--off-white); color: var(--dark-grey); }
+
+/* Header */
+.header { background: var(--kpmg-blue); padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; }
+.header-logo svg { height: 30px; }
+.header-title { color: #fff; font-size: 14px; text-align: right; max-width: 500px; }
+.header-title h2 { font-size: 18px; margin-bottom: 2px; color: #fff; }
+
+/* Tabs */
+.tabs { display: flex; background: var(--dark-blue); padding: 0 40px; gap: 0; flex-wrap: wrap; align-items: center; }
+.tab { padding: 14px 22px; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 13px; font-weight: 600; border-bottom: 3px solid transparent; transition: color 0.2s, border-color 0.2s; }
+.tab:hover { color: #fff; }
+.tab.active { color: #fff; border-bottom-color: var(--pacific-blue); }
+.tab:focus { outline: 2px solid var(--pacific-blue); outline-offset: -2px; }
+.export-group { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.export-btn { padding: 8px 16px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid rgba(255,255,255,0.4); background: transparent; color: #fff; border-radius: 4px; transition: background 0.2s; font-family: Arial, Helvetica, sans-serif; }
+.export-btn:hover { background: rgba(255,255,255,0.12); }
+.export-btn:focus { outline: 2px solid var(--pacific-blue); outline-offset: 2px; }
+
+/* Content */
+.content { max-width: 1280px; margin: 24px auto; padding: 0 24px; }
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* KPI cards */
+.kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.kpi { background: #fff; border-radius: 4px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border-top: 3px solid var(--kpmg-blue); }
+.kpi-label { font-size: 12px; color: var(--mid-grey); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+.kpi-value { font-size: 28px; font-weight: 700; color: var(--kpmg-blue); }
+.kpi-sub { font-size: 11px; color: var(--mid-grey); margin-top: 4px; }
+.kpi.accent { border-top-color: var(--dark-pink); }
+.kpi.accent .kpi-value { color: var(--dark-pink); }
+
+/* Chart cards */
+.chart-card { background: #fff; border-radius: 4px; padding: 28px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border-top: 3px solid var(--kpmg-blue); margin-bottom: 24px; }
+.chart-card h3 { font-size: 16px; color: var(--kpmg-blue); margin-bottom: 16px; font-weight: 700; }
+.chart-container { width: 100%; height: 360px; }
+
+/* Layout */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 800px) { .two-col { grid-template-columns: 1fr; } }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
+th { background: var(--kpmg-blue); color: #fff; padding: 10px 14px; text-align: left; font-weight: 600; }
+td { padding: 10px 14px; border-bottom: 1px solid var(--light-grey); }
+tr:nth-child(even) { background: var(--off-white); }
+
+/* Callout */
+.callout { background: var(--off-white); border-left: 4px solid var(--dark-pink); padding: 16px; border-radius: 4px; margin-bottom: 20px; font-size: 14px; font-weight: 600; color: var(--dark-grey); }
+
+/* Hero stat */
+.hero-stat { text-align: center; padding: 40px 20px; background: var(--kpmg-blue); color: #fff; border-radius: 4px; margin-bottom: 24px; }
+.hero-stat .big { font-size: 64px; font-weight: 900; margin-bottom: 8px; }
+.hero-stat .sub { font-size: 18px; opacity: 0.9; }
+
+/* Source */
+.source { font-size: 11px; color: var(--mid-grey); margin-top: 12px; font-style: italic; }
+
+/* Mermaid card */
+.mermaid-card { background: #fff; border-radius: 4px; padding: 28px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border-top: 3px solid var(--kpmg-blue); margin-bottom: 24px; }
+.mermaid-card h3 { font-size: 16px; color: var(--kpmg-blue); margin-bottom: 16px; font-weight: 700; }
+
+/* Footer */
+.footer { text-align: center; padding: 20px; color: var(--mid-grey); font-size: 11px; border-top: 1px solid var(--light-grey); margin-top: 40px; background: #fff; }
+
+/* Accessibility */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print */
+@media print {
+  body { background: #fff; }
+  .tabs, .export-group { display: none; }
+  .panel { display: block !important; page-break-inside: avoid; }
+  .header { background: var(--kpmg-blue); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .chart-card, .mermaid-card, .kpi { box-shadow: none; border: 1px solid var(--light-grey); }
+  .footer { position: fixed; bottom: 0; width: 100%; }
+  @page { size: A4 landscape; margin: 15mm; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header with KPMG SVG Logo -->
+<div class="header">
+  <div class="header-logo" aria-label="KPMG">
+    <svg fill="none" height="30" viewBox="0 0 77 30" width="77" xmlns="http://www.w3.org/2000/svg"><path fill="#FFFFFF" d="m59.4297.0894165v14.8992835l-.1935.157-.1935.157-.1855.1649-.1773.1648-.1693.1649-.1693.1727-.1613.1727-.1612.1727v-16.2259835h-16.9549v13.5647835h-1.4028v-13.5647835h-16.9549v13.5883835h-1.4028v-13.5883835h-16.95487v15.4880835l-4.329426 14.0436h3.805376l1.91075-6.2172h.54823l3.16039 6.2172h4.59545l-3.0636-6.2172h6.9496l-1.9269 6.2172h4.1521l1.9027-6.2015h.9191v-.0157h1.306.1049 7.8445l-1.8382 6.2015h4.1924l1.7817-6.2015h1.8866l.0483 6.2015h3.5152l4.0391-6.2015h2.6444l-1.3705 6.2015h4.1278l1.3464-6.2015h2.3864l-.0161.3533.0086.3611.0161.3453.0322.3455.0242.1648.0241.1649.0322.1648.0323.1649.0402.1648.0403.157.0484.157.0483.157.0565.157.0565.1492.0644.1491.0646.1413.0726.1492.0725.1413.0807.1334.0807.1413.0887.1335.0967.1256.0968.1334.1048.1178.1048.1256.1048.1177.1209.1178.121.1099.1531.1256.1532.1256.1613.1177.1693.1099.1693.1099.1693.1021.1774.0863.1854.0942.1774.0785.1854.0784.1854.0707.1935.0707.1935.0628.1935.055.1935.0549.1935.0471.387.0863.395.0629.387.0549.387.0471.3789.0314.3709.0157.3628.0158h.3466l.4677-.0075.4676-.0074.4756-.0236.4757-.0236.4757-.0392.4757-.0393.4756-.0471.4757-.055.4837-.0628.4838-.0707.4837-.0785.4837-.0785.4838-.0863.4837-.0942.4837-.0942.4918-.1099 1.4351-5.6284h4.7084v-23.3145573h-16.9549zm-53.50905 22.7335835.02417-.0863.05649.0863zm14.77005-8.3524-.2419.7929-2.2574 7.3005-.0887.259h-7.4173l-.5724-1.1932 7.9897-7.952h-5.1357l-6.2482 6.5547 2.02361-6.5547h-3.78924v-12.999627h15.73743v13.792427zm4.3777 6.1701-.1209.0075-.1129.0074-.1209.0075h-.129-.1693-.1451l-.1371.0074h-.129l-1.0077-.0074.4676-1.6799.2176-.8321.5322-1.9547h.1693.1773l.1693-.0074h.1613.782l.4757.0074.4353.0158.1935.0074.1855.0157.1773.0236.1613.0236.1451.0235.1371.0393.129.0393.1128.0471.0968.0471.0887.0629.0806.0628.0645.0785.0403.0629.0322.0628.0322.0707.0242.0785.0161.0863.0085.0863v.0942.102l-.0085.1099-.0076.1099-.0242.1256-.0241.1256-.0726.2669-.0887.2983-.0887.2512-.0968.2434-.1048.2276-.1129.212-.0565.0942-.0564.0942-.0646.0942-.0726.0863-.0726.0863-.0726.0785-.0806.0785-.0807.0706-.0887.0629-.0887.0707-.0967.0549-.1049.0628-.1048.055-.1128.0471-.1129.0471-.1209.0393-.129.0471-.1371.0314-.1451.0314-.1451.0313-.1613.0236-.1612.0236-.1693.0157-.1774.0157zm11.4645 2.1823 1.6528-5.7305.0645 5.7305h-1.7172zm2.5155-9.1688h-3.9344l-2.7089 9.1688h-4.1763l.1935-.0784.1935-.0785.1855-.0785.1854-.0863.1774-.0864.1693-.102.1693-.0942.1612-.1021.1613-.1099.1531-.1099.1452-.1098.1451-.1257.137-.1177.129-.1335.129-.1256.121-.1413.1209-.1334.1129-.1492.1048-.1413.1048-.157.0967-.157.0887-.1569.0888-.1649.0806-.1727.0807-.1727.0726-.1727.0644-.1806.0645-.1884.0484-.1884.0565-.1884.0402-.2041.0403-.1962.0565-.314.0483-.2983.0323-.2826.0241-.2669.0086-.2669-.0086-.2434-.0075-.2433-.0323-.2277-.0322-.2119-.0565-.212-.0565-.1962-.0806-.1884-.0887-.1806-.0968-.1805-.1128-.1649-.129-.157-.1049-.1099-.1048-.1099-.1128-.0942-.121-.0863-.129-.0863-.129-.0785-.137-.0706-.1371-.0629-.1451-.0628-.1451-.0471-.1532-.0472-.1532-.0471-.1612-.0393-.1613-.0313-.1612-.0314-.1693-.0236-.3467-.0471-.3467-.0235-.3547-.0236-.3628-.0074h-.7256-.7175-.2258-.4031-.4999-.5563-.5401-.4596-.3225-.1209v-12.976108h15.7375v12.976108zm9.5617 9.1688h-2.3622l3.5796-5.495zm8.7959-8.9097-.0085 3.1792-.2015.2748-.1855.2826-.1854.2826-.1693.2826-.1613.2826-.1612.2904-.1371.2826-.137.2826-.129.2748-.1129.2826-.1129.2747-.0967.2669-.0887.2669-.0807.2591-.0726.2512-.0645.2512-.0403.1648-.0403.1727-.0402.1649-.0323.1727-.0322.1648-.0242.1649-.0241.1648-.0161.1727h-2.3139l1.9753-9.1452-6.6594-.0075-5.958 9.1531h-.4354v-22.144827h15.7455v13.235127zm9.0781 12.6542-.3305.0549-.3387.0471-.3386.0471-.3305.0393-.3306.0314-.3305.0236-.3225.0157h-.3225-.2096l-.2096-.0074-.2016-.0158-.2015-.0235-.1935-.0314-.1855-.0314-.1854-.0393-.1774-.0471-.1693-.0549-.1693-.055-.1612-.0706-.1532-.0707-.1532-.0863-.1451-.0863-.1371-.0942-.129-.0942-.129-.1099-.1128-.1178-.1129-.1177-.1048-.1335-.0968-.1334-.0887-.1492-.0806-.1491-.0807-.157-.0645-.1649-.0565-.1805-.0483-.1806-.0484-.1884-.0322-.1962-.0242-.2041-.0161-.212-.0085-.2198h7.3366l-.8062 3.1636zm9.3038-3.7445h-3.9666l.653-2.5591h-7.9493l-.6531 2.5591h-3.8456v-.5259l.0483-.2198.0403-.2198.0483-.2355.0483-.2355.0726-.2591.0726-.259.0807-.2591.0887-.2512.0967-.2512.1049-.2512.1128-.2433.1129-.2434.129-.2433.129-.2277.1371-.2355.1531-.2198.1532-.2198.1532-.2119.1693-.2041.1774-.1963.1854-.1884.1854-.1727.2016-.1727.2015-.1648.2097-.1492.2257-.1413.2258-.1256.2338-.1177.2418-.1099.2499-.0942.258-.0785.2661-.0629.2741-.0549.2822-.0393.2902-.0235.2983-.0075.2338.0075.2338.0157.2338.0314.2258.0471.1129.0314.1048.0313.1048.0314.0967.0471.0968.0393.0967.055.0887.0549.0887.0549.0807.0707.0806.0707.0726.0706.0726.0863.0646.0785.0565.0942.0483.1021.0483.102.0403.1099.0322.1178.0242.1177.0242.1335.0085.1334v.1413.1492l-.0161.157h4.7406l.0726-.3219.0645-.3689.0322-.1963.0162-.2119.0161-.212v-.2198l-.0076-.2276-.0242-.2355-.0241-.1099-.0162-.1178-.0322-.1177-.0322-.1178-.0403-.1256-.0403-.1177-.0483-.1178-.0565-.1177-.0565-.1178-.0726-.1177-.0726-.1178-.0806-.1177-.0968-.1256-.1048-.1178-.1048-.1177-.1129-.1099-.1209-.1099-.129-.1021-.129-.0942-.137-.0942-.1452-.0942-.1451-.0785-.1532-.0784-.1612-.0785-.1612-.0707-.1694-.0707-.1773-.0628-.1774-.0629-.1774-.0549-.1935-.0471-.1854-.0471-.2015-.0471-.2016-.0393-.2016-.0393-.2096-.0314-.2177-.0236-.4434-.0471-.4515-.0393-.4756-.0157-.4838-.0074-.3628.0074-.3789.0075-.395.0235-.4112.0314-.4273.0471-.4354.0549-.4434.0707-.4515.0942-.2257.0471-.2338.0549-.2258.0629-.2338.0628-.2338.0707-.2338.0785-.2257.0785-.2338.0863-.2338.0942-.2338.102-.2258.1021-.2338.1099-.2257.1177-.2258.1256-.2257.1256-.2258.1413v-13.894463h15.7617v22.144863z"/></svg>
+  </div>
+  <div class="header-title">
+    <h2>Remote Laundries Project — Cost-Benefit Analysis</h2>
+    KPMG for Aboriginal Investment Group, March 2021
+  </div>
+</div>
+
+<!-- Tabs with ARIA and Export Buttons -->
+<nav class="tabs" role="tablist" aria-label="Dashboard sections">
+  <div class="tab active" role="tab" tabindex="0" aria-selected="true" onclick="showTab(0)" onkeydown="tabKey(event,0)">Executive Summary</div>
+  <div class="tab" role="tab" tabindex="-1" aria-selected="false" onclick="showTab(1)" onkeydown="tabKey(event,1)">Return on Investment</div>
+  <div class="tab" role="tab" tabindex="-1" aria-selected="false" onclick="showTab(2)" onkeydown="tabKey(event,2)">Benefit Categories</div>
+  <div class="tab" role="tab" tabindex="-1" aria-selected="false" onclick="showTab(3)" onkeydown="tabKey(event,3)">Year-by-Year Analysis</div>
+  <div class="tab" role="tab" tabindex="-1" aria-selected="false" onclick="showTab(4)" onkeydown="tabKey(event,4)">Scaling Impact</div>
+  <div class="tab" role="tab" tabindex="-1" aria-selected="false" onclick="showTab(5)" onkeydown="tabKey(event,5)">Health Economics</div>
+  <div class="export-group">
+    <button class="export-btn" onclick="exportPDF()" aria-label="Export dashboard as PDF">Export PDF</button>
+    <button class="export-btn" onclick="exportPPTX()" aria-label="Export dashboard as PowerPoint">Export PPTX</button>
+  </div>
+</nav>
+
+<div class="content" id="dashboard">
+
+<!-- ===================== TAB 0: Executive Summary ===================== -->
+<div class="panel active" id="p0" role="tabpanel" aria-label="Executive Summary">
+  <div class="callout">One of the highest-return social investments ever quantified in Australia — every $1 invested returns $6 in healthcare savings alone.</div>
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-label">BCR (Medium Scenario)</div>
+      <div class="kpi-value" data-count="14.7">0</div>
+      <div class="kpi-sub">Across 7 communities, 5-year period</div>
+    </div>
+    <div class="kpi accent">
+      <div class="kpi-label">Healthcare Return</div>
+      <div class="kpi-value">$6 : $1</div>
+      <div class="kpi-sub">$6 saved for every $1 invested</div>
+    </div>
+    <div class="kpi accent">
+      <div class="kpi-label">Net Savings (per laundry)</div>
+      <div class="kpi-value" data-count="3.7" data-prefix="$" data-suffix="M">$0M</div>
+      <div class="kpi-sub">Government savings over 5 years</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Capital Cost (per laundry)</div>
+      <div class="kpi-value" data-count="225" data-prefix="$" data-suffix="K">$0K</div>
+      <div class="kpi-sub">One-off establishment cost</div>
+    </div>
+    <div class="kpi accent">
+      <div class="kpi-label">Total Benefits (7 communities)</div>
+      <div class="kpi-value" data-count="31.4" data-prefix="$" data-suffix="M">$0M</div>
+      <div class="kpi-sub">Medium incidence reduction scenario</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Total Investment (7 laundries)</div>
+      <div class="kpi-value" data-count="5.2" data-prefix="$" data-suffix="M">$0M</div>
+      <div class="kpi-sub">5-year total including operations</div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <h3>Benefits exceed costs by a factor of 14.7 in the medium scenario</h3>
+    <div id="execChart" class="chart-container" role="img" aria-label="Bar chart comparing total benefits and costs for 1 laundry and 7 communities"></div>
+    <!-- Accessible data table -->
+    <table class="sr-only" aria-label="Executive summary benefits vs costs">
+      <tr><th>Metric</th><th>Single Laundry (5yr)</th><th>7 Communities (5yr)</th></tr>
+      <tr><td>Total Benefits</td><td>$4.49M</td><td>$31.4M</td></tr>
+      <tr><td>Total Costs</td><td>$0.74M</td><td>$5.2M</td></tr>
+    </table>
+    <div class="source">Source: KPMG, A Cost-Benefit Analysis of the Remote Laundries Project (March 2021)</div>
+  </div>
+</div>
+
+<!-- ===================== TAB 1: Return on Investment ===================== -->
+<div class="panel" id="p1" role="tabpanel" aria-label="Return on Investment">
+  <div class="chart-card">
+    <h3>Even the conservative low-incidence scenario delivers a BCR of 8.5 — exceptional value</h3>
+    <div id="bcrChart" class="chart-container" role="img" aria-label="Bar chart showing BCR across three scenarios"></div>
+    <table class="sr-only" aria-label="BCR by scenario">
+      <tr><th>Scenario</th><th>BCR</th></tr>
+      <tr><td>Low Incidence</td><td>8.5</td></tr>
+      <tr><td>Medium Incidence</td><td>14.7</td></tr>
+      <tr><td>High Incidence</td><td>19.4</td></tr>
+    </table>
+  </div>
+  <div class="chart-card">
+    <h3>BCR by incidence reduction scenario (7 communities, 5 years)</h3>
+    <table>
+      <tr><th>Scenario</th><th>BCR</th><th>Total Benefits</th><th>Interpretation</th></tr>
+      <tr><td>High incidence reduction</td><td>19.4</td><td>~$40.8M</td><td>Maximum disease prevention impact</td></tr>
+      <tr><td>Medium incidence reduction</td><td>14.7</td><td>~$31.4M</td><td>Expected case based on evidence</td></tr>
+      <tr><td>Low incidence reduction</td><td>8.5</td><td>~$17.9M</td><td>Conservative / minimum impact</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ===================== TAB 2: Benefit Categories ===================== -->
+<div class="panel" id="p2" role="tabpanel" aria-label="Benefit Categories">
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>Chronic disease prevention savings dominate at 87% of total benefits</h3>
+      <div id="benefitDonut" class="chart-container" role="img" aria-label="Doughnut chart of benefit category breakdown"></div>
+      <table class="sr-only" aria-label="Benefit category values">
+        <tr><th>Category</th><th>Value</th><th>Share</th></tr>
+        <tr><td>Chronic Disease Prevention</td><td>$3,900,000</td><td>87%</td></tr>
+        <tr><td>Employment Savings</td><td>$339,503</td><td>8%</td></tr>
+        <tr><td>Scabies Treatment</td><td>$247,087</td><td>5%</td></tr>
+      </table>
+    </div>
+    <div class="chart-card">
+      <h3>Benefit categories (single laundry, 5 years)</h3>
+      <table>
+        <tr><th>Category</th><th>Value</th><th>Share</th></tr>
+        <tr><td>Chronic disease prevention (scabies-related)</td><td>$3,900,000</td><td>87%</td></tr>
+        <tr><td>Employment / unemployment savings</td><td>$339,503</td><td>8%</td></tr>
+        <tr><td>Scabies treatment savings</td><td>$247,087</td><td>5%</td></tr>
+        <tr><td><strong>Total per laundry</strong></td><td><strong>$4,486,590</strong></td><td><strong>100%</strong></td></tr>
+      </table>
+      <div class="source">Scabies leads to secondary infections including rheumatic heart disease, kidney disease, and sepsis — the chronic disease prevention savings reflect avoided hospitalisations and long-term treatment costs.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TAB 3: Year-by-Year Analysis ===================== -->
+<div class="panel" id="p3" role="tabpanel" aria-label="Year-by-Year Analysis">
+  <div class="chart-card">
+    <h3>The investment pays for itself within the first year — net benefits compound rapidly</h3>
+    <div id="yearChart" class="chart-container" role="img" aria-label="Line chart of cumulative benefits vs cumulative costs over 5 years"></div>
+    <table class="sr-only" aria-label="Cumulative benefits and costs by year">
+      <tr><th>Year</th><th>Cumulative Benefits ($K)</th><th>Cumulative Costs ($K)</th></tr>
+      <tr><td>0</td><td>0</td><td>225</td></tr>
+      <tr><td>1</td><td>650</td><td>328</td></tr>
+      <tr><td>2</td><td>1,300</td><td>432</td></tr>
+      <tr><td>3</td><td>2,200</td><td>536</td></tr>
+      <tr><td>4</td><td>3,300</td><td>640</td></tr>
+      <tr><td>5</td><td>4,487</td><td>744</td></tr>
+    </table>
+  </div>
+  <div class="chart-card">
+    <h3>Year-by-year analysis (single laundry)</h3>
+    <table>
+      <tr><th>Year</th><th>Cumulative Benefits</th><th>Cumulative Costs</th><th>Net Benefit</th></tr>
+      <tr><td>Year 1</td><td>$650,000</td><td>$328,491</td><td>$321,509</td></tr>
+      <tr><td>Year 2</td><td>$1,300,000</td><td>$432,322</td><td>$867,678</td></tr>
+      <tr><td>Year 3</td><td>$2,200,000</td><td>$536,153</td><td>$1,663,847</td></tr>
+      <tr><td>Year 4</td><td>$3,300,000</td><td>$639,984</td><td>$2,660,016</td></tr>
+      <tr><td>Year 5</td><td>$4,487,000</td><td>$743,815</td><td>$3,743,185</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ===================== TAB 4: Scaling Impact ===================== -->
+<div class="panel" id="p4" role="tabpanel" aria-label="Scaling Impact">
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>Scaling from 1 to 7 communities multiplies net savings to $25.9M</h3>
+      <div id="scaleChart" class="chart-container" role="img" aria-label="Bar chart comparing 1 laundry vs 7 laundries across investment, benefits, and net savings"></div>
+      <table class="sr-only" aria-label="Scaling comparison data">
+        <tr><th>Metric</th><th>1 Laundry ($M)</th><th>7 Laundries ($M)</th></tr>
+        <tr><td>Investment</td><td>0.74</td><td>5.2</td></tr>
+        <tr><td>Benefits</td><td>4.49</td><td>31.4</td></tr>
+        <tr><td>Net Savings</td><td>3.74</td><td>25.9</td></tr>
+      </table>
+    </div>
+    <div class="chart-card">
+      <h3>Single laundry vs 7 communities</h3>
+      <table>
+        <tr><th>Metric</th><th>1 Laundry</th><th>7 Laundries</th></tr>
+        <tr><td>Capital investment</td><td>$225K</td><td>$1.57M</td></tr>
+        <tr><td>5-year total cost</td><td>$744K</td><td>$5.2M</td></tr>
+        <tr><td>5-year total benefits</td><td>$4.49M</td><td>$31.4M</td></tr>
+        <tr><td>Net savings</td><td>$3.74M</td><td>$25.9M</td></tr>
+        <tr><td>BCR (medium)</td><td>6.0</td><td>14.7</td></tr>
+      </table>
+      <div class="source">BCR increases with scale due to shared infrastructure and knowledge transfer between communities.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TAB 5: Health Economics ===================== -->
+<div class="panel" id="p5" role="tabpanel" aria-label="Health Economics">
+  <div class="hero-stat">
+    <div class="big">$6 : $1</div>
+    <div class="sub">For every $1 invested, $6 is saved in healthcare costs</div>
+  </div>
+  <div class="chart-card">
+    <h3>Health savings pathway: laundry access breaks the scabies-chronic disease cycle</h3>
+    <div id="healthBar" class="chart-container" role="img" aria-label="Horizontal bar chart of healthcare costs per condition"></div>
+    <table class="sr-only" aria-label="Healthcare cost per condition">
+      <tr><th>Condition</th><th>Annual Cost Per Person ($)</th></tr>
+      <tr><td>Scabies Treatment</td><td>225</td></tr>
+      <tr><td>Secondary Infection</td><td>1,250</td></tr>
+      <tr><td>Rheumatic Fever</td><td>20,000</td></tr>
+      <tr><td>Rheumatic Heart Disease</td><td>55,000</td></tr>
+      <tr><td>Kidney Disease (Dialysis)</td><td>100,000</td></tr>
+    </table>
+    <div class="source">Scabies infestation leads to secondary skin infections, Group A Streptococcus, rheumatic fever, rheumatic heart disease, post-streptococcal glomerulonephritis, and sepsis. Each progression multiplies healthcare costs by 10-100x.</div>
+  </div>
+
+  <!-- Mermaid: Disease Progression Pathway -->
+  <div class="mermaid-card">
+    <h3>Disease progression pathway: Laundry Access to Scabies Reduction to Chronic Disease Avoided</h3>
+    <pre class="mermaid">
+flowchart LR
+    A["Laundry Access\nClean clothing & bedding"] --> B["Scabies Reduction\n80-95% decrease"]
+    B --> C["Fewer Secondary\nSkin Infections"]
+    C --> D["Reduced Group A\nStreptococcus"]
+    D --> E["Rheumatic Fever\nAvoided"]
+    D --> F["Kidney Disease\nAvoided"]
+    D --> G["Sepsis\nAvoided"]
+    E --> H["Rheumatic Heart\nDisease Prevented"]
+    H --> I["$30K-$80K\nper person/year SAVED"]
+    F --> J["$80K-$120K\nper person/year SAVED"]
+    G --> K["Acute care costs\nAVOIDED"]
+    </pre>
+    <div class="source">Each stage of disease progression multiplies healthcare costs by 10-100x. Laundry access intervenes at the earliest and most cost-effective point in the cascade.</div>
+  </div>
+
+  <div class="chart-card">
+    <h3>Healthcare cost comparison per person per year</h3>
+    <table>
+      <tr><th>Condition</th><th>Treatment Cost (annual)</th><th>Avoided with Laundry Access</th></tr>
+      <tr><td>Scabies treatment (topical)</td><td>$150-$300</td><td>80-95% reduction</td></tr>
+      <tr><td>Secondary skin infection (antibiotics)</td><td>$500-$2,000</td><td>70-90% reduction</td></tr>
+      <tr><td>Rheumatic fever episode (hospitalisation)</td><td>$15,000-$25,000</td><td>50-70% reduction</td></tr>
+      <tr><td>Rheumatic heart disease (ongoing)</td><td>$30,000-$80,000</td><td>40-60% reduction</td></tr>
+      <tr><td>Kidney disease (dialysis)</td><td>$80,000-$120,000</td><td>30-50% reduction</td></tr>
+    </table>
+  </div>
+</div>
+
+</div><!-- end .content -->
+
+<!-- Footer -->
+<div class="footer">Client Confidential | Remote Laundries NT CBA | KPMG Advisory | March 2026</div>
+
+<script>
+/* ========================================================================
+   KPMG ECharts Theme Registration
+   Palette: #00338D, #00B8F5, #1E49E2, #76D2FF, #7213EA, #B497FF, #00C0AE, #AB0D82
+   ======================================================================== */
+echarts.registerTheme('kpmg', {
+  color: ['#00338D','#00B8F5','#1E49E2','#76D2FF','#7213EA','#B497FF','#00C0AE','#AB0D82'],
+  backgroundColor: '#FFFFFF',
+  textStyle: { fontFamily: 'Arial, Helvetica, sans-serif', color: '#333333' },
+  title: { textStyle: { color: '#00338D', fontWeight: 'bold' } },
+  tooltip: {
+    backgroundColor: '#0C233C',
+    textStyle: { color: '#FFFFFF', fontFamily: 'Arial, Helvetica, sans-serif' },
+    borderColor: '#00B8F5',
+    borderWidth: 1
+  },
+  categoryAxis: {
+    axisLine: { lineStyle: { color: '#E5E5E5' } },
+    axisLabel: { color: '#666666' },
+    axisTick: { lineStyle: { color: '#E5E5E5' } }
+  },
+  valueAxis: {
+    axisLine: { lineStyle: { color: '#E5E5E5' } },
+    splitLine: { lineStyle: { color: '#E5E5E5' } },
+    axisLabel: { color: '#666666' }
+  },
+  legend: { textStyle: { color: '#333333' } },
+  aria: { enabled: true, label: { enabled: true } }
+});
+
+/* ========================================================================
+   Mermaid Initialisation — KPMG Base Theme
+   ======================================================================== */
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'base',
+  themeVariables: {
+    primaryColor: '#00338D',
+    primaryTextColor: '#FFFFFF',
+    primaryBorderColor: '#1E49E2',
+    secondaryColor: '#00B8F5',
+    secondaryTextColor: '#FFFFFF',
+    secondaryBorderColor: '#1E49E2',
+    tertiaryColor: '#E5E5E5',
+    tertiaryTextColor: '#333333',
+    tertiaryBorderColor: '#E5E5E5',
+    lineColor: '#666666',
+    textColor: '#333333',
+    mainBkg: '#00338D',
+    nodeBorder: '#1E49E2',
+    clusterBkg: '#E5E5E5',
+    clusterBorder: '#E5E5E5',
+    titleColor: '#00338D',
+    fontFamily: 'Arial, Helvetica, sans-serif',
+    fontSize: '14px',
+    noteBkgColor: '#E5E5E5',
+    noteTextColor: '#333333',
+    noteBorderColor: '#00B8F5'
+  }
+});
+
+/* ========================================================================
+   GSAP Registration
+   ======================================================================== */
+gsap.registerPlugin(ScrollTrigger);
+
+/* ========================================================================
+   Tab Navigation (accessible keyboard support)
+   ======================================================================== */
+function showTab(i) {
+  var allTabs = document.querySelectorAll('.tab');
+  var allPanels = document.querySelectorAll('.panel');
+  allTabs.forEach(function(t, j) {
+    t.classList.toggle('active', j === i);
+    t.setAttribute('aria-selected', j === i ? 'true' : 'false');
+    t.setAttribute('tabindex', j === i ? '0' : '-1');
+  });
+  allPanels.forEach(function(p, j) {
+    p.classList.toggle('active', j === i);
+  });
+  initChartsForPanel(i);
+  animatePanel(i);
+}
+
+function tabKey(e, i) {
+  var tabs = document.querySelectorAll('.tab');
+  var len = tabs.length;
+  if (e.key === 'ArrowRight') { e.preventDefault(); showTab((i + 1) % len); tabs[(i + 1) % len].focus(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); showTab((i - 1 + len) % len); tabs[(i - 1 + len) % len].focus(); }
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showTab(i); }
+}
+
+/* ========================================================================
+   Chart Instance Store
+   ======================================================================== */
+var chartInstances = {};
+
+function initChartsForPanel(i) {
+  switch (i) {
+    case 0: initExecChart(); break;
+    case 1: initBcrChart(); break;
+    case 2: initBenefitDonut(); break;
+    case 3: initYearChart(); break;
+    case 4: initScaleChart(); break;
+    case 5: initHealthBar(); break;
+  }
+}
+
+/* ========================================================================
+   GSAP Panel Animations
+   ======================================================================== */
+function animatePanel(i) {
+  var panel = document.getElementById('p' + i);
+  if (!panel) return;
+  var els = panel.querySelectorAll('.kpi, .chart-card, .mermaid-card, .hero-stat, .callout');
+  gsap.from(els, {
+    y: 30, opacity: 0,
+    stagger: 0.08, duration: 0.6,
+    ease: 'power2.out', clearProps: 'all'
+  });
+}
+
+/* ========================================================================
+   GSAP KPI Count-Up Animation
+   ======================================================================== */
+function animateKPIs() {
+  document.querySelectorAll('.kpi-value[data-count]').forEach(function(el) {
+    var target = parseFloat(el.getAttribute('data-count'));
+    var prefix = el.getAttribute('data-prefix') || '';
+    var suffix = el.getAttribute('data-suffix') || '';
+    var decimals = String(target).indexOf('.') !== -1 ? 1 : 0;
+    var obj = { val: 0 };
+    gsap.to(obj, {
+      val: target,
+      duration: 1.5,
+      ease: 'power2.out',
+      onUpdate: function() {
+        el.textContent = prefix + obj.val.toFixed(decimals) + suffix;
+      }
+    });
+  });
+}
+
+/* ========================================================================
+   Chart 0: Executive Summary — Benefits vs Costs (Grouped Bar)
+   ======================================================================== */
+function initExecChart() {
+  var dom = document.getElementById('execChart');
+  if (!dom) return;
+  if (chartInstances.exec) { chartInstances.exec.resize(); return; }
+  var chart = echarts.init(dom, 'kpmg');
+  chartInstances.exec = chart;
+  chart.setOption({
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'shadow' },
+      formatter: function(p) {
+        return p.map(function(s) { return s.marker + ' ' + s.seriesName + ': $' + s.value + 'M'; }).join('<br/>');
+      }
+    },
+    legend: { bottom: 0 },
+    grid: { top: 30, bottom: 60, left: 70, right: 30 },
+    xAxis: { type: 'category', data: ['Single Laundry (5yr)', '7 Communities (5yr)'] },
+    yAxis: { type: 'value', name: '$ Millions', nameTextStyle: { color: '#666666', fontSize: 11 }, axisLabel: { formatter: '${value}M' } },
+    series: [
+      { name: 'Total Benefits', type: 'bar', data: [4.49, 31.4], barMaxWidth: 50 },
+      { name: 'Total Costs', type: 'bar', data: [0.74, 5.2], barMaxWidth: 50 }
+    ]
+  });
+}
+
+/* ========================================================================
+   Chart 1: BCR by Scenario (Bar with Labels)
+   ======================================================================== */
+function initBcrChart() {
+  var dom = document.getElementById('bcrChart');
+  if (!dom) return;
+  if (chartInstances.bcr) { chartInstances.bcr.resize(); return; }
+  var chart = echarts.init(dom, 'kpmg');
+  chartInstances.bcr = chart;
+  chart.setOption({
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'shadow' },
+      formatter: function(p) { return p[0].name + '<br/>BCR: ' + p[0].value; }
+    },
+    grid: { top: 30, bottom: 40, left: 70, right: 30 },
+    xAxis: { type: 'category', data: ['Low Incidence', 'Medium Incidence', 'High Incidence'] },
+    yAxis: { type: 'value', max: 22, interval: 2 },
+    series: [{
+      name: 'BCR', type: 'bar',
+      data: [
+        { value: 8.5, itemStyle: { color: '#00338D' } },
+        { value: 14.7, itemStyle: { color: '#00B8F5' } },
+        { value: 19.4, itemStyle: { color: '#1E49E2' } }
+      ],
+      barMaxWidth: 60,
+      label: { show: true, position: 'top', fontWeight: 'bold', color: '#333333', formatter: '{c}' }
+    }]
+  });
+}
+
+/* ========================================================================
+   Chart 2: Benefit Categories (Doughnut)
+   ======================================================================== */
+function initBenefitDonut() {
+  var dom = document.getElementById('benefitDonut');
+  if (!dom) return;
+  if (chartInstances.donut) { chartInstances.donut.resize(); return; }
+  var chart = echarts.init(dom, 'kpmg');
+  chartInstances.donut = chart;
+  chart.setOption({
+    tooltip: {
+      trigger: 'item',
+      formatter: function(p) { return p.name + '<br/>$' + (p.value >= 1000 ? (p.value/1000).toFixed(1) + 'M' : p.value + 'K') + ' (' + p.percent + '%)'; }
+    },
+    legend: { bottom: 0, textStyle: { color: '#333333' } },
+    series: [{
+      name: 'Benefits', type: 'pie', radius: ['40%', '70%'],
+      center: ['50%', '45%'],
+      label: { formatter: '{d}%', color: '#333333', fontSize: 13 },
+      emphasis: { label: { show: true, fontSize: 16, fontWeight: 'bold' } },
+      data: [
+        { value: 3900, name: 'Chronic Disease Prevention $3.9M' },
+        { value: 340, name: 'Employment Savings $340K' },
+        { value: 247, name: 'Scabies Treatment $247K' }
+      ]
+    }]
+  });
+}
+
+/* ========================================================================
+   Chart 3: Year-by-Year Cumulative (Line + Area)
+   ======================================================================== */
+function initYearChart() {
+  var dom = document.getElementById('yearChart');
+  if (!dom) return;
+  if (chartInstances.year) { chartInstances.year.resize(); return; }
+  var chart = echarts.init(dom, 'kpmg');
+  chartInstances.year = chart;
+  chart.setOption({
+    tooltip: {
+      trigger: 'axis',
+      formatter: function(p) {
+        return p.map(function(s) { return s.marker + ' ' + s.seriesName + ': $' + s.value.toLocaleString() + 'K'; }).join('<br/>');
+      }
+    },
+    legend: { bottom: 0 },
+    grid: { top: 30, bottom: 60, left: 70, right: 30 },
+    xAxis: { type: 'category', data: ['Year 0', 'Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'] },
+    yAxis: { type: 'value', name: '$ Thousands', nameTextStyle: { color: '#666666', fontSize: 11 }, axisLabel: { formatter: '${value}K' } },
+    series: [
+      {
+        name: 'Cumulative Benefits', type: 'line',
+        data: [0, 650, 1300, 2200, 3300, 4487],
+        smooth: true, symbol: 'circle', symbolSize: 8,
+        lineStyle: { width: 3 },
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: 'rgba(0,51,141,0.25)' },
+            { offset: 1, color: 'rgba(0,51,141,0.02)' }
+          ])
+        }
+      },
+      {
+        name: 'Cumulative Costs', type: 'line',
+        data: [225, 328, 432, 536, 640, 744],
+        smooth: true, symbol: 'circle', symbolSize: 8,
+        itemStyle: { color: '#AB0D82' },
+        lineStyle: { width: 3, color: '#AB0D82' },
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: 'rgba(171,13,130,0.15)' },
+            { offset: 1, color: 'rgba(171,13,130,0.02)' }
+          ])
+        }
+      }
+    ]
+  });
+}
+
+/* ========================================================================
+   Chart 4: Scaling Impact (Grouped Bar)
+   ======================================================================== */
+function initScaleChart() {
+  var dom = document.getElementById('scaleChart');
+  if (!dom) return;
+  if (chartInstances.scale) { chartInstances.scale.resize(); return; }
+  var chart = echarts.init(dom, 'kpmg');
+  chartInstances.scale = chart;
+  chart.setOption({
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'shadow' },
+      formatter: function(p) {
+        return p.map(function(s) { return s.marker + ' ' + s.seriesName + ': $' + s.value + 'M'; }).join('<br/>');
+      }
+    },
+    legend: { bottom: 0 },
+    grid: { top: 30, bottom: 60, left: 70, right: 30 },
+    xAxis: { type: 'category', data: ['Investment', 'Benefits', 'Net Savings'] },
+    yAxis: { type: 'value', name: '$ Millions', nameTextStyle: { color: '#666666', fontSize: 11 }, axisLabel: { formatter: '${value}M' } },
+    series: [
+      { name: '1 Laundry', type: 'bar', data: [0.74, 4.49, 3.74], barMaxWidth: 50 },
+      { name: '7 Laundries', type: 'bar', data: [5.2, 31.4, 25.9], barMaxWidth: 50 }
+    ]
+  });
+}
+
+/* ========================================================================
+   Chart 5: Health Economics (Horizontal Bar)
+   Uses #AB0D82 for emphasis on highest-cost condition (kidney disease)
+   ======================================================================== */
+function initHealthBar() {
+  var dom = document.getElementById('healthBar');
+  if (!dom) return;
+  if (chartInstances.health) { chartInstances.health.resize(); return; }
+  var chart = echarts.init(dom, 'kpmg');
+  chartInstances.health = chart;
+  chart.setOption({
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'shadow' },
+      formatter: function(p) { return p[0].name + '<br/>$' + p[0].value.toLocaleString() + ' per person/year'; }
+    },
+    grid: { top: 10, bottom: 20, left: 200, right: 80 },
+    yAxis: {
+      type: 'category',
+      data: ['Scabies Treatment', 'Secondary Infection', 'Rheumatic Fever', 'Rheumatic Heart Disease', 'Kidney Disease (Dialysis)'],
+      axisLabel: { fontSize: 12 }
+    },
+    xAxis: {
+      type: 'value',
+      axisLabel: { formatter: function(v) { return '$' + v.toLocaleString(); } }
+    },
+    series: [{
+      name: 'Annual Cost', type: 'bar',
+      data: [
+        { value: 225, itemStyle: { color: '#00338D' } },
+        { value: 1250, itemStyle: { color: '#00B8F5' } },
+        { value: 20000, itemStyle: { color: '#1E49E2' } },
+        { value: 55000, itemStyle: { color: '#76D2FF' } },
+        { value: 100000, itemStyle: { color: '#AB0D82' } }
+      ],
+      barMaxWidth: 30,
+      label: {
+        show: true, position: 'right',
+        formatter: function(p) { return '$' + p.value.toLocaleString(); },
+        color: '#333333', fontSize: 11
+      }
+    }]
+  });
+}
+
+/* ========================================================================
+   PDF Export (html2pdf)
+   ======================================================================== */
+function exportPDF() {
+  var el = document.getElementById('dashboard');
+  var panels = document.querySelectorAll('.panel');
+  // Show all panels for export
+  panels.forEach(function(p) { p.style.display = 'block'; });
+  // Initialise all charts
+  for (var i = 0; i < 6; i++) { initChartsForPanel(i); }
+  // Small delay to let charts render
+  setTimeout(function() {
+    html2pdf().set({
+      margin: 10,
+      filename: 'KPMG_Remote_Laundries_NT_CBA.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+    }).from(el).save().then(function() {
+      // Restore tab state
+      panels.forEach(function(p) { p.style.display = ''; });
+      var tabs = document.querySelectorAll('.tab');
+      var activeIdx = 0;
+      tabs.forEach(function(t, j) { if (t.classList.contains('active')) activeIdx = j; });
+      showTab(activeIdx);
+    });
+  }, 500);
+}
+
+/* ========================================================================
+   PPTX Export (PptxGenJS with native editable charts)
+   ======================================================================== */
+function exportPPTX() {
+  var pptx = new PptxGenJS();
+  pptx.layout = 'LAYOUT_WIDE';
+  pptx.author = 'KPMG Advisory';
+  pptx.company = 'KPMG';
+  pptx.subject = 'Remote Laundries NT CBA';
+
+  /* --- Slide Masters --- */
+  pptx.defineSlideMaster({
+    title: 'KPMG_COVER',
+    background: { color: '00338D' },
+    objects: [
+      { text: { text: 'KPMG', options: { x: 0.5, y: 6.5, fontSize: 14, color: 'FFFFFF', bold: true, fontFace: 'Arial' } } },
+      { text: { text: 'Client Confidential', options: { x: 9, y: 6.8, fontSize: 8, color: 'FFFFFF', fontFace: 'Arial' } } }
+    ]
+  });
+
+  pptx.defineSlideMaster({
+    title: 'KPMG_CONTENT',
+    background: { color: 'FFFFFF' },
+    objects: [
+      { line: { x: 0.5, y: 0.9, cx: 12.33, cy: 0, color: 'E5E5E5', width: 1 } },
+      { text: { text: 'Client Confidential | Remote Laundries NT CBA | KPMG Advisory | March 2026', options: { x: 0.5, y: 7.0, fontSize: 7, color: '666666', fontFace: 'Arial' } } }
+    ]
+  });
+
+  /* --- Slide 0: Cover --- */
+  var slide0 = pptx.addSlide({ masterName: 'KPMG_COVER' });
+  slide0.addText('Remote Laundries Project\nCost-Benefit Analysis', {
+    x: 1, y: 2, w: 11, h: 2,
+    fontSize: 32, color: 'FFFFFF', bold: true, fontFace: 'Arial'
+  });
+  slide0.addText('KPMG for Aboriginal Investment Group | March 2021', {
+    x: 1, y: 4.2, w: 11, fontSize: 16, color: 'FFFFFF', fontFace: 'Arial'
+  });
+
+  /* --- Slide 1: Executive KPIs --- */
+  var slide1 = pptx.addSlide({ masterName: 'KPMG_CONTENT' });
+  slide1.addText('Executive Summary', { x: 0.5, y: 0.2, fontSize: 24, color: '00338D', bold: true, fontFace: 'Arial' });
+  var kpiData = [
+    ['BCR (Medium)', '14.7'],
+    ['Healthcare Return', '$6 : $1'],
+    ['Net Savings/Laundry', '$3.7M'],
+    ['Capital Cost/Laundry', '$225K'],
+    ['Total Benefits (7)', '$31.4M'],
+    ['Total Investment (7)', '$5.2M']
+  ];
+  kpiData.forEach(function(kpi, idx) {
+    var col = idx % 3;
+    var row = Math.floor(idx / 3);
+    slide1.addText(kpi[0], { x: 0.5 + col * 4, y: 1.5 + row * 2.2, w: 3.5, fontSize: 11, color: '666666', fontFace: 'Arial' });
+    slide1.addText(kpi[1], { x: 0.5 + col * 4, y: 1.95 + row * 2.2, w: 3.5, fontSize: 28, color: '00338D', bold: true, fontFace: 'Arial' });
+  });
+
+  /* --- Slide 2: BCR by Scenario (native editable chart) --- */
+  var slide2 = pptx.addSlide({ masterName: 'KPMG_CONTENT' });
+  slide2.addText('BCR by Incidence Reduction Scenario', { x: 0.5, y: 0.2, fontSize: 24, color: '00338D', bold: true, fontFace: 'Arial' });
+  slide2.addChart(pptx.charts.BAR, [
+    { name: 'BCR', labels: ['Low Incidence', 'Medium Incidence', 'High Incidence'], values: [8.5, 14.7, 19.4] }
+  ], {
+    x: 1, y: 1.2, w: 10, h: 5,
+    chartColors: ['00338D'],
+    showValue: true, valAxisMaxVal: 22,
+    valAxisLabelFontSize: 10, catAxisLabelFontSize: 10
+  });
+
+  /* --- Slide 3: Benefit Categories (native editable pie) --- */
+  var slide3 = pptx.addSlide({ masterName: 'KPMG_CONTENT' });
+  slide3.addText('Benefit Categories (Single Laundry, 5 Years)', { x: 0.5, y: 0.2, fontSize: 24, color: '00338D', bold: true, fontFace: 'Arial' });
+  slide3.addChart(pptx.charts.PIE, [
+    { name: 'Benefits', labels: ['Chronic Disease Prevention', 'Employment Savings', 'Scabies Treatment'], values: [3900, 340, 247] }
+  ], {
+    x: 1, y: 1.2, w: 10, h: 5,
+    chartColors: ['00338D', '00B8F5', '1E49E2'],
+    showPercent: true, showLegend: true
+  });
+
+  /* --- Slide 4: Year-by-Year (native editable line) --- */
+  var slide4 = pptx.addSlide({ masterName: 'KPMG_CONTENT' });
+  slide4.addText('Year-by-Year Cumulative Analysis', { x: 0.5, y: 0.2, fontSize: 24, color: '00338D', bold: true, fontFace: 'Arial' });
+  slide4.addChart(pptx.charts.LINE, [
+    { name: 'Cumulative Benefits ($K)', labels: ['Yr 0','Yr 1','Yr 2','Yr 3','Yr 4','Yr 5'], values: [0,650,1300,2200,3300,4487] },
+    { name: 'Cumulative Costs ($K)', labels: ['Yr 0','Yr 1','Yr 2','Yr 3','Yr 4','Yr 5'], values: [225,328,432,536,640,744] }
+  ], {
+    x: 1, y: 1.2, w: 10, h: 5,
+    chartColors: ['00338D', 'AB0D82'],
+    showValue: false, showLegend: true,
+    valAxisLabelFontSize: 10, catAxisLabelFontSize: 10
+  });
+
+  /* --- Slide 5: Health Economics Table --- */
+  var slide5 = pptx.addSlide({ masterName: 'KPMG_CONTENT' });
+  slide5.addText('Health Economics — $6 : $1 Return', { x: 0.5, y: 0.2, fontSize: 24, color: '00338D', bold: true, fontFace: 'Arial' });
+  slide5.addTable(
+    [
+      [
+        { text: 'Condition', options: { bold: true, color: 'FFFFFF', fill: { color: '00338D' }, fontFace: 'Arial', fontSize: 11 } },
+        { text: 'Annual Cost', options: { bold: true, color: 'FFFFFF', fill: { color: '00338D' }, fontFace: 'Arial', fontSize: 11 } },
+        { text: 'Reduction with Laundry', options: { bold: true, color: 'FFFFFF', fill: { color: '00338D' }, fontFace: 'Arial', fontSize: 11 } }
+      ],
+      ['Scabies treatment', '$150-$300', '80-95%'],
+      ['Secondary infection', '$500-$2,000', '70-90%'],
+      ['Rheumatic fever', '$15,000-$25,000', '50-70%'],
+      ['Rheumatic heart disease', '$30,000-$80,000', '40-60%'],
+      ['Kidney disease (dialysis)', '$80,000-$120,000', '30-50%']
+    ],
+    {
+      x: 0.5, y: 1.5, w: 12,
+      fontSize: 11, fontFace: 'Arial',
+      border: { pt: 0.5, color: 'E5E5E5' },
+      rowH: 0.45, colW: [4.5, 3.5, 4]
+    }
+  );
+
+  pptx.writeFile({ fileName: 'KPMG_Remote_Laundries_NT_CBA.pptx' });
+}
+
+/* ========================================================================
+   Initialise on DOM Ready
+   ======================================================================== */
+window.addEventListener('DOMContentLoaded', function() {
+  initExecChart();
+  animateKPIs();
+  animatePanel(0);
+});
+
+/* ========================================================================
+   Global Resize Handler
+   ======================================================================== */
+window.addEventListener('resize', function() {
+  Object.keys(chartInstances).forEach(function(key) {
+    if (chartInstances[key] && chartInstances[key].resize) {
+      chartInstances[key].resize();
+    }
+  });
+});
+</script>
+</body>
+</html>

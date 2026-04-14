@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Housing CBA Dashboard | KPMG PEPI</title>
+<!-- Premium Toolkit: ECharts + GSAP + Gridstack + PptxGenJS + html2pdf + Mermaid -->
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@12/dist/gridstack.min.css">
+<script src="https://cdn.jsdelivr.net/npm/gridstack@12/dist/gridstack-all.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@latest/dist/pptxgen.bundle.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --kpmg-blue: #00338D;
+    --pacific-blue: #00B8F5;
+    --cobalt-blue: #1E49E2;
+    --light-blue: #76D2FF;
+    --purple: #7213EA;
+    --light-purple: #B497FF;
+    --green: #00C0AE;
+    --dark-pink: #AB0D82;
+    --dark-blue: #0C233C;
+    --dark-green: #098E7E;
+    --red: #ED2124;
+    --amber: #F1C44D;
+    --tl-green: #269924;
+    --dark-grey: #333333;
+    --mid-grey: #666666;
+    --light-grey: #E5E5E5;
+    --off-white: #E5E5E5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: Arial, Helvetica, sans-serif; background: var(--off-white); color: var(--dark-grey); }
+
+  /* Header */
+  .header { background: linear-gradient(135deg, var(--dark-blue) 0%, var(--kpmg-blue) 100%); color: white; padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; }
+  .header h1 { font-size: 22px; font-weight: 700; }
+  .header .subtitle { font-size: 13px; color: var(--pacific-blue); margin-top: 2px; }
+  .export-bar { display: flex; gap: 8px; }
+  .export-btn { background: var(--pacific-blue); color: white; border: none; padding: 6px 14px; border-radius: 4px; font-size: 11px; cursor: pointer; font-family: Arial; font-weight: 600; }
+  .export-btn:hover { background: var(--cobalt-blue); }
+
+  /* Navigation tabs */
+  .nav { background: var(--kpmg-blue); display: flex; gap: 0; padding: 0 32px; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--pacific-blue); }
+  .nav-tabs { display: flex; gap: 0; }
+  .nav button { background: none; border: none; color: rgba(255,255,255,0.7); padding: 12px 24px; font-size: 13px; font-family: Arial; cursor: pointer; border-bottom: 3px solid transparent; }
+  .nav button:hover { color: white; }
+  .nav button.active { color: white; border-bottom-color: var(--pacific-blue); font-weight: 700; }
+
+  /* Main content */
+  .main { max-width: 1400px; margin: 0 auto; padding: 24px 32px; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* KPI cards */
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .kpi-card { background: white; border-radius: 4px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); text-align: center; border-top: 4px solid var(--kpmg-blue); }
+  .kpi-value { font-size: 32px; font-weight: 700; margin: 4px 0; }
+  .kpi-label { font-size: 11px; color: var(--mid-grey); text-transform: uppercase; letter-spacing: 0.5px; }
+  .kpi-sublabel { font-size: 10px; color: var(--mid-grey); margin-top: 4px; }
+
+  /* Grid layouts */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; margin-bottom: 24px; }
+
+  /* Panels */
+  .panel { background: white; border-radius: 4px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border-top: 3px solid var(--kpmg-blue); }
+  .panel h3 { font-size: 14px; color: var(--kpmg-blue); margin-bottom: 12px; font-weight: 700; }
+  .panel h4 { font-size: 12px; color: var(--mid-grey); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead th { background: var(--kpmg-blue); color: white; padding: 10px 12px; text-align: left; font-weight: 600; font-size: 11px; }
+  tbody td { padding: 8px 12px; border-bottom: 1px solid var(--light-grey); }
+  tbody tr:nth-child(even) { background: var(--off-white); }
+  tbody tr:hover { background: #E5E5E5; }
+  .text-right { text-align: right; }
+  .text-center { text-align: center; }
+  .bold { font-weight: 700; }
+  .positive-val { color: var(--tl-green); font-weight: 700; }
+  .negative-val { color: var(--red); font-weight: 700; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  :focus-visible { outline: 2px solid var(--pacific-blue); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+  @media (max-width: 1024px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 768px) { .kpi-row { grid-template-columns: 1fr; } .nav-tabs { overflow-x: auto; } .nav button { white-space: nowrap; font-size: 12px; } }
+  @media print { .nav, .export-bar { display: none; } .tab-content { display: block !important; page-break-before: always; } }
+
+  /* Chart containers */
+  .chart-container { position: relative; width: 100%; }
+  canvas { width: 100% !important; }
+
+  /* Slider controls */
+  .control-group { margin-bottom: 16px; }
+  .control-group label { display: block; font-size: 12px; font-weight: 600; color: var(--dark-grey); margin-bottom: 4px; }
+  .control-group .value-display { font-size: 14px; color: var(--kpmg-blue); font-weight: 700; float: right; }
+  input[type="range"] { width: 100%; margin: 6px 0; accent-color: var(--kpmg-blue); }
+  select { padding: 6px 10px; border: 1px solid var(--light-grey); border-radius: 4px; font-size: 12px; font-family: Arial; }
+
+  /* Risk indicators */
+  .risk-bar { display: flex; gap: 4px; align-items: center; margin: 4px 0; }
+  .risk-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .risk-dot.red { background: var(--red); }
+  .risk-dot.amber { background: var(--amber); }
+  .risk-dot.green { background: var(--green); }
+
+  /* Waterfall bars */
+  .waterfall-bar { height: 24px; border-radius: 3px; margin: 6px 0; position: relative; min-width: 2px; }
+  .waterfall-label { font-size: 11px; margin-bottom: 2px; }
+  .waterfall-value { font-size: 10px; color: var(--mid-grey); position: absolute; right: -60px; top: 3px; white-space: nowrap; }
+
+  /* Footer */
+  .footer { background: var(--dark-blue); color: rgba(255,255,255,0.6); padding: 14px 32px; font-size: 10px; text-align: center; margin-top: 40px; }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .grid-2, .grid-3, .grid-2-1, .grid-1-2 { grid-template-columns: 1fr; }
+  }
+
+  /* Donut legend */
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .legend-item { display: flex; align-items: center; gap: 4px; font-size: 10px; }
+  .legend-swatch { width: 12px; height: 12px; border-radius: 2px; }
+
+  /* Callout */
+  .callout { background: var(--off-white); border-left: 4px solid var(--light-blue); padding: 12px 16px; margin: 12px 0; border-radius: 0 4px 4px 0; font-size: 12px; }
+  .callout.warning { background: var(--off-white); border-left-color: var(--amber); }
+  .callout.success { background: var(--off-white); border-left-color: var(--green); }
+  .callout.danger { background: var(--off-white); border-left-color: var(--red); }
+</style>
+<!-- Chart.js removed — using ECharts premium stack -->
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>Social Housing Investment Program — Cost-Benefit Analysis</h1>
+    <div class="subtitle">$2.4 Billion | 12,000 Dwellings | 10-Year Horizon | March 2026</div>
+  </div>
+  <div class="brand"><svg fill="none" height="30" viewBox="0 0 77 30" width="77" xmlns="http://www.w3.org/2000/svg"><path fill="#FFFFFF" d="m59.4297.0894165v14.8992835l-.1935.157-.1935.157-.1855.1649-.1773.1648-.1693.1649-.1693.1727-.1613.1727-.1612.1727v-16.2259835h-16.9549v13.5647835h-1.4028v-13.5647835h-16.9549v13.5883835h-1.4028v-13.5883835h-16.95487v15.4880835l-4.329426 14.0436h3.805376l1.91075-6.2172h.54823l3.16039 6.2172h4.59545l-3.0636-6.2172h6.9496l-1.9269 6.2172h4.1521l1.9027-6.2015h.9191v-.0157h1.306.1049 7.8445l-1.8382 6.2015h4.1924l1.7817-6.2015h1.8866l.0483 6.2015h3.5152l4.0391-6.2015h2.6444l-1.3705 6.2015h4.1278l1.3464-6.2015h2.3864l-.0161.3533.0086.3611.0161.3453.0322.3455.0242.1648.0241.1649.0322.1648.0323.1649.0402.1648.0403.157.0484.157.0483.157.0565.157.0565.1492.0644.1491.0646.1413.0726.1492.0725.1413.0807.1334.0807.1413.0887.1335.0967.1256.0968.1334.1048.1178.1048.1256.1048.1177.1209.1178.121.1099.1531.1256.1532.1256.1613.1177.1693.1099.1693.1099.1693.1021.1774.0863.1854.0942.1774.0785.1854.0784.1854.0707.1935.0707.1935.0628.1935.055.1935.0549.1935.0471.387.0863.395.0629.387.0549.387.0471.3789.0314.3709.0157.3628.0158h.3466l.4677-.0075.4676-.0074.4756-.0236.4757-.0236.4757-.0392.4757-.0393.4756-.0471.4757-.055.4837-.0628.4838-.0707.4837-.0785.4837-.0785.4838-.0863.4837-.0942.4837-.0942.4918-.1099 1.4351-5.6284h4.7084v-23.3145573h-16.9549zm-53.50905 22.7335835.02417-.0863.05649.0863zm14.77005-8.3524-.2419.7929-2.2574 7.3005-.0887.259h-7.4173l-.5724-1.1932 7.9897-7.952h-5.1357l-6.2482 6.5547 2.02361-6.5547h-3.78924v-12.999627h15.73743v13.792427zm4.3777 6.1701-.1209.0075-.1129.0074-.1209.0075h-.129-.1693-.1451l-.1371.0074h-.129l-1.0077-.0074.4676-1.6799.2176-.8321.5322-1.9547h.1693.1773l.1693-.0074h.1613.782l.4757.0074.4353.0158.1935.0074.1855.0157.1773.0236.1613.0236.1451.0235.1371.0393.129.0393.1128.0471.0968.0471.0887.0629.0806.0628.0645.0785.0403.0629.0322.0628.0322.0707.0242.0785.0161.0863.0085.0863v.0942.102l-.0085.1099-.0076.1099-.0242.1256-.0241.1256-.0726.2669-.0887.2983-.0887.2512-.0968.2434-.1048.2276-.1129.212-.0565.0942-.0564.0942-.0646.0942-.0726.0863-.0726.0863-.0726.0785-.0806.0785-.0807.0706-.0887.0629-.0887.0707-.0967.0549-.1049.0628-.1048.055-.1128.0471-.1129.0471-.1209.0393-.129.0471-.1371.0314-.1451.0314-.1451.0313-.1613.0236-.1612.0236-.1693.0157-.1774.0157zm11.4645 2.1823 1.6528-5.7305.0645 5.7305h-1.7172zm2.5155-9.1688h-3.9344l-2.7089 9.1688h-4.1763l.1935-.0784.1935-.0785.1855-.0785.1854-.0863.1774-.0864.1693-.102.1693-.0942.1612-.1021.1613-.1099.1531-.1099.1452-.1098.1451-.1257.137-.1177.129-.1335.129-.1256.121-.1413.1209-.1334.1129-.1492.1048-.1413.1048-.157.0967-.157.0887-.1569.0888-.1649.0806-.1727.0807-.1727.0726-.1727.0644-.1806.0645-.1884.0484-.1884.0565-.1884.0402-.2041.0403-.1962.0565-.314.0483-.2983.0323-.2826.0241-.2669.0086-.2669-.0086-.2434-.0075-.2433-.0323-.2277-.0322-.2119-.0565-.212-.0565-.1962-.0806-.1884-.0887-.1806-.0968-.1805-.1128-.1649-.129-.157-.1049-.1099-.1048-.1099-.1128-.0942-.121-.0863-.129-.0863-.129-.0785-.137-.0706-.1371-.0629-.1451-.0628-.1451-.0471-.1532-.0472-.1532-.0471-.1612-.0393-.1613-.0313-.1612-.0314-.1693-.0236-.3467-.0471-.3467-.0235-.3547-.0236-.3628-.0074h-.7256-.7175-.2258-.4031-.4999-.5563-.5401-.4596-.3225-.1209v-12.976108h15.7375v12.976108zm9.5617 9.1688h-2.3622l3.5796-5.495zm8.7959-8.9097-.0085 3.1792-.2015.2748-.1855.2826-.1854.2826-.1693.2826-.1613.2826-.1612.2904-.1371.2826-.137.2826-.129.2748-.1129.2826-.1129.2747-.0967.2669-.0887.2669-.0807.2591-.0726.2512-.0645.2512-.0403.1648-.0403.1727-.0402.1649-.0323.1727-.0322.1648-.0242.1649-.0241.1648-.0161.1727h-2.3139l1.9753-9.1452-6.6594-.0075-5.958 9.1531h-.4354v-22.144827h15.7455v13.235127zm9.0781 12.6542-.3305.0549-.3387.0471-.3386.0471-.3305.0393-.3306.0314-.3305.0236-.3225.0157h-.3225-.2096l-.2096-.0074-.2016-.0158-.2015-.0235-.1935-.0314-.1855-.0314-.1854-.0393-.1774-.0471-.1693-.0549-.1693-.055-.1612-.0706-.1532-.0707-.1532-.0863-.1451-.0863-.1371-.0942-.129-.0942-.129-.1099-.1128-.1178-.1129-.1177-.1048-.1335-.0968-.1334-.0887-.1492-.0806-.1491-.0807-.157-.0645-.1649-.0565-.1805-.0483-.1806-.0484-.1884-.0322-.1962-.0242-.2041-.0161-.212-.0085-.2198h7.3366l-.8062 3.1636zm9.3038-3.7445h-3.9666l.653-2.5591h-7.9493l-.6531 2.5591h-3.8456v-.5259l.0483-.2198.0403-.2198.0483-.2355.0483-.2355.0726-.2591.0726-.259.0807-.2591.0887-.2512.0967-.2512.1049-.2512.1128-.2433.1129-.2434.129-.2433.129-.2277.1371-.2355.1531-.2198.1532-.2198.1532-.2119.1693-.2041.1774-.1963.1854-.1884.1854-.1727.2016-.1727.2015-.1648.2097-.1492.2257-.1413.2258-.1256.2338-.1177.2418-.1099.2499-.0942.258-.0785.2661-.0629.2741-.0549.2822-.0393.2902-.0235.2983-.0075.2338.0075.2338.0157.2338.0314.2258.0471.1129.0314.1048.0313.1048.0314.0967.0471.0968.0393.0967.055.0887.0549.0887.0549.0807.0707.0806.0707.0726.0706.0726.0863.0646.0785.0565.0942.0483.1021.0483.102.0403.1099.0322.1178.0242.1177.0242.1335.0085.1334v.1413.1492l-.0161.157h4.7406l.0726-.3219.0645-.3689.0322-.1963.0162-.2119.0161-.212v-.2198l-.0076-.2276-.0242-.2355-.0241-.1099-.0162-.1178-.0322-.1177-.0322-.1178-.0403-.1256-.0403-.1177-.0483-.1178-.0565-.1177-.0565-.1178-.0726-.1177-.0726-.1178-.0806-.1177-.0968-.1256-.1048-.1178-.1048-.1177-.1129-.1099-.1209-.1099-.129-.1021-.129-.0942-.137-.0942-.1452-.0942-.1451-.0785-.1532-.0784-.1612-.0785-.1612-.0707-.1694-.0707-.1773-.0628-.1774-.0629-.1774-.0549-.1935-.0471-.1854-.0471-.2015-.0471-.2016-.0393-.2016-.0393-.2096-.0314-.2177-.0236-.4434-.0471-.4515-.0393-.4756-.0157-.4838-.0074-.3628.0074-.3789.0075-.395.0235-.4112.0314-.4273.0471-.4354.0549-.4434.0707-.4515.0942-.2257.0471-.2338.0549-.2258.0629-.2338.0628-.2338.0707-.2338.0785-.2257.0785-.2338.0863-.2338.0942-.2338.102-.2258.1021-.2338.1099-.2257.1177-.2258.1256-.2257.1256-.2258.1413v-13.894463h15.7617v22.144863z"/></svg></div>
+</div>
+
+<div class="nav">
+  <div class="nav-tabs" role="tablist">
+  <button class="active" role="tab" aria-selected="true" onclick="showTab('overview')">Executive Summary</button>
+  <button role="tab" aria-selected="false" onclick="showTab('costs')">Costs &amp; Benefits</button>
+  <button role="tab" aria-selected="false" onclick="showTab('distribution')">Distributional Analysis</button>
+  <button role="tab" aria-selected="false" onclick="showTab('sensitivity')">Sensitivity Analysis</button>
+  <button role="tab" aria-selected="false" onclick="showTab('fiscal')">Fiscal Impact</button>
+  <button role="tab" aria-selected="false" onclick="showTab('risks')">Risks &amp; Limitations</button>
+  </div>
+  <div class="export-bar">
+    <button class="export-btn" onclick="exportPPTX()">Export PPTX</button>
+    <button class="export-btn" onclick="exportPDF()">Export PDF</button>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ==================== TAB 1: EXECUTIVE SUMMARY ==================== -->
+<div id="tab-overview" class="tab-content active">
+  <div class="kpi-row">
+    <div class="kpi-card positive">
+      <div class="kpi-label">Net Present Value (7%)</div>
+      <div class="kpi-value" style="color:var(--green);">+$486M</div>
+      <div class="kpi-sublabel">Positive = project worthwhile</div>
+    </div>
+    <div class="kpi-card positive">
+      <div class="kpi-label">Net Present Value (4%)</div>
+      <div class="kpi-value" style="color:var(--green);">+$1,287M</div>
+      <div class="kpi-sublabel">Positive under both discount rates</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Benefit-Cost Ratio (7%)</div>
+      <div class="kpi-value" style="color:var(--kpmg-blue);">1.27</div>
+      <div class="kpi-sublabel">BCR > 1.0 = benefits exceed costs</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Internal Rate of Return</div>
+      <div class="kpi-value" style="color:var(--kpmg-blue);">11.2%</div>
+      <div class="kpi-sublabel">Exceeds both hurdle rates</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel">
+      <h3>Benefit Composition at 7% Discount Rate</h3>
+      <div class="chart-container" style="height:300px;"><div id="benefitDonut" style="width:100%;height:100%;"></div></div>
+    </div>
+    <div class="panel">
+      <h3>Costs vs Benefits ($M, PV at 7%)</h3>
+      <div class="chart-container" style="height:300px;"><div id="costBenBar" style="width:100%;height:100%;"></div></div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel">
+      <h3>Delivery Profile: Cumulative Dwellings and Annual CapEx</h3>
+      <div class="chart-container" style="height:260px;"><div id="deliveryChart" style="width:100%;height:100%;"></div></div>
+    </div>
+    <div class="panel">
+      <h3>Recommendation</h3>
+      <div class="callout success">
+        <strong>APPROVE</strong> the $2.4B social housing investment program to proceed to detailed business case, noting the positive economic case under central assumptions.
+      </div>
+      <div class="callout">
+        <strong>DIRECT</strong> staged delivery with independent cost assurance at each tranche to manage risk of construction cost overruns exceeding 27%.
+      </div>
+      <div class="callout">
+        <strong>DIRECT</strong> tenant allocation framework prioritising individuals experiencing or at immediate risk of homelessness to maximise social return.
+      </div>
+      <div style="margin-top:16px;">
+        <h4>Financial Implications</h4>
+        <p style="font-size:12px;">$2.4B capital over 8 years + $102M p.a. recurrent at full delivery. Net State fiscal savings of $80–85M p.a. partially offset operating costs.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== TAB 2: COSTS & BENEFITS ==================== -->
+<div id="tab-costs" class="tab-content">
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">Total PV Costs (7%)</div>
+      <div class="kpi-value" style="color:var(--red);">$3,210M</div>
+    </div>
+    <div class="kpi-card positive">
+      <div class="kpi-label">Total PV Benefits (7%)</div>
+      <div class="kpi-value" style="color:var(--green);">$4,088M</div>
+    </div>
+    <div class="kpi-card positive">
+      <div class="kpi-label">NPV (7%)</div>
+      <div class="kpi-value" style="color:var(--green);">+$486M</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Payback Period</div>
+      <div class="kpi-value" style="color:var(--kpmg-blue);">17 yrs</div>
+      <div class="kpi-sublabel">At 7% discount rate</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel">
+      <h3>Cost Streams — Present Value</h3>
+      <table>
+        <thead><tr><th>Cost Component</th><th class="text-right">Undiscounted</th><th class="text-right">PV at 4%</th><th class="text-right">PV at 7%</th></tr></thead>
+        <tbody>
+          <tr><td>Capital construction</td><td class="text-right">$2,400M</td><td class="text-right">$2,079M</td><td class="text-right">$1,836M</td></tr>
+          <tr><td>Operating & maintenance</td><td class="text-right">$2,448M</td><td class="text-right">$1,496M</td><td class="text-right">$1,044M</td></tr>
+          <tr><td>Land acquisition</td><td class="text-right">$360M</td><td class="text-right">$312M</td><td class="text-right">$275M</td></tr>
+          <tr><td>Program administration</td><td class="text-right">$72M</td><td class="text-right">$62M</td><td class="text-right">$55M</td></tr>
+          <tr class="bold"><td>Total costs</td><td class="text-right">$5,280M</td><td class="text-right">$3,949M</td><td class="text-right">$3,210M</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="panel">
+      <h3>Benefit Streams — Present Value</h3>
+      <table>
+        <thead><tr><th>Benefit Category</th><th class="text-right">PV at 4%</th><th class="text-right">PV at 7%</th><th class="text-right">% of Total</th></tr></thead>
+        <tbody>
+          <tr><td>Reduced homelessness services</td><td class="text-right">$3,104M</td><td class="text-right">$2,020M</td><td class="text-right">49.4%</td></tr>
+          <tr><td>Health system savings</td><td class="text-right">$789M</td><td class="text-right">$514M</td><td class="text-right">12.6%</td></tr>
+          <tr><td>Criminal justice savings</td><td class="text-right">$349M</td><td class="text-right">$227M</td><td class="text-right">5.6%</td></tr>
+          <tr><td>Employment productivity</td><td class="text-right">$1,181M</td><td class="text-right">$769M</td><td class="text-right">18.8%</td></tr>
+          <tr><td>Deadweight loss reduction</td><td class="text-right">$148M</td><td class="text-right">$96M</td><td class="text-right">2.3%</td></tr>
+          <tr><td>Consumer surplus</td><td class="text-right">$665M</td><td class="text-right">$430M</td><td class="text-right">10.5%</td></tr>
+          <tr><td>Residual value</td><td class="text-right">$0M</td><td class="text-right">$32M</td><td class="text-right">0.8%</td></tr>
+          <tr class="bold"><td>Total benefits</td><td class="text-right">$6,236M</td><td class="text-right">$4,088M</td><td class="text-right">100%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Cost Composition</h3>
+    <div class="chart-container" style="height:380px;"><div id="costBreakdownChart" style="width:100%;height:100%;"></div></div>
+  </div>
+</div>
+
+<!-- ==================== TAB 3: DISTRIBUTIONAL ANALYSIS ==================== -->
+<div id="tab-distribution" class="tab-content">
+  <div class="kpi-row">
+    <div class="kpi-card positive">
+      <div class="kpi-label">Benefits to Bottom 40%</div>
+      <div class="kpi-value" style="color:var(--green);">87%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Cost Burden on Bottom 40%</div>
+      <div class="kpi-value" style="color:var(--kpmg-blue);">16%</div>
+    </div>
+    <div class="kpi-card positive">
+      <div class="kpi-label">Net Benefit to Q1</div>
+      <div class="kpi-value" style="color:var(--green);">+$2,407M</div>
+    </div>
+    <div class="kpi-card positive">
+      <div class="kpi-label">Net Benefit to Q2</div>
+      <div class="kpi-value" style="color:var(--green);">+$637M</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel">
+      <h3>Distribution of Benefits and Costs by Income Quintile (PV at 7%)</h3>
+      <div class="chart-container" style="height:400px;"><div id="distChart" style="width:100%;height:100%;"></div></div>
+    </div>
+    <div class="panel">
+      <h3>Net Position by Income Quintile ($M, PV at 7%)</h3>
+      <div class="chart-container" style="height:400px;"><div id="netPosChart" style="width:100%;height:100%;"></div></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Full Distributional Table</h3>
+    <table>
+      <thead><tr><th>Income Quintile</th><th class="text-right">Share of Tenants</th><th class="text-right">PV Benefits</th><th class="text-right">PV Cost Incidence</th><th class="text-right">Net Position</th><th class="text-right">Per Capita Benefit</th></tr></thead>
+      <tbody>
+        <tr><td>Q1 (lowest 20%)</td><td class="text-right">62%</td><td class="text-right">$2,535M</td><td class="text-right">$128M</td><td class="text-right positive-val">+$2,407M</td><td class="text-right">$18,000</td></tr>
+        <tr><td>Q2</td><td class="text-right">25%</td><td class="text-right">$1,022M</td><td class="text-right">$385M</td><td class="text-right positive-val">+$637M</td><td class="text-right">$14,400</td></tr>
+        <tr><td>Q3</td><td class="text-right">9%</td><td class="text-right">$368M</td><td class="text-right">$642M</td><td class="text-right negative-val">-$274M</td><td class="text-right">$9,100</td></tr>
+        <tr><td>Q4</td><td class="text-right">3%</td><td class="text-right">$122M</td><td class="text-right">$899M</td><td class="text-right negative-val">-$777M</td><td class="text-right">$4,500</td></tr>
+        <tr><td>Q5 (highest 20%)</td><td class="text-right">1%</td><td class="text-right">$41M</td><td class="text-right">$1,156M</td><td class="text-right negative-val">-$1,115M</td><td class="text-right">$1,800</td></tr>
+        <tr class="bold"><td>Total</td><td class="text-right">100%</td><td class="text-right">$4,088M</td><td class="text-right">$3,210M</td><td class="text-right positive-val">+$878M</td><td class="text-right">—</td></tr>
+      </tbody>
+    </table>
+    <div class="callout" style="margin-top:16px;">
+      The investment is strongly progressive. Quintiles 1 and 2 receive 87% of direct benefits while bearing only 16% of costs through taxation. Quintiles 4 and 5 are net contributors but benefit indirectly through reduced demand on crisis services and broader economic productivity.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== TAB 4: SENSITIVITY ANALYSIS ==================== -->
+<div id="tab-sensitivity" class="tab-content">
+  <div class="grid-2">
+    <div class="panel">
+      <h3>Interactive Scenario Explorer</h3>
+      <div class="control-group">
+        <label>Construction Cost Overrun <span class="value-display" id="overrunVal">0%</span></label>
+        <input type="range" id="overrunSlider" min="0" max="50" value="0" step="5" oninput="updateScenario()">
+      </div>
+      <div class="control-group">
+        <label>Homelessness Diversion Rate <span class="value-display" id="diversionVal">40%</span></label>
+        <input type="range" id="diversionSlider" min="20" max="60" value="40" step="5" oninput="updateScenario()">
+      </div>
+      <div class="control-group">
+        <label>Employment Uplift <span class="value-display" id="employmentVal">12%</span></label>
+        <input type="range" id="employmentSlider" min="4" max="20" value="12" step="2" oninput="updateScenario()">
+      </div>
+      <div class="control-group">
+        <label>Operating Cost per Dwelling <span class="value-display" id="opCostVal">$8,500</span></label>
+        <input type="range" id="opCostSlider" min="6000" max="14000" value="8500" step="500" oninput="updateScenario()">
+      </div>
+      <div class="control-group">
+        <label>Discount Rate <span class="value-display" id="discountVal">7%</span></label>
+        <input type="range" id="discountSlider" min="3" max="10" value="7" step="1" oninput="updateScenario()">
+      </div>
+
+      <div style="margin-top:20px; padding-top:16px; border-top:2px solid var(--light-grey);">
+        <div class="kpi-row" style="grid-template-columns:1fr 1fr; margin-bottom:0;">
+          <div class="kpi-card" id="scenarioNPV" style="padding:12px;">
+            <div class="kpi-label">Scenario NPV</div>
+            <div class="kpi-value" style="font-size:24px;" id="scenarioNPVval">+$486M</div>
+          </div>
+          <div class="kpi-card" id="scenarioBCR" style="padding:12px;">
+            <div class="kpi-label">Scenario BCR</div>
+            <div class="kpi-value" style="font-size:24px;" id="scenarioBCRval">1.27</div>
+          </div>
+        </div>
+        <div id="scenarioVerdict" class="callout success" style="margin-top:12px;">
+          <strong>POSITIVE NPV</strong> — Investment generates net economic benefits under these assumptions.
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Construction Cost Overrun Sensitivity</h3>
+      <div class="chart-container" style="height:380px;"><div id="sensitivityChart" style="width:100%;height:100%;"></div></div>
+      <table style="margin-top:16px;">
+        <thead><tr><th>Scenario</th><th class="text-right">Capital</th><th class="text-right">NPV (4%)</th><th class="text-right">NPV (7%)</th><th class="text-right">BCR (7%)</th></tr></thead>
+        <tbody>
+          <tr><td>Base case</td><td class="text-right">$2,400M</td><td class="text-right positive-val">+$1,287M</td><td class="text-right positive-val">+$486M</td><td class="text-right">1.27</td></tr>
+          <tr><td>+10% overrun</td><td class="text-right">$2,640M</td><td class="text-right positive-val">+$1,079M</td><td class="text-right positive-val">+$302M</td><td class="text-right">1.20</td></tr>
+          <tr><td>+20% overrun</td><td class="text-right">$2,880M</td><td class="text-right positive-val">+$871M</td><td class="text-right positive-val">+$118M</td><td class="text-right">1.14</td></tr>
+          <tr><td>+30% overrun</td><td class="text-right">$3,120M</td><td class="text-right positive-val">+$663M</td><td class="text-right negative-val">-$65M</td><td class="text-right negative-val">0.97</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Tornado Chart: Variable Sensitivity (NPV at 7%, $M)</h3>
+    <div class="chart-container" style="height:400px;"><div id="tornadoChart" style="width:100%;height:100%;"></div></div>
+    <div class="callout warning" style="margin-top:12px;">
+      <strong>Most sensitive variable:</strong> Homelessness diversion rate. If the true rate is 30% rather than 40%, the BCR falls to approximately 1.00 at 7%. Targeting dwellings to people experiencing homelessness is critical to realising modelled benefits.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== TAB 5: FISCAL IMPACT ==================== -->
+<div id="tab-fiscal" class="tab-content">
+  <div class="callout" style="margin-bottom:20px;">
+    <strong>Note:</strong> Fiscal impacts are transfer payments and are NOT included in the CBA. They represent redistribution between government and households. Presented separately for budget planning purposes.
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi-card positive">
+      <div class="kpi-label">Annual Fiscal Improvement</div>
+      <div class="kpi-value" style="color:var(--green);">+$207M</div>
+      <div class="kpi-sublabel">Steady state, per annum</div>
+    </div>
+    <div class="kpi-card positive">
+      <div class="kpi-label">10-Year Cumulative</div>
+      <div class="kpi-value" style="color:var(--green);">+$1,305M</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Commonwealth Share</div>
+      <div class="kpi-value" style="color:var(--kpmg-blue);">~60%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">State Share</div>
+      <div class="kpi-value" style="color:var(--kpmg-blue);">~40%</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel">
+      <h3>Fiscal Impact Breakdown</h3>
+      <table>
+        <thead><tr><th>Fiscal Item</th><th class="text-right">Annual ($M)</th><th class="text-right">10-Year ($M)</th></tr></thead>
+        <tbody>
+          <tr><td>Reduced Commonwealth Rent Assistance</td><td class="text-right">-$86M</td><td class="text-right">-$540M</td></tr>
+          <tr><td>Reduced Centrelink payments</td><td class="text-right">-$62M</td><td class="text-right">-$390M</td></tr>
+          <tr><td>Additional income tax revenue</td><td class="text-right">+$41M</td><td class="text-right">+$260M</td></tr>
+          <tr><td>Additional GST revenue</td><td class="text-right">+$18M</td><td class="text-right">+$115M</td></tr>
+          <tr class="bold"><td>Net fiscal improvement</td><td class="text-right positive-val">+$207M</td><td class="text-right positive-val">+$1,305M</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="panel">
+      <h3>Fiscal Impact Composition</h3>
+      <div class="chart-container" style="height:380px;"><div id="fiscalChart" style="width:100%;height:100%;"></div></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Operating Cost vs Fiscal Offset</h3>
+    <div class="chart-container" style="height:260px;"><div id="operatingOffsetChart" style="width:100%;height:100%;"></div></div>
+    <div class="callout success" style="margin-top:12px;">
+      Annual State fiscal savings of $80–85M partially offset the $102M p.a. recurrent operating costs at full delivery, resulting in a net State recurrent cost of approximately $17–22M p.a.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== TAB 6: RISKS ==================== -->
+<div id="tab-risks" class="tab-content">
+  <div class="panel" style="margin-bottom:20px;">
+    <h3>Risk Register</h3>
+    <table>
+      <thead><tr><th>Risk</th><th class="text-center">Likelihood</th><th class="text-center">Impact</th><th>Mitigation</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="risk-dot red" style="display:inline-block;vertical-align:middle;margin-right:6px;"></span>Construction cost overrun >20%</td>
+          <td class="text-center">Medium</td>
+          <td class="text-center">High</td>
+          <td>Staged delivery; fixed-price contracts; independent cost assurance at each tranche</td>
+        </tr>
+        <tr>
+          <td><span class="risk-dot amber" style="display:inline-block;vertical-align:middle;margin-right:6px;"></span>Lower homelessness diversion rate</td>
+          <td class="text-center">Medium</td>
+          <td class="text-center">High</td>
+          <td>Rigorous tenant allocation targeting people experiencing homelessness</td>
+        </tr>
+        <tr>
+          <td><span class="risk-dot amber" style="display:inline-block;vertical-align:middle;margin-right:6px;"></span>Delivery delays</td>
+          <td class="text-center">Medium</td>
+          <td class="text-center">Medium</td>
+          <td>Phased procurement with performance milestones and penalty clauses</td>
+        </tr>
+        <tr>
+          <td><span class="risk-dot amber" style="display:inline-block;vertical-align:middle;margin-right:6px;"></span>Crowding out private construction</td>
+          <td class="text-center">Low-Medium</td>
+          <td class="text-center">Medium</td>
+          <td>Stagger delivery to avoid peak demand periods in construction market</td>
+        </tr>
+        <tr>
+          <td><span class="risk-dot amber" style="display:inline-block;vertical-align:middle;margin-right:6px;"></span>Operating cost escalation</td>
+          <td class="text-center">Medium</td>
+          <td class="text-center">Medium</td>
+          <td>Lifecycle costing at design stage; maintenance reserves; performance benchmarking</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel">
+      <h3>Break-Even Analysis</h3>
+      <table>
+        <thead><tr><th>Discount Rate</th><th class="text-right">Max Cost Overrun</th></tr></thead>
+        <tbody>
+          <tr><td>4%</td><td class="text-right">65%</td></tr>
+          <tr><td>7%</td><td class="text-right bold">27%</td></tr>
+        </tbody>
+      </table>
+      <div class="callout warning" style="margin-top:16px;">
+        At the 7% central discount rate, the project can absorb up to 27% in construction cost overruns before NPV turns negative. This is a moderate safety margin.
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Key Limitations</h3>
+      <ul style="font-size:12px; line-height:1.8; padding-left:16px;">
+        <li>Health and justice savings rely on benefit transfer from AHURI studies — no primary valuation conducted</li>
+        <li>Consumer surplus estimate is indicative; a state-specific discrete choice experiment would improve precision</li>
+        <li>Analysis does not capture intergenerational benefits (children's educational outcomes), which would increase BCR</li>
+        <li>No allowance for crowding-out effects on private construction activity</li>
+        <li>Operating cost estimates may understate if maintenance backlog develops</li>
+        <li>Distributional analysis uses average tax incidence, not marginal rates</li>
+      </ul>
+      <div class="callout success" style="margin-top:12px;">
+        <strong>Upside not modelled:</strong> Intergenerational benefits, neighbourhood effects, and reduced child protection system costs are excluded. The true BCR is likely higher than estimated.
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="footer">
+  Client Confidential | KPMG Policy, Economics and Public Impact (PEPI) | Social Housing Investment CBA | March 2026 | All values 2026 AUD (real)<br>
+  Sources: ABS, AIHW, AHURI, Productivity Commission ROGS, BOCSAR | Australian Treasury RMG 415 | Infrastructure Australia Assessment Framework
+</div>
+
+<script>
+// ==================== KPMG Brand Constants ====================
+const COLORS = {
+  blue: '#00338D', pacificBlue: '#00B8F5', cobalt: '#1E49E2', lightBlue: '#76D2FF',
+  purple: '#7213EA', lightPurple: '#B497FF', green: '#00C0AE', darkPink: '#AB0D82',
+  darkBlue: '#0C233C', darkGreen: '#098E7E',
+  red: '#ED2124', amber: '#F1C44D', tlGreen: '#269924',
+  darkGrey: '#333333', midGrey: '#666666', lightGrey: '#E5E5E5', offWhite: '#E5E5E5'
+};
+const CHART_ORDER = ['#00338D','#00B8F5','#1E49E2','#76D2FF','#7213EA','#B497FF','#00C0AE','#AB0D82'];
+
+// Register KPMG ECharts theme
+echarts.registerTheme('kpmg', {
+  color: CHART_ORDER, backgroundColor: 'transparent',
+  textStyle: { fontFamily: 'Arial, Helvetica, sans-serif', color: '#333333', fontSize: 12 },
+  title: { textStyle: { color: '#00338D', fontWeight: 'bold', fontSize: 16 }, subtextStyle: { color: '#666666' } },
+  legend: { textStyle: { color: '#666666', fontSize: 11 } },
+  tooltip: { backgroundColor: '#0C233C', textStyle: { color: '#FFFFFF', fontSize: 12 }, borderColor: '#1E49E2', borderWidth: 1 },
+  categoryAxis: { axisLine: { lineStyle: { color: '#E5E5E5' } }, axisLabel: { color: '#666666' }, splitLine: { lineStyle: { color: '#E5E5E5' } } },
+  valueAxis: { axisLine: { lineStyle: { color: '#E5E5E5' } }, axisLabel: { color: '#666666' }, splitLine: { lineStyle: { color: '#E5E5E5', type: 'dashed' } } },
+  aria: { enabled: true, label: { enabled: true } }
+});
+
+// Mermaid init
+mermaid.initialize({ startOnLoad: false, theme: 'base',
+  themeVariables: { primaryColor: '#00338D', primaryTextColor: '#FFFFFF', primaryBorderColor: '#1E49E2', fontFamily: 'Arial' } });
+
+// GSAP
+gsap.registerPlugin(ScrollTrigger);
+const animatedTabs = new Set();
+function animateTab(tabId) {
+  if (animatedTabs.has(tabId)) return;
+  animatedTabs.add(tabId);
+  const sel = '#tab-' + tabId;
+  gsap.from(sel + ' .kpi-card', { y: 30, opacity: 0, stagger: 0.08, duration: 0.6, ease: 'power2.out' });
+  gsap.from(sel + ' .panel', { y: 20, opacity: 0, stagger: 0.1, duration: 0.8, ease: 'power2.out', delay: 0.3 });
+  document.querySelectorAll(sel + ' .kpi-value[data-target]').forEach(el => {
+    const target = parseFloat(el.dataset.target);
+    if (!isNaN(target) && target > 0) {
+      gsap.to(el, { textContent: target, duration: 1.5, ease: 'power2.out', snap: { textContent: 1 },
+        onUpdate() { el.textContent = Math.round(parseFloat(el.textContent)).toLocaleString(); } });
+    }
+  });
+}
+
+// Tab Navigation
+function showTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-tabs button').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.target.classList.add('active');
+  event.target.setAttribute('aria-selected', 'true');
+  setTimeout(() => {
+    document.querySelectorAll('#tab-' + tab + ' .chart-container div[id]').forEach(el => {
+      const c = echarts.getInstanceByDom(el); if (c) c.resize();
+    });
+  }, 150);
+  animateTab(tab);
+}
+
+// Export functions
+function exportPPTX() {
+  const pptx = new PptxGenJS();
+  pptx.layout = 'LAYOUT_WIDE'; pptx.author = 'KPMG PEPI';
+  const cover = pptx.addSlide(); cover.background = { color: '00338D' };
+  cover.addText('Social Housing Investment Program — CBA', { x:0.8, y:2, w:11, h:1.5, fontSize:28, color:'FFFFFF', bold:true, fontFace:'Arial' });
+  cover.addText('Client Confidential | March 2026', { x:0.8, y:6.8, w:11, h:0.3, fontSize:9, color:'666666', fontFace:'Arial' });
+  const panels = document.querySelectorAll('.tab-content.active .panel');
+  Promise.all(Array.from(panels).map(p => html2canvas(p, { scale:2, backgroundColor:'#FFFFFF' }))).then(canvases => {
+    canvases.forEach(c => {
+      const s = pptx.addSlide(); s.background = { color: 'FFFFFF' };
+      s.addImage({ data: c.toDataURL('image/png'), x:0.3, y:0.3, w:12.73, h:6.5, sizing:{type:'contain',w:12.73,h:6.5} });
+    });
+    pptx.writeFile({ fileName: 'Social_Housing_CBA_Dashboard.pptx' });
+  });
+}
+function exportPDF() {
+  const active = document.querySelector('.tab-content.active');
+  if (!active) return;
+  html2pdf().set({ margin:10, filename:'Social_Housing_CBA_Dashboard.pdf', image:{type:'jpeg',quality:0.98},
+    html2canvas:{scale:2,backgroundColor:'#FFFFFF'}, jsPDF:{unit:'mm',format:'a4',orientation:'landscape'} }).from(active).save();
+}
+
+// Helper
+function createChart(domId, option) {
+  const el = document.getElementById(domId);
+  if (!el) return null;
+  const chart = echarts.init(el, 'kpmg');
+  chart.setOption(option);
+  return chart;
+}
+
+// ==================== ECharts Charts ====================
+document.addEventListener('DOMContentLoaded', () => {
+  animateTab('overview');
+
+  // CHART 1: Benefit Donut
+  createChart('benefitDonut', {
+    tooltip: { trigger: 'item', formatter: '{b}: ${c}M ({d}%)' },
+    legend: { orient: 'vertical', left: 10, top: 'center', textStyle: { fontSize: 10 } },
+    series: [{ type: 'pie', radius: ['40%', '70%'], center: ['60%', '50%'],
+      label: { formatter: '{d}%', fontSize: 10 },
+      data: [
+        { value: 2020, name: 'Reduced homelessness' }, { value: 769, name: 'Employment productivity' },
+        { value: 514, name: 'Health savings' }, { value: 430, name: 'Consumer surplus' },
+        { value: 227, name: 'Criminal justice' }, { value: 96, name: 'DWL reduction' },
+        { value: 32, name: 'Residual value' }
+      ]
+    }]
+  });
+
+  // CHART 2: Cost vs Benefit Bar
+  createChart('costBenBar', {
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    legend: { data: ['Total Costs', 'Total Benefits'], top: 0 },
+    xAxis: { type: 'category', data: ['PV at 4%', 'PV at 7%'] },
+    yAxis: { type: 'value', name: '$M (PV)' },
+    series: [
+      { name: 'Total Costs', type: 'bar', data: [3949, 3210], itemStyle: { color: COLORS.darkPink } },
+      { name: 'Total Benefits', type: 'bar', data: [6236, 4088], itemStyle: { color: COLORS.blue } }
+    ],
+    grid: { top: 40, bottom: 30, left: 70, right: 20 }
+  });
+
+  // CHART 3: Delivery Profile (dual axis)
+  createChart('deliveryChart', {
+    tooltip: { trigger: 'axis' },
+    legend: { data: ['Annual CapEx ($M)', 'Cumulative Dwellings'], top: 0 },
+    xAxis: { type: 'category', data: ['Yr 1', 'Yr 2', 'Yr 3', 'Yr 4', 'Yr 5', 'Yr 6', 'Yr 7', 'Yr 8'] },
+    yAxis: [
+      { type: 'value', name: 'CapEx ($M)', axisLabel: { formatter: '${value}M' } },
+      { type: 'value', name: 'Cumulative Dwellings', splitLine: { show: false } }
+    ],
+    series: [
+      { name: 'Annual CapEx ($M)', type: 'bar', data: [100, 200, 400, 400, 400, 400, 300, 200], itemStyle: { color: COLORS.blue + 'CC' } },
+      { name: 'Cumulative Dwellings', type: 'line', yAxisIndex: 1, data: [500, 1500, 3500, 5500, 7500, 9500, 11000, 12000],
+        lineStyle: { color: COLORS.pacificBlue, width: 3 }, symbolSize: 6, itemStyle: { color: COLORS.pacificBlue }, smooth: true }
+    ],
+    grid: { top: 40, bottom: 30, left: 70, right: 80 }
+  });
+
+  // CHART 4: Cost Breakdown (horizontal bar)
+  createChart('costBreakdownChart', {
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    legend: { data: ['PV at 4%', 'PV at 7%'], top: 0 },
+    xAxis: { type: 'value', name: '$M (PV)' },
+    yAxis: { type: 'category', data: ['Program Admin', 'Land Acquisition', 'Operating & Maintenance', 'Capital Construction'] },
+    series: [
+      { name: 'PV at 4%', type: 'bar', data: [62, 312, 1496, 2079], itemStyle: { color: COLORS.blue } },
+      { name: 'PV at 7%', type: 'bar', data: [55, 275, 1044, 1836], itemStyle: { color: COLORS.pacificBlue } }
+    ],
+    grid: { top: 40, bottom: 30, left: 150, right: 30 }
+  });
+
+  // CHART 5: Distributional
+  createChart('distChart', {
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    legend: { data: ['PV Benefits', 'PV Cost Incidence'], top: 0 },
+    xAxis: { type: 'category', data: ['Q1 (lowest)', 'Q2', 'Q3', 'Q4', 'Q5 (highest)'] },
+    yAxis: { type: 'value', name: '$M (PV at 7%)' },
+    series: [
+      { name: 'PV Benefits', type: 'bar', data: [2535, 1022, 368, 122, 41], itemStyle: { color: COLORS.blue } },
+      { name: 'PV Cost Incidence', type: 'bar', data: [128, 385, 642, 899, 1156], itemStyle: { color: COLORS.darkPink } }
+    ],
+    grid: { top: 40, bottom: 30, left: 60, right: 20 }
+  });
+
+  // CHART 6: Net Position
+  createChart('netPosChart', {
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, formatter: function(p) { return p[0].name + ': $' + p[0].value + 'M'; } },
+    xAxis: { type: 'category', data: ['Q1 (lowest)', 'Q2', 'Q3', 'Q4', 'Q5 (highest)'] },
+    yAxis: { type: 'value', name: '$M (PV at 7%)' },
+    series: [{ type: 'bar', data: [
+      { value: 2407, itemStyle: { color: COLORS.blue } }, { value: 637, itemStyle: { color: COLORS.blue } },
+      { value: -274, itemStyle: { color: COLORS.darkPink } }, { value: -777, itemStyle: { color: COLORS.darkPink } },
+      { value: -1115, itemStyle: { color: COLORS.darkPink } }
+    ], label: { show: true, position: 'top', formatter: function(p) { return (p.value >= 0 ? '+' : '') + '$' + p.value + 'M'; }, fontSize: 10 } }],
+    grid: { top: 20, bottom: 30, left: 60, right: 20 }
+  });
+
+  // CHART 7: Sensitivity
+  createChart('sensitivityChart', {
+    tooltip: { trigger: 'axis' },
+    legend: { data: ['NPV at 4%', 'NPV at 7%', 'Break-even'], top: 0 },
+    xAxis: { type: 'category', data: ['Base', '+10%', '+20%', '+30%', '+40%', '+50%'], name: 'Cost Overrun' },
+    yAxis: { type: 'value', name: 'NPV ($M)' },
+    series: [
+      { name: 'NPV at 4%', type: 'line', data: [1287, 1079, 871, 663, 455, 247], lineStyle: { color: COLORS.blue, width: 3 }, symbolSize: 8, itemStyle: { color: COLORS.blue }, smooth: true },
+      { name: 'NPV at 7%', type: 'line', data: [486, 302, 118, -65, -249, -433], lineStyle: { color: COLORS.pacificBlue, width: 3 }, symbolSize: 8, itemStyle: { color: COLORS.pacificBlue }, smooth: true },
+      { name: 'Break-even', type: 'line', data: [0, 0, 0, 0, 0, 0], lineStyle: { color: COLORS.midGrey, width: 2, type: 'dashed' }, symbol: 'none' }
+    ],
+    grid: { top: 40, bottom: 40, left: 60, right: 20 }
+  });
+
+  // CHART 8: Tornado
+  createChart('tornadoChart', {
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    legend: { data: ['Downside', 'Upside'], top: 0 },
+    xAxis: { type: 'value', name: 'Change in NPV ($M)' },
+    yAxis: { type: 'category', data: ['Occupancy rate (85%→100%)', 'Operating costs (±29%)', 'Employment uplift (8%→16%)', 'Construction cost (±30%)', 'Homelessness diversion (30%→50%)'] },
+    series: [
+      { name: 'Downside', type: 'bar', data: [-408, -268, -256, -551, -474], itemStyle: { color: COLORS.darkPink }, stack: null },
+      { name: 'Upside', type: 'bar', data: [408, 268, 256, 551, 474], itemStyle: { color: COLORS.blue }, stack: null }
+    ],
+    grid: { top: 40, bottom: 40, left: 220, right: 30 }
+  });
+
+  // CHART 9: Fiscal
+  createChart('fiscalChart', {
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    xAxis: { type: 'category', data: ['Rent Assistance', 'Centrelink', 'Income Tax', 'GST'] },
+    yAxis: { type: 'value', name: '$M per annum' },
+    series: [{ type: 'bar', data: [
+      { value: 86, itemStyle: { color: COLORS.blue } }, { value: 62, itemStyle: { color: COLORS.pacificBlue } },
+      { value: 41, itemStyle: { color: COLORS.cobalt } }, { value: 18, itemStyle: { color: COLORS.lightBlue } }
+    ], label: { show: true, position: 'top', formatter: '${c}M', fontWeight: 'bold' } }],
+    grid: { top: 20, bottom: 30, left: 60, right: 20 }
+  });
+
+  // CHART 10: Operating vs Offset
+  createChart('operatingOffsetChart', {
+    tooltip: { trigger: 'axis' },
+    legend: { data: ['Operating Cost ($M)', 'State Fiscal Savings ($M)'], top: 0 },
+    xAxis: { type: 'category', data: ['Year 3', 'Year 4', 'Year 5', 'Year 6', 'Year 7', 'Year 8', 'Year 9', 'Year 10', 'Steady State'] },
+    yAxis: { type: 'value', name: '$M per annum' },
+    series: [
+      { name: 'Operating Cost ($M)', type: 'bar', data: [30, 47, 64, 81, 94, 102, 102, 102, 102], itemStyle: { color: COLORS.darkPink } },
+      { name: 'State Fiscal Savings ($M)', type: 'bar', data: [22, 35, 48, 60, 70, 80, 83, 85, 85], itemStyle: { color: COLORS.blue } }
+    ],
+    grid: { top: 40, bottom: 30, left: 60, right: 20 }
+  });
+
+  // Responsive resize
+  window.addEventListener('resize', () => {
+    document.querySelectorAll('.chart-container div[id]').forEach(el => {
+      const c = echarts.getInstanceByDom(el); if (c) c.resize();
+    });
+  });
+});
+
+// ==================== INTERACTIVE SCENARIO MODEL ====================
+function updateScenario() {
+  const overrun = parseFloat(document.getElementById('overrunSlider').value);
+  const diversion = parseFloat(document.getElementById('diversionSlider').value);
+  const employment = parseFloat(document.getElementById('employmentSlider').value);
+  const opCost = parseFloat(document.getElementById('opCostSlider').value);
+  const discount = parseFloat(document.getElementById('discountSlider').value);
+
+  // Display values
+  document.getElementById('overrunVal').textContent = overrun + '%';
+  document.getElementById('diversionVal').textContent = diversion + '%';
+  document.getElementById('employmentVal').textContent = employment + '%';
+  document.getElementById('opCostVal').textContent = '$' + opCost.toLocaleString();
+  document.getElementById('discountVal').textContent = discount + '%';
+
+  // Simplified NPV model (linearised around base case parameters)
+  // Base case at 7%: NPV = +486M, PV costs = 3210M, PV benefits = 4088M (at 7% base)
+
+  // Discount rate adjustment (approximate: each 1% changes NPV by ~$267M)
+  const discountEffect = (7 - discount) * 267;
+
+  // Construction overrun effect (each 10% = ~$184M at 7%)
+  const overrunEffect = -(overrun / 10) * 184;
+
+  // Homelessness diversion (base 40%; each 5pp = ~$237M impact at 7%)
+  const diversionEffect = ((diversion - 40) / 5) * 237;
+
+  // Employment uplift (base 12%; each 2pp = ~$128M at 7%)
+  const employmentEffect = ((employment - 12) / 2) * 128;
+
+  // Operating cost (base $8,500; each $500 = ~$50M impact on NPV)
+  const opCostEffect = -((opCost - 8500) / 500) * 50;
+
+  const npv = Math.round(486 + discountEffect + overrunEffect + diversionEffect + employmentEffect + opCostEffect);
+
+  // Approximate BCR
+  const baseCosts = 3210 + (overrun / 10) * 184 + ((opCost - 8500) / 500) * 50;
+  const baseBenefits = 4088 + diversionEffect + employmentEffect + discountEffect * 0.6;
+  const bcr = (baseBenefits / baseCosts).toFixed(2);
+
+  // Update display
+  const npvEl = document.getElementById('scenarioNPVval');
+  const bcrEl = document.getElementById('scenarioBCRval');
+  const npvCard = document.getElementById('scenarioNPV');
+  const bcrCard = document.getElementById('scenarioBCR');
+  const verdict = document.getElementById('scenarioVerdict');
+
+  npvEl.textContent = (npv >= 0 ? '+' : '') + '$' + Math.abs(npv) + 'M';
+  bcrEl.textContent = bcr;
+
+  if (npv >= 0) {
+    npvEl.style.color = COLORS.tlGreen;
+    npvCard.style.borderTopColor = COLORS.tlGreen;
+    npvCard.className = 'kpi-card positive';
+  } else {
+    npvEl.style.color = COLORS.red;
+    npvCard.style.borderTopColor = COLORS.red;  // RAG indicator — red is correct here
+    npvCard.className = 'kpi-card negative';
+  }
+
+  if (parseFloat(bcr) >= 1) {
+    bcrEl.style.color = COLORS.tlGreen;
+    bcrCard.className = 'kpi-card positive';
+  } else {
+    bcrEl.style.color = COLORS.red;  // RAG indicator
+    bcrCard.className = 'kpi-card negative';
+  }
+
+  if (npv >= 0 && parseFloat(bcr) >= 1) {
+    verdict.className = 'callout success';
+    verdict.innerHTML = '<strong>POSITIVE NPV</strong> — Investment generates net economic benefits under these assumptions.';
+  } else if (npv >= -200) {
+    verdict.className = 'callout warning';
+    verdict.innerHTML = '<strong>MARGINAL</strong> — Investment is near break-even. Review assumptions and consider risk mitigation.';
+  } else {
+    verdict.className = 'callout danger';
+    verdict.innerHTML = '<strong>NEGATIVE NPV</strong> — Investment does not generate net benefits under these assumptions. Reconsider scope or cost controls.';
+  }
+}
+</script>
+</body>
+</html>

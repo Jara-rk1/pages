@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suburban Rail Loop CBA Dashboard | KPMG</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#E5E5E5;color:#333333}
+.header{background:#0C233C;padding:18px 40px;display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center}
+.header-title{color:#fff;font-size:14px;text-align:right;max-width:500px}
+.header-title h2{font-size:18px;margin-bottom:2px}
+.tabs{display:flex;background:#00338D;padding:0 40px;gap:0;flex-wrap:wrap}
+.tab{padding:14px 22px;color:rgba(255,255,255,.7);cursor:pointer;font-size:13px;font-weight:600;border-bottom:3px solid transparent;transition:.2s}
+.tab:hover{color:#fff;background:rgba(255,255,255,.08)}
+.tab.active{color:#fff;border-bottom:3px solid #00B8F5;background:rgba(255,255,255,.05)}
+.content{max-width:1280px;margin:24px auto;padding:0 24px}
+.panel{display:none}
+.panel.active{display:block}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-bottom:28px}
+.kpi{background:#fff;border-radius:4px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,.08);border-left:4px solid #00338D}
+.kpi.negative{border-left-color:#ED2124}
+.kpi.positive{border-left-color:#269924}
+.kpi.amber{border-left-color:#F1C44D}
+.kpi-label{font-size:12px;color:#666666;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.kpi-value{font-size:28px;font-weight:700;color:#00338D}
+.kpi.negative .kpi-value{color:#ED2124}
+.kpi.positive .kpi-value{color:#269924}
+.kpi-sub{font-size:11px;color:#666666;margin-top:4px}
+.chart-card{background:#fff;border-radius:4px;padding:28px;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:24px}
+.chart-card h3{font-size:16px;color:#00338D;margin-bottom:16px;font-weight:700}
+.chart-wrap{position:relative;max-height:420px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:800px){.two-col{grid-template-columns:1fr}}
+.source{font-size:11px;color:#666666;margin-top:12px;font-style:italic}
+.footer{text-align:center;padding:20px;color:#666666;font-size:11px;border-top:1px solid #E5E5E5;margin-top:40px;background:#fff}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px}
+th{background:#00338D;color:#fff;padding:10px 14px;text-align:left;font-weight:600}
+td{padding:10px 14px;border-bottom:1px solid #E5E5E5}
+tr:nth-child(even){background:#E5E5E5}
+.tag{display:inline-block;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;color:#fff}
+.tag-green{background:#269924}
+.tag-red{background:#ED2124}
+.tag-amber{background:#F1C44D;color:#333333}
+@media print {
+  .tabs, .tab { display: none !important; }
+  .panel { display: block !important; }
+  body { background: #FFFFFF; }
+  .header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .footer { page-break-before: always; }
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo"><svg fill="none" height="30" viewBox="0 0 77 30" width="77" xmlns="http://www.w3.org/2000/svg"><path fill="#FFFFFF" d="m59.4297.0894165v14.8992835l-.1935.157-.1935.157-.1855.1649-.1773.1648-.1693.1649-.1693.1727-.1613.1727-.1612.1727v-16.2259835h-16.9549v13.5647835h-1.4028v-13.5647835h-16.9549v13.5883835h-1.4028v-13.5883835h-16.95487v15.4880835l-4.329426 14.0436h3.805376l1.91075-6.2172h.54823l3.16039 6.2172h4.59545l-3.0636-6.2172h6.9496l-1.9269 6.2172h4.1521l1.9027-6.2015h.9191v-.0157h1.306.1049 7.8445l-1.8382 6.2015h4.1924l1.7817-6.2015h1.8866l.0483 6.2015h3.5152l4.0391-6.2015h2.6444l-1.3705 6.2015h4.1278l1.3464-6.2015h2.3864l-.0161.3533.0086.3611.0161.3453.0322.3455.0242.1648.0241.1649.0322.1648.0323.1649.0402.1648.0403.157.0484.157.0483.157.0565.157.0565.1492.0644.1491.0646.1413.0726.1492.0725.1413.0807.1334.0807.1413.0887.1335.0967.1256.0968.1334.1048.1178.1048.1256.1048.1177.1209.1178.121.1099.1531.1256.1532.1256.1613.1177.1693.1099.1693.1099.1693.1021.1774.0863.1854.0942.1774.0785.1854.0784.1854.0707.1935.0707.1935.0628.1935.055.1935.0549.1935.0471.387.0863.395.0629.387.0549.387.0471.3789.0314.3709.0157.3628.0158h.3466l.4677-.0075.4676-.0074.4756-.0236.4757-.0236.4757-.0392.4757-.0393.4756-.0471.4757-.055.4837-.0628.4838-.0707.4837-.0785.4837-.0785.4838-.0863.4837-.0942.4837-.0942.4918-.1099 1.4351-5.6284h4.7084v-23.3145573h-16.9549zm-53.50905 22.7335835.02417-.0863.05649.0863zm14.77005-8.3524-.2419.7929-2.2574 7.3005-.0887.259h-7.4173l-.5724-1.1932 7.9897-7.952h-5.1357l-6.2482 6.5547 2.02361-6.5547h-3.78924v-12.999627h15.73743v13.792427zm4.3777 6.1701-.1209.0075-.1129.0074-.1209.0075h-.129-.1693-.1451l-.1371.0074h-.129l-1.0077-.0074.4676-1.6799.2176-.8321.5322-1.9547h.1693.1773l.1693-.0074h.1613.782l.4757.0074.4353.0158.1935.0074.1855.0157.1773.0236.1613.0236.1451.0235.1371.0393.129.0393.1128.0471.0968.0471.0887.0629.0806.0628.0645.0785.0403.0629.0322.0628.0322.0707.0242.0785.0161.0863.0085.0863v.0942.102l-.0085.1099-.0076.1099-.0242.1256-.0241.1256-.0726.2669-.0887.2983-.0887.2512-.0968.2434-.1048.2276-.1129.212-.0565.0942-.0564.0942-.0646.0942-.0726.0863-.0726.0863-.0726.0785-.0806.0785-.0807.0706-.0887.0629-.0887.0707-.0967.0549-.1049.0628-.1048.055-.1128.0471-.1129.0471-.1209.0393-.129.0471-.1371.0314-.1451.0314-.1451.0313-.1613.0236-.1612.0236-.1693.0157-.1774.0157zm11.4645 2.1823 1.6528-5.7305.0645 5.7305h-1.7172zm2.5155-9.1688h-3.9344l-2.7089 9.1688h-4.1763l.1935-.0784.1935-.0785.1855-.0785.1854-.0863.1774-.0864.1693-.102.1693-.0942.1612-.1021.1613-.1099.1531-.1099.1452-.1098.1451-.1257.137-.1177.129-.1335.129-.1256.121-.1413.1209-.1334.1129-.1492.1048-.1413.1048-.157.0967-.157.0887-.1569.0888-.1649.0806-.1727.0807-.1727.0726-.1727.0644-.1806.0645-.1884.0484-.1884.0565-.1884.0402-.2041.0403-.1962.0565-.314.0483-.2983.0323-.2826.0241-.2669.0086-.2669-.0086-.2434-.0075-.2433-.0323-.2277-.0322-.2119-.0565-.212-.0565-.1962-.0806-.1884-.0887-.1806-.0968-.1805-.1128-.1649-.129-.157-.1049-.1099-.1048-.1099-.1128-.0942-.121-.0863-.129-.0863-.129-.0785-.137-.0706-.1371-.0629-.1451-.0628-.1451-.0471-.1532-.0472-.1532-.0471-.1612-.0393-.1613-.0313-.1612-.0314-.1693-.0236-.3467-.0471-.3467-.0235-.3547-.0236-.3628-.0074h-.7256-.7175-.2258-.4031-.4999-.5563-.5401-.4596-.3225-.1209v-12.976108h15.7375v12.976108zm9.5617 9.1688h-2.3622l3.5796-5.495zm8.7959-8.9097-.0085 3.1792-.2015.2748-.1855.2826-.1854.2826-.1693.2826-.1613.2826-.1612.2904-.1371.2826-.137.2826-.129.2748-.1129.2826-.1129.2747-.0967.2669-.0887.2669-.0807.2591-.0726.2512-.0645.2512-.0403.1648-.0403.1727-.0402.1649-.0323.1727-.0322.1648-.0242.1649-.0241.1648-.0161.1727h-2.3139l1.9753-9.1452-6.6594-.0075-5.958 9.1531h-.4354v-22.144827h15.7455v13.235127zm9.0781 12.6542-.3305.0549-.3387.0471-.3386.0471-.3305.0393-.3306.0314-.3305.0236-.3225.0157h-.3225-.2096l-.2096-.0074-.2016-.0158-.2015-.0235-.1935-.0314-.1855-.0314-.1854-.0393-.1774-.0471-.1693-.0549-.1693-.055-.1612-.0706-.1532-.0707-.1532-.0863-.1451-.0863-.1371-.0942-.129-.0942-.129-.1099-.1128-.1178-.1129-.1177-.1048-.1335-.0968-.1334-.0887-.1492-.0806-.1491-.0807-.157-.0645-.1649-.0565-.1805-.0483-.1806-.0484-.1884-.0322-.1962-.0242-.2041-.0161-.212-.0085-.2198h7.3366l-.8062 3.1636zm9.3038-3.7445h-3.9666l.653-2.5591h-7.9493l-.6531 2.5591h-3.8456v-.5259l.0483-.2198.0403-.2198.0483-.2355.0483-.2355.0726-.2591.0726-.259.0807-.2591.0887-.2512.0967-.2512.1049-.2512.1128-.2433.1129-.2434.129-.2433.129-.2277.1371-.2355.1531-.2198.1532-.2198.1532-.2119.1693-.2041.1774-.1963.1854-.1884.1854-.1727.2016-.1727.2015-.1648.2097-.1492.2257-.1413.2258-.1256.2338-.1177.2418-.1099.2499-.0942.258-.0785.2661-.0629.2741-.0549.2822-.0393.2902-.0235.2983-.0075.2338.0075.2338.0157.2338.0314.2258.0471.1129.0314.1048.0313.1048.0314.0967.0471.0968.0393.0967.055.0887.0549.0887.0549.0807.0707.0806.0707.0726.0706.0726.0863.0646.0785.0565.0942.0483.1021.0483.102.0403.1099.0322.1178.0242.1177.0242.1335.0085.1334v.1413.1492l-.0161.157h4.7406l.0726-.3219.0645-.3689.0322-.1963.0162-.2119.0161-.212v-.2198l-.0076-.2276-.0242-.2355-.0241-.1099-.0162-.1178-.0322-.1177-.0322-.1178-.0403-.1256-.0403-.1177-.0483-.1178-.0565-.1177-.0565-.1178-.0726-.1177-.0726-.1178-.0806-.1177-.0968-.1256-.1048-.1178-.1048-.1177-.1129-.1099-.1209-.1099-.129-.1021-.129-.0942-.137-.0942-.1452-.0942-.1451-.0785-.1532-.0784-.1612-.0785-.1612-.0707-.1694-.0707-.1773-.0628-.1774-.0629-.1774-.0549-.1935-.0471-.1854-.0471-.2015-.0471-.2016-.0393-.2016-.0393-.2096-.0314-.2177-.0236-.4434-.0471-.4515-.0393-.4756-.0157-.4838-.0074-.3628.0074-.3789.0075-.395.0235-.4112.0314-.4273.0471-.4354.0549-.4434.0707-.4515.0942-.2257.0471-.2338.0549-.2258.0629-.2338.0628-.2338.0707-.2338.0785-.2257.0785-.2338.0863-.2338.0942-.2338.102-.2258.1021-.2338.1099-.2257.1177-.2258.1256-.2257.1256-.2258.1413v-13.894463h15.7617v22.144863z"/></svg></div>
+  <div class="header-title">
+    <h2>Suburban Rail Loop — Cost-Benefit Analysis</h2>
+    Victorian Parliamentary Budget Office, 2024
+  </div>
+</div>
+<div class="tabs">
+  <div class="tab active" onclick="showTab(0)">Executive Summary</div>
+  <div class="tab" onclick="showTab(1)">Cost–Benefit Comparison</div>
+  <div class="tab" onclick="showTab(2)">Benefit Breakdown</div>
+  <div class="tab" onclick="showTab(3)">Discount Rate Sensitivity</div>
+  <div class="tab" onclick="showTab(4)">Scenario Analysis</div>
+  <div class="tab" onclick="showTab(5)">Cost Structure</div>
+</div>
+<div class="content">
+
+<!-- TAB 0: Executive Summary -->
+<div class="panel active" id="p0">
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-label">Total Lifecycle Cost (East+North)</div><div class="kpi-value">$216.6B</div><div class="kpi-sub">Present value, 50-year appraisal to 2084</div></div>
+    <div class="kpi positive"><div class="kpi-label">NPV Range (4% discount)</div><div class="kpi-value">+$3.0B to +$22.9B</div><div class="kpi-sub">Positive at lower discount rate</div></div>
+    <div class="kpi negative"><div class="kpi-label">NPV Range (7% central)</div><div class="kpi-value">−$10.6B to −$7.4B</div><div class="kpi-sub">Negative at Treasury standard rate</div></div>
+    <div class="kpi amber"><div class="kpi-label">BCR Range (7%)</div><div class="kpi-value">0.6 – 0.7</div><div class="kpi-sub"><span class="tag tag-red">Below 1.0</span></div></div>
+    <div class="kpi"><div class="kpi-label">Total Quantified Benefits</div><div class="kpi-value">$50.8 – $58.7B</div><div class="kpi-sub">Present value across all categories</div></div>
+    <div class="kpi"><div class="kpi-label">Appraisal Period</div><div class="kpi-value">50 years</div><div class="kpi-sub">Operations through 2084</div></div>
+  </div>
+  <div class="chart-card">
+    <h3>Central case: costs outweigh benefits at 7% discount rate, but project is viable at 4%</h3>
+    <canvas id="execChart" height="110"></canvas>
+    <div class="source">Source: Victorian Parliamentary Budget Office, Suburban Rail Loop CBA (March 2024)</div>
+  </div>
+</div>
+
+<!-- TAB 1: Cost-Benefit Comparison -->
+<div class="panel" id="p1">
+  <div class="chart-card">
+    <h3>Total benefits fall short of costs at 7% and 10%, but exceed costs at 4%</h3>
+    <canvas id="cbChart" height="130"></canvas>
+    <div class="source">Source: PBO CBA Report, 2024. Benefits are midpoint of published ranges.</div>
+  </div>
+  <div class="chart-card">
+    <h3>Detailed cost–benefit comparison by discount rate</h3>
+    <table>
+      <tr><th>Discount Rate</th><th>Total Benefits (PV)</th><th>Total Costs (PV)</th><th>NPV</th><th>BCR</th><th>Outcome</th></tr>
+      <tr><td>4%</td><td>$85–$95B</td><td>$72B</td><td>+$3.0B to +$22.9B</td><td>1.1 – 1.7</td><td><span class="tag tag-green">Positive</span></td></tr>
+      <tr><td>7% (central)</td><td>$50.8–$58.7B</td><td>$66.2B</td><td>−$10.6B to −$7.4B</td><td>0.6 – 0.7</td><td><span class="tag tag-red">Negative</span></td></tr>
+      <tr><td>10%</td><td>$28–$32B</td><td>$55B</td><td>~−$25B to −$20B</td><td>0.3 – 0.4</td><td><span class="tag tag-red">Negative</span></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 2: Benefit Breakdown -->
+<div class="panel" id="p2">
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>Transport user savings and road decongestion drive two-thirds of total benefits</h3>
+      <canvas id="benefitDonut"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Benefit categories (present value, midpoint estimates)</h3>
+      <table>
+        <tr><th>Category</th><th>Value (PV, $B)</th><th>Share</th></tr>
+        <tr><td>Public transport user savings</td><td>$18.3B</td><td>33%</td></tr>
+        <tr><td>Road decongestion</td><td>$12.2B</td><td>22%</td></tr>
+        <tr><td>Wider economic / agglomeration</td><td>$7.9B</td><td>14%</td></tr>
+        <tr><td>Residual land value & amenity</td><td>$8.0B</td><td>15%</td></tr>
+        <tr><td>Health improvements</td><td>$3.3B</td><td>6%</td></tr>
+        <tr><td>Environmental savings</td><td>$0.5B</td><td>1%</td></tr>
+        <tr><td>Other benefits</td><td>$4.6B</td><td>8%</td></tr>
+      </table>
+      <div class="source">Midpoint of PBO published ranges. Totals may not sum due to rounding.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 3: Discount Rate Sensitivity -->
+<div class="panel" id="p3">
+  <div class="chart-card">
+    <h3>NPV swings from +$13B at 4% to −$22.5B at 10% — discount rate is the decisive variable</h3>
+    <canvas id="discountChart" height="130"></canvas>
+    <div class="source">Shaded area represents range between low and high estimates at each rate.</div>
+  </div>
+  <div class="chart-card">
+    <h3>BCR crosses 1.0 between 4% and 7% — the project's viability hinges on the social discount rate chosen</h3>
+    <canvas id="bcrLineChart" height="120"></canvas>
+  </div>
+</div>
+
+<!-- TAB 4: Scenario Analysis -->
+<div class="panel" id="p4">
+  <div class="chart-card">
+    <h3>Only the base case at 4% discount rate consistently delivers BCR above 1.0</h3>
+    <canvas id="scenarioChart" height="140"></canvas>
+    <div class="source">COVID and rideshare scenarios modelled at 4% discount rate. Low patronage scenario at 7%.</div>
+  </div>
+  <div class="chart-card">
+    <h3>Scenario descriptions</h3>
+    <table>
+      <tr><th>Scenario</th><th>BCR</th><th>Key Assumption</th></tr>
+      <tr><td>Base case (4%)</td><td>1.1 – 1.7</td><td>Published patronage forecasts, no COVID impact</td></tr>
+      <tr><td>COVID-reduced patronage (4%)</td><td>0.8 – 1.4</td><td>Permanent 15–20% reduction in PT demand</td></tr>
+      <tr><td>High rideshare penetration (4%)</td><td>0.8 – 1.3</td><td>Autonomous vehicles reduce PT mode share</td></tr>
+      <tr><td>Base case (7%)</td><td>0.6 – 0.7</td><td>Treasury standard discount rate</td></tr>
+      <tr><td>Low patronage (7%)</td><td>~0.4</td><td>Internal forecasts 53% below published</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 5: Cost Structure -->
+<div class="panel" id="p5">
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>Operations account for 55% of lifecycle costs, exceeding capital expenditure</h3>
+      <canvas id="costDonut"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Cost breakdown (East + North combined)</h3>
+      <table>
+        <tr><th>Category</th><th>Value ($B)</th><th>Share</th></tr>
+        <tr><td>Asset works & renewals</td><td>$133.9B</td><td>62%</td></tr>
+        <tr><td>Operations (to 2084)</td><td>$82.7B</td><td>38%</td></tr>
+        <tr><td><strong>Total lifecycle</strong></td><td><strong>$216.6B</strong></td><td><strong>100%</strong></td></tr>
+      </table>
+      <div class="source">PBO estimate, March 2024. Includes East and North sections.</div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <h3>Capital cost estimates: SRL East alone at $30–$34.5B (2021 terms)</h3>
+    <canvas id="capitalBar" height="100"></canvas>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<div class="footer">© 2026 KPMG, an Australian partnership. All rights reserved. | Public</div>
+
+<script>
+const P=['#00338D','#00B8F5','#1E49E2','#76D2FF','#7213EA','#B497FF','#00C0AE','#AB0D82'];
+const DARK='#0C233C',GREY='#666666',LGREY='#E5E5E5';
+Chart.defaults.font.family='Arial, Helvetica, sans-serif';Chart.defaults.color='#666666';Chart.defaults.borderColor='#E5E5E5';
+function showTab(i){document.querySelectorAll('.tab').forEach((t,idx)=>t.classList.toggle('active',idx===i));document.querySelectorAll('.panel').forEach((p,idx)=>p.classList.toggle('active',idx===i));}
+const fmt=v=>'$'+(v>=0?'':'-')+Math.abs(v).toFixed(1)+'B';
+
+// Exec summary chart
+new Chart(document.getElementById('execChart'),{type:'bar',data:{labels:['4% Discount','7% Discount (Central)','10% Discount'],datasets:[{label:'Benefits (midpoint PV)',data:[90,54.8,30],backgroundColor:P[0]},{label:'Costs (PV)',data:[72,66.2,55],backgroundColor:P[1]}]},options:{responsive:true,plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.raw+'B'}},legend:{position:'bottom'}},scales:{y:{beginAtZero:true,ticks:{callback:v=>'$'+v+'B'}}}}});
+
+// Cost-Benefit comparison
+new Chart(document.getElementById('cbChart'),{type:'bar',data:{labels:['4%','7% (Central)','10%'],datasets:[{label:'PT User Savings',data:[30,18.3,10],backgroundColor:P[0]},{label:'Road Decongestion',data:[20,12.2,6],backgroundColor:P[1]},{label:'Agglomeration',data:[13,7.9,4],backgroundColor:P[2]},{label:'Land Value & Amenity',data:[12,8.0,4],backgroundColor:P[3]},{label:'Health',data:[5,3.3,2],backgroundColor:P[4]},{label:'Environment',data:[1,0.5,0.3],backgroundColor:P[5]},{label:'Other',data:[9,4.6,3.7],backgroundColor:P[6]},{label:'Total Costs',data:[72,66.2,55],backgroundColor:P[7],type:'line',borderColor:P[7],pointRadius:6,fill:false,borderWidth:3}]},options:{responsive:true,plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.raw+'B'}}},scales:{x:{stacked:true},y:{stacked:true,ticks:{callback:v=>'$'+v+'B'}}}}});
+
+// Benefit donut
+new Chart(document.getElementById('benefitDonut'),{type:'doughnut',data:{labels:['PT User Savings $18.3B','Road Decongestion $12.2B','Agglomeration $7.9B','Land Value $8.0B','Health $3.3B','Environment $0.5B','Other $4.6B'],datasets:[{data:[18.3,12.2,7.9,8.0,3.3,0.5,4.6],backgroundColor:[P[0],P[1],P[2],P[3],P[4],P[5],P[6]]}]},options:{responsive:true,plugins:{legend:{position:'right'},tooltip:{callbacks:{label:c=>c.label+' ('+Math.round(c.raw/54.8*100)+'%)'}}}}});
+
+// Discount rate NPV line
+new Chart(document.getElementById('discountChart'),{type:'line',data:{labels:['4%','7%','10%'],datasets:[{label:'NPV High',data:[22.9,-7.4,-20],borderColor:P[0],backgroundColor:'rgba(0,51,141,.15)',fill:'+1',tension:.3,pointRadius:6},{label:'NPV Low',data:[3.0,-10.6,-25],borderColor:P[1],backgroundColor:'rgba(0,184,245,.15)',fill:false,tension:.3,pointRadius:6}]},options:{responsive:true,plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.raw+'B'}}},scales:{y:{ticks:{callback:v=>'$'+v+'B'},grid:{color:v=>v.tick.value===0?'#333333':LGREY}}}}});
+
+// BCR line
+new Chart(document.getElementById('bcrLineChart'),{type:'line',data:{labels:['4%','7%','10%'],datasets:[{label:'BCR High',data:[1.7,0.7,0.4],borderColor:P[0],pointRadius:6,tension:.3},{label:'BCR Low',data:[1.1,0.6,0.3],borderColor:P[1],pointRadius:6,tension:.3},{label:'BCR = 1.0 Threshold',data:[1,1,1],borderColor:P[2],borderDash:[8,4],pointRadius:0,fill:false}]},options:{responsive:true,plugins:{legend:{position:'bottom'}},scales:{y:{min:0,max:2,ticks:{stepSize:.2}}}}});
+
+// Scenario chart
+new Chart(document.getElementById('scenarioChart'),{type:'bar',data:{labels:['Base (4%)','COVID (4%)','Rideshare (4%)','Base (7%)','Low Patronage (7%)'],datasets:[{label:'BCR High',data:[1.7,1.4,1.3,0.7,0.4],backgroundColor:[P[0],P[1],P[2],P[3],P[4]]},{label:'BCR Low',data:[1.1,0.8,0.8,0.6,0.4],backgroundColor:[P[0]+'99',P[1]+'99',P[2]+'99',P[3]+'99',P[4]+'99']}]},options:{responsive:true,indexAxis:'y',plugins:{legend:{position:'bottom'},annotation:{}},scales:{x:{min:0,max:2,ticks:{stepSize:.2}}}}});
+
+// Cost donut
+new Chart(document.getElementById('costDonut'),{type:'doughnut',data:{labels:['Asset Works & Renewals $133.9B','Operations $82.7B'],datasets:[{data:[133.9,82.7],backgroundColor:[P[0],P[1]]}]},options:{responsive:true,plugins:{legend:{position:'right'},tooltip:{callbacks:{label:c=>c.label+' ('+Math.round(c.raw/216.6*100)+'%)'}}}}});
+
+// Capital bar
+new Chart(document.getElementById('capitalBar'),{type:'bar',data:{labels:['SRL East (Low)','SRL East (High)','East Lifecycle','East+North Lifecycle'],datasets:[{label:'Cost ($B)',data:[30,34.5,84.1,216.6],backgroundColor:[P[0],P[1],P[2],P[3]]}]},options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'$'+c.raw+'B'}}},scales:{y:{ticks:{callback:v=>'$'+v+'B'}}}}});
+</script>
+</body>
+</html>
