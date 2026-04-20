@@ -440,6 +440,16 @@
         GameEngine.initCanvas('game-container', { width: W, height: H, maxWidth: 480 });
 
         GameEngine.startGame(GAME_ID, {
+            instructions: {
+                title: 'HOW TO PLAY',
+                objective: 'Fly your auditor through gaps in the red-flag obstacles. Collect green checkmarks for points and gold seals for big bonuses.',
+                controls: [
+                    'Hold Space / tap screen to rise',
+                    'Release to fall',
+                    'Collect blue shields for temporary invincibility'
+                ],
+                tip: 'Stay near the centre — it gives you room to dodge both ways.'
+            },
             onUpdate: onUpdate,
             onDraw: onDraw,
             onGameOver: onGameOver,

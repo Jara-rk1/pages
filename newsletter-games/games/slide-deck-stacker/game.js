@@ -339,6 +339,15 @@
         GameEngine.initCanvas('game-container', { width: W, height: H });
 
         GameEngine.startGame(GAME_ID, {
+            instructions: {
+                title: 'HOW TO PLAY',
+                objective: 'Stack consulting slides as high as possible. Each block swings side to side — drop it precisely. Overhanging parts are trimmed!',
+                controls: [
+                    'Tap screen or press Space to drop the sliding block',
+                    'Perfect alignment gives a bonus'
+                ],
+                tip: 'Wait for the block to line up exactly — perfect stacks keep the tower full-width.'
+            },
             onUpdate: update,
             onDraw: draw,
             onGameOver: function () {

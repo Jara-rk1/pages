@@ -387,6 +387,15 @@
         });
 
         GameEngine.startGame(GAME_ID, {
+            instructions: {
+                title: 'HOW TO PLAY',
+                objective: 'Catch the green KPI cards falling from above. Dodge the red ones — they cost you points! Gold cards are bonus.',
+                controls: [
+                    'Arrow keys or move mouse to slide the paddle left/right',
+                    'On mobile, tilt or drag to move'
+                ],
+                tip: 'Prioritise gold bonus cards when they appear.'
+            },
             onUpdate: onUpdate,
             onDraw: onDraw,
             onGameOver: onGameOver,

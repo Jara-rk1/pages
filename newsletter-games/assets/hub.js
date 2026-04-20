@@ -5,7 +5,7 @@
 
 /** Game icon mapping by game ID */
 const GAME_ICONS = {
-    'consultant-rush': '\u{1F3C3}',
+    'consultant-rush': '\u{1F95A}',
     'audit-ascent': '\u{1F680}',
     'flappy-brief': '\u{1F4BC}',
     'deal-spell': '\u{1F4DD}',
@@ -41,7 +41,7 @@ const Hub = {
 
     /** All 12 game definitions for static/demo mode */
     STATIC_GAMES: [
-        { id: 'consultant-rush', title: 'Consultant Rush', description: 'Dodge obstacles on the way to the client site' },
+        { id: 'consultant-rush', title: 'Easter Egg Rush', description: 'Hop through the spring meadow collecting Easter eggs and dodging obstacles' },
         { id: 'audit-ascent', title: 'Audit Ascent', description: 'Climb the corporate ladder collecting audit evidence' },
         { id: 'flappy-brief', title: 'Flappy Brief', description: 'Navigate your briefing through bureaucratic hurdles' },
         { id: 'deal-spell', title: 'Deal Spell', description: 'Spell out deal terms before time runs out' },

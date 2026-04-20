@@ -252,6 +252,15 @@
         GameEngine._logicalHeight = 700;
 
         GameEngine.startGame(GAME_ID, {
+            instructions: {
+                title: 'HOW TO PLAY',
+                objective: 'Flip cards and match company pairs from memory. Clear all pairs to advance to larger grids. You have 3 minutes.',
+                controls: [
+                    'Click or tap cards to flip them',
+                    'Match two identical cards to clear them'
+                ],
+                tip: 'Try to remember card positions — the grid gets bigger each level!'
+            },
             onUpdate: function () {},
             onDraw: function () {},
             onGameOver: function () {

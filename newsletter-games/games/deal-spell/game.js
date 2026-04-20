@@ -323,6 +323,15 @@
         GameEngine._options = { width: 480, height: 700, maxWidth: 480 };
 
         GameEngine.startGame(GAME_ID, {
+            instructions: {
+                title: 'HOW TO PLAY',
+                objective: 'Guess the consulting term letter by letter before the deal falls through. You have 6 wrong guesses per word.',
+                controls: [
+                    'Type letters on your keyboard, or click the on-screen keys',
+                    'Each correct letter reveals its position in the word'
+                ],
+                tip: 'Start with common vowels (A, E, I) and consonants (S, T, R).'
+            },
             onUpdate: function () {},
             onDraw: function () {},
             onGameOver: function () {

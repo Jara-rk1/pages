@@ -325,6 +325,15 @@
         });
 
         GameEngine.startGame(GAME_ID, {
+            instructions: {
+                title: 'HOW TO PLAY',
+                objective: 'Grow your strategy snake by collecting initiatives. Avoid hitting the walls and your own tail — scope creep is fatal!',
+                controls: [
+                    'Arrow keys to change direction',
+                    'On mobile, swipe to steer'
+                ],
+                tip: 'Plan your route ahead — long snakes need wide turns.'
+            },
             onUpdate: update,
             onDraw: draw,
             onGameOver: onGameOver,

@@ -284,7 +284,7 @@ const GameEngine = {
             startTime: 0
         });
 
-        // 6. Store callbacks
+        // 6. Store callbacks and instructions
         this._callbacks = {
             onUpdate: callbacks.onUpdate || function () {},
             onDraw: callbacks.onDraw || function () {},
@@ -293,6 +293,7 @@ const GameEngine = {
             onInit: callbacks.onInit || null,
             onCountdownComplete: callbacks.onCountdownComplete || null
         };
+        this._instructions = callbacks.instructions || null;
 
         // 7. Hide any existing overlay
         this._hideOverlay();
@@ -302,21 +303,32 @@ const GameEngine = {
             this._callbacks.onInit();
         }
 
-        // 9. Show countdown, then start loop (skip loop for DOM-based games with no canvas)
-        return new Promise((resolve) => {
-            this.renderCountdown(3, () => {
-                this.state.startTime = performance.now();
-                this.lastTimestamp = performance.now();
-                if (this.canvas && this.ctx) {
-                    this.animFrameId = requestAnimationFrame((t) => this.gameLoop(t));
-                }
-                // Notify game that countdown finished (used by DOM games to defer gameActive)
-                if (this._callbacks.onCountdownComplete) {
-                    this._callbacks.onCountdownComplete();
-                }
-                resolve(true);
+        // 9. Show instructions (if provided), then countdown, then start loop
+        const startCountdownAndLoop = () => {
+            return new Promise((resolve) => {
+                this.renderCountdown(3, () => {
+                    this.state.startTime = performance.now();
+                    this.lastTimestamp = performance.now();
+                    if (this.canvas && this.ctx) {
+                        this.animFrameId = requestAnimationFrame((t) => this.gameLoop(t));
+                    }
+                    if (this._callbacks.onCountdownComplete) {
+                        this._callbacks.onCountdownComplete();
+                    }
+                    resolve(true);
+                });
             });
-        });
+        };
+
+        if (this._instructions) {
+            return new Promise((resolve) => {
+                this.renderInstructions(this._instructions, () => {
+                    startCountdownAndLoop().then(resolve);
+                });
+            });
+        }
+
+        return startCountdownAndLoop();
     },
 
     gameLoop(timestamp) {
@@ -828,6 +840,117 @@ const GameEngine = {
         ].join(';');
         hubBtn.addEventListener('click', () => this.goToHub());
         overlay.appendChild(hubBtn);
+    },
+
+    renderInstructions(info, callback) {
+        const overlay = this._overlayEl;
+        if (!overlay) {
+            callback();
+            return;
+        }
+
+        overlay.innerHTML = '';
+        overlay.style.display = 'flex';
+
+        // Title
+        var title = document.createElement('div');
+        title.textContent = info.title || 'HOW TO PLAY';
+        title.style.cssText = 'font: bold 24px Arial, Helvetica, sans-serif; letter-spacing: 2px; margin-bottom: 16px; text-transform: uppercase;';
+        overlay.appendChild(title);
+
+        // Objective
+        if (info.objective) {
+            var objLabel = document.createElement('div');
+            objLabel.textContent = 'OBJECTIVE';
+            objLabel.style.cssText = 'font: bold 11px Arial, Helvetica, sans-serif; opacity: 0.6; letter-spacing: 1px; margin-bottom: 4px;';
+            overlay.appendChild(objLabel);
+
+            var objText = document.createElement('div');
+            objText.textContent = info.objective;
+            objText.style.cssText = 'font: 15px Arial, Helvetica, sans-serif; margin-bottom: 20px; line-height: 1.4; max-width: 360px;';
+            overlay.appendChild(objText);
+        }
+
+        // Controls
+        if (info.controls) {
+            var ctrlLabel = document.createElement('div');
+            ctrlLabel.textContent = 'CONTROLS';
+            ctrlLabel.style.cssText = 'font: bold 11px Arial, Helvetica, sans-serif; opacity: 0.6; letter-spacing: 1px; margin-bottom: 8px;';
+            overlay.appendChild(ctrlLabel);
+
+            var ctrlList = Array.isArray(info.controls) ? info.controls : [info.controls];
+            for (var i = 0; i < ctrlList.length; i++) {
+                var ctrlItem = document.createElement('div');
+                ctrlItem.textContent = ctrlList[i];
+                ctrlItem.style.cssText = 'font: 14px Arial, Helvetica, sans-serif; margin-bottom: 4px; opacity: 0.9;';
+                overlay.appendChild(ctrlItem);
+            }
+
+            // Spacer after controls
+            var spacer = document.createElement('div');
+            spacer.style.cssText = 'height: 16px;';
+            overlay.appendChild(spacer);
+        }
+
+        // Tips
+        if (info.tip) {
+            var tipEl = document.createElement('div');
+            tipEl.textContent = info.tip;
+            tipEl.style.cssText = 'font: italic 13px Arial, Helvetica, sans-serif; opacity: 0.7; margin-bottom: 20px; max-width: 340px; line-height: 1.3;';
+            overlay.appendChild(tipEl);
+        }
+
+        // Start button
+        var startBtn = document.createElement('button');
+        startBtn.textContent = 'START';
+        startBtn.style.cssText = [
+            'padding: 14px 48px',
+            'border: none',
+            'border-radius: 4px',
+            'font: bold 16px Arial, Helvetica, sans-serif',
+            'cursor: pointer',
+            'background: ' + KPMG.colours.white,
+            'color: ' + KPMG.colours.blue,
+            'text-transform: uppercase',
+            'letter-spacing: 2px',
+            'transition: transform 0.15s ease'
+        ].join(';');
+        startBtn.addEventListener('mouseenter', function () { startBtn.style.transform = 'scale(1.05)'; });
+        startBtn.addEventListener('mouseleave', function () { startBtn.style.transform = 'scale(1)'; });
+        startBtn.addEventListener('click', function () {
+            overlay.style.display = 'none';
+            overlay.innerHTML = '';
+            callback();
+        });
+        overlay.appendChild(startBtn);
+
+        // Also allow Space/Enter to start
+        var keyHandler = function (e) {
+            if (e.key === ' ' || e.key === 'Enter') {
+                e.preventDefault();
+                document.removeEventListener('keydown', keyHandler);
+                overlay.style.display = 'none';
+                overlay.innerHTML = '';
+                callback();
+            }
+        };
+        document.addEventListener('keydown', keyHandler);
+
+        // Animate elements in
+        var children = Array.from(overlay.children);
+        if (typeof gsap !== 'undefined') {
+            children.forEach(function (el) {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(16px)';
+            });
+            gsap.to(children, {
+                opacity: 1,
+                y: 0,
+                duration: 0.35,
+                stagger: 0.06,
+                ease: 'power2.out'
+            });
+        }
     },
 
     renderPauseOverlay() {

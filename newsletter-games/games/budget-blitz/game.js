@@ -388,6 +388,14 @@
         });
 
         GameEngine.startGame(GAME_ID, {
+            instructions: {
+                title: 'HOW TO PLAY',
+                objective: 'Budget overruns pop up across the grid — tap them before they expire! Miss too many and the budget blows out.',
+                controls: [
+                    'Click or tap the highlighted cells to squash overruns'
+                ],
+                tip: 'Watch for cells that flash faster — they disappear quickly!'
+            },
             onUpdate: onUpdate,
             onDraw: onDraw,
             onGameOver: onGameOver,

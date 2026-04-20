@@ -563,6 +563,16 @@
         GameEngine.initCanvas('game-container', { width: W, height: H });
 
         GameEngine.startGame(GAME_ID, {
+            instructions: {
+                title: 'HOW TO PLAY',
+                objective: 'Fit falling tax-type blocks together to clear complete rows. Each cleared row is a lodged tax return!',
+                controls: [
+                    'Left/Right arrows to move',
+                    'Up arrow to rotate',
+                    'Down arrow to soft-drop, Space to hard-drop'
+                ],
+                tip: 'Keep the board flat and avoid leaving gaps in the middle.'
+            },
             onUpdate: update,
             onDraw: draw,
             onGameOver: function () {

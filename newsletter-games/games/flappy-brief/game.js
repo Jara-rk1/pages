@@ -227,6 +227,15 @@
         GameEngine.initCanvas('game-container', { width: W, height: H, maxWidth: 480 });
 
         GameEngine.startGame(GAME_ID, {
+            instructions: {
+                title: 'HOW TO PLAY',
+                objective: 'Navigate your briefcase through gaps in the regulation walls. Each wall cleared scores points.',
+                controls: [
+                    'Tap screen or press Space to flap upward',
+                    'Release to let gravity pull you down'
+                ],
+                tip: 'Small, frequent taps give you more control than long holds.'
+            },
             onUpdate: update,
             onDraw: draw,
             onGameOver: onGameOver,

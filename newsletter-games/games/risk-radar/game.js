@@ -364,6 +364,15 @@
         GameEngine.initCanvas('game-container', { width: W, height: H, maxWidth: 480 });
 
         GameEngine.startGame(GAME_ID, {
+            instructions: {
+                title: 'HOW TO PLAY',
+                objective: 'Risks fly in from all directions — rotate your shield to deflect them and protect the radar. Letting risks through costs health.',
+                controls: [
+                    'Arrow keys to rotate the shield arc',
+                    'On mobile, drag left/right to rotate'
+                ],
+                tip: 'Anticipate where the next risk is coming from — don\'t chase the last one.'
+            },
             onUpdate: onUpdate,
             onDraw: onDraw,
             onGameOver: onGameOver,

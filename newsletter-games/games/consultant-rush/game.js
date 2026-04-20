@@ -1,6 +1,6 @@
 /**
- * Consultant Rush — Endless Runner (Subway Surfers style)
- * Dodge office obstacles, collect bonuses, survive as long as possible.
+ * Easter Egg Rush — Easter-Themed Endless Runner
+ * Dodge Easter obstacles, collect eggs and bonuses on the spring meadow!
  */
 
 (function () {
@@ -36,20 +36,23 @@
     const SPAWN_ZONE_TOP = -80;
     const MIN_OBSTACLE_GAP = 250;
 
-    // Obstacle types
+    // Easter obstacle types
     const OBSTACLE_TYPES = [
-        { label: '\u{1F4C5}', name: 'Meeting', colour: KPMG.colours.purple, w: 60, h: 50 },
-        { label: '\u{1F5A8}\uFE0F', name: 'Printer Jam', colour: KPMG.colours.mid, w: 55, h: 45 },
-        { label: '\u2615', name: 'Coffee Spill', colour: '#8B4513', w: 40, h: 40, round: true },
-        { label: '\u{1F4DA}', name: 'Binders', colour: KPMG.colours.lightBlue, w: 50, h: 55 }
+        { label: '\u{1F430}', name: 'Chocolate Bunny', colour: '#7B3F00', w: 60, h: 50 },
+        { label: '\u{1F9FA}', name: 'Easter Basket', colour: '#C9A0DC', w: 55, h: 45 },
+        { label: '\u{1F95A}', name: 'Cracked Egg', colour: '#F5E6CA', w: 40, h: 40, round: true },
+        { label: '\u{1F36B}', name: 'Hot Cross Bun', colour: '#D2691E', w: 50, h: 55 }
     ];
 
-    // Collectible types
+    // Easter collectible types
     const COLLECTIBLE_TYPES = [
-        { label: '\u2605', name: 'Client Logo', colour: '#FFD700', r: 18, points: 100 },
-        { label: '\u2615', name: 'Coffee', colour: '#8B4513', r: 14, points: 50 },
-        { label: '\u{1F4BC}', name: 'Briefcase', colour: KPMG.colours.cobalt, r: 20, points: 500, rare: true }
+        { label: '\u{1F95A}', name: 'Easter Egg', colour: '#FF69B4', r: 18, points: 100 },
+        { label: '\u{1F95A}', name: 'Mini Egg', colour: '#B497FF', r: 14, points: 50 },
+        { label: '\u{1F95A}', name: 'Golden Egg', colour: '#FFD700', r: 20, points: 500, rare: true }
     ];
+
+    // Pastel colours for egg decorations and particles
+    const PASTEL = ['#FFB3BA', '#BAFFC9', '#BAE1FF', '#FFFFBA', '#E8BAFF', '#FFD700'];
 
     // ---- State ----
     let playerLane, playerX, targetX;
@@ -236,7 +239,7 @@
                         x: c.x, y: c.y,
                         vx: Math.cos(angle) * 100,
                         vy: Math.sin(angle) * 100,
-                        colour: c.colour,
+                        colour: PASTEL[p % PASTEL.length],
                         age: 0, life: 0.5
                     });
                 }
@@ -247,20 +250,28 @@
         GameEngine.state.score = Math.floor(timeSurvived * 10) + bonusScore;
     }
 
-    // ---- Draw ----
+    // ---- Draw (Easter meadow theme) ----
     function draw(ctx) {
-        ctx.fillStyle = '#E8E8E8';
+        // Spring meadow gradient background
+        var grad = ctx.createLinearGradient(0, 0, 0, H);
+        grad.addColorStop(0, '#D4F1D4');   // light green top
+        grad.addColorStop(0.5, '#C8E6C9'); // mid green
+        grad.addColorStop(1, '#A5D6A7');   // deeper green bottom
+        ctx.fillStyle = grad;
         ctx.fillRect(0, 0, W, H);
 
-        ctx.fillStyle = '#CCCCCC';
+        // Hedgerow borders
+        ctx.fillStyle = '#6B8E23';
         ctx.fillRect(0, 0, LANE_MARGIN - 5, H);
         ctx.fillRect(W - LANE_MARGIN + 5, 0, LANE_MARGIN - 5, H);
 
-        ctx.fillStyle = KPMG.colours.blue;
+        // Fence posts along edges
+        ctx.fillStyle = '#8B7355';
         ctx.fillRect(LANE_MARGIN - 5, 0, 3, H);
         ctx.fillRect(W - LANE_MARGIN + 2, 0, 3, H);
 
-        ctx.strokeStyle = '#D5D5D5';
+        // Grass line pattern (scrolling)
+        ctx.strokeStyle = 'rgba(56, 142, 60, 0.2)';
         ctx.lineWidth = 1;
         for (let ty = -40 + floorScroll; ty < H + 40; ty += 40) {
             ctx.beginPath();
@@ -269,33 +280,62 @@
             ctx.stroke();
         }
 
-        ctx.strokeStyle = 'rgba(0,0,0,0.08)';
-        ctx.lineWidth = 1;
-        ctx.setLineDash([8, 8]);
+        // Flower decorations along lane dividers
+        ctx.setLineDash([]);
         for (let l = 1; l < LANE_COUNT; l++) {
             const lx = LANE_MARGIN + l * LANE_WIDTH;
+            // Dashed grass path
+            ctx.strokeStyle = 'rgba(56, 142, 60, 0.15)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([12, 12]);
             ctx.beginPath();
             ctx.moveTo(lx, 0);
             ctx.lineTo(lx, H);
             ctx.stroke();
+            // Small flowers along the path
+            for (let fy = (-floorScroll % 80); fy < H; fy += 80) {
+                var flowerCol = PASTEL[Math.abs(Math.floor(fy + l * 37)) % PASTEL.length];
+                ctx.fillStyle = flowerCol;
+                ctx.beginPath();
+                ctx.arc(lx, fy, 3, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#FFD700';
+                ctx.beginPath();
+                ctx.arc(lx, fy, 1.5, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
         ctx.setLineDash([]);
 
+        // Draw collectibles (Easter eggs)
         for (const c of collectibles) {
             ctx.save();
+            // Egg shape — slightly taller oval
             ctx.beginPath();
-            ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+            ctx.ellipse(c.x, c.y, c.r * 0.85, c.r, 0, 0, Math.PI * 2);
             ctx.fillStyle = c.colour;
-            ctx.globalAlpha = 0.85;
+            ctx.globalAlpha = 0.9;
             ctx.fill();
             ctx.globalAlpha = 1;
-            ctx.font = Math.round(c.r * 1.2) + 'px Arial';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(c.label, c.x, c.y);
+            // Decorative stripe across egg
+            ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(c.x - c.r * 0.6, c.y - 2);
+            ctx.bezierCurveTo(c.x - c.r * 0.3, c.y - 5, c.x + c.r * 0.3, c.y + 1, c.x + c.r * 0.6, c.y - 2);
+            ctx.stroke();
+            // Sparkle on golden eggs
+            if (c.colour === '#FFD700') {
+                ctx.font = Math.round(c.r * 0.8) + 'px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = '#FFF';
+                ctx.fillText('\u2728', c.x, c.y);
+            }
             ctx.restore();
         }
 
+        // Draw obstacles
         for (const obs of obstacles) {
             ctx.save();
             if (obs.round) {
@@ -305,23 +345,24 @@
                 ctx.fill();
             } else {
                 ctx.fillStyle = obs.colour;
-                GameEngine.drawRoundedRect(ctx, obs.x - obs.w / 2, obs.y - obs.h / 2, obs.w, obs.h, 6);
+                GameEngine.drawRoundedRect(ctx, obs.x - obs.w / 2, obs.y - obs.h / 2, obs.w, obs.h, 8);
                 ctx.fill();
             }
-            ctx.font = '22px Arial';
+            ctx.font = '24px Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(obs.label, obs.x, obs.y);
             ctx.restore();
         }
 
+        // Particles (pastel burst)
         for (const p of particles) {
             const alpha = 1 - p.age / p.life;
             ctx.save();
             ctx.globalAlpha = alpha;
             ctx.fillStyle = p.colour;
             ctx.beginPath();
-            ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+            ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
             ctx.fill();
             ctx.restore();
         }
@@ -330,7 +371,7 @@
 
         ctx.save();
         ctx.font = KPMG.fonts.small;
-        ctx.fillStyle = KPMG.colours.mid;
+        ctx.fillStyle = '#4E7A3E';
         ctx.textAlign = 'left';
         ctx.textBaseline = 'top';
         ctx.fillText('Speed: ' + Math.round(speed) + ' px/s', LANE_MARGIN + 4, GameEngine.HUD_HEIGHT + 6);
@@ -340,16 +381,19 @@
     function drawPlayer(ctx, x, y) {
         ctx.save();
 
+        // Shadow
         ctx.fillStyle = 'rgba(0,0,0,0.1)';
         ctx.beginPath();
         ctx.ellipse(x, y + PLAYER_BODY_H + 5, 18, 6, 0, 0, Math.PI * 2);
         ctx.fill();
 
+        // Body (suit)
         ctx.fillStyle = KPMG.colours.dark;
         GameEngine.drawRoundedRect(ctx, x - PLAYER_BODY_W / 2, y, PLAYER_BODY_W, PLAYER_BODY_H, 4);
         ctx.fill();
 
-        ctx.fillStyle = KPMG.colours.pacific;
+        // Tie (pastel Easter colour)
+        ctx.fillStyle = '#FF69B4';
         ctx.beginPath();
         ctx.moveTo(x, y + 2);
         ctx.lineTo(x - 4, y + 16);
@@ -358,20 +402,53 @@
         ctx.closePath();
         ctx.fill();
 
+        // Head
         ctx.fillStyle = '#F5CBA7';
         ctx.beginPath();
         ctx.arc(x, y - PLAYER_HEAD_R + 2, PLAYER_HEAD_R, 0, Math.PI * 2);
         ctx.fill();
 
+        // Hair
         ctx.fillStyle = KPMG.colours.blue;
         ctx.beginPath();
         ctx.arc(x, y - PLAYER_HEAD_R, PLAYER_HEAD_R, Math.PI, 0);
         ctx.fill();
 
-        ctx.fillStyle = '#8B4513';
-        ctx.fillRect(x + PLAYER_BODY_W / 2 - 2, y + PLAYER_BODY_H - 12, 12, 10);
-        ctx.fillStyle = '#FFD700';
-        ctx.fillRect(x + PLAYER_BODY_W / 2 + 2, y + PLAYER_BODY_H - 10, 4, 2);
+        // Bunny ears!
+        var earH = 24;
+        var earW = 7;
+        var earTop = y - PLAYER_HEAD_R * 2 - earH + 6;
+        // Left ear (outer)
+        ctx.fillStyle = '#FFFFFF';
+        ctx.beginPath();
+        ctx.ellipse(x - 7, earTop + earH / 2, earW, earH / 2, -0.15, 0, Math.PI * 2);
+        ctx.fill();
+        // Left ear (inner pink)
+        ctx.fillStyle = '#FFB3BA';
+        ctx.beginPath();
+        ctx.ellipse(x - 7, earTop + earH / 2 + 2, earW - 2.5, earH / 2 - 4, -0.15, 0, Math.PI * 2);
+        ctx.fill();
+        // Right ear (outer)
+        ctx.fillStyle = '#FFFFFF';
+        ctx.beginPath();
+        ctx.ellipse(x + 7, earTop + earH / 2, earW, earH / 2, 0.15, 0, Math.PI * 2);
+        ctx.fill();
+        // Right ear (inner pink)
+        ctx.fillStyle = '#FFB3BA';
+        ctx.beginPath();
+        ctx.ellipse(x + 7, earTop + earH / 2 + 2, earW - 2.5, earH / 2 - 4, 0.15, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Easter basket instead of briefcase
+        ctx.fillStyle = '#C9A0DC';
+        GameEngine.drawRoundedRect(ctx, x + PLAYER_BODY_W / 2 - 2, y + PLAYER_BODY_H - 14, 14, 12, 3);
+        ctx.fill();
+        // Basket handle
+        ctx.strokeStyle = '#C9A0DC';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(x + PLAYER_BODY_W / 2 + 5, y + PLAYER_BODY_H - 16, 6, Math.PI, 0);
+        ctx.stroke();
 
         ctx.restore();
     }
@@ -381,6 +458,15 @@
         GameEngine.initCanvas('game-container', { width: W, height: H });
 
         GameEngine.startGame(GAME_ID, {
+            instructions: {
+                title: 'HOW TO PLAY',
+                objective: 'Dodge office obstacles on your way to the client site. Collect Easter eggs and bonuses to boost your score!',
+                controls: [
+                    'Swipe left/right or use Arrow keys to switch lanes',
+                    'Dodge obstacles, collect eggs for points'
+                ],
+                tip: 'Golden eggs are rare but worth 500 points!'
+            },
             onUpdate: update,
             onDraw: draw,
             onGameOver: function () {

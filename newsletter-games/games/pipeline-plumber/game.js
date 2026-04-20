@@ -460,6 +460,15 @@
         GameEngine.initCanvas('game-container', { width: W, height: H, maxWidth: 480 });
 
         GameEngine.startGame(GAME_ID, {
+            instructions: {
+                title: 'HOW TO PLAY',
+                objective: 'Rotate the pipe segments to build a continuous path from LEAD (source) to WON (sink). Complete the pipeline to score.',
+                controls: [
+                    'Click or tap a pipe to rotate it 90 degrees',
+                    'Connect all segments from start to finish'
+                ],
+                tip: 'Work backwards from the sink — it can be easier to trace the path in reverse.'
+            },
             onUpdate: onUpdate,
             onDraw: onDraw,
             onGameOver: onGameOver,
