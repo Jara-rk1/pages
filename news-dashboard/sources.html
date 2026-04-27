@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEPI News Dashboard | Sources Coverage Heatmap</title>
+    <meta name="description" content="Per-source article counts across 7/14/30/60-day windows for the PEPI News Dashboard.">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #333333;
+            background: #FFFFFF;
+            line-height: 1.55;
+            padding: 32px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .classification {
+            display: inline-block;
+            font-weight: 700;
+            font-size: 10px;
+            color: #00338D;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 3px 12px;
+            border: 1px solid #00338D;
+            border-radius: 3px;
+            margin-bottom: 14px;
+        }
+        h1 {
+            color: #00338D;
+            font-size: 22px;
+            margin-bottom: 6px;
+        }
+        .subtitle {
+            color: #666666;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 18px;
+            color: #00338D;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .back-link:hover { text-decoration: underline; }
+        .stat-row {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .stat {
+            border: 1px solid #E5E5E5;
+            padding: 10px 16px;
+            border-radius: 4px;
+            background: #FFFFFF;
+            min-width: 140px;
+        }
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #00338D;
+            line-height: 1.1;
+        }
+        .stat-label {
+            font-size: 11px;
+            color: #666666;
+            margin-top: 2px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            background: #FFFFFF;
+            border: 1px solid #E5E5E5;
+        }
+        thead th {
+            background: #00338D;
+            color: #FFFFFF;
+            text-align: left;
+            padding: 10px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+        thead th.num { text-align: right; }
+        tbody td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #E5E5E5;
+            color: #333333;
+        }
+        tbody tr:nth-child(even) td {
+            background: rgba(0, 51, 141, 0.03);
+        }
+        tbody tr:hover td {
+            background: rgba(0, 51, 141, 0.06);
+        }
+        td.num {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+            font-weight: 600;
+        }
+        td.src-name { font-weight: 600; }
+        td.tier { font-weight: 600; }
+        td.tier-trusted { color: #00338D; }
+        td.tier-useful { color: #00B8F5; }
+        td.tier-noisy { color: #666666; }
+        td.empty {
+            color: #666666;
+            text-align: center;
+            padding: 24px;
+        }
+        h2 {
+            color: #00338D;
+            font-size: 16px;
+            margin-top: 28px;
+            margin-bottom: 10px;
+        }
+        .zero-hit-list {
+            list-style: disc;
+            padding-left: 22px;
+            color: #333333;
+            font-size: 13px;
+        }
+        .zero-hit-list li { padding: 2px 0; }
+        .zero-hit-none {
+            color: #666666;
+            font-size: 13px;
+            font-style: italic;
+        }
+        footer {
+            margin-top: 32px;
+            padding-top: 14px;
+            border-top: 1px solid #E5E5E5;
+            color: #666666;
+            font-size: 11px;
+            line-height: 1.7;
+            text-align: center;
+        }
+        @media print {
+            body {
+                font-size: 10pt;
+                padding: 16px;
+            }
+            .back-link { display: none; }
+            .stat-row { gap: 8px; margin-bottom: 10px; }
+            .stat { min-width: 100px; padding: 6px 10px; }
+            .stat-value { font-size: 14pt; }
+            table { font-size: 9pt; page-break-inside: auto; }
+            thead th { padding: 6px 8px; font-size: 9pt; }
+            tbody td { padding: 4px 8px; }
+            tbody tr { page-break-inside: avoid; }
+            h1 { font-size: 16pt; }
+            h2 { font-size: 12pt; margin-top: 14px; }
+            footer { margin-top: 14px; font-size: 8pt; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="classification">KPMG Internal Use Only</div>
+        <a class="back-link" href="index.html">&larr; Back to dashboard</a>
+        <h1>Sources Coverage Heatmap</h1>
+        <p class="subtitle">Per-source article counts across 7/14/30/60-day windows. Generated 27 April 2026 at 18:30 AEST.</p>
+
+        <div class="stat-row">
+            <div class="stat">
+                <div class="stat-value">146</div>
+                <div class="stat-label">Unique sources</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">400</div>
+                <div class="stat-label">Total articles</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">6</div>
+                <div class="stat-label">Trusted with 0 in 60d</div>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Source</th>
+                    <th class="num">7d</th>
+                    <th class="num">14d</th>
+                    <th class="num">30d</th>
+                    <th class="num">60d</th>
+                    <th>Last seen</th>
+                    <th>Tier</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="src-name">Australian Broadcasting Corporation</td><td class="num">8</td><td class="num">12</td><td class="num">21</td><td class="num">21</td><td>25 Apr 2026</td><td class="tier tier-trusted">Trusted</td></tr><tr><td class="src-name">The Sector</td><td class="num">3</td><td class="num">10</td><td class="num">18</td><td class="num">18</td><td>27 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">PM&amp;C Ministers</td><td class="num">9</td><td class="num">10</td><td class="num">10</td><td class="num">10</td><td>24 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">The Conversation</td><td class="num">6</td><td class="num">10</td><td class="num">15</td><td class="num">15</td><td>24 Apr 2026</td><td class="tier tier-trusted">Trusted</td></tr><tr><td class="src-name">AFR</td><td class="num">6</td><td class="num">10</td><td class="num">13</td><td class="num">13</td><td>23 Apr 2026</td><td class="tier tier-trusted">Trusted</td></tr><tr><td class="src-name">The Guardian</td><td class="num">5</td><td class="num">8</td><td class="num">12</td><td class="num">12</td><td>25 Apr 2026</td><td class="tier tier-trusted">Trusted</td></tr><tr><td class="src-name">Western Australian Government</td><td class="num">7</td><td class="num">8</td><td class="num">9</td><td class="num">9</td><td>25 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">premier.sa.gov.au</td><td class="num">5</td><td class="num">8</td><td class="num">8</td><td class="num">8</td><td>24 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Ministerial Media Statements</td><td class="num">3</td><td class="num">8</td><td class="num">9</td><td class="num">9</td><td>22 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Premier of Tasmania</td><td class="num">5</td><td class="num">7</td><td class="num">7</td><td class="num">7</td><td>27 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">The Australian</td><td class="num">4</td><td class="num">7</td><td class="num">11</td><td class="num">11</td><td>27 Apr 2026</td><td class="tier tier-trusted">Trusted</td></tr><tr><td class="src-name">Premier of Victoria</td><td class="num">5</td><td class="num">7</td><td class="num">7</td><td class="num">7</td><td>24 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Australian Ageing Agenda</td><td class="num">2</td><td class="num">7</td><td class="num">9</td><td class="num">9</td><td>22 Apr 2026</td><td class="tier tier-useful">Useful</td></tr><tr><td class="src-name">SMH.com.au</td><td class="num">5</td><td class="num">6</td><td class="num">13</td><td class="num">13</td><td>26 Apr 2026</td><td class="tier tier-trusted">Trusted</td></tr><tr><td class="src-name">Chief Minister, Treasury and Economic Development Directorate</td><td class="num">2</td><td class="num">6</td><td class="num">8</td><td class="num">8</td><td>22 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Property Council Australia</td><td class="num">2</td><td class="num">6</td><td class="num">6</td><td class="num">6</td><td>22 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Prime Minister of Australia</td><td class="num">5</td><td class="num">5</td><td class="num">5</td><td class="num">5</td><td>24 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Australian Government Department of Health, Disability and Ageing</td><td class="num">5</td><td class="num">5</td><td class="num">9</td><td class="num">9</td><td>23 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Crikey</td><td class="num">4</td><td class="num">4</td><td class="num">4</td><td class="num">4</td><td>24 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Medianet News Hub</td><td class="num">4</td><td class="num">4</td><td class="num">7</td><td class="num">7</td><td>24 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Grattan Institute</td><td class="num">1</td><td class="num">4</td><td class="num">4</td><td class="num">4</td><td>23 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">facebook.com</td><td class="num">3</td><td class="num">3</td><td class="num">4</td><td class="num">4</td><td>25 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Vic Gov</td><td class="num">1</td><td class="num">3</td><td class="num">4</td><td class="num">4</td><td>22 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">MSN</td><td class="num">2</td><td class="num">3</td><td class="num">4</td><td class="num">4</td><td>21 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">The Mandarin</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td>27 Apr 2026</td><td class="tier tier-trusted">Trusted</td></tr><tr><td class="src-name">Medianet Australia</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td>23 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Housing Australia</td><td class="num">1</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td>23 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Inside Ageing</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td class="num">3</td><td>23 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Independent Australia</td><td class="num">1</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td>22 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Infrastructure Magazine</td><td class="num">1</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td>22 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Housing Industry Association | HIA</td><td class="num">1</td><td class="num">2</td><td class="num">3</td><td class="num">3</td><td>22 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Super Review</td><td class="num">1</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td>22 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Office of Sport | NSW Government</td><td class="num">1</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td>21 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">The Educator K/12</td><td class="num">0</td><td class="num">2</td><td class="num">3</td><td class="num">3</td><td>20 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Mirage News</td><td class="num">0</td><td class="num">2</td><td class="num">6</td><td class="num">6</td><td>17 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Australian Medical Association</td><td class="num">0</td><td class="num">2</td><td class="num">4</td><td class="num">4</td><td>15 Apr 2026</td><td class="tier tier-useful">Useful</td></tr><tr><td class="src-name">Build Australia</td><td class="num">0</td><td class="num">2</td><td class="num">3</td><td class="num">3</td><td>14 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Australian Broker</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>27 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">hellocare.com.au</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td class="num">2</td><td>27 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Region Riverina</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>27 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">InDaily South Australia</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>27 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Yahoo Finance Australia</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td class="num">2</td><td>27 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Central Coast News</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>25 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">HospitalHealth.com.au</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>24 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Utility Magazine</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td class="num">2</td><td>24 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Biodiversity Council Australia</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>24 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">ifa.com.au</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>24 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Top End Aboriginal Bush Broadcasting Association (TEABBA)</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>24 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Gilbert + Tobin</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td class="num">2</td><td>24 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Region Canberra</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>24 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Pinsent Masons</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>24 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">thefifthestate.com.au</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>23 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Facebook</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>23 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">My Aged Care</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>23 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">SBS Australia</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>23 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Adelaide Now</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td class="num">3</td><td>23 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Hancock Iron Ore</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>23 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">ANMJ</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>23 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">AdviserVoice</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>23 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">ABC Perth Drive</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>23 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Townsville Enterprise Limited</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>23 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Ministers&#x27; Media Centre</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>23 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Microsoft Source</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>23 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Industrial Cyber</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>23 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">The Canberra Times</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td class="num">3</td><td>23 Apr 2026</td><td class="tier tier-trusted">Trusted</td></tr><tr><td class="src-name">Lexology</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>22 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Kyabram Free Press</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>22 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">thesenior.com.au</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td class="num">3</td><td>22 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">The Australian Women&#x27;s Weekly</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td class="num">2</td><td>22 Apr 2026</td><td class="tier tier-trusted">Trusted</td></tr><tr><td class="src-name">Sky News Australia</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td class="num">2</td><td>22 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">drive.com.au</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>22 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">The Age</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>22 Apr 2026</td><td class="tier tier-trusted">Trusted</td></tr><tr><td class="src-name">Strategic Analysis Australia</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>21 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Energy Magazine</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>21 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">The Urban Developer</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>21 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">NSW Government</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>21 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Sky News Afternoon Agenda</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>21 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">News.com.au</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td class="num">2</td><td>21 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">thebull.com.au</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>21 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Department of Jobs, Skills, Industry and Regions</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>20 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">The Medical Journal of Australia</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>20 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">7NEWS</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>20 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Devpolicy Blog from the Development Policy Centre</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>20 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">The PIE News</td><td class="num">0</td><td class="num">1</td><td class="num">3</td><td class="num">3</td><td>17 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Insurance Business</td><td class="num">0</td><td class="num">1</td><td class="num">2</td><td class="num">2</td><td>17 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Northern Beaches Council</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>16 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">theshot.net.au</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>16 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">World Socialist Web Site</td><td class="num">0</td><td class="num">1</td><td class="num">4</td><td class="num">4</td><td>16 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">DCCEEW</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>16 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Yarrawonga Chronicle</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>16 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">UNSW Sydney</td><td class="num">0</td><td class="num">1</td><td class="num">5</td><td class="num">5</td><td>15 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">The Weekly Source</td><td class="num">0</td><td class="num">1</td><td class="num">3</td><td class="num">3</td><td>15 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">marketech apac</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>15 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Health Services Daily</td><td class="num">0</td><td class="num">1</td><td class="num">2</td><td class="num">2</td><td>15 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">IEU NSW/ACT</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>15 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">psnews.com.au</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>15 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Architecture &amp; Design</td><td class="num">0</td><td class="num">1</td><td class="num">2</td><td class="num">2</td><td>15 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">investordaily.com.au</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>14 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">PwC Australia</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>14 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Refugee Council of Australia</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>14 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">National Indigenous Times</td><td class="num">0</td><td class="num">1</td><td class="num">3</td><td class="num">3</td><td>14 Apr 2026</td><td class="tier tier-useful">Useful</td></tr><tr><td class="src-name">The New Daily</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td>13 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Human Rights Law Centre</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>13 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">EduResearch Matters</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>13 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Fakta.co</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>13 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">hcamag.com</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>13 Apr 2026</td><td class="tier tier-useful">Useful</td></tr><tr><td class="src-name">Australian Property Update</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>13 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Corrs Chambers Westgarth</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>13 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">9News</td><td class="num">0</td><td class="num">0</td><td class="num">3</td><td class="num">3</td><td>13 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Pearls and Irritations</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>13 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">SSBCrack</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>12 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Yahoo News Australia</td><td class="num">0</td><td class="num">0</td><td class="num">2</td><td class="num">2</td><td>11 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">The Saturday Paper</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>11 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">The Strategist | ASPI&#x27;s analysis and commentary site</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>10 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Department of Home Affairs Website</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>10 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Technology Decisions</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>10 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">National Seniors Australia</td><td class="num">0</td><td class="num">0</td><td class="num">2</td><td class="num">2</td><td>10 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Jacobin</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>10 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">loop.wa.gov.au</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>09 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Mountain Views Star Mail</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>09 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Property Update</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>08 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Waste Management Review</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>08 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Times Higher Education</td><td class="num">0</td><td class="num">0</td><td class="num">2</td><td class="num">2</td><td>08 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Reuters</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>08 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Royal Australian College of General Practitioners (RACGP)</td><td class="num">0</td><td class="num">0</td><td class="num">4</td><td class="num">4</td><td>08 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Smart Water Magazine</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>07 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Australian Rural &amp; Regional News</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>07 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">realestate.com.au</td><td class="num">0</td><td class="num">0</td><td class="num">2</td><td class="num">2</td><td>07 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Ashurst</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>07 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Aged Care Guide</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>07 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">techAU</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>06 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">The Courier Mail</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>06 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Croakey Health Media</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>06 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Back Country Bulletin</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>05 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Aged Care Insite</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>02 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">GoFundMe</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>02 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">LinkedIn</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>02 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Holding Redlich</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>02 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Medical Republic</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>02 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Law Society Journal</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>02 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">capradio.org</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>02 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">educationdaily.au</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>01 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Services Australia</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>01 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Research Professional News</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>01 Apr 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">Charles Sturt University</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>31 Mar 2026</td><td class="tier tier-noisy">Noisy</td></tr><tr><td class="src-name">WA Primary Health Alliance</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td>30 Mar 2026</td><td class="tier tier-noisy">Noisy</td></tr>
+            </tbody>
+        </table>
+
+        <h2>Configured trusted sources with zero articles in 60 days</h2>
+        <ul class="zero-hit-list"><li>ABC News</li><li>APO</li><li>Australian Financial Review</li><li>Australian Policy Online</li><li>Herald Sun</li><li>The Sydney Morning Herald</li></ul>
+
+        <footer>
+            <p>PEPI News Dashboard &mdash; Sources Coverage Heatmap. Tier column reflects default_tier from sources.yaml (per-portfolio overrides not shown).</p>
+            <p>&copy; 2026 KPMG, an Australian partnership. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
