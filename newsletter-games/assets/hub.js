@@ -96,7 +96,10 @@ const Hub = {
     },
 
     /**
-     * Initialise static/demo mode — no auth, no leaderboard, all games visible.
+     * Initialise static mode — no auth, no API. Fetch the edition config
+     * from assets/edition.json to determine the featured game and per-player
+     * attempt cap (tracked in localStorage). Falls back to "all games unlimited"
+     * if the config is missing, so a broken deploy still renders something.
      */
     _initStaticMode() {
         // Hide login view, show games view
@@ -108,28 +111,89 @@ const Hub = {
         var lbBtn = document.querySelector('.nav-btn[data-view="leaderboard"]');
         if (lbBtn) lbBtn.style.display = 'none';
 
-        // Update user area to show demo badge
+        // No auth in static mode — leave the user area blank
         var userArea = document.getElementById('user-area');
-        if (userArea) {
-            userArea.innerHTML = '<span style="color:rgba(255,255,255,0.7);font-size:13px;">Demo Mode</span>';
-        }
+        if (userArea) userArea.innerHTML = '';
 
-        // Set edition banner
-        var banner = document.getElementById('edition-banner');
-        if (banner) {
-            banner.innerHTML = '<span class="edition-name">All Games — Demo Mode</span>';
-        }
+        var self = this;
+        return fetch('assets/edition.json', { cache: 'no-cache' })
+            .then(function(res) {
+                if (!res.ok) throw new Error('edition.json HTTP ' + res.status);
+                return res.json();
+            })
+            .then(function(edition) {
+                if (!edition || !edition.slug || !edition.featuredGameId) {
+                    throw new Error('edition.json missing slug or featuredGameId');
+                }
 
-        // Render game cards from static list
-        this.games = this.STATIC_GAMES;
-        this.userAttempts = {};
-        this._renderStaticGamesGrid();
+                // Map edition.json shape onto the in-app currentEdition shape so
+                // renderEditionBanner / renderGamesGrid (used by the API path)
+                // work unchanged.
+                self.currentEdition = {
+                    id: edition.slug,
+                    name: edition.displayName || ('Edition ' + edition.slug),
+                    closes_at: edition.closesAt || null
+                };
+                var maxAttempts = edition.maxAttempts || MAX_ATTEMPTS;
+
+                // Filter to the single featured game
+                var featured = self.STATIC_GAMES.filter(function(g) { return g.id === edition.featuredGameId; });
+                if (featured.length === 0) {
+                    throw new Error('featuredGameId "' + edition.featuredGameId + '" not in STATIC_GAMES');
+                }
+                self.games = featured;
+
+                // Populate userAttempts from localStorage
+                self.userAttempts = {};
+                featured.forEach(function(game) {
+                    var used = self._loadStaticAttempts(edition.slug, game.id);
+                    var bestScore = self._loadStaticBestScore(edition.slug, game.id);
+                    self.userAttempts[game.id] = {
+                        used: used,
+                        remaining: Math.max(0, maxAttempts - used),
+                        bestScore: bestScore
+                    };
+                });
+
+                self.renderEditionBanner();
+                self.renderGamesGrid();
+            })
+            .catch(function(err) {
+                console.error('[Hub] Failed to load edition config; rendering all games as fallback:', err);
+                var banner = document.getElementById('edition-banner');
+                if (banner) banner.innerHTML = '<span class="edition-name">Newsletter Games</span>';
+                self.games = self.STATIC_GAMES;
+                self.userAttempts = {};
+                self._renderAllGamesGrid();
+            });
     },
 
-    /**
-     * Render game cards for static mode (no attempt tracking, direct links).
-     */
-    _renderStaticGamesGrid() {
+    /** Read attempts used for (slug, gameId) from localStorage. Returns 0 on missing/invalid. */
+    _loadStaticAttempts: function(slug, gameId) {
+        try {
+            var raw = localStorage.getItem('mg_attempts_' + slug + '_' + gameId);
+            if (!raw) return 0;
+            var n = parseInt(raw, 10);
+            return (isNaN(n) || n < 0) ? 0 : n;
+        } catch (_) {
+            return 0;
+        }
+    },
+
+    /** Read best score for (slug, gameId) from localStorage. Returns null on missing/invalid. */
+    _loadStaticBestScore: function(slug, gameId) {
+        try {
+            var raw = localStorage.getItem('mg_best_' + slug + '_' + gameId);
+            if (!raw) return null;
+            var n = parseInt(raw, 10);
+            return isNaN(n) ? null : n;
+        } catch (_) {
+            return null;
+        }
+    },
+
+    /** Fallback renderer for when edition.json is missing — shows all 12 games, no attempt cap. */
+    _renderAllGamesGrid: function() {
         var grid = document.getElementById('games-grid');
         if (!grid) return;
 
@@ -382,7 +446,11 @@ const Hub = {
 
             // Play button
             var isCompleted = attempts.remaining <= 0;
-            var playUrl = '/games/' + encodeURIComponent(game.id) + '/?edition=' + encodeURIComponent(editionId);
+            // Static mode: relative URL (gh-pages mounts at /newsletter-games/, no API edition param).
+            // API mode: absolute URL with edition query param so the game can validate edition match.
+            var playUrl = this.staticMode
+                ? 'games/' + encodeURIComponent(game.id) + '/'
+                : '/games/' + encodeURIComponent(game.id) + '/?edition=' + encodeURIComponent(editionId);
             var btnHtml;
             if (isCompleted) {
                 btnHtml = '<span class="btn-play completed">Completed</span>';

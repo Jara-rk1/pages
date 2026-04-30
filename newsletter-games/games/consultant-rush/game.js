@@ -40,8 +40,8 @@
     const OBSTACLE_TYPES = [
         { label: '\u{1F430}', name: 'Chocolate Bunny', colour: '#7B3F00', w: 60, h: 50 },
         { label: '\u{1F9FA}', name: 'Easter Basket', colour: '#C9A0DC', w: 55, h: 45 },
-        { label: '\u{1F95A}', name: 'Cracked Egg', colour: '#F5E6CA', w: 40, h: 40, round: true },
-        { label: '\u{1F36B}', name: 'Hot Cross Bun', colour: '#D2691E', w: 50, h: 55 }
+        { label: '\u{1F4A5}', name: 'Cracked Egg', colour: '#F5E6CA', w: 40, h: 40, round: true },
+        { label: '\u{1F35E}', name: 'Hot Cross Bun', colour: '#D2691E', w: 50, h: 55 }
     ];
 
     // Easter collectible types
@@ -374,7 +374,8 @@
         ctx.fillStyle = '#4E7A3E';
         ctx.textAlign = 'left';
         ctx.textBaseline = 'top';
-        ctx.fillText('Speed: ' + Math.round(speed) + ' px/s', LANE_MARGIN + 4, GameEngine.HUD_HEIGHT + 6);
+        var wave = Math.min(31, Math.floor(timeSurvived / 5) + 1);
+        ctx.fillText('Wave ' + wave, LANE_MARGIN + 4, GameEngine.HUD_HEIGHT + 6);
         ctx.restore();
     }
 
@@ -459,13 +460,26 @@
 
         GameEngine.startGame(GAME_ID, {
             instructions: {
-                title: 'HOW TO PLAY',
-                objective: 'Dodge office obstacles on your way to the client site. Collect Easter eggs and bonuses to boost your score!',
+                title: 'EASTER EGG RUSH',
+                objective: 'You are the Easter Consultant — bunny ears, briefcase, the works. Switch lanes to dodge the Easter aisle and grab as many decorated eggs as you can before time speeds up too far.',
                 controls: [
-                    'Swipe left/right or use Arrow keys to switch lanes',
-                    'Dodge obstacles, collect eggs for points'
+                    'Arrow keys or swipe left/right to switch lanes (one move per swipe)',
+                    'ESC to pause'
                 ],
-                tip: 'Golden eggs are rare but worth 500 points!'
+                legend: {
+                    collect: [
+                        { icon: '\u{1F95A}', label: 'Mini',   points: 50 },
+                        { icon: '\u{1F95A}', label: 'Pink',   points: 100 },
+                        { icon: '\u{1F95A}', label: 'Golden', points: 500 }
+                    ],
+                    avoid: [
+                        { icon: '\u{1F430}', label: 'Bunny' },
+                        { icon: '\u{1F9FA}', label: 'Basket' },
+                        { icon: '\u{1F4A5}', label: 'Cracked' },
+                        { icon: '\u{1F35E}', label: 'Bun' }
+                    ]
+                },
+                tip: 'Golden eggs are rare but worth 500 points. Cracked eggs are obstacles — not loot.'
             },
             onUpdate: update,
             onDraw: draw,

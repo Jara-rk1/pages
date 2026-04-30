@@ -237,31 +237,57 @@ const GameEngine = {
         // Increment generation to invalidate any in-flight endGame from previous session
         this._gameGeneration++;
 
-        // 1. Check auth — allow demo/static mode when no token present
+        // 1. Detect mode
+        //   - API mode:    token present → real Flask backend, server-tracked attempts
+        //   - SharePoint:  no token but window.__SP_MODE → engine-submit-shim handles
+        //                  submission via Forms-Bridge; flow enforces 3-attempt cap server-side
+        //   - Static mode: no token + no SP_MODE (gh-pages) → edition.json + localStorage
         const token = this.getToken();
-        const demoMode = !token;
+        const isStatic = !token && !window.__SP_MODE;
+        const isSharePoint = !token && !!window.__SP_MODE;
 
-        // 2. Get current edition (skip in demo mode)
+        // 2. Get current edition + attempts based on mode
         let edition = null;
-        if (!demoMode) {
+        let editionId = null;
+        let attempts;
+
+        if (isStatic) {
+            const ed = await this._loadStaticEdition();
+            if (ed) {
+                editionId = ed.slug;
+                const max = ed.maxAttempts || this.MAX_ATTEMPTS;
+                let used = 0;
+                try {
+                    const raw = localStorage.getItem('mg_attempts_' + ed.slug + '_' + gameId);
+                    const n = parseInt(raw, 10);
+                    if (!isNaN(n) && n >= 0) used = n;
+                } catch (_) { /* localStorage unavailable */ }
+                let best = 0;
+                try {
+                    const rawBest = localStorage.getItem('mg_best_' + ed.slug + '_' + gameId);
+                    const nb = parseInt(rawBest, 10);
+                    if (!isNaN(nb)) best = nb;
+                } catch (_) { /* localStorage unavailable */ }
+                attempts = { used: used, remaining: Math.max(0, max - used), best_score: best, attempts: [] };
+            } else {
+                // edition.json unavailable — graceful fallback to unlimited
+                attempts = { used: 0, remaining: this.MAX_ATTEMPTS, best_score: 0, attempts: [] };
+            }
+        } else if (isSharePoint) {
+            // Client cap is cosmetic; the Power Automate flow is the source of truth.
+            attempts = { used: 0, remaining: this.MAX_ATTEMPTS, best_score: 0, attempts: [] };
+        } else {
             try {
                 const res = await fetch('/api/editions/current', {
                     headers: { 'Authorization': 'Bearer ' + token }
                 });
-                if (res.ok) {
-                    edition = await res.json();
-                }
+                if (res.ok) edition = await res.json();
             } catch (_) {
                 // Proceed with null edition — allow offline play
             }
+            editionId = edition ? edition.id : null;
+            attempts = await this.checkAttempts(gameId, editionId);
         }
-
-        const editionId = edition ? edition.id : null;
-
-        // 3. Check remaining attempts (unlimited in demo mode)
-        const attempts = demoMode
-            ? { used: 0, remaining: this.MAX_ATTEMPTS, best_score: 0, attempts: [] }
-            : await this.checkAttempts(gameId, editionId);
 
         // 4. If no attempts left, show locked overlay
         if (attempts.remaining <= 0) {
@@ -414,6 +440,15 @@ const GameEngine = {
 
     async submitScore(score, durationMs) {
         const token = this.getToken();
+
+        // Static mode (gh-pages): persist to localStorage and return a faux server response
+        // so the existing endGame state-update path works unchanged.
+        if (!token && !window.__SP_MODE) {
+            return this._recordStaticAttempt(score);
+        }
+
+        // SharePoint mode: engine-submit-shim.js monkey-patches this method when
+        // window.__SP_MODE === true; if we get here, the shim never loaded — bail safely.
         if (!token) return null;
 
         // Skip submission if no edition (offline play)
@@ -438,6 +473,68 @@ const GameEngine = {
         } catch (_) {
             return null;
         }
+    },
+
+    /**
+     * Static-mode helpers: edition config (cached) and attempt persistence in localStorage.
+     * Active only when running on a static host with no API and no SharePoint shim.
+     * Cheating note: localStorage is wipeable. Acceptable for the public showcase;
+     * the SharePoint surface enforces server-side via the Power Automate flow.
+     */
+    _staticEdition: null,
+
+    async _loadStaticEdition() {
+        if (this._staticEdition) return this._staticEdition;
+        try {
+            const res = await fetch('assets/edition.json', { cache: 'no-cache' });
+            if (!res.ok) throw new Error('edition.json HTTP ' + res.status);
+            const ed = await res.json();
+            if (!ed || !ed.slug) throw new Error('edition.json missing slug');
+            this._staticEdition = ed;
+            return ed;
+        } catch (err) {
+            console.warn('[GameEngine] edition.json unavailable:', err);
+            return null;
+        }
+    },
+
+    _recordStaticAttempt(score) {
+        const ed = this._staticEdition;
+        const gameId = this.state.gameId;
+        if (!ed || !gameId) return null;
+
+        const max = ed.maxAttempts || this.MAX_ATTEMPTS;
+        const attemptsKey = 'mg_attempts_' + ed.slug + '_' + gameId;
+        const bestKey = 'mg_best_' + ed.slug + '_' + gameId;
+
+        let used = 0;
+        try {
+            const raw = localStorage.getItem(attemptsKey);
+            const n = parseInt(raw, 10);
+            if (!isNaN(n) && n >= 0) used = n;
+        } catch (_) { /* localStorage unavailable */ }
+
+        let bestScore = 0;
+        try {
+            const rawBest = localStorage.getItem(bestKey);
+            const nb = parseInt(rawBest, 10);
+            if (!isNaN(nb)) bestScore = nb;
+        } catch (_) { /* localStorage unavailable */ }
+
+        used = Math.min(max, used + 1);
+        bestScore = Math.max(bestScore, Math.round(score || 0));
+
+        try {
+            localStorage.setItem(attemptsKey, String(used));
+            localStorage.setItem(bestKey, String(bestScore));
+        } catch (_) { /* quota / privacy mode */ }
+
+        return {
+            used: used,
+            remaining: Math.max(0, max - used),
+            best_score: bestScore,
+            leaderboard_rank: null
+        };
     },
 
     /* ==========================================================
@@ -890,6 +987,32 @@ const GameEngine = {
             var spacer = document.createElement('div');
             spacer.style.cssText = 'height: 16px;';
             overlay.appendChild(spacer);
+        }
+
+        // Legend (optional) — { collect: [{icon, label, points}], avoid: [{icon, label}] }
+        if (info.legend && (info.legend.collect || info.legend.avoid)) {
+            var renderLegendRow = function (heading, entries, showPoints) {
+                if (!entries || !entries.length) return;
+                var headLabel = document.createElement('div');
+                headLabel.textContent = heading;
+                headLabel.style.cssText = 'font: bold 11px Arial, Helvetica, sans-serif; opacity: 0.6; letter-spacing: 1px; margin-bottom: 6px;';
+                overlay.appendChild(headLabel);
+                var row = document.createElement('div');
+                row.style.cssText = 'display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; justify-content: center; max-width: 360px;';
+                entries.forEach(function (entry) {
+                    var tile = document.createElement('div');
+                    tile.style.cssText = 'background: rgba(255,255,255,0.12); padding: 6px 10px; border-radius: 4px; text-align: center; min-width: 64px;';
+                    var pts = (showPoints && entry.points) ? '<div style="font-size: 11px; font-weight: bold;">+' + entry.points + '</div>' : '';
+                    tile.innerHTML =
+                        '<div style="font-size: 22px; line-height: 1;">' + entry.icon + '</div>' +
+                        '<div style="font-size: 10px; opacity: 0.85; margin-top: 2px;">' + entry.label + '</div>' +
+                        pts;
+                    row.appendChild(tile);
+                });
+                overlay.appendChild(row);
+            };
+            renderLegendRow('COLLECT', info.legend.collect, true);
+            renderLegendRow('AVOID', info.legend.avoid, false);
         }
 
         // Tips
