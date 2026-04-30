@@ -22,8 +22,11 @@ def smoke_easter():
         ctx = browser.new_context(viewport={"width": 480, "height": 800})
         page = ctx.new_page()
         console_msgs = []
+        edition_requests = []
         page.on("console", lambda m: console_msgs.append(f"{m.type}: {m.text}"))
         page.on("pageerror", lambda e: console_msgs.append(f"pageerror: {e}"))
+        page.on("response", lambda r: edition_requests.append({"url": r.url, "status": r.status})
+                if "edition.json" in r.url else None)
 
         page.goto(f"{BASE}/games/consultant-rush/", wait_until="networkidle")
         page.wait_for_timeout(800)
@@ -65,6 +68,14 @@ def smoke_easter():
         )
         findings["hud_state_after_2s"] = hud_check
 
+        edition_check = page.evaluate(
+            "() => { var e = window.GameEngine && window.GameEngine._staticEdition; "
+            "return e ? { slug: e.slug, maxAttempts: e.maxAttempts, "
+            "featuredGameId: e.featuredGameId, closesAt: e.closesAt } : null; }"
+        )
+        findings["static_edition_loaded"] = edition_check is not None
+        findings["static_edition"] = edition_check
+
         # Wait for Wave 2 (5s mark)
         page.wait_for_timeout(4000)
         page.screenshot(path=str(OUT / "03-midplay-6s.png"))
@@ -74,6 +85,7 @@ def smoke_easter():
         page.screenshot(path=str(OUT / "04-midplay-11s.png"))
 
         findings["console"] = console_msgs[:50]
+        findings["edition_requests"] = edition_requests
         browser.close()
     return findings
 

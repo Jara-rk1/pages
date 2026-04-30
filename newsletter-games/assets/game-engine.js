@@ -486,7 +486,7 @@ const GameEngine = {
     async _loadStaticEdition() {
         if (this._staticEdition) return this._staticEdition;
         try {
-            const res = await fetch('assets/edition.json', { cache: 'no-cache' });
+            const res = await fetch('../../assets/edition.json', { cache: 'no-cache' });
             if (!res.ok) throw new Error('edition.json HTTP ' + res.status);
             const ed = await res.json();
             if (!ed || !ed.slug) throw new Error('edition.json missing slug');
