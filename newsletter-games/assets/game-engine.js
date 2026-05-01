@@ -187,7 +187,8 @@ const GameEngine = {
                 'text-align: center',
                 'padding: 24px',
                 'box-sizing: border-box',
-                'border-radius: 4px'
+                'border-radius: 4px',
+                'overflow-y: auto'
             ].join(';');
             container.appendChild(overlay);
         }

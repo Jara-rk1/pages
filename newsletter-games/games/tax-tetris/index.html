@@ -20,7 +20,7 @@
         .game-header a { color: white; text-decoration: none; font-size: 20px; }
         .game-header h1 { font-size: 16px; font-weight: bold; }
         #game-container {
-            position: relative; width: 100%; max-width: 480px;
+            position: relative; width: 100%; max-width: 640px;
             flex: 1; min-height: 0; display: flex; justify-content: center; align-items: center;
         }
         #game-canvas { display: block; touch-action: none; }
@@ -29,6 +29,7 @@
             background: rgba(0, 51, 141, 0.92); color: white;
             flex-direction: column; align-items: center; justify-content: center;
             gap: 16px; z-index: 10; padding: 24px; text-align: center;
+            overflow-y: auto;
         }
         .game-over-overlay.active { display: flex; }
         .game-over-overlay .score-display { font-size: 48px; font-weight: bold; }

@@ -224,7 +224,7 @@
 
     /* ---- init ---- */
     function init() {
-        GameEngine.initCanvas('game-container', { width: W, height: H, maxWidth: 480 });
+        GameEngine.initCanvas('game-container', { width: W, height: H, maxWidth: 640 });
 
         GameEngine.startGame(GAME_ID, {
             instructions: {

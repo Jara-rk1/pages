@@ -1,8 +1,12 @@
 """
-Smoke test for Easter Egg Rush + sibling regression + responsive scaling.
-Headless Chromium via Playwright. Saves PNGs + a JSON report.
+Smoke test for the newsletter-games surface.
 
-Run: python newsletter-games/tools/smoke_easter_egg_rush.py
+Covers:
+  * Easter Egg Rush instructions overlay assertions (legend rows, brand copy)
+  * Sibling regression — non-Easter games must NOT show the legend rows
+  * Responsive scaling across 9 viewports for all 12 games (10 canvas, 2 DOM)
+
+Run: python newsletter-games/tools/smoke_newsletter_games.py
 Assumes a server at http://localhost:8765 serving newsletter-games/.
 """
 import json
@@ -25,6 +29,28 @@ RESPONSIVE_VIEWPORTS = [
     ("laptop-small",    1366,  768),
     ("desktop-1080p",   1920, 1080),
     ("desktop-qhd",     2560, 1440),
+]
+
+# Per-game logical dimensions and maxWidth caps. Source of truth for the
+# responsive harness — bumping a maxWidth here should match the corresponding
+# initCanvas call and #game-container max-width in the shell.
+#
+# (slug, logical_w, logical_h, max_width)
+CANVAS_GAMES = [
+    ("consultant-rush",     400, 700, 720),
+    ("audit-ascent",        480, 400, 720),
+    ("budget-blitz",        400, 600, 640),
+    ("flappy-brief",        400, 700, 640),
+    ("kpi-catcher",         400, 700, 640),
+    ("pipeline-plumber",    400, 500, 640),
+    ("risk-radar",          400, 400, 640),
+    ("slide-deck-stacker",  400, 700, 640),
+    ("strategy-snake",      400, 470, 640),
+    ("tax-tetris",          400, 700, 640),
+]
+DOM_GAMES = [
+    "deal-spell",
+    "merger-match",
 ]
 
 
@@ -130,7 +156,7 @@ def smoke_sibling(slug):
 def smoke_responsive(slug, expected_aspect, max_width):
     """For each viewport: load game, measure canvas, assert no overflow + aspect preserved + fills space.
 
-    expected_aspect is W/H (e.g. 400/700 ≈ 0.571 for Easter Egg Rush).
+    expected_aspect is W/H (e.g. 400/700 ≈ 0.571 for tall portrait games).
     max_width is the engine's maxWidth cap for this game (e.g. 720 for consultant-rush).
     """
     findings = {}
@@ -176,11 +202,56 @@ def smoke_responsive(slug, expected_aspect, max_width):
     return findings
 
 
+def smoke_responsive_dom(slug):
+    """For DOM-only games (no #game-canvas): load each viewport, assert no body overflow.
+
+    Captures screenshots like the canvas variant. The aspect/fills checks don't apply
+    because layout is HTML-driven; instead we verify documentElement scroll dimensions
+    don't exceed the viewport.
+    """
+    findings = {}
+    out_dir = OUT / "responsive"
+    out_dir.mkdir(exist_ok=True)
+    with sync_playwright() as pw:
+        browser = pw.chromium.launch(headless=True)
+        for name, vw, vh in RESPONSIVE_VIEWPORTS:
+            ctx = browser.new_context(viewport={"width": vw, "height": vh})
+            page = ctx.new_page()
+            page.goto(f"{BASE}/games/{slug}/", wait_until="networkidle")
+            page.wait_for_timeout(400)
+            metrics = page.evaluate(
+                "() => ({"
+                "  scrollW: document.documentElement.scrollWidth,"
+                "  scrollH: document.documentElement.scrollHeight,"
+                "  clientW: document.documentElement.clientWidth,"
+                "  clientH: document.documentElement.clientHeight"
+                "})"
+            )
+            page.screenshot(path=str(out_dir / f"{slug}-{name}-{vw}x{vh}.png"))
+            entry = {"viewport": [vw, vh], "metrics": metrics, "dom_only": True}
+            if metrics:
+                # Allow 1px slack for sub-pixel rounding.
+                entry["no_overflow_x"] = metrics["scrollW"] <= metrics["clientW"] + 1
+                entry["no_overflow_y"] = metrics["scrollH"] <= metrics["clientH"] + 1
+            else:
+                entry["no_overflow_x"] = False
+                entry["no_overflow_y"] = False
+            entry["aspect_ok"] = True       # not applicable for DOM games
+            entry["fills_some_dimension"] = True
+            findings[name] = entry
+            ctx.close()
+        browser.close()
+    return findings
+
+
 if __name__ == "__main__":
     report = {"easter": smoke_easter()}
     for slug in ["audit-ascent", "strategy-snake", "kpi-catcher"]:
         report[f"sibling_{slug}"] = smoke_sibling(slug)
-    report["responsive"] = smoke_responsive("consultant-rush", expected_aspect=400 / 700, max_width=720)
+    for slug, w, h, maxw in CANVAS_GAMES:
+        report[f"responsive_{slug}"] = smoke_responsive(slug, expected_aspect=w / h, max_width=maxw)
+    for slug in DOM_GAMES:
+        report[f"responsive_{slug}"] = smoke_responsive_dom(slug)
     out = OUT / "report.json"
     out.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"Wrote {out}")

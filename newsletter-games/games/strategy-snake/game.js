@@ -321,7 +321,7 @@
         GameEngine.initCanvas('game-container', {
             width: CANVAS_W,
             height: CANVAS_H,
-            maxWidth: 480
+            maxWidth: 640
         });
 
         GameEngine.startGame(GAME_ID, {
