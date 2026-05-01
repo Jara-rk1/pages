@@ -136,11 +136,18 @@ const GameEngine = {
         const parent = this.canvas.parentElement;
         if (!parent) return;
 
-        const parentWidth = parent.clientWidth;
+        const availableWidth = parent.clientWidth;
+        const availableHeight = parent.clientHeight;
         const maxW = this._options.maxWidth || 500;
-        const targetWidth = Math.min(parentWidth, maxW);
-        const aspect = this._logicalHeight / this._logicalWidth;
-        const targetHeight = targetWidth * aspect;
+        const aspectWH = this._logicalWidth / this._logicalHeight;
+
+        // Fit inside BOTH dimensions: pick the largest width that, given the
+        // logical aspect ratio, still leaves the canvas inside availableHeight.
+        let targetWidth = Math.min(availableWidth, maxW);
+        if (availableHeight > 0) {
+            targetWidth = Math.min(targetWidth, availableHeight * aspectWH);
+        }
+        const targetHeight = targetWidth / aspectWH;
 
         this.canvas.style.width = targetWidth + 'px';
         this.canvas.style.height = targetHeight + 'px';
