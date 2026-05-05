@@ -179,7 +179,7 @@ const GameEngine = {
                 'display: none',
                 'flex-direction: column',
                 'align-items: center',
-                'justify-content: center',
+                'justify-content: safe center',
                 'background: rgba(0,51,141,0.92)',
                 'z-index: 100',
                 'color: ' + KPMG.colours.white,
