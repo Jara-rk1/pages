@@ -472,6 +472,7 @@
         /* --- View toggle --- */
         .view-toggle {
             display: flex;
+            flex-wrap: wrap;
             gap: 2px;
             background: var(--grey-border);
             border-radius: var(--radius);
@@ -802,6 +803,7 @@
         /* Date filter */
         .date-filter-row {
             display: flex;
+            flex-wrap: wrap;
             gap: 6px;
             align-items: center;
         }
@@ -1732,6 +1734,14 @@
                         <div class="ms-option" role="option" data-value="climate_net_zero" aria-selected="false" tabindex="-1">
                             <span class="ms-option-checkbox"><svg class="ms-option-checkbox-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
                             <span class="ms-option-label">Climate / net zero</span>
+                        </div>
+                        <div class="ms-option" role="option" data-value="cost_of_living" aria-selected="false" tabindex="-1">
+                            <span class="ms-option-checkbox"><svg class="ms-option-checkbox-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span class="ms-option-label">Cost of living</span>
+                        </div>
+                        <div class="ms-option" role="option" data-value="sovereignty_security" aria-selected="false" tabindex="-1">
+                            <span class="ms-option-checkbox"><svg class="ms-option-checkbox-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span class="ms-option-label">Sovereignty &amp; security</span>
                         </div>
                     </div>
                 </div>
@@ -9848,7 +9858,9 @@ The post Factional ally big winner in premier&amp;#8217;s cabinet shake-up appea
                 'efficiency': 'Efficiency',
                 'workforce': 'Workforce',
                 'consolidation': 'Consolidation',
-                'climate_net_zero': 'Climate / net zero'
+                'climate_net_zero': 'Climate / net zero',
+                'cost_of_living': 'Cost of living',
+                'sovereignty_security': 'Sovereignty & security'
             },
             'event_types': {
                 'regulation_event': 'Regulation event',
