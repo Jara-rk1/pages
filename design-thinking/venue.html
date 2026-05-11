@@ -62,6 +62,16 @@
   <script src="shared.js"></script>
   <script src="data.js"></script>
   <script>
+    // Escape user-controlled strings before interpolating into HTML template literals.
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
     // ===== INIT SHARED COMPONENTS =====
     renderNavbar('');
     renderFooter();
@@ -167,8 +177,8 @@
     // ===== RENDER REVIEWS =====
     function renderReview(review, type) {
       const avatarClass = type === 'critic' ? 'critic' : 'community';
-      const initials = review.author.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
-      const roleText = review.role ? `<div class="review-author-role">${review.role}</div>` : '';
+      const initials = escapeHtml(String(review.author || '').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase());
+      const roleText = review.role ? `<div class="review-author-role">${escapeHtml(review.role)}</div>` : '';
 
       // Merge stored comments with data.js comments
       const dataComments = review.comments || [];
@@ -185,14 +195,14 @@
             <div class="review-author">
               <div class="review-avatar ${avatarClass}">${initials}</div>
               <div>
-                <div class="review-author-name">${review.author}</div>
+                <div class="review-author-name">${escapeHtml(review.author)}</div>
                 ${roleText}
               </div>
             </div>
             <div class="review-rating-badge">${review.rating}</div>
           </div>
-          <div class="review-text">${review.text}</div>
-          <div class="review-date">${formatDate(review.date)}</div>
+          <div class="review-text">${escapeHtml(review.text)}</div>
+          <div class="review-date">${escapeHtml(formatDate(review.date))}</div>
           <div class="review-actions">
             <button class="review-action-btn like-btn ${isLiked ? 'liked' : ''}" data-id="${review.id}" onclick="toggleLike(this, ${review.id})">
               &hearts; <span class="like-count">${displayLikes}</span>
@@ -204,9 +214,9 @@
           <div class="review-comments" id="comments-${review.id}" style="display:none;">
             ${allComments.map(c => `
               <div class="comment">
-                <span class="comment-author">${c.author}</span>
-                <span class="comment-date">${formatDate(c.date)}</span>
-                <div class="comment-text">${c.text}</div>
+                <span class="comment-author">${escapeHtml(c.author)}</span>
+                <span class="comment-date">${escapeHtml(formatDate(c.date))}</span>
+                <div class="comment-text">${escapeHtml(c.text)}</div>
               </div>
             `).join('')}
             <div class="comment-input-wrapper">
@@ -250,7 +260,7 @@
           ${[10,9,8,7,6,5,4,3,2,1].map(i => `<span data-val="${i}" onclick="setRating(${i})">&#x2605;</span>`).join('')}
         </div>
         <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.5rem;">Rating: <span id="ratingDisplay">0</span>/10</div>
-        <input type="text" class="comment-input" id="reviewAuthor" placeholder="Your name" style="margin-bottom:0.5rem;width:100%;" value="${userProfile ? userProfile.name : ''}">
+        <input type="text" class="comment-input" id="reviewAuthor" placeholder="Your name" style="margin-bottom:0.5rem;width:100%;" value="${userProfile ? escapeHtml(userProfile.name) : ''}">
         <textarea class="review-textarea" id="reviewText" placeholder="Share your experience..."></textarea>
         <button class="submit-review-btn" onclick="submitReview()">Submit Review</button>
       </div>
@@ -313,9 +323,9 @@
       const commentsEl = document.getElementById(`comments-${reviewId}`);
       const commentHTML = `
         <div class="comment">
-          <span class="comment-author">${userName}</span>
-          <span class="comment-date">${formatDate(today)}</span>
-          <div class="comment-text">${text}</div>
+          <span class="comment-author">${escapeHtml(userName)}</span>
+          <span class="comment-date">${escapeHtml(formatDate(today))}</span>
+          <div class="comment-text">${escapeHtml(text)}</div>
         </div>
       `;
       // Insert before the input wrapper
