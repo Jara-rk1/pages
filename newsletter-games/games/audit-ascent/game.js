@@ -1,6 +1,7 @@
 /**
- * Audit Ascent — Jetpack Side-Scroller
- * Hold tap/click/space to rise, release to fall. Dodge red-flag line items, collect checkmarks and seals.
+ * Flight to Mum — Mother's Day Themed Jetpack Run
+ * Hold tap/click/space to rise, release to fall.
+ * Fly your gift through gaps in life's little misses. Collect hearts for points and flower bouquets for big bonuses.
  */
 (function () {
     'use strict';
@@ -20,11 +21,11 @@
     const PLAYER_H = 32;
     const HEAD_R = 10;
 
-    /* --- Obstacle labels --- */
-    const FLAG_LABELS = ['Overstatement', 'Missing docs', 'Fraud risk', 'Variance', 'Misclass.', 'Unreconciled'];
+    /* --- Obstacle labels (Mother's Day misses) --- */
+    const FLAG_LABELS = ['Forgotten card', 'Empty vase', 'Cold tea', 'Tangled wrap', 'Lost note', 'Hidden gift'];
 
     /* --- Game state --- */
-    let player, obstacles, collectibles, particles, bgElements;
+    let player, obstacles, collectibles, particles, bgElements, cloudElements;
     let scrollSpeed, speedTimer, totalDist, thrusting, shieldTimer;
     let lastObstacleX, lastCollectibleX, lastSealTime, lastShieldTime, gameTime;
     let keysDown;
@@ -35,6 +36,7 @@
         collectibles = [];
         particles = [];
         bgElements = generateBgElements();
+        cloudElements = generateClouds();
         scrollSpeed = 200;
         speedTimer = 0;
         totalDist = 0;
@@ -48,20 +50,34 @@
         keysDown = {};
     }
 
-    /* --- Background: faint spreadsheet lines and numbers --- */
+    /* --- Background: handwritten card phrases drifting across the sky --- */
+    const CARD_PHRASES = ['Thank you', 'Love Mum', 'Best Mum', 'xxx', 'For Mum', 'Always', 'Miss you', '❤'];
+
     function generateBgElements() {
         const els = [];
         for (let i = 0; i < 30; i++) {
             els.push({
                 x: Math.random() * W * 2,
                 y: PLAY_TOP + Math.random() * PLAY_H,
-                text: Math.random() < 0.5
-                    ? (Math.random() * 10000).toFixed(2)
-                    : ['Rev', 'Exp', 'Dep', 'Acc', 'Bal', 'Net', 'Adj'][Math.floor(Math.random() * 7)],
+                text: CARD_PHRASES[Math.floor(Math.random() * CARD_PHRASES.length)],
                 speed: 0.3 + Math.random() * 0.4
             });
         }
         return els;
+    }
+
+    /* --- Clouds (slow parallax puffs over the sky) --- */
+    function generateClouds() {
+        const clouds = [];
+        for (let i = 0; i < 5; i++) {
+            clouds.push({
+                x: Math.random() * W * 2,
+                y: PLAY_TOP + Math.random() * (PLAY_H * 0.7),
+                r: GameEngine.randomBetween(18, 30),
+                speed: 0.15 + Math.random() * 0.15
+            });
+        }
+        return clouds;
     }
 
     /* --- Spawn helpers --- */
@@ -117,7 +133,7 @@
                 life: 0.4,
                 maxLife: 0.4,
                 r: GameEngine.randomBetween(2, 5),
-                color: Math.random() < 0.5 ? KPMG.colours.pacific : KPMG.colours.lightBlue
+                color: Math.random() < 0.5 ? KPMG.colours.magenta : KPMG.colours.lightPurple
             });
         }
     }
@@ -240,6 +256,11 @@
             if (bg.x < -60) bg.x += W + 120;
         }
 
+        for (const cl of cloudElements) {
+            cl.x -= scrollDist * cl.speed;
+            if (cl.x < -80) cl.x += W + 160;
+        }
+
         for (let i = particles.length - 1; i >= 0; i--) {
             const p = particles[i];
             p.x += p.vx * dt;
@@ -283,31 +304,40 @@
         ctx.fillStyle = KPMG.colours.white;
         ctx.fillRect(0, 0, w, h);
 
+        // Soft sky gradient over the playfield
         ctx.save();
-        ctx.strokeStyle = '#E5E5E5';
-        ctx.lineWidth = 0.5;
-        for (let y = PLAY_TOP; y < h; y += 20) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(w, y);
-            ctx.stroke();
-        }
-        for (let x = 0; x < w; x += 60) {
-            ctx.beginPath();
-            ctx.moveTo(x, PLAY_TOP);
-            ctx.lineTo(x, h);
-            ctx.stroke();
-        }
+        const sky = ctx.createLinearGradient(0, PLAY_TOP, 0, h);
+        sky.addColorStop(0, KPMG.colours.lightBlue);
+        sky.addColorStop(1, KPMG.colours.white);
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, PLAY_TOP, w, h - PLAY_TOP);
+        ctx.restore();
 
-        ctx.font = '10px Arial, Helvetica, sans-serif';
-        ctx.fillStyle = '#D0D0D0';
+        // Pastel cloud puffs (three overlapping circles per cloud)
+        ctx.save();
+        ctx.fillStyle = KPMG.colours.white;
+        ctx.globalAlpha = 0.55;
+        for (const cl of cloudElements) {
+            ctx.beginPath();
+            ctx.arc(cl.x, cl.y, cl.r, 0, Math.PI * 2);
+            ctx.arc(cl.x + cl.r * 0.8, cl.y + 4, cl.r * 0.8, 0, Math.PI * 2);
+            ctx.arc(cl.x - cl.r * 0.8, cl.y + 4, cl.r * 0.7, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        ctx.restore();
+
+        // Handwritten card phrases drifting through the sky
+        ctx.save();
+        ctx.font = 'italic 11px "Brush Script MT", "Comic Sans MS", cursive, Arial';
+        ctx.fillStyle = KPMG.colours.lightPurple;
+        ctx.globalAlpha = 0.65;
         for (const bg of bgElements) {
             ctx.fillText(bg.text, bg.x, bg.y);
         }
         ctx.restore();
 
         for (const obs of obstacles) {
-            ctx.fillStyle = KPMG.colours.red;
+            ctx.fillStyle = KPMG.colours.magenta;
             ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
             ctx.save();
             ctx.font = 'bold 10px Arial, Helvetica, sans-serif';
@@ -325,38 +355,45 @@
             if (c.collected) continue;
             ctx.save();
             if (c.type === 'check') {
-                ctx.fillStyle = KPMG.colours.green;
+                // Heart: magenta disc + white heart glyph
+                ctx.fillStyle = KPMG.colours.magenta;
                 ctx.beginPath();
                 ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
                 ctx.fill();
-                ctx.font = 'bold 12px Arial, Helvetica, sans-serif';
+                ctx.font = 'bold 13px Arial, Helvetica, sans-serif';
                 ctx.fillStyle = KPMG.colours.white;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText('\u2713', c.x, c.y);
+                ctx.fillText('\u2665', c.x, c.y + 1);
             } else if (c.type === 'seal') {
+                // Flower: five light-purple petals around an amber centre
+                ctx.fillStyle = KPMG.colours.lightPurple;
+                const petalR = c.r * 0.55;
+                const ringR = c.r * 0.7;
+                for (let i = 0; i < 5; i++) {
+                    const a = (i / 5) * Math.PI * 2 - Math.PI / 2;
+                    ctx.beginPath();
+                    ctx.arc(c.x + Math.cos(a) * ringR, c.y + Math.sin(a) * ringR, petalR, 0, Math.PI * 2);
+                    ctx.fill();
+                }
                 ctx.fillStyle = KPMG.colours.amber;
                 ctx.beginPath();
-                ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+                ctx.arc(c.x, c.y, c.r * 0.45, 0, Math.PI * 2);
                 ctx.fill();
-                ctx.font = 'bold 10px Arial, Helvetica, sans-serif';
-                ctx.fillStyle = KPMG.colours.white;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText('\u2605', c.x, c.y + 1);
             } else if (c.type === 'shield') {
-                ctx.shadowColor = KPMG.colours.pacific;
+                // Coffee mug: cobalt disc with white coffee glyph
+                ctx.shadowColor = KPMG.colours.cobalt;
                 ctx.shadowBlur = 12;
-                ctx.fillStyle = KPMG.colours.pacific;
+                ctx.fillStyle = KPMG.colours.cobalt;
                 ctx.beginPath();
                 ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.shadowBlur = 0;
-                ctx.font = 'bold 9px Arial, Helvetica, sans-serif';
+                ctx.font = 'bold 11px Arial, Helvetica, sans-serif';
                 ctx.fillStyle = KPMG.colours.white;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText('M', c.x, c.y + 1);
+                ctx.fillText('\u2615', c.x, c.y + 1);
             }
             ctx.restore();
         }
@@ -374,9 +411,9 @@
 
         if (shieldTimer > 0) {
             ctx.save();
-            ctx.strokeStyle = KPMG.colours.pacific;
+            ctx.strokeStyle = KPMG.colours.cobalt;
             ctx.lineWidth = 3;
-            ctx.shadowColor = KPMG.colours.pacific;
+            ctx.shadowColor = KPMG.colours.cobalt;
             ctx.shadowBlur = 15;
             ctx.beginPath();
             ctx.arc(player.x, player.y, 22, 0, Math.PI * 2);
@@ -389,28 +426,33 @@
         const px = player.x;
         const py = player.y;
 
-        ctx.fillStyle = KPMG.colours.blue;
+        // Body — softer pacific blue
+        ctx.fillStyle = KPMG.colours.pacific;
         ctx.fillRect(px - 8, py - 2, 16, 20);
 
+        // Head — KPMG blue anchor
         ctx.fillStyle = KPMG.colours.blue;
         ctx.beginPath();
         ctx.arc(px, py - HEAD_R, HEAD_R, 0, Math.PI * 2);
         ctx.fill();
 
+        // Eye
         ctx.fillStyle = KPMG.colours.white;
         ctx.beginPath();
         ctx.arc(px + 3, py - HEAD_R - 1, 2.5, 0, Math.PI * 2);
         ctx.fill();
 
-        ctx.fillStyle = KPMG.colours.cobalt;
+        // Heart badge (was OK tag)
+        ctx.fillStyle = KPMG.colours.magenta;
         ctx.fillRect(px - 14, py, 6, 12);
-        ctx.font = 'bold 5px Arial';
+        ctx.font = 'bold 7px Arial';
         ctx.fillStyle = KPMG.colours.white;
         ctx.textAlign = 'center';
-        ctx.fillText('OK', px - 11, py + 8);
+        ctx.fillText('♥', px - 11, py + 9);
 
+        // Warm-magenta thrust flame
         if (thrusting) {
-            ctx.fillStyle = KPMG.colours.pacific;
+            ctx.fillStyle = KPMG.colours.magenta;
             ctx.beginPath();
             ctx.moveTo(px - 14, py + 12);
             ctx.lineTo(px - 11, py + 22 + Math.random() * 6);
@@ -424,9 +466,9 @@
         if (shieldTimer > 0) {
             ctx.save();
             ctx.font = KPMG.fonts.small;
-            ctx.fillStyle = KPMG.colours.pacific;
+            ctx.fillStyle = KPMG.colours.cobalt;
             ctx.textAlign = 'center';
-            ctx.fillText('SHIELD ' + shieldTimer.toFixed(1) + 's', W / 2, PLAY_TOP + 14);
+            ctx.fillText('COFFEE ' + shieldTimer.toFixed(1) + 's', W / 2, PLAY_TOP + 14);
             ctx.restore();
         }
     }
@@ -441,14 +483,14 @@
 
         GameEngine.startGame(GAME_ID, {
             instructions: {
-                title: 'HOW TO PLAY',
-                objective: 'Fly your auditor through gaps in the red-flag obstacles. Collect green checkmarks for points and gold seals for big bonuses.',
+                title: 'FLIGHT TO MUM',
+                objective: 'Fly your gift up to Mum through gaps in life’s little misses. Collect hearts for points and flower bouquets for big bonuses.',
                 controls: [
                     'Hold Space / tap screen to rise',
                     'Release to fall',
-                    'Collect blue shields for temporary invincibility'
+                    'Grab a coffee ☕ for a few seconds of shield'
                 ],
-                tip: 'Stay near the centre — it gives you room to dodge both ways.'
+                tip: 'Stay near the centre — the bouquet bonus is worth the detour.'
             },
             onUpdate: onUpdate,
             onDraw: onDraw,
