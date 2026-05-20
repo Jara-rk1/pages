@@ -40,39 +40,39 @@
     "bd_recommendations_ai_fallback": false
   },
   "client_news_weekly": {
-    "brief": "",
+    "brief": "This fortnight's signal is dominated by Commonwealth enforcement and integrity activity — ACNC's suspension of the RACP president-elect, ASIC's regulatory simplification push, AUSTRAC's AML reset, and eSafety's online-harms escalation all sit alongside contested NDIS reform legislation moving through the Senate. State activity is thinner but pointed, with VAGO probing a 40-year lottery deal and NSW EPA standing up a fresh illegal-dumping fund. Partners should lead inbound conversations on regulatory readiness, NDIS program assurance, and AML/online-safety uplift before budget-linked scoping closes.",
     "vic": [
       {
         "client": "Victorian Auditor-General's Office",
-        "headline": "VAGO probes 40-year lottery licence deal"
-      },
-      {
-        "client": "Consumer Affairs Victoria",
-        "headline": "$1m+ penalty secured against rental operator"
+        "headline": "VAGO probes 'devious' 40-year lottery deal"
       },
       {
         "client": "Victorian Building Authority",
         "headline": "Home Warranty insurance scheme imminent"
+      },
+      {
+        "client": "Transport Accident Commission",
+        "headline": "Camera tech boost for road safety"
       }
     ],
     "federal": [
-      {
-        "client": "National Disability Insurance Agency",
-        "headline": "NDIS reforms tighten access and target fraud"
-      },
       {
         "client": "Australian Charities and Not-for-profits Commission",
         "headline": "ACNC suspends RACP president-elect"
       },
       {
+        "client": "National Disability Insurance Agency",
+        "headline": "NDIS reform package contested in Senate"
+      },
+      {
         "client": "Australian Securities and Investments Commission",
-        "headline": "ASIC launches regulatory-clutter overhaul"
+        "headline": "ASIC overhauls digital guidance to cut clutter"
       }
     ],
     "other_states": [
       {
         "client": "Environment Protection Authority",
-        "headline": "EPA stands up $1.2M illegal-dumping fund"
+        "headline": "NSW EPA targets illegal dumping with $1.2M fund"
       }
     ],
     "themes": []
