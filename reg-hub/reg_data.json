@@ -197,21 +197,21 @@
         "client": "Victorian Auditor-General's Office",
         "client_slug": "Victorian Auditor-General's Office",
         "headline": "VAGO probes 40-year lottery licence deal",
-        "url": "https://www.themandarin.com.au/",
+        "url": "",
         "summary_1_sentence": "VAGO's audit of the contentious 40-year lottery licence opens a probity and value-for-money assurance lane relevant to procurement advisory."
       },
       {
         "client": "Environment Protection Authority Victoria",
         "client_slug": "Environment Protection Authority Victoria",
         "headline": "Supreme Court upholds EPA landfill levy",
-        "url": "https://www.epa.vic.gov.au/",
+        "url": "",
         "summary_1_sentence": "The Supreme Court win on landfill levy methodology signals further compliance enforcement and revenue assurance work for EPA Victoria."
       },
       {
         "client": "Transport Accident Commission",
         "client_slug": "Transport Accident Commission",
         "headline": "TAC boosts camera tech for road safety",
-        "url": "https://www.tac.vic.gov.au/",
+        "url": "",
         "summary_1_sentence": "TAC's expanded camera technology investment for National Road Safety Week opens program design and benefits-realisation hooks."
       }
     ],
@@ -220,21 +220,21 @@
         "client": "National Disability Insurance Agency",
         "client_slug": "National Disability Insurance Agency",
         "headline": "NDIS access tightened under proposed rules",
-        "url": "https://www.theguardian.com/australia-news",
+        "url": "",
         "summary_1_sentence": "The 'exhaust all appropriate treatment' eligibility test and broader Budget cuts create immediate scheme design, actuarial and provider-impact advisory demand at the NDIA."
       },
       {
         "client": "Australian Charities and Not-for-profits Commission",
         "client_slug": "Australian Charities and Not-for-profits Commission",
         "headline": "ACNC suspends RACP president-elect",
-        "url": "https://www.acnc.gov.au/",
+        "url": "",
         "summary_1_sentence": "The ACNC's high-profile suspension of the RACP president-elect underlines escalating governance enforcement activity and demand for conflicts-of-interest assurance support."
       },
       {
         "client": "Department of Health, Disability and Ageing",
         "client_slug": "Department of Health, Disability and Ageing",
         "headline": "Federal Budget 2026-27 health snapshot",
-        "url": "https://www.lexology.com/",
+        "url": "",
         "summary_1_sentence": "The 2026-27 Budget's health, aged care and disability measures open implementation, costing and program assurance opportunities across the Department."
       }
     ],
@@ -243,83 +243,15 @@
         "client": "Environment Protection Authority",
         "client_slug": "Environment Protection Authority",
         "headline": "NSW EPA $1.2M illegal dumping fund",
-        "url": "https://wastemanagementreview.com.au/",
+        "url": "",
         "summary_1_sentence": "The $1.2M illegal dumping fund signals grant program design and compliance uplift work for NSW EPA."
       },
       {
         "client": "Independent Commission Against Corruption",
         "client_slug": "Independent Commission Against Corruption",
-        "headline": "ICAC opens 'Pink Ops' public hearings",
-        "url": "https://www.themandarin.com.au/",
-        "summary_1_sentence": "ICAC's 'Pink Ops' hearings reinforce demand for integrity, procurement-controls and conduct-risk advisory across NSW agencies."
-      }
-    ],
-    "qld": [],
-    "sa": [],
-    "wa": [],
-    "act": []
-  },
-  "client_news": {
-    "vic": [
-      {
-        "client": "Victorian Auditor-General's Office",
-        "client_slug": "Victorian Auditor-General's Office",
-        "headline": "VAGO probes 40-year lottery licence deal",
-        "url": "https://www.themandarin.com.au/",
-        "summary_1_sentence": "VAGO's audit of the contentious 40-year lottery licence opens a probity and value-for-money assurance lane relevant to procurement advisory."
-      },
-      {
-        "client": "Environment Protection Authority Victoria",
-        "client_slug": "Environment Protection Authority Victoria",
-        "headline": "Supreme Court upholds EPA landfill levy",
-        "url": "https://www.epa.vic.gov.au/",
-        "summary_1_sentence": "The Supreme Court win on landfill levy methodology signals further compliance enforcement and revenue assurance work for EPA Victoria."
-      },
-      {
-        "client": "Transport Accident Commission",
-        "client_slug": "Transport Accident Commission",
-        "headline": "TAC boosts camera tech for road safety",
-        "url": "https://www.tac.vic.gov.au/",
-        "summary_1_sentence": "TAC's expanded camera technology investment for National Road Safety Week opens program design and benefits-realisation hooks."
-      }
-    ],
-    "federal": [
-      {
-        "client": "National Disability Insurance Agency",
-        "client_slug": "National Disability Insurance Agency",
-        "headline": "NDIS access tightened under proposed rules",
-        "url": "https://www.theguardian.com/australia-news",
-        "summary_1_sentence": "The 'exhaust all appropriate treatment' eligibility test and broader Budget cuts create immediate scheme design, actuarial and provider-impact advisory demand at the NDIA."
-      },
-      {
-        "client": "Australian Charities and Not-for-profits Commission",
-        "client_slug": "Australian Charities and Not-for-profits Commission",
-        "headline": "ACNC suspends RACP president-elect",
-        "url": "https://www.acnc.gov.au/",
-        "summary_1_sentence": "The ACNC's high-profile suspension of the RACP president-elect underlines escalating governance enforcement activity and demand for conflicts-of-interest assurance support."
-      },
-      {
-        "client": "Department of Health, Disability and Ageing",
-        "client_slug": "Department of Health, Disability and Ageing",
-        "headline": "Federal Budget 2026-27 health snapshot",
-        "url": "https://www.lexology.com/",
-        "summary_1_sentence": "The 2026-27 Budget's health, aged care and disability measures open implementation, costing and program assurance opportunities across the Department."
-      }
-    ],
-    "nsw": [
-      {
-        "client": "Environment Protection Authority",
-        "client_slug": "Environment Protection Authority",
-        "headline": "NSW EPA $1.2M illegal dumping fund",
-        "url": "https://wastemanagementreview.com.au/",
-        "summary_1_sentence": "The $1.2M illegal dumping fund signals grant program design and compliance uplift work for NSW EPA."
-      },
-      {
-        "client": "Independent Commission Against Corruption",
-        "client_slug": "Independent Commission Against Corruption",
-        "headline": "ICAC opens 'Pink Ops' public hearings",
-        "url": "https://www.themandarin.com.au/",
-        "summary_1_sentence": "ICAC's 'Pink Ops' hearings reinforce demand for integrity, procurement-controls and conduct-risk advisory across NSW agencies."
+        "headline": "ICAC NSW opens ‘Pink Ops’ hearings",
+        "url": "https://www.themandarin.com.au/312751-icac-nsw-opens-pink-ops-hearings/",
+        "summary_1_sentence": "(Story refreshed from harvest pool — see linked article)"
       }
     ],
     "qld": [],
