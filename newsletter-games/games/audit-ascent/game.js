@@ -13,10 +13,14 @@
     const PLAY_TOP = HUD;
     const PLAY_H = H - HUD;
 
-    /* --- Physics --- */
-    const GRAVITY = 600;
-    // |THRUST| must exceed GRAVITY for hold-to-rise: net -600 px/s² when held, +600 when released.
-    const THRUST = -1200;
+    /* --- Physics ---
+       Jetpack feel: light gravity + strong thrust + modest top speed.
+       Net held: -600 px/s² up (snappy lift). Net released: +300 px/s² down (gentle drop).
+       ~33% hold duty cycle holds altitude → forgiving for first-time players.
+       Traversal at max vy: 370/250 ≈ 1.5s (room to react). */
+    const GRAVITY = 300;
+    const THRUST = -900;
+    const MAX_VY = 250;
     const PLAYER_X = 80;
     const PLAYER_W = 24;
     const PLAYER_H = 32;
@@ -189,7 +193,7 @@
             emitJetParticles();
         }
         player.vy += GRAVITY * dt;
-        player.vy = GameEngine.clamp(player.vy, -400, 400);
+        player.vy = GameEngine.clamp(player.vy, -MAX_VY, MAX_VY);
         player.y += player.vy * dt;
 
         speedTimer += dt;
