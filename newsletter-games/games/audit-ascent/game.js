@@ -15,7 +15,8 @@
 
     /* --- Physics --- */
     const GRAVITY = 600;
-    const THRUST = -420;
+    // |THRUST| must exceed GRAVITY for hold-to-rise: net -600 px/s² when held, +600 when released.
+    const THRUST = -1200;
     const PLAYER_X = 80;
     const PLAYER_W = 24;
     const PLAYER_H = 32;
