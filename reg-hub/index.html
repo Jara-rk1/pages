@@ -152,23 +152,19 @@
 
         /* --- Summary stat bar --- */
         .summary-bar {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 10px;
             margin-bottom: 24px;
-            overflow-x: auto;
-            padding-bottom: 4px;
-            scrollbar-width: thin;
         }
         .stat-card {
             background: var(--white);
             border-radius: var(--radius);
             padding: 14px 18px;
-            min-width: 140px;
             box-shadow: var(--shadow-sm);
             display: flex;
             align-items: center;
             gap: 12px;
-            flex-shrink: 0;
             border: 1px solid var(--grey-border);
             transition: box-shadow var(--transition), transform var(--transition);
         }
@@ -193,8 +189,8 @@
         .stat-label {
             font-size: 11px;
             color: var(--text-mid);
-            white-space: nowrap;
             margin-top: 1px;
+            line-height: 1.25;
         }
 
         /* --- Controls: search + filters --- */
@@ -1437,7 +1433,8 @@
             .header { padding: 14px 16px; flex-wrap: wrap; gap: 10px; }
             .container { padding: 16px; }
             .summary-bar { gap: 8px; }
-            .stat-card { min-width: 120px; padding: 10px 12px; }
+            .stat-card { padding: 10px 12px; }
+            .summary-bar { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
             .news-grid { grid-template-columns: 1fr; }
             .filter-group { min-width: 160px; }
             .filter-select { font-size: 12px; padding: 7px 28px 7px 10px; }
