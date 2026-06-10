@@ -44,7 +44,7 @@ jobs:
         # An --ff-only failure means the mirror has a commit the public repo
         # lacks (someone pushed directly to the mirror) — by design this must
         # fail loudly, and scheduled failures generate no notification.
-        if: failure()
+        if: failure() || cancelled()
         uses: actions/github-script@v8
         with:
           script: |
