@@ -9,10 +9,18 @@ Static portfolio landing page + sub-sites, published to **two** GitHub Pages sur
 
 ## Publish flow
 
-1. Edit content, commit on `main`.
-2. `git pushall` — pushes both remotes; each Pages site rebuilds automatically on push.
+**The public `origin` repo is canonical.** It receives automated dashboard deploys daily (horizon,
+PEPI news, reg-hub CI push directly to `Jara-rk1/pages`), and the KPMG mirror **self-syncs from it
+nightly** (`.github/workflows/sync-public-mirror.yml`, 23:00 UTC, fast-forward only, repo-gated to
+run only on the KPMG repo).
 
-Both surfaces serve the same tree; drift only happens if one push is skipped.
+For manual edits made here:
+
+1. Pull first (`git pull origin main` — the remote moves daily), edit, commit on `main`.
+2. `git pushall` — pushes both remotes (instant mirror refresh; otherwise the nightly sync catches up).
+
+Never commit to the `kpmg` remote only — a kpmg-only commit breaks the fast-forward sync (it will
+fail loudly rather than fork history).
 
 ## Credentials
 

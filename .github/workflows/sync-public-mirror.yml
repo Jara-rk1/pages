@@ -1,0 +1,25 @@
+# Keeps the KPMG-internal Pages mirror (kpmg-au-emu/pepi-portfolio) in sync with
+# the public origin (Jara-rk1/pages), which receives automated dashboard deploys daily.
+# Runs ONLY on the KPMG repo (repo-gated below); on the public repo this file is inert.
+# Fast-forward only: a kpmg-only commit makes this fail loudly rather than fork history.
+name: Sync mirror from public origin
+on:
+  schedule:
+    - cron: '0 23 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  sync:
+    if: github.repository == 'kpmg-au-emu/pepi-portfolio'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fast-forward main from public origin
+        run: |
+          git remote add public https://github.com/Jara-rk1/pages.git
+          git fetch public main
+          git merge --ff-only public/main
+          git push origin main
