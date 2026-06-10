@@ -1411,14 +1411,9 @@ a:hover {
     margin-bottom: 4px;
 }
 
-.brief-client-card__url a {
+a.brief-client-card__url {
     font-size: 11px;
     color: var(--kpmg-cobalt);
-    text-decoration: none;
-}
-
-.brief-client-card__url a:hover {
-    text-decoration: underline;
 }
 
 .brief-client-grid {
@@ -1500,11 +1495,6 @@ a:hover {
 
 .brief-news-item__header a {
     color: var(--kpmg-blue);
-    text-decoration: none;
-}
-
-.brief-news-item__header a:hover {
-    text-decoration: underline;
 }
 
 .brief-news-item__summary {
@@ -1532,13 +1522,14 @@ a:hover {
     border-bottom: none;
 }
 
-.brief-signal-item a {
-    color: var(--kpmg-blue);
-    text-decoration: none;
+/* axe link-in-text-block: in-text links must be distinguished by more than
+   colour (kpmg-blue vs text-dark is only ~1.1:1), so brief links underline. */
+.brief-content a {
+    text-decoration: underline;
 }
 
-.brief-signal-item a:hover {
-    text-decoration: underline;
+.brief-signal-item a {
+    color: var(--kpmg-blue);
 }
 
 .brief-signal-item__body {
