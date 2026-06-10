@@ -16,10 +16,13 @@ Both surfaces serve the same tree; drift only happens if one push is skipped.
 
 ## Credentials
 
-Both remotes authenticate via `gh` multi-account (`!gh auth git-credential`, URL-scoped in `.git/config`):
-`origin` as `Jara-rk1` (personal), `kpmg` as `jknowles2_kpmg` (EMU). If `origin` prompts for a password,
-the personal account is missing from `gh`: run `gh auth login -h github.com -p https -w`, sign in as
-`Jara-rk1`, then `gh auth switch -h github.com -u jknowles2_kpmg` to keep the EMU account active for API use.
+Both accounts live in the `gh` keyring (`Jara-rk1` personal, `jknowles2_kpmg` EMU), but gh's git
+credential helper only serves the *active* account — so `git pushall` switches the active account to
+`Jara-rk1` for the `origin` push and always switches back to `jknowles2_kpmg` before the `kpmg` push.
+If `origin` prompts for a password, the personal account dropped out of the keyring: re-run
+`gh auth login -h github.com -p https -w`, sign in as `Jara-rk1`, then
+`gh auth switch -h github.com -u jknowles2_kpmg`. (Git Credential Manager is installed but does not
+reliably serve stored github.com credentials on this devbox — don't depend on it.)
 
 ## Rules
 
