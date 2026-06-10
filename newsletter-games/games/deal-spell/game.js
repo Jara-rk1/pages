@@ -320,7 +320,7 @@
         GameEngine._ensureOverlayContainer(container);
         GameEngine._logicalWidth = 480;
         GameEngine._logicalHeight = 700;
-        GameEngine._options = { width: 480, height: 700, maxWidth: 480 };
+        GameEngine._options = { width: 480, height: 700, maxWidth: 1600 };
 
         GameEngine.startGame(GAME_ID, {
             instructions: {

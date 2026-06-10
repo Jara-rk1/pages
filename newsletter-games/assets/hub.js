@@ -42,7 +42,7 @@ const Hub = {
     /** All 12 game definitions for static/demo mode */
     STATIC_GAMES: [
         { id: 'consultant-rush', title: 'Easter Egg Rush', description: 'Hop through the spring meadow collecting Easter eggs and dodging obstacles' },
-        { id: 'audit-ascent', title: 'Audit Ascent', description: 'Climb the corporate ladder collecting audit evidence' },
+        { id: 'audit-ascent', title: 'Flight to Mum', description: "Fly your gift up to Mum through life's little misses — collect hearts and bouquets" },
         { id: 'flappy-brief', title: 'Flappy Brief', description: 'Navigate your briefing through bureaucratic hurdles' },
         { id: 'deal-spell', title: 'Deal Spell', description: 'Spell out deal terms before time runs out' },
         { id: 'tax-tetris', title: 'Tax Tetris', description: 'Stack tax deductions into perfect returns' },

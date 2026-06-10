@@ -152,11 +152,11 @@ const GameEngine = {
         this.canvas.style.width = targetWidth + 'px';
         this.canvas.style.height = targetHeight + 'px';
 
-        // Resize overlay to match
-        if (this._overlayEl) {
-            this._overlayEl.style.width = targetWidth + 'px';
-            this._overlayEl.style.height = targetHeight + 'px';
-        }
+        // Overlay stays at CSS inset:0 (full container). Don't size it to the
+        // canvas — when container is wider than canvas (large viewports), an
+        // explicit canvas-sized overlay drifts left of the flex-centered canvas.
+        // Full-container overlay keeps the flex-centered instructions / game-over
+        // content visually aligned with the canvas regardless of viewport width.
     },
 
     _ensureOverlayContainer(container) {
