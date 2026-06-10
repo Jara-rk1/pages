@@ -2,19 +2,27 @@
 # the public origin (Jara-rk1/pages), which receives automated dashboard deploys daily.
 # Runs ONLY on the KPMG repo (repo-gated below); on the public repo this file is inert.
 # Fast-forward only: a kpmg-only commit makes this fail loudly rather than fork history.
+# NEVER push directly to the mirror's main — all content must arrive via this sync,
+# or the next ff-only merge fails.
 name: Sync mirror from public origin
 on:
   schedule:
-    - cron: '0 23 * * *'
+    # Daily 23:43 UTC. Minute 43 (not :00) dodges GitHub's top-of-the-hour
+    # schedule-event drops, and 23:43 runs AFTER the public surface's nightly
+    # news deploy (23:13 cron) so the mirror picks up same-day content
+    # instead of trailing by 24h.
+    - cron: '43 23 * * *'
   workflow_dispatch:
 permissions:
   contents: write
+  pages: write
+  issues: write
 jobs:
   sync:
     if: github.repository == 'kpmg-au-emu/pepi-portfolio'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Fast-forward main from public origin
@@ -23,3 +31,33 @@ jobs:
           git fetch public main
           git merge --ff-only public/main
           git push origin main
+      - name: Request Pages build
+        # The legacy pages-build-deployment may not auto-trigger on pushes
+        # made with GITHUB_TOKEN; request a build explicitly so the served
+        # internal site can never silently fall behind the repo.
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" \
+            || echo "Pages build request failed (a build may already be queued)"
+      - name: Alert on failure (mirror diverged or sync broke)
+        # An --ff-only failure means the mirror has a commit the public repo
+        # lacks (someone pushed directly to the mirror) — by design this must
+        # fail loudly, and scheduled failures generate no notification.
+        if: failure()
+        uses: actions/github-script@v8
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Mirror sync from public origin failed (run ${context.runId})`,
+              body: [
+                `The nightly mirror sync failed — most likely the mirror's main has`,
+                `diverged from the public origin (direct push to the mirror?).`,
+                `The internal Pages surface stops updating until this is resolved.`,
+                ``,
+                `Investigate: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              ].join('\n'),
+              labels: ['automation'],
+            })
