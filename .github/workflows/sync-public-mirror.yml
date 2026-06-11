@@ -3,7 +3,12 @@
 # Runs ONLY on the KPMG repo (repo-gated below); on the public repo this file is inert.
 # Fast-forward only: a kpmg-only commit makes this fail loudly rather than fork history.
 # NEVER push directly to the mirror's main — all content must arrive via this sync,
-# or the next ff-only merge fails.
+# or the next ff-only merge fails. ONE exception: commits touching
+# .github/workflows/** cannot be pushed by GITHUB_TOKEN at all ("refusing to
+# allow a GitHub App to update workflow without workflows permission", run
+# 27328805250) — push those to the mirror yourself with the SAME SHAs
+# (git -C pages push kpmg main, jknowles2 PAT has workflow scope); identical
+# history keeps ff-only intact.
 name: Sync mirror from public origin
 on:
   schedule:
