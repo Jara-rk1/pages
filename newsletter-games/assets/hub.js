@@ -16,7 +16,8 @@ const GAME_ICONS = {
     'risk-radar': '\u{1F6E1}\uFE0F',
     'pipeline-plumber': '\u{1F527}',
     'kpi-catcher': '\u{1F4C8}',
-    'strategy-snake': '\u{1F40D}'
+    'strategy-snake': '\u{1F40D}',
+    'penalty-pressure': '⚽'
 };
 
 /** Maximum attempts per game per edition */
@@ -52,7 +53,8 @@ const Hub = {
         { id: 'risk-radar', title: 'Risk Radar', description: 'Detect and neutralise risks on the radar' },
         { id: 'pipeline-plumber', title: 'Pipeline Plumber', description: 'Connect the deal pipeline before it leaks' },
         { id: 'kpi-catcher', title: 'KPI Catcher', description: 'Catch the right KPIs and dodge the vanity metrics' },
-        { id: 'strategy-snake', title: 'Strategy Snake', description: 'Grow your strategy by collecting insights' }
+        { id: 'strategy-snake', title: 'Strategy Snake', description: 'Grow your strategy by collecting insights' },
+        { id: 'penalty-pressure', title: 'After-Hours Shootout', description: 'Match night at the pub — take 10 World Cup penalties for KPMG United' }
     ],
 
     async init() {

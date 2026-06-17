@@ -145,6 +145,12 @@ SEED_GAMES = [
         "Avoid scope creep walls that randomly appear.",
         10000, 12,
     ),
+    (
+        "penalty-pressure", "Penalty Pressure",
+        "Step up for KPMG United and take 10 World Cup penalties. "
+        "Two-tap aim and power, beat the keeper, chase the top corners.",
+        20000, 13,
+    ),
 ]
 
 # One edition per month, each featuring a different game.
@@ -153,7 +159,7 @@ SEED_GAMES = [
 SEED_EDITIONS = [
     ("2026-04", "April 2026 Newsletter",     "consultant-rush",      1, "2026-04-30"),
     ("2026-05", "May 2026 Newsletter",        "audit-ascent",         0, "2026-05-31"),
-    ("2026-06", "June 2026 Newsletter",       "flappy-brief",         0, "2026-06-30"),
+    ("2026-06", "June 2026 Newsletter",       "penalty-pressure",     0, "2026-07-31"),
     ("2026-07", "July 2026 Newsletter",       "deal-spell",           0, "2026-07-31"),
     ("2026-08", "August 2026 Newsletter",     "tax-tetris",           0, "2026-08-31"),
     ("2026-09", "September 2026 Newsletter",  "slide-deck-stacker",   0, "2026-09-30"),

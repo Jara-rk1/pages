@@ -47,6 +47,7 @@ CANVAS_GAMES = [
     ("slide-deck-stacker",  400, 700, 640),
     ("strategy-snake",      400, 470, 640),
     ("tax-tetris",          400, 700, 640),
+    ("penalty-pressure",    400, 700, 640),
 ]
 DOM_GAMES = [
     "deal-spell",
