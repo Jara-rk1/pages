@@ -73,6 +73,15 @@
 
     var bg = null;             // offscreen static-stadium cache
 
+    /* ---- figure-gradient cache (built once, lazily) ----
+       drawKeeper / drawKicker / drawBall build these under translate/rotate/scale,
+       so the gradient COORDS + STOPS live in figure-LOCAL space and are constant
+       frame-to-frame (per-frame state is applied via the ctx transform, not the
+       gradient). Cache once, reuse every frame instead of re-creating ~7/frame. */
+    var _gKeeperLegs = null, _gKeeperTorso = null, _gKeeperHead = null;
+    var _gKickerLegs = null, _gKickerTorso = null, _gKickerHead = null;
+    var _gBallBody = null;
+
     function difficulty(k) {
         if (suddenDeath) return { aim: 0.78, pow: 0.68, read: 0.60, dive: 0.17 };
         if (k <= 3) return { aim: 1.15, pow: 0.95, read: 0.33, dive: 0.24 };
@@ -344,8 +353,9 @@
             addTrauma(z.row === 'hi' && z.col !== 'C' ? 0.85 : 0.7);
             doHitStop(5);
             flashNow(C.teal, 0.5);
-            emit(70, withXY(CONFETTI, GOAL_LEFT + 20, GOAL_TOP + 10));
-            emit(70, withXY(CONFETTI, GOAL_RIGHT - 20, GOAL_TOP + 10));
+            // goal burst trimmed to fit the 150-slot mobile pool (60+60+22 = 142)
+            emit(60, withXY(CONFETTI, GOAL_LEFT + 20, GOAL_TOP + 10));
+            emit(60, withXY(CONFETTI, GOAL_RIGHT - 20, GOAL_TOP + 10));
             emit(22, withXY(NETSPRAY, lx, ly));
             if (z.row === 'hi' && z.col !== 'C') {
                 emit(16, withXY(SPARKLE, lx, ly));
@@ -723,9 +733,12 @@
         ctx.fillStyle = rgba(C.dark, 0.28);
         ctx.beginPath(); ctx.ellipse(0, 39, 22 * stretch, 5.5, 0, 0, Math.PI * 2); ctx.fill();
 
-        // legs (mid->dark gradient, knee bend + boots)
-        var legG = ctx.createLinearGradient(0, 18, 0, 40);
-        legG.addColorStop(0, C.mid); legG.addColorStop(1, C.dark);
+        // legs (mid->dark gradient, knee bend + boots) — cached (local-space, constant)
+        if (!_gKeeperLegs) {
+            _gKeeperLegs = ctx.createLinearGradient(0, 18, 0, 40);
+            _gKeeperLegs.addColorStop(0, C.mid); _gKeeperLegs.addColorStop(1, C.dark);
+        }
+        var legG = _gKeeperLegs;
         var lLegX = -10 - 14 * stretch * (keeper.dir < 0 ? 1 : 0.2);
         var rLegX = 10 + 14 * stretch * (keeper.dir > 0 ? 1 : 0.2);
         limb(ctx, -1, 18, lLegX, 38, keeper.dir < 0 ? -3 : 2, 8, legG);
@@ -733,10 +746,12 @@
         boot(ctx, lLegX, 38, keeper.dir < 0 ? -0.5 : 0);
         boot(ctx, rLegX, 38, keeper.dir > 0 ? 0.5 : 0);
 
-        // torso (magenta->purple gradient, slight curve)
-        var tg2 = ctx.createLinearGradient(-8, -18, 8, 22);
-        tg2.addColorStop(0, C.magenta); tg2.addColorStop(1, C.purple);
-        ctx.strokeStyle = tg2; ctx.lineCap = 'round'; ctx.lineWidth = 15;
+        // torso (magenta->purple gradient, slight curve) — cached
+        if (!_gKeeperTorso) {
+            _gKeeperTorso = ctx.createLinearGradient(-8, -18, 8, 22);
+            _gKeeperTorso.addColorStop(0, C.magenta); _gKeeperTorso.addColorStop(1, C.purple);
+        }
+        ctx.strokeStyle = _gKeeperTorso; ctx.lineCap = 'round'; ctx.lineWidth = 15;
         ctx.beginPath(); ctx.moveTo(0, -14); ctx.quadraticCurveTo(keeper.dir * 2, 4, 0, 20); ctx.stroke();
 
         // arms + gloves (red gloves — failure colour ON the action)
@@ -751,10 +766,12 @@
             ctx.beginPath(); ctx.arc(gx, gy, 6, Math.PI * 0.8, Math.PI * 1.7); ctx.stroke();
         }
 
-        // head (amber, 2-tone)
-        var hg = ctx.createLinearGradient(-7, -31, 7, -17);
-        hg.addColorStop(0, C.amber); hg.addColorStop(1, rgba(C.amber, 0.7));
-        ctx.fillStyle = hg; ctx.beginPath(); ctx.arc(0, -24, 7, 0, Math.PI * 2); ctx.fill();
+        // head (amber, 2-tone) — cached
+        if (!_gKeeperHead) {
+            _gKeeperHead = ctx.createLinearGradient(-7, -31, 7, -17);
+            _gKeeperHead.addColorStop(0, C.amber); _gKeeperHead.addColorStop(1, rgba(C.amber, 0.7));
+        }
+        ctx.fillStyle = _gKeeperHead; ctx.beginPath(); ctx.arc(0, -24, 7, 0, Math.PI * 2); ctx.fill();
 
         // rim light (lit edge toward the floodlights)
         ctx.strokeStyle = rgba(C.lightBlue, 0.55); ctx.lineWidth = 1.6;
@@ -775,29 +792,36 @@
         ctx.fillStyle = rgba(C.dark, 0.32);
         ctx.beginPath(); ctx.ellipse(8, 30, 20, 5, 0, 0, Math.PI * 2); ctx.fill();
 
-        // legs (cobalt->blue gradient, knee bend + boots)
-        var legG = ctx.createLinearGradient(0, 10, 0, 34);
-        legG.addColorStop(0, C.cobalt); legG.addColorStop(1, C.blue);
+        // legs (cobalt->blue gradient, knee bend + boots) — cached
+        if (!_gKickerLegs) {
+            _gKickerLegs = ctx.createLinearGradient(0, 10, 0, 34);
+            _gKickerLegs.addColorStop(0, C.cobalt); _gKickerLegs.addColorStop(1, C.blue);
+        }
+        var legG = _gKickerLegs;
         limb(ctx, 2, 12, -4, 32, -3, 7, legG);                 // standing leg
         boot(ctx, -4, 33, -0.2);
         var footX = lerp(-2, 24, swing), footY = lerp(28, 6, swing);
         limb(ctx, 2, 12, footX, footY, 5, 7, legG);            // kicking leg — swings forward
         boot(ctx, footX, footY, 0.5 + swing * 0.5);
 
-        // torso (pacific->cobalt, slight curve with lean)
-        var tg = ctx.createLinearGradient(0, -28, 0, 12);
-        tg.addColorStop(0, C.pacific); tg.addColorStop(1, C.cobalt);
-        ctx.strokeStyle = tg; ctx.lineCap = 'round'; ctx.lineWidth = 13;
+        // torso (pacific->cobalt, slight curve with lean) — cached
+        if (!_gKickerTorso) {
+            _gKickerTorso = ctx.createLinearGradient(0, -28, 0, 12);
+            _gKickerTorso.addColorStop(0, C.pacific); _gKickerTorso.addColorStop(1, C.cobalt);
+        }
+        ctx.strokeStyle = _gKickerTorso; ctx.lineCap = 'round'; ctx.lineWidth = 13;
         ctx.beginPath(); ctx.moveTo(0, -16 + lean * 0.2); ctx.quadraticCurveTo(2 + lean * 0.1, -2, 2, 12); ctx.stroke();
 
         // arms (curved)
         limb(ctx, 0, -8, -12, 2 - swing * 8, -4, 5, C.cobalt);
         limb(ctx, 0, -8, 14, -4 - swing * 6, 4, 5, C.pacific);
 
-        // head (2-tone) + rim
-        var hg = ctx.createLinearGradient(-6, -32, 6, -20);
-        hg.addColorStop(0, C.amber); hg.addColorStop(1, rgba(C.amber, 0.7));
-        ctx.fillStyle = hg; ctx.beginPath(); ctx.arc(2, -26 + lean * 0.2, 6.5, 0, Math.PI * 2); ctx.fill();
+        // head (2-tone) + rim — cached
+        if (!_gKickerHead) {
+            _gKickerHead = ctx.createLinearGradient(-6, -32, 6, -20);
+            _gKickerHead.addColorStop(0, C.amber); _gKickerHead.addColorStop(1, rgba(C.amber, 0.7));
+        }
+        ctx.fillStyle = _gKickerHead; ctx.beginPath(); ctx.arc(2, -26 + lean * 0.2, 6.5, 0, Math.PI * 2); ctx.fill();
         ctx.strokeStyle = rgba(C.lightBlue, 0.55); ctx.lineWidth = 1.4;
         ctx.beginPath(); ctx.arc(0, -27, 6.5, Math.PI * 0.7, Math.PI * 1.4); ctx.stroke();
         ctx.restore();
@@ -823,7 +847,6 @@
         ctx.ellipse(x, Math.min(SPOT_Y + 6, y + ball.r + 6 + heightFactor * 40), ball.r * (1 - heightFactor * 0.4), ball.r * 0.4 * (1 - heightFactor * 0.4), 0, 0, Math.PI * 2);
         ctx.fill();
 
-        var speed = Math.hypot(ball.x - (ball.startX || x), 0);
         var stretch = ball.flying ? (1 + clamp01(flightT) * J(0.12)) : 1;
         var sx = stretch * ball.squash, sy = (1 / stretch) / ball.squash;
 
@@ -831,10 +854,13 @@
         ctx.translate(x, y);
         if (ball.flying) ctx.rotate(Math.atan2(ball.endY - ball.startY, ball.endX - ball.startX));
         ctx.scale(sx, sy);
-        // body white->amber under the lights
-        var g = ctx.createRadialGradient(-ball.r * 0.3, -ball.r * 0.3, 1, 0, 0, ball.r);
-        g.addColorStop(0, C.white); g.addColorStop(1, C.amber);
-        ctx.fillStyle = g;
+        // body white->amber under the lights — cached (ball.r is constant BALL_R;
+        // stretch/rotation come from the ctx scale/rotate above, not the gradient)
+        if (!_gBallBody) {
+            _gBallBody = ctx.createRadialGradient(-ball.r * 0.3, -ball.r * 0.3, 1, 0, 0, ball.r);
+            _gBallBody.addColorStop(0, C.white); _gBallBody.addColorStop(1, C.amber);
+        }
+        ctx.fillStyle = _gBallBody;
         ctx.beginPath(); ctx.arc(0, 0, ball.r, 0, Math.PI * 2); ctx.fill();
         // spin pentagons (suggested by 2 dark dots that rotate)
         ctx.fillStyle = rgba(C.dark, 0.85);
