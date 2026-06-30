@@ -1,7 +1,7 @@
 {
   "slug": "2026-06",
-  "displayName": "June 2026 — World Cup Afterhours Edition",
+  "displayName": "June 2026 — World Cup Afterhours Edition (Preview)",
   "featuredGameId": "penalty-pressure",
   "closesAt": "2026-07-31T23:59:00+10:00",
-  "maxAttempts": 3
+  "maxAttempts": 999
 }
