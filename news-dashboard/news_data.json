@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-06T09:34:41.642452+10:00",
+  "updated": "2026-07-07T09:35:36.575760+10:00",
   "cards_window_days": 30,
   "summary_window_days": 7,
   "summary_trusted_sources_only": true,
@@ -8,144 +8,167 @@
   "cross_sector_overview": null,
   "pepi_wide": null,
   "sectors": {
-    "child_protection": {
+    "ndis": {
       "articles": [
         {
-          "title": "Support at Home fails to keep older Australians out of residential care - Health Services Daily",
-          "link": "https://www.healthservicesdaily.com.au/support-at-home-fails-to-keep-older-australians-out-of-residential-care/47912",
-          "source": "Health Services Daily",
-          "description": "Support at Home fails to keep older Australians out of residential care  Health Services Daily",
-          "date": "25 Jun 2026, 03:23 PM",
-          "date_iso": "2026-06-25T15:23:58+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOMGwweHZ2OTZ2NkdaSktERWIwQlphT2E5ekI2X0t4a3J4bDlnOVhrMFFKMmtCb1ZTWXNScEd2UHE0X1kwdWhWbUdra0RJR3JtbklnNk04UVllekIxa3VrVFUwQjlpUGVWVXU1N0VGeTJvRVlQbjVNd2l3Mkl1Wm1sZFJzZnZoaDk0eW1ObnlxRXRFeHZqWlJqNGVYdFcxQVFzejdnclRUZ3NlYnFQREk0bWJlMlVBMkk?oc=5"
+          "title": "$11 million grant to boost Autism research - Australian Government Department of Health, Disability and Ageing",
+          "link": "https://www.health.gov.au/ministers/senator-the-hon-jenny-mcallister/media/11-million-grant-to-boost-autism-research?language=en",
+          "source": "Australian Government Department of Health, Disability and Ageing",
+          "description": "$11 million grant to boost Autism research  Australian Government Department of Health, Disability and Ageing",
+          "date": "25 Jun 2026, 09:42 AM",
+          "date_iso": "2026-06-25T09:42:31+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMixwFBVV95cUxOWjZMb05qRzJZMHlJS2ktSllxR19FSWszZzNmVnBhYm45WFVBaGxSMUh3aUxCb095Y1d1WXhKS3YxcXA2SjliSkY0c2pONjIzbkpVVXZ4TUFZemMzSFNKaUFaUk4td1BWTkN4a1FhY3JmSEVVUWtnbm9feWhOVm5KYU5DLVM4QmhZLTE2UXBfQU9MMGFlUVRwUjVRVjlSMl81VzdES2VWUFpITXB0ekt4NzBPWGNiaHVDb2ZYVWpxaUY4Y3R2R1RR?oc=5"
         },
         {
-          "title": "Carers in need of care: Wellbeing in Australia’s aged care workforce - Monash University",
-          "link": "https://www.monash.edu/medicine/news/latest/2026-articles/carers-in-need-of-care-wellbeing-in-australias-aged-care-workforce",
-          "source": "Monash University",
-          "description": "Carers in need of care: Wellbeing in Australia’s aged care workforce  Monash University",
-          "date": "18 Jun 2026, 05:00 PM",
-          "date_iso": "2026-06-18T17:00:00+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNUGVpR3VaWnAtUXFnYlEwcURuMnNZZUxsazRyWG5BSUg1elJrOTR2dWNIZThiNU55bnhmTVVpVi1TckdrQ3VjQ3ZpSkZ4RjBBelRWQzNoOWRvRmY4RzFBS3ZlM05aelZxbk1McGZwelRSelBHdXRWdkxqU0hTNGxfcmVKRElaa25sblk3TE9ETFF6VW9KT3NaWno0Z2p1Q0tKbTgtc0g4WHJlSzc3UjBLVDg3YUU4SHZtTmVlSVQ4MHY1QQ?oc=5"
+          "title": "'Ridiculous and disrespectful': Inquiry into NDIS cuts extended - Australian Broadcasting Corporation",
+          "link": "https://www.abc.net.au/news/2026-06-23/ndis-bill-senate-inquiry-extended/106818164",
+          "source": "Australian Broadcasting Corporation",
+          "description": "'Ridiculous and disrespectful': Inquiry into NDIS cuts extended  Australian Broadcasting Corporation",
+          "date": "23 Jun 2026, 02:52 PM",
+          "date_iso": "2026-06-23T14:52:44+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOZV9aS1lzczVQU24xTGVENVBiZ2VTQy1pWHJTZEhKZ1J5RnJtWFZjOEtPZk54Y2pKWWNSaUt4bG5QUWZrRTdRb3N2SHIyMXh5WmNnVTc4Nzh5d2l1UXBpSldMU0VEZUdLT1RoN3p1bVFXdnNKYTVNZ3ExWktVb01Bc1JkYVdBVzZTUGc?oc=5"
         },
         {
-          "title": "Low level of engagement with children and young people - Western Australian Government",
-          "link": "https://www.wa.gov.au/organisation/local-government/low-level-of-engagement-children-and-young-people",
-          "source": "Western Australian Government",
-          "description": "Low level of engagement with children and young people  Western Australian Government",
-          "date": "18 Jun 2026, 04:39 PM",
-          "date_iso": "2026-06-18T16:39:19+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPTXN2VzllbW9MQV9wNXR0dUtIX0ZrTlpmQ1c0b3pkY05DTl9hZkVJOXdmX1htVThhNWVIWjhacjNwR0JZTWVNVXZvUXE0ay1tUjFQRzZZWHU5VXRHeFFNUnMxZkdpblRBQzB3bHB1b0syS2VveVU3N0JuaEwwdndPTVd5a09aTXNiYzFQU2FsMFdvR2g1SnlleEQyY0RUV0VHT3pr?oc=5"
+          "title": "Senate inquiry delays NDIS reforms for second time - CathNews",
+          "link": "https://cathnews.com/2026/06/22/senate-inquiry-delays-ndis-reforms-for-second-time/",
+          "source": "CathNews",
+          "description": "Senate inquiry delays NDIS reforms for second time  CathNews",
+          "date": "22 Jun 2026, 08:07 AM",
+          "date_iso": "2026-06-22T08:07:34+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOYlRCY1NRVDVaWEdGc1dVZ280Z3VzNmR5SUJ6UjNJVVYtSHBWX2dIZEJfR21DRWRSYVNPQWhCTmFCOUItLUV5OTZwckdZVFdmaVA5RWlHQTdXel84d1VEaDFua3M3QUExSVdLZU82YlRjcXZFOGhzZTRNVnEwREgxSFdPM0JCSktVVGRn?oc=5"
         },
         {
-          "title": "PRESS RELEASE: Young people leaving care gain new tool for navigating adulthood - Press Release Distribution Australia",
-          "link": "https://getthewordout.com.au/press-release/press-release-young-people-leaving-care-gain-new-tool-for-navigating-adulthood/",
-          "source": "Press Release Distribution Australia",
-          "description": "PRESS RELEASE: Young people leaving care gain new tool for navigating adulthood  Press Release Distribution Australia",
-          "date": "17 Jun 2026, 11:32 AM",
-          "date_iso": "2026-06-17T11:32:16+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNV21DRXpmdzlsLVBUSmRQZlVDcVU4cjBwanhIenFmTVRRTVlycThwVmNaYWJvSXBTQm12cnA2NnQ3eTBZTjhfdk1kWGM3cElHYzBja2twdER1NzFlOTJPVXhPT1g4UERGUHczbVp5SHdIWVFyTlRLdG5vcUJLeHFMVGdtZlh5WE4yaDJWLUYtLVg5NmZQYnFOanhQNE84TW5zRGs4WHluaVV4UjVXTVhKanlDeHpoN2l4LVFLMVcyVQ?oc=5"
+          "title": "NDIS inquiry misses second deadline - News.com.au",
+          "link": "https://www.news.com.au/national/politics/governments-national-disability-insurance-scheme-overhaul-stalled-by-second-report-delay/news-story/dee712e7b6886c79c232b57c98b6db1f",
+          "source": "News.com.au",
+          "description": "NDIS inquiry misses second deadline  News.com.au",
+          "date": "19 Jun 2026, 06:45 PM",
+          "date_iso": "2026-06-19T18:45:24+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMihAJBVV95cUxQek9oZ3ZORVgtSkFueHFpTFZVVzVXbERZYU9zMV9HUHozSWFYcVRtQWFxQ0ZSNTlucXlLd1NJczRiamx4cV9aTk9vOVFON0pUdS1HQjVZQWw0MHc3OUY1SzIzYkJJX0Y2X0VqTEtvVnNBZFBqUldzbG5nWXFiNi13X1R5VDhTa2gzQllab0ZEeGlXUGhRakQwbHdiaVczNEFaNnNsa1FpdXFoSlZWMUV4cVNLa210UHJqMHBJQ0cwc3piTHk2Y3ZYeGNjcXJEcFp4MGtWUTg2Y25fdzh4SHVpSG5qUEt4RkNITFVrYkVvYmQ1ZEJhR3FzWDZzSUJRSnFQc2d6MNIBigJBVV95cUxNWmV6MmUwQjNMLWNCaWhXZnhNVWVEQlZJblJkbHFGcE1STUdzQnYwT09aRWhSUXFXbXdUVXl2ZUc5aUY3V3F0dmV0TUQzeWZ5clpXb3ZqUkstSTlOS2ZUeDhqLXhKYlJjdHZyVzJIc3I0U2JPZk5ZUU5tOXd2UGJvbHBWN3ZPdzBtOHB0MDRRa1dyX092YTVRTk5nNlV6VVBqMkRzNXFscEtCUldWNl9yLVpTaXNjZDBGcjh6SUw0WW9GZWt1VmNjbUxNTzhHNGRBQ0d2aEMyN01vMnRNZ2JibTA2QlBkVC12U1JaVmliZW1tRVN5THdOOWNraEd0R0luX0FTMWthUExCQQ?oc=5"
         },
         {
-          "title": "Indigenous kids are still overrepresented in out-of-home care. This alliance says its time for reform - SBS Australia",
-          "link": "https://www.sbs.com.au/nitv/article/indigenous-children-are-still-overrepresented-in-out-of-home-care-this-alliance-says-its-time-for-reform/e0tljakj0",
+          "title": "QLS recommends more time for critical consultation on NDIS reform Bill - qlsproctor.com.au",
+          "link": "https://www.qlsproctor.com.au/2026/06/qls-recommends-more-time-for-critical-consultation-on-ndis-reform-bill/",
+          "source": "qlsproctor.com.au",
+          "description": "QLS recommends more time for critical consultation on NDIS reform Bill  qlsproctor.com.au",
+          "date": "18 Jun 2026, 10:45 AM",
+          "date_iso": "2026-06-18T10:45:25+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOZmc5WEVfblExZklzX3dBeUl3bVhpWmJlN0Q1cFNxT09tMHFnOGxYMDFMS296dFVsdDd4QnVITEthMGItMWdpd0VCZjAxeFQtalpFNXVvbkNiNnNCVWUyYTE3dU1DRlAwdFVZSG1lS3BEWXBYU3phZTRWLUlnQi1ock05SkQwZXFqTmJUaG5JaW1VYVhLZEcwS001MXdTbkRHdVUzOHZuLW85MFlkQlE?oc=5"
+        },
+        {
+          "title": "Speech to the Australian Chamber of Commerce and Industry - Australia’s Demographic Danger - Australian Government Department of Foreign Affairs and Trade",
+          "link": "https://ministers.dfat.gov.au/minister/matt-thistlethwaite/speech/speech-australian-chamber-commerce-and-industry-australias-demographic-danger",
+          "source": "Australian Government Department of Foreign Affairs and Trade",
+          "description": "Speech to the Australian Chamber of Commerce and Industry - Australia’s Demographic Danger  Australian Government Department of Foreign Affairs and Trade",
+          "date": "17 Jun 2026, 03:51 PM",
+          "date_iso": "2026-06-17T15:51:55+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxNTWJKRFllMEJpVEZHbl91N0RKUDVYc0s0amxFZm5Fbjdfc19ibjdqUVFYX0V2QmljcDJPZ1Byd0NhZGNWNWpqQnJwOW9OOFZiNXlHcU1IQ0FqMTN4X3FjNGF2NGIxNjVWT2hZR0p5QnNsT2pGQ0x5X3FPb3ZXQS1YTF9LVm9MWjdkTldreWtjenNVa0FCalZHVnp6TFRYczhGZ2JqRzEydHFaWG1JWTRlMVo1T1A1QnFnWHl1WDhEZE12WmRsc1luWVhOS3dMaW1jLWFtaEFNTnYyUUk?oc=5"
+        },
+        {
+          "title": "Good policy is a choice | Between the Lines - The Australia Institute",
+          "link": "https://australiainstitute.org.au/post/good-policy-is-a-choice-between-the-lines/",
+          "source": "The Australia Institute",
+          "description": "Good policy is a choice | Between the Lines  The Australia Institute",
+          "date": "13 Jun 2026, 09:00 AM",
+          "date_iso": "2026-06-13T09:00:47+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNc2EyZ0FmekFPcEFINjJybWt5c1hwZmMxZmpyelBrMG5oMXp4Y2Z4RnJWbWttWHEwY3ZMLXZRZEQtemo5aVBiN21DN2k2QVJFdVdtT3hQWHk4R1Z6Qm1lTnhJcHJZaVhfckF5VEJ0Q3JkeVF6S2VncFd1cUJUQ1B2YzBzc0l5elYz?oc=5"
+        },
+        {
+          "title": "NDIS changes ‘retrogressive’ and out of step with review, MPs say - The Guardian",
+          "link": "https://www.theguardian.com/australia-news/2026/jun/13/ndis-changes-retrogressive-and-out-of-step-with-review-mps-say",
+          "source": "The Guardian",
+          "description": "NDIS changes ‘retrogressive’ and out of step with review, MPs say  The Guardian",
+          "date": "13 Jun 2026, 01:00 AM",
+          "date_iso": "2026-06-13T01:00:00+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPODdVLTZ0dDU0ZFBxejdybVBRYkh1aExPS2hrb1UyU3lhb1ZINk0yZko3UWxFcGpxbENOb2JDWWp0ZllHRVZaMFV2T19MbElORjg0eWQwV3IxWi1nNzJIM0d2cndkOXhxTlp4dHFnRWJiOFJ2S3RvYTlDXzVHTWpULWZvYzdfVW1oYWdsSnpKRkNGWUFFS1B1bzVfU2RWamJuZlZwTGwtRkk1OG1Iam5kQVJLcEdDMm5F?oc=5"
+        },
+        {
+          "title": "State disability ministers lash NDIS overhaul - Australian Broadcasting Corporation",
+          "link": "https://www.abc.net.au/news/2026-06-11/state-and-territories-lash-ndis-changes/106785788",
+          "source": "Australian Broadcasting Corporation",
+          "description": "State disability ministers lash NDIS overhaul  Australian Broadcasting Corporation",
+          "date": "11 Jun 2026, 05:00 PM",
+          "date_iso": "2026-06-11T17:00:00+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNSEZXT2JzaG1lY29PUW92Tml4Ymp2MjU0NEVSMUpnNlFyX2FDaU5ZcFE0UDlwR0NRWUhFbG4yNlRTUnhYWWJDRU9YZm0xOG1VQ1Fsb2pLQXlnTUE2akVnLWZSR2RFUlZRMlFOaDFXYTBYZGlYZGRkaENQTzgteGdGVnVGMXNiVzcyRkhuZFNzNmNDQQ?oc=5"
+        },
+        {
+          "title": "Disabled people will die 'as a direct result of NDIS bill', advocate says in 'dire' warning - SBS Australia",
+          "link": "https://www.sbs.com.au/news/article/disabled-people-will-die-as-a-direct-result-of-ndis-bill-advocate-says-in-dire-warning/q2wq3zhxd",
           "source": "SBS Australia",
-          "description": "Indigenous kids are still overrepresented in out-of-home care. This alliance says its time for reform  SBS Australia",
-          "date": "17 Jun 2026, 05:00 AM",
-          "date_iso": "2026-06-17T05:00:00+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxQUWZTZmFQbWVWSTRUVFc4N0ZackhnTUYwYVdOTC10Z1hSZlg4Q1U1Yl90SDVwcy1vbjNUX1NoYzR2ZWRRNW40NzNDZVhxMkVOeGFkeHRqaVpxYmhGek93dW1hTkQ2VmtBOWdlM01hczIxcUpJVFpMNWRVS2pseEd0MjFWa3BwRkxETlBCRFVJbzZ4RHhDYWFXSjBaNjh0OVZkcnJGdWpwNjdTQ212N0pIZV9ETFg0TmFfMGhheEtSbW1TRmluMTZYUEVyWDlOSmhkd3RMNzVkb1kyNkswcDdfVENKUEQ?oc=5"
+          "description": "Disabled people will die 'as a direct result of NDIS bill', advocate says in 'dire' warning  SBS Australia",
+          "date": "10 Jun 2026, 05:00 PM",
+          "date_iso": "2026-06-10T17:00:00+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMizAFBVV95cUxOR0ozVi1hUDFiZWlsNFpxQ2NMM3BDQU81WXgtWWNGM1JoMjJjbFJEMDl4a19XVDF5bUpCMk5FX3NDVUJ2UEhvaDJ3SHFPaFZMNDdGNmRQQmdYY2tGcnhHUGx2TEx0ckpxR0psa2pfaHViZmxMdkM2Wm4wOHh1VHJEZERmUndBUkkwdTRUaG1oZWdGOE9vNUVpSTZLXzdGLTFuc19yeUtxUU84ZFQ5U25vcEIzeG1ic1QxYUMwOGJjUmkzYVNiazN3NTNGTkc?oc=5"
         },
         {
-          "title": "A-G says new child protection commission will absorb existing body - Brisbane Times",
-          "link": "https://www.brisbanetimes.com.au/politics/queensland/qld-to-get-new-centralised-child-protection-commission-20260616-p60785.html",
-          "source": "Brisbane Times",
-          "description": "A-G says new child protection commission will absorb existing body  Brisbane Times",
-          "date": "16 Jun 2026, 01:51 PM",
-          "date_iso": "2026-06-16T13:51:13+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMixwFBVV95cUxOeDdqSU9jTFlkN3ZNVzJubHZRUFpNSEEtNnV1TW5NSGE2LWhacXN6eTNXcnlpdXVvaHF0VHN4NzVFMEc0alRRY2o1Z0psSUE3TDg0cl95eHJ0VkxWS0R3bnFKcXBFaTZVa2Nzc0FESUdnV2hUTXI1RDZXRG5QXzhoYzdNM29zTWNuVFV1SUVleHVsT29uRGFHVGFFZDZoTlhacnpBYXNDckdOUmhqTmZvNU8tZnRIQWNVY3NrRGVKWlRxVVg1U1hB?oc=5"
-        },
-        {
-          "title": "Serious concerns over impact of rushed NT child protection reforms - National Justice Project",
-          "link": "https://www.justice.org.au/serious-concerns-impact-rushed-nt-child-protection-reforms/",
-          "source": "National Justice Project",
-          "description": "Serious concerns over impact of rushed NT child protection reforms  National Justice Project",
-          "date": "15 Jun 2026, 02:25 PM",
-          "date_iso": "2026-06-15T14:25:07+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPNUd3LV9SNkVyWjVYZDFSTnFZMTlxamVyZWpwVWVJcF9JcGtZR0gwWXhySWVYd0twRENMNVFkREZuSk4wdWxhWTBPSFJkbHd1aElwNTFUZHBqY0tLaXAtbF9vclFRYXMxTElZSi02bzI4WHJNcEJhN0NNakpYYjBwNUhaZ042M3VYQXJlUFoyVQ?oc=5"
-        },
-        {
-          "title": "How active play supports child safety - The Sector",
-          "link": "https://thesector.com.au/article/how-active-play-supports-child-safety-in-early-learning-services",
-          "source": "The Sector",
-          "description": "How active play supports child safety  The Sector",
-          "date": "12 Jun 2026, 05:32 AM",
-          "date_iso": "2026-06-12T05:32:18+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMingFBVV95cUxNaURQVEFfRDRpTFNjSVdyUklqR1oxLUQzV2hMbWxfRGVnb2tRdmp2WWo4RHlNS2RqdHlxNU9BVzZZemktS3J5TTZZZHRoNlI4OUNkMXpPVTJ3Z2hrMUd1ZUNtb1loUlkzdEtRblViOENEam1yQ29ydzg5cFktbHhRQ3B5SXFNUmNqVjBWVjRGeWxUaUhnTDFLRTVoZUpHZw?oc=5"
-        }
-      ],
-      "synthesis": null
-    },
-    "aged_care": {
-      "articles": [
-        {
-          "title": "Senate recommends CHSP remain separate - Australian Ageing Agenda",
-          "link": "https://www.australianageingagenda.com.au/executive/policy/senate-recommends-chsp-remain-separate/",
+          "title": "Aged care is sinking - Australian Ageing Agenda",
+          "link": "https://www.australianageingagenda.com.au/executive/aged-care-is-sinking/",
           "source": "Australian Ageing Agenda",
-          "description": "Senate recommends CHSP remain separate  Australian Ageing Agenda",
-          "date": "24 Jun 2026, 01:02 PM",
-          "date_iso": "2026-06-24T13:02:14+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQUVZ1SXVQOEtZMVhXRzZhZ2RzbU1sbVRXckE4MUZJOUFTUG8xNzVaSHYxVzF0M1F3b3g1YWQ1eHZaTVkyUHVVR0d3Y2pmdHBtNVN3S1ZQOVNoSklleVBnR1JYUHczUGd0cnBYanZ1dVVmRWJZQ29MSnF4cS1aT3hCSEVOWWZ2clgySDI2c1JIcE1MVmU1RzN6MjB0RUZkbDg?oc=5"
+          "description": "Aged care is sinking  Australian Ageing Agenda",
+          "date": "10 Jun 2026, 10:45 AM",
+          "date_iso": "2026-06-10T10:45:18+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE5VVy1aWFR5dXhpdm14YnN3WG8zWFZlN3VrSEJyM04yWlhMSnJaakt1em9tdUQ2RjFMdUdINGx2aks1UWJIZ1FwNGF1NEkxdExTeDBxN0g2V0t6SjRVb3hNYzNoXzNRNmV4OWRkcV9mVFY4c3ZFY19aQTRVTmFYdw?oc=5"
         },
         {
-          "title": "New interim commissioner to lead First Nations aged care reform - National Indigenous Times",
-          "link": "https://nit.com.au/24-06-2026/24973/new-interim-commissioner-to-lead-first-nations-aged-care-reform",
-          "source": "National Indigenous Times",
-          "description": "New interim commissioner to lead First Nations aged care reform  National Indigenous Times",
-          "date": "24 Jun 2026, 11:00 AM",
-          "date_iso": "2026-06-24T11:00:00+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMioAFBVV95cUxNWTQtMWdIUThsZ3psV1pTZ2ZJN3RUU1RMZC1GbUEtU0haNGx5OGd6NjI0ZXJLVXE5Z2ZhbUo5NTZ5TWZ6TnFfRVhNWmpmVHdBQzRHdFZPd0tKai1zcHRRVzZsOVIzUnMtOEtOcUFGdExkZW1PZTA3MWpIWlo3aVBScnY1RWo4dHI4dE1vT05MMXJ3ZW51em5tVGpsZFlVTFh2?oc=5"
+          "title": "Brutal NDIS cuts will hurt the most vulnerable - Grattan Institute",
+          "link": "https://grattan.edu.au/news/brutal-ndis-cuts-will-hurt-the-most-vulnerable/",
+          "source": "Grattan Institute",
+          "description": "Brutal NDIS cuts will hurt the most vulnerable  Grattan Institute",
+          "date": "09 Jun 2026, 05:00 PM",
+          "date_iso": "2026-06-09T17:00:00+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPZHowd2EzUDhrdDdMYW9pMFpnSU9Ha1BDdVNmRU1vVFE0dk1Sb0FycjV4emdjNlJmdE5MdlFkX1pJYklUZUw4amlTdUNCSEtFMU1HV1VzUVN6OU9NbXpkWDhyRTRXSGxmOEhOTU1DUUk5bjJkT1MzUFFpcUx3M1YxRw?oc=5"
         },
         {
-          "title": "Reckless Labor Risks Lives As Aged Care Reforms Unravel - Mirage News",
-          "link": "https://www.miragenews.com/reckless-labor-risks-lives-as-aged-care-reforms-1697837/",
-          "source": "Mirage News",
-          "description": "Reckless Labor Risks Lives As Aged Care Reforms Unravel  Mirage News",
-          "date": "24 Jun 2026, 08:28 AM",
-          "date_iso": "2026-06-24T08:28:00+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOTF9RcWhTSDMtS0J1azc5RnIyaTBHcXkwT1JkdVgyeUtobk13QmdENy1Oa0x3Y0hjdWNkMFM3TUd2NG91aG1QT2IwcEZ1dzNGQjJ6SHNHT0RvbDEycjZnbEE0QlVCS2NvZldBcHRmcjBlcUEwNG1CTVdNXzcyWFdIRVh3NFhGWENESy1r?oc=5"
+          "title": "Coalition demands NDIS modelling before backing reform - The Australian",
+          "link": "https://www.theaustralian.com.au/breaking-news/coalition-to-back-ndis-reforms-if-albanese-government-releases-modelling/news-story/8ea9572f48e73ae5e15f17caa0a343be",
+          "source": "The Australian",
+          "description": "Coalition demands NDIS modelling before backing reform  The Australian",
+          "date": "09 Jun 2026, 05:00 PM",
+          "date_iso": "2026-06-09T17:00:00+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxQYjV1WmR5UVYtRm9rblJMOUlnZjNObm92a1JsaGhSVGhBTUh1SnQtaVdOOTNqSjRXXzQyNFJwSFhaX3h1cEd1YlhJTHBoYVBDNklZZ1dvSkxtVDEzMVV0NkpvRS1DVmx4c2RjbW1OdzlJT0VCbTNRTEdaNEY1YjNwUnJWN25oTWNhRUg5NnZfUFNYbldXM0pSTjJ6TlRYa29rektWTTctZUJ6eE9JYUYxeFRLY0Q1RkE3bWctcDNtTHFqOF9FNzhCSmVCWkpVaUt6RHU3cjd5X0FoY3hHOVhibFE0eC1WZVpweUpFcGhrcGdXcUVRMUHSAfsBQVVfeXFMUEs1RGlfSHZvR2Q4ak91UE8tY1ZUMHJXeHg3ZFhXN3hGT3p2OXp5a1BOaGIwMTV1RlNQQUdUSFJzY3BaczdUMmVNRUE4RGVwWVdPYW5aTFVzSXFaVkxEX2FQcXRSNkdhOVBJZUtSSl9IZmlOSHZjT21waGstdVZKUlA2ZnJFRC1VVVRNSW11QU15dUdGNmJTeGJfZDNOak9HbW01NDhOZURJZ1lGc3A2YTBtS2hvWkNBTzRrLTFCZUw2enNUMkhjcXJpSTZ5dEpnampyeE9VY1I4aFZ4S3B5Rzd2QVpNamU2bVVLd2o0RkRkQ3B6YjNXUkFxYmc?oc=5"
         },
         {
-          "title": "'No vacancies': Australia is getting older — and we're facing a 'conundrum' - SBS Australia",
-          "link": "https://www.sbs.com.au/news/article/will-federal-budget-keep-pace-with-ageing-australians/ltljydliy",
-          "source": "SBS Australia",
-          "description": "'No vacancies': Australia is getting older — and we're facing a 'conundrum'  SBS Australia",
-          "date": "16 Jun 2026, 05:00 PM",
-          "date_iso": "2026-06-16T17:00:00+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQT1NoRklDNkxzRFVZQ3FId3hJQXRWOFZPZ1I2bzhvQlp4Y2FieGV4WlQzX05EZXcyZnl2MjhLVWR5NHhFbkpTcmU4UGs0TzFlbEl4UDFwUkhSSFBIZGNvNmNndk9oU0V5Qk4zNEtYbUlyMEh0WWNJTWZWYWVfbmVfUTJlanZ1NWFkZndtUHItd3J3dExvUjhzT21HalAxcVdH?oc=5"
+          "title": "NDIS changes could push families into crisis, inquiry warned - Australian Broadcasting Corporation",
+          "link": "https://www.abc.net.au/news/2026-06-09/warning-ndis-changes-could-push-families-into-crisis/106776534",
+          "source": "Australian Broadcasting Corporation",
+          "description": "NDIS changes could push families into crisis, inquiry warned  Australian Broadcasting Corporation",
+          "date": "09 Jun 2026, 05:00 PM",
+          "date_iso": "2026-06-09T17:00:00+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNT04tQXA1enY1VjJzRDhqbmdCZ1ZjSnQzU1k0cVNwQ2hoaWwteWJaQ0tpS25ua2J3a2MzVVVCcnBaOWFJQTFUeUtFTjN5bDJEamZpXzN5S2lxdmRYWURESldzb19rM0hvMWdWNW1VNFMtTDQtVTd0LUswM1hjNzluaVRJbnNiajd4cktPNkxiQlB3bzZONHFEN21ISGhyVFRGV1Nz?oc=5"
         },
         {
-          "title": "Urgent action needed to ensure high-quality care for aged care residents - Australian Medical Association",
-          "link": "https://www.ama.com.au/media/urgent-action-needed-ensure-high-quality-care-aged-care-residents",
-          "source": "Australian Medical Association",
-          "description": "Urgent action needed to ensure high-quality care for aged care residents  Australian Medical Association",
-          "date": "09 Jun 2026, 11:36 AM",
-          "date_iso": "2026-06-09T11:36:02+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQQzdhbXlLc1pRYlZ5eW1WR0VBUGRrYkxnOUUxQWRzeXBlYXY4UnZxQklEeTZYX1A0dmp3YlkyaXl5cHdKWmZHcnQ2YUVlVDJwWnBZcXVOdHRicEtjREJsMmlXamQtcjhueXZMM1lQZXdBUGdHNTlQYTZ2Y2czQmxqLWRHR0xTZnJHSXJvYmY3M0pvNXE2WmpKRVhn?oc=5"
+          "title": "NDIS inquiry warned changes could push families into crisis and towards child protection services - Australian Broadcasting Corporation",
+          "link": "https://www.abc.net.au/news/2026-06-09/warning-ndis-changes-could-push-families-into-crisis/106776534",
+          "source": "Australian Broadcasting Corporation",
+          "description": "NDIS inquiry warned changes could push families into crisis and towards child protection services  Australian Broadcasting Corporation",
+          "date": "09 Jun 2026, 05:00 PM",
+          "date_iso": "2026-06-09T17:00:00+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNT04tQXA1enY1VjJzRDhqbmdCZ1ZjSnQzU1k0cVNwQ2hoaWwteWJaQ0tpS25ua2J3a2MzVVVCcnBaOWFJQTFUeUtFTjN5bDJEamZpXzN5S2lxdmRYWURESldzb19rM0hvMWdWNW1VNFMtTDQtVTd0LUswM1hjNzluaVRJbnNiajd4cktPNkxiQlB3bzZONHFEN21ISGhyVFRGV1Nz?oc=5"
         },
         {
-          "title": "Position statement on medical care for people in residential aged care homes - Australian Medical Association",
-          "link": "https://www.ama.com.au/articles/position-statement-medical-care-people-residential-aged-care-homes",
-          "source": "Australian Medical Association",
-          "description": "Position statement on medical care for people in residential aged care homes  Australian Medical Association",
-          "date": "09 Jun 2026, 11:08 AM",
-          "date_iso": "2026-06-09T11:08:12+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxORnowNHo1c1dKamNaRFdxUnIyVk5DX2NIUi02Q0RYdWxaRzNyOHZTQU9ic3c0VHpZaFQ2djVHb0VuZ0hmU0tUWlppY2o0TWdNQzFaTTFMY2NKUVhxM1J0SlVHbHcxNVhBQnphNjBKME5ub01zeUtGS0thcWVobHZ5WFZMcDlDQTNPOVdZb3dRVzNWd2J0OHE0YWNlMnFQVFE?oc=5"
+          "title": "Six of the most contentious parts of the NDIS bill - Australian Broadcasting Corporation",
+          "link": "https://www.abc.net.au/news/2026-06-09/ndis-bill-explained/106677706",
+          "source": "Australian Broadcasting Corporation",
+          "description": "Six of the most contentious parts of the NDIS bill  Australian Broadcasting Corporation",
+          "date": "08 Jun 2026, 05:00 PM",
+          "date_iso": "2026-06-08T17:00:00+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMid0FVX3lxTFAtN1g3Um9rdGxiVk9LcDIxQVpGZkdHenVfMFdWMlV6SVRQWWhacjVvWjZGYzQxeFFMUkFoQlB6VjZYRkVJU3BxQTJZaWg4X01jX1JJMmpvdVY5cXpkTjNPYmNvWTNVdXktNmVWV1FIb0wwdElJeXdV?oc=5"
         }
       ],
       "synthesis": null
     },
     "infrastructure": {
       "articles": [
+        {
+          "title": "Investing to see more Aussies experience the Red Centre",
+          "link": "https://ministers.pmc.gov.au/mccarthy/investing-see-more-aussies-experience-red-centre",
+          "source": "PM&C Ministers",
+          "description": "Investing to see more Aussies experience the Red Centre\nMichael Dean\nMon, 06/07/2026 - 09:58\n\n\n            The Albanese Labor Government is delivering for Australia’s iconic Red Centre, with major investments to attract more visitors, create new experiences for visitors and support local businesses.",
+          "date": "06 Jul 2026, 09:58 AM",
+          "date_iso": "2026-07-06T09:58:11+10:00",
+          "source_type": "press_release",
+          "jurisdiction": "commonwealth"
+        },
         {
           "title": "2026 Tiwi Festival keeping culture strong",
           "link": "https://ministers.pmc.gov.au/mccarthy/2026-tiwi-festival-keeping-culture-strong",
@@ -216,6 +239,17 @@
           "raw_link": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOaHBNZUVEVlZndGN1dFlGZ05HVHAxQmN1d3h0Qk4zSDBiQXNKMGphZHFzM0g5OWhpWjFKOU9MSnhQb2tvWmlHbnZnd3BTSlRINDlFTy1maDZ2V3ltQ1BhSW8xUHB0Zk9uRzFBSDRjMFZTUng4RGp3M1RlcThWZ05UaEdGUUQtVFBUTGVDbFRmYzk?oc=5"
         },
         {
+          "title": "Supporting older Canberrans through community-led initiatives - Chief Minister, Treasury and Economic Development Directorate",
+          "link": "https://www.cmtedd.act.gov.au/open_government/inform/act_government_media_releases/suzanne-orr-mla-media-releases/2026/supporting-older-canberrans-through-community-led-initiatives",
+          "source": "Chief Minister, Treasury and Economic Development Directorate",
+          "description": "Supporting older Canberrans through community-led initiatives  Chief Minister, Treasury and Economic Development Directorate",
+          "date": "17 Jun 2026, 09:35 AM",
+          "date_iso": "2026-06-17T09:35:25+10:00",
+          "source_type": "press_release",
+          "jurisdiction": "act",
+          "raw_link": "https://news.google.com/rss/articles/CBMijAJBVV95cUxNdlRDX1ZrUURQMDZiQ2xtdlhOVVdqOVJOTDNoVGo5eHNwZ2NvVVNqXzhsYWJVR2NYY1RSWk9INmlYRGtiYV9QbWxDeWJnTjZ1MlppcHU2ZWVoSERYQ01NQWdJYnVLRnpoVmYtY2pHN0FqZmJOdEFhQzVvdUt2RzBIeU5jaXpsZ2JzelJ1ZXdtbHhzNUt5RUd5Yktmd0tfUEN6cUJ0T0hOVEF2TGNXX1Q0MHFCRHVCUjBBemswTFcxeU53djg4MERobGRnMEU5bmRBOFRmeXRNNG9VSlNaMHA4VnA0M3gxYWFjVG5tdnVoczZoeGJFLTgzV0h1RGs2WW1ka195Njl4Tlh2Ym5a?oc=5"
+        },
+        {
           "title": "Cost-of-living measures supporting Tasmanians in need - Premier of Tasmania",
           "link": "https://www.premier.tas.gov.au/latest-news/2026/june/cost-of-living-measures-supporting-tasmanians-in-need",
           "source": "Premier of Tasmania",
@@ -245,17 +279,6 @@
           "date": "16 Jun 2026, 11:19 AM",
           "date_iso": "2026-06-16T11:19:54+10:00",
           "raw_link": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOcG01UXYybXZjWkVxU1lJOTVWV2pWOUlXUG91TDFWdWc5bk10VWRVcFZaQnVjRVNFRlNDYWdsZjRqQUJTWFRlcE93TmdOTWtSX1hMaWUwV1EwSjV4SWh3NWJGbmMxMlJuaWY2MzZmT0JvamhQd3RIaVZTSVpOajFyaFlOcEM4SXFRbXJ4aG9NNHJiQQ?oc=5"
-        },
-        {
-          "title": "Capitalising on the growth of women’s sport the focus of Women in Sport Summit 2026 - premier.sa.gov.au",
-          "link": "https://premier.sa.gov.au/media-releases/news-items/capitalising-on-the-growth-of-womens-sport-the-focus-of-women-in-sport-summit-2026",
-          "source": "premier.sa.gov.au",
-          "description": "Capitalising on the growth of women’s sport the focus of Women in Sport Summit 2026  premier.sa.gov.au",
-          "date": "12 Jun 2026, 05:00 PM",
-          "date_iso": "2026-06-12T17:00:00+10:00",
-          "source_type": "press_release",
-          "jurisdiction": "sa",
-          "raw_link": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPcXF6d1MzS2VzaXZEYS1HenV4TldoUWFadVVOSHdoZHhCN21ITnd1NmJIdHBNa2ZHZThBc2FnX3Bfb3huTEVxQVZnNWZlS1paR19fdDJfT0JlRmlkZ2lNb2hFZGh0MDhPS3ZFc0ZDeTRvaElpbWVOTnRIUkhvVDN6THpIOEMyb2NEbV94VFZiTFRnc08zZUVNcDNPZVJWbGUwTF81NVV1SzBhZWJ4SHZpNFh4OWEyMWVrcW1CZkFjZUhnMGdyR1JzUC13S0FxME0?oc=5"
         },
         {
           "title": "New $15m commitment to accelerate First Nations restoration and protection of NSW’s Great Cumbung",
@@ -288,17 +311,6 @@
           "raw_link": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxPQWw3dm9uN0l2b0xxM1YzNFRCbUM2LUZmRENIeTU4Wl9GLS0tcjhQbXdZOWJoZTRNUEVvMHpwNms4MWV0X1FFNkVIaDBrMXVqUW1NYnRWY25MVFNKZ3Bvck5uS3N6QlR5NS10eDJnQUZyck0yUDNRaEdJVVQ5cmNPXzVIRkZQMFAzd090YUVnU2pJU1pXVm9YT2ctR2tmSlg4YVNTWkVUc18yUnc4TEdlaVZfOXhNZ0Vnc2czcDZPTkhUVUQ1N2NaZGk4N3FWV0gwbjdfNURqcWl6aTk2SDAxYTZNNUlPTU1kaHc?oc=5"
         },
         {
-          "title": "South Australia’s first statewide bushfire risk assessment sets roadmap for resilience - premier.sa.gov.au",
-          "link": "https://premier.sa.gov.au/media-releases/news-items/south-australias-first-statewide-bushfire-risk-assessment-sets-roadmap-for-resilience",
-          "source": "premier.sa.gov.au",
-          "description": "South Australia’s first statewide bushfire risk assessment sets roadmap for resilience  premier.sa.gov.au",
-          "date": "10 Jun 2026, 05:00 PM",
-          "date_iso": "2026-06-10T17:00:00+10:00",
-          "source_type": "press_release",
-          "jurisdiction": "sa",
-          "raw_link": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxQZ0VyVFR1cGdQVklaNzU4N3dMWkRPZ1BLM21JNTNfWHB3Z1F3QU9aR0ZYcHBVX3NsZE5LRHZqQjN0dnZubU9Wb1V3VjN1ZjdDd1d4dER6ZGVGZ09wYkI5M3BNR3UtalM5UXA5Y2pMMURiRWJjVlVJbGVTeEZtSmg3U0NvaC1SYVdJRmVscUxYMVFVNDVnakpST1lDSGpMUjFRVnNkQXRuX0VSTjZSS09lak95UEtHSmNaVU1uNVo2WUxONUN6Ui13Ymk2R1FuZXg0NkQ0?oc=5"
-        },
-        {
           "title": "Perinatal Mental Health Centre now open in Berry Springs",
           "link": "https://ministers.pmc.gov.au/mccarthy/perinatal-mental-health-centre-now-open-berry-springs",
           "source": "PM&C Ministers",
@@ -307,26 +319,277 @@
           "date_iso": "2026-06-10T13:54:41+10:00",
           "source_type": "press_release",
           "jurisdiction": "commonwealth"
+        }
+      ],
+      "synthesis": null
+    },
+    "housing": {
+      "articles": [
+        {
+          "title": "Social and affordable housing: from funding ambition to delivery reality - Corrs Chambers Westgarth",
+          "link": "https://www.corrs.com.au/insights/social-and-affordable-housing-from-funding-ambition-to-delivery-reality",
+          "source": "Corrs Chambers Westgarth",
+          "description": "Social and affordable housing: from funding ambition to delivery reality  Corrs Chambers Westgarth",
+          "date": "25 Jun 2026, 08:56 AM",
+          "date_iso": "2026-06-25T08:56:07+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxOWllHd0h0MVhkLVl0bTFLNUJlTURYUE9ueGFWOW03eG9taTZnVkxzQUNGVHZmTzdIOGI2SXZJN250R2Jlb0FCbkUxV0pDaVBla3d0U1NWbmotdDg2ekZkcXNRWDMxWFhRT25EMHd3U24ydGhPbTUtd25BUGVqb1JReWZUX2VvVVBLSXAwWWlNaU9FRUdGeVNzalczMFVSaWZZMTRKUUNGRlg?oc=5"
         },
         {
-          "title": "Australia’s renewables rollout must hit “warp speed” - Energy Source & Distribution",
-          "link": "https://esdnews.com.au/australias-renewables-rollout-must-hit-warp-speed/",
-          "source": "Energy Source & Distribution",
-          "description": "Australia’s renewables rollout must hit “warp speed”  Energy Source & Distribution",
-          "date": "09 Jun 2026, 09:10 AM",
-          "date_iso": "2026-06-09T09:10:33+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBRTlhUWWhHWC1WeWpUdTNHRWUyN2I0dlZfTk9lS3o3a0hJVlhfYkwzRWJmSVhhTWxxTEJJZEE2REwxdFh0dVVqNmhXRVR4b0FpMS1qZ2ViMUI0NVdYdXdmanN3akVpZkoyV1dlaW9BenJHWDNZRFFNRnZPMW42dw?oc=5"
-        },
-        {
-          "title": "ACT Budget 26-27: Investment in land release to support more homes in Canberra - Chief Minister, Treasury and Economic Development Directorate",
-          "link": "https://www.cmtedd.act.gov.au/open_government/inform/act_government_media_releases/chris-steel-mla-media-releases/2026/act-budget-26-27-investment-in-land-release-to-support-more-homes-in-canberra",
-          "source": "Chief Minister, Treasury and Economic Development Directorate",
-          "description": "ACT Budget 26-27: Investment in land release to support more homes in Canberra  Chief Minister, Treasury and Economic Development Directorate",
-          "date": "09 Jun 2026, 08:29 AM",
-          "date_iso": "2026-06-09T08:29:41+10:00",
+          "title": "Paid Parental Leave to expand to 6 months",
+          "link": "https://ministers.pmc.gov.au/gallagher/paid-parental-leave-expand-6-months",
+          "source": "PM&C Ministers",
+          "description": "Paid Parental Leave to expand to 6 months\nSia Lipapis\nWed, 24/06/2026 - 09:33\n\n\n            One week to go: Bundle of joy for new parents as paid parental leave expands to 6 monthsIn one week, the Albanese Labor Government will deliver a major expansion of Paid Parental Leave, helping new parents sp",
+          "date": "24 Jun 2026, 09:33 AM",
+          "date_iso": "2026-06-24T09:33:22+10:00",
           "source_type": "press_release",
-          "jurisdiction": "act",
-          "raw_link": "https://news.google.com/rss/articles/CBMiogJBVV95cUxNLVludVNTYzhnUHpacVZmaWFYdF82bkdxOGZyM2RWZldpaWNxYXlfZ05ELTZhVlRmeEhBVTd2ZUQ3MFhURU5pNlF0WjMzMkZEdzB5YldhVU5ydk9LOXotRGV5REU5VW1FVHYyeWN0bWwtTlM3QnVhTlZXRkNyazRHM2YyTHNHXzVET2hoTUp3MU1wRGdzT2ZETHRTVGxFY2Jvd2VxNUVxSENtc0hSMXBqUXRWWVVXaGZHYXN0eEw2V3NsTjdQeGhzSVBvVkRkSUk3cjEwWktPQ1FXVHNFVW5vUkFVT09SM0hncXR4WG5jcFJBNHpGS2JiRzhHMDdRbW1LUmg5MVhwRG05UGkwbENqanRJdklISWIzczF1TVpJejZsQQ?oc=5"
+          "jurisdiction": "commonwealth"
+        },
+        {
+          "title": "Paid Parental Leave to expand to 6 months - Prime Minister of Australia",
+          "link": "https://www.pm.gov.au/media/paid-parental-leave-expand-6-months",
+          "source": "Prime Minister of Australia",
+          "description": "Paid Parental Leave to expand to 6 months  Prime Minister of Australia",
+          "date": "24 Jun 2026, 08:55 AM",
+          "date_iso": "2026-06-24T08:55:52+10:00",
+          "source_type": "press_release",
+          "jurisdiction": "commonwealth",
+          "raw_link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5rb2o4U2htMTYwYU1DNlZqd0tpOEkxVHI1WUhRTnhtc1RVUEVMdm05RHg0bHVfT2JKZEd5d3FLbEpQZjE5cWtObm96MU52UjByWm5JYUlVZHhDUlhMYi1FcUFmYXl3MTBnVFZXNHNKSWg?oc=5"
+        },
+        {
+          "title": "Support 'desperately needed' for Aboriginal-led housing solutions as new data shows social housing failing to keep pace in WA - National Indigenous Times",
+          "link": "https://nit.com.au/23-06-2026/24965/support-desperately-needed-for-aboriginal-led-housing-solutions-as-new-data-shows-social-housing-failing-to-keep-pace-in-wa",
+          "source": "National Indigenous Times",
+          "description": "Support 'desperately needed' for Aboriginal-led housing solutions as new data shows social housing failing to keep pace in WA  National Indigenous Times",
+          "date": "23 Jun 2026, 06:35 PM",
+          "date_iso": "2026-06-23T18:35:00+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxPOUdSTVByRVRkV1UwZG5oZ0lSdlIydFAyaG1mQzJfSUhOVzBabXNYdlBsbVpTR1VlaVZWOVBJRm9MZHNoY0xGWEpnelk1SG4zdHBlWXBtdGlCZ2tZWlpGRmJyMEx4MVIxMldIcHczbExuM1R6Tjc3RVY2UmVhLW5vWTJBbklfVmVVT084Szg4by1VaG12anBleFRvendEMVdrdFlNU3BiYUIyXzdZOWRUOGVXVkFiMXBFTW5mYlg4anlEc1lHdk85XzZUWWlKSW1hMXpHb3VocGJVRVFNRFp4N2draWlVZEFCQ3ZIYzd2ZkI?oc=5"
+        },
+        {
+          "title": "Call for youth foyer to help tackle homelessness in the NT - Australian Broadcasting Corporation",
+          "link": "https://www.abc.net.au/news/2026-06-18/call-for-nt-youth-foyer-to-tackle-homelessness/106814932",
+          "source": "Australian Broadcasting Corporation",
+          "description": "Call for youth foyer to help tackle homelessness in the NT  Australian Broadcasting Corporation",
+          "date": "18 Jun 2026, 05:55 PM",
+          "date_iso": "2026-06-18T17:55:00+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQT1p1YXV3SUx6MW8tdHZqSjYyUEhqYzJVTlBzY2F6ak50NU5kWGNRQVQxU0ZhVUpFTEZDN2xTMWZKYVA0T24ybUFOX2ZZOXVWa3BvTFdndkRpeGkzR3VCZkxlcVV3R3FINkFtWHBzTUMtN2JRYlNsYTVfQ2d3clJpMVI5d21JNll5SXE3UGotWlBLb1NnbFJ6M0VLYw?oc=5"
+        },
+        {
+          "title": "Homeless woman feels safer living in vehicle than shared housing - Australian Broadcasting Corporation",
+          "link": "https://www.abc.net.au/news/2026-06-18/homeless-woman-feels-safer-in-motorhome-than-shared-housing/106712346",
+          "source": "Australian Broadcasting Corporation",
+          "description": "Homeless woman feels safer living in vehicle than shared housing  Australian Broadcasting Corporation",
+          "date": "18 Jun 2026, 06:02 AM",
+          "date_iso": "2026-06-18T06:02:15+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPTEtaQ240bmFMamZQNkJKUWFwMEpnUXFJcWEyUmFpWk1CeEFCWlhrQWVsNGZ0ZUZvNDFrTjFkV2ZmSjZFamt2Q0JUS1hGcFFQVVlGODZCeXNveXZ0QVE2NUR6WjZnNUpsazQ5ekp1ankyQl9wRHBjMTFOTWVzUzBkcTNtNXRlQkhHQUw2eGdadjI1Wk5qMGpxYno1RkFWbEVsQnVSelFlSF95SFJm?oc=5"
+        },
+        {
+          "title": "Pauline Hanson declares $1.3b stripped from ABC will help tackle homelessness - Sky News Australia",
+          "link": "https://www.skynews.com.au/australia-news/politics/pauline-hanson-declares-13b-stripped-from-abc-will-help-tackle-homelessness-and-slash-debt/news-story/2be58484f2cc5fc2577c7898da0a2e5c",
+          "source": "Sky News Australia",
+          "description": "Pauline Hanson declares $1.3b stripped from ABC will help tackle homelessness  Sky News Australia",
+          "date": "17 Jun 2026, 10:42 PM",
+          "date_iso": "2026-06-17T22:42:21+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMikwJBVV95cUxOLTlIbTBBR3I2TmlZUW03YnJFREVSdE1GT0RKSGNTZ0IxRUd4NDFXQlNOYzhmNU80MDJSQUJOVXJseExOMWs3eXg5eGxycnE3RzF2OVYxNUJhbWFWcTQzbzhfZG9ZcFlPSTlDWVN2QmJWZGpmaVFOMld1VXZjaWxpUGFCMDVDRWRNQWd0dnJjLTVNYkltX1dMSHF4dWxvd0FRLWNDZ3hYNE9ncGFnTU1LdktKVk5yLW9tNXFUdnNKX21mLWxwbTdPNnY2SzMtOTBUS25JWTdpRW9PTWR4VFI4REttSkhjazU3bzhXdHhITThMWDR1eGhySVVYTGdOVjVaYnlyTWhGUVBsSnJNWVk2cTBmSdIBmAJBVV95cUxPR3pYLW9LZnA4cUhIZTZ2RjVNZVI3aDEwdXNtVzVVTm1IQldoNV9NUGYwdWNTQWxOLUdHcGZtTW1OSHUzX0s5TzJlMk45cTJSZzBHY2FkbW9WTDVZMHQwNkhtd3FpSk9jUU1MdnhXY0VNbG1mdzRMVjRNMjZTdG1DTlhYTWRDcW9FZzU0MkRRZ05fbjd6OVZXdUZtc2pjN1dSQXRkVFZMOWZZME85dlRGcFFUUzYwMkxDZ2lTWHNTbjU1aTBRVDlNSnFzSDgwaVRGMkNaZzdwYktUR21OU2lCc1BtbXJaeDhBa2pFT2FNRl9kX0hydnFvTGowaXpKZjg1ZXRUZ3JJREpCVGxkMG5fYXc2V1NCYk03?oc=5"
+        },
+        {
+          "title": "Building more apartments won’t ease housing crisis: new research - UNSW Sydney",
+          "link": "https://www.unsw.edu.au/newsroom/news/2026/06/building-more-apartments-wont-ease-housing-crisis-new-research",
+          "source": "UNSW Sydney",
+          "description": "Building more apartments won’t ease housing crisis: new research  UNSW Sydney",
+          "date": "17 Jun 2026, 09:22 AM",
+          "date_iso": "2026-06-17T09:22:30+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNR2E0YzhYbWN6ZTNURlpfdW56V0hkUXU5cDFMdjBsSFpIUDlyaHNHRlYzLUdPMnNHZkxFV1ZPTDJmLXdHVkVWOHk2SnJWZGlSY2VNQm1OWXlOTUljYzJUNnBJaHB1WlNGajdQaHhvOG0zX08xeFU3R2ktQ3c4LWxKOENWYUswdTVtMktveEZ5eDBweVhRdEx2UDhkaWRUTmpXaTJlNy1fWC1sZE1j?oc=5"
+        },
+        {
+          "title": "WA social housing waitlist to be overhauled for first time in 70 years - Australian Broadcasting Corporation",
+          "link": "https://www.abc.net.au/news/2026-06-16/major-reforms-to-wa-social-housing-public-housing-waitlist/106803924",
+          "source": "Australian Broadcasting Corporation",
+          "description": "WA social housing waitlist to be overhauled for first time in 70 years  Australian Broadcasting Corporation",
+          "date": "16 Jun 2026, 05:15 PM",
+          "date_iso": "2026-06-16T17:15:05+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOdlRiTzNibDJwY3hxWWdlQTh0bWlCdm0wQVlMcm5hakJJUGQxOHNHQjdISUsyamxlc0pXU2R4Qlo2cjVrSU01dGNtVVdvRlU5UDllTE1WWHM1a20yR0VMbkFZVlpZYlRkdkVRS3hMVmpGSDMzbnhVUUlIekdvSE53cS10LTkwN0xONGFiTFN6SnBqaHNLOWIwYjlxQlJTc0NIVWNMZGVXZXhGQm8?oc=5"
+        },
+        {
+          "title": "Housing by scapegoat - The Spectator Australia",
+          "link": "https://www.spectator.com.au/2026/06/housing-by-scapegoat/",
+          "source": "The Spectator Australia",
+          "description": "Housing by scapegoat  The Spectator Australia",
+          "date": "11 Jun 2026, 04:05 AM",
+          "date_iso": "2026-06-11T04:05:23+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1lcnJzLU5ncV9kZ3JMaml3U2JuaTA3a3FpZGItMVp5MmpOZ3ZEbkJZSFJiT3YwLXdsNWlXY19HemZzVEJPRHVwSXFIOW9nazVPMzBSTWJWUTdsQ2ROMmxIX3pVRUFFekNIeFE?oc=5"
+        },
+        {
+          "title": "‘Huge’ social housing tower planned for busy Perth street - PerthNow",
+          "link": "https://www.perthnow.com.au/wa/perth/central/central/huge-72-social-and-affordable-home-development-proposed-for-busy-bayswater-town-centre-c-22378930",
+          "source": "PerthNow",
+          "description": "‘Huge’ social housing tower planned for busy Perth street  PerthNow",
+          "date": "10 Jun 2026, 05:00 PM",
+          "date_iso": "2026-06-10T17:00:00+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxPMHJhTFRpOU5LZnZ5anB3ak5OZi1Eb2FIN0hZZjJzUW5oOGZGRHR6VWw5d3Utc3NNQkM3YUNlMmRlel9UeVlqZVRqOFNUcWVKcTdFYUhpeUZjd0xWbWxFZWx6MC1heWdSeUpjZzJUdDdfREQ5TS1ZWHgwZ0xFZWZSVl9razR6LXRFWEI0Z0xwMjBvOGxTcW82RGdMeWdmSWp1cUw0LWl0dy1lQkNfNVJGRXRYemQ2cUZhSzhiTzU2cm5ZMk1XeWtnbEVCY2xDX1Zoa2xmVEIxYUtaVzd3ZmNuZXRyYlQ?oc=5"
+        },
+        {
+          "title": "Too poor to leave Australia. These people are trapped with no safety net - Australian Broadcasting Corporation",
+          "link": "https://www.abc.net.au/news/2026-06-10/international-students-arranged-marriage-women-homeless-crisis/106731596",
+          "source": "Australian Broadcasting Corporation",
+          "description": "Too poor to leave Australia. These people are trapped with no safety net  Australian Broadcasting Corporation",
+          "date": "09 Jun 2026, 05:00 PM",
+          "date_iso": "2026-06-09T17:00:00+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOVkpkVm5mcWRQNzhWeWhCYWFGY0I5c3dPT0VNZXppdGJ5Ym8tdGs1RFFNSEtqdi1sbEtrM1Y3Z0hNclVxOXZySGlVNlIwaU92SkFMb3NlaTNrSjJGRXE1RXZqMDlxbkxRM29aX09kd3VuV3hNM2k2SnhHRFRiMGVDWktwbFJRZDVETnlrTnN3NlJmamZ6aF9uRWFDdTlHeTd1NXpJV1lEbjJwbTIwTVp3MQ?oc=5"
+        },
+        {
+          "title": "Homelessness service concerned by changing demographic in clients - Australian Broadcasting Corporation",
+          "link": "https://www.abc.net.au/news/2026-06-07/south-australian-homelessness-service-sees-changing-demographic/106769764",
+          "source": "Australian Broadcasting Corporation",
+          "description": "Homelessness service concerned by changing demographic in clients  Australian Broadcasting Corporation",
+          "date": "07 Jun 2026, 05:00 PM",
+          "date_iso": "2026-06-07T17:00:00+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQa1lFUUNLczF6X3dtYjVvalRDZElLNGc0RVdkbkM4RHR4cG9KaTEtSEFOOWdtdDZBUTdiSzAtYTQzR1ZpVzdld3ZBd0NHMDctSHIwM0diUTJibGZZajBxYWhibkpPV2Fsa1Rhc2xiZ3pvdTdyVDdCYUZTX0dzWmNtWTAtWWpMWm9iWUNjTlNJZFFrckQ4QTZKRUc3Y3RLdTF2ZEEtaTJnVzR1M1IyN0VwcEpn?oc=5"
+        }
+      ],
+      "synthesis": null
+    },
+    "aged_care": {
+      "articles": [
+        {
+          "title": "Senate recommends CHSP remain separate - Australian Ageing Agenda",
+          "link": "https://www.australianageingagenda.com.au/executive/policy/senate-recommends-chsp-remain-separate/",
+          "source": "Australian Ageing Agenda",
+          "description": "Senate recommends CHSP remain separate  Australian Ageing Agenda",
+          "date": "24 Jun 2026, 01:02 PM",
+          "date_iso": "2026-06-24T13:02:14+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQUVZ1SXVQOEtZMVhXRzZhZ2RzbU1sbVRXckE4MUZJOUFTUG8xNzVaSHYxVzF0M1F3b3g1YWQ1eHZaTVkyUHVVR0d3Y2pmdHBtNVN3S1ZQOVNoSklleVBnR1JYUHczUGd0cnBYanZ1dVVmRWJZQ29MSnF4cS1aT3hCSEVOWWZ2clgySDI2c1JIcE1MVmU1RzN6MjB0RUZkbDg?oc=5"
+        },
+        {
+          "title": "Reckless Labor Risks Lives As Aged Care Reforms Unravel - Mirage News",
+          "link": "https://www.miragenews.com/reckless-labor-risks-lives-as-aged-care-reforms-1697837/",
+          "source": "Mirage News",
+          "description": "Reckless Labor Risks Lives As Aged Care Reforms Unravel  Mirage News",
+          "date": "24 Jun 2026, 08:28 AM",
+          "date_iso": "2026-06-24T08:28:00+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOTF9RcWhTSDMtS0J1azc5RnIyaTBHcXkwT1JkdVgyeUtobk13QmdENy1Oa0x3Y0hjdWNkMFM3TUd2NG91aG1QT2IwcEZ1dzNGQjJ6SHNHT0RvbDEycjZnbEE0QlVCS2NvZldBcHRmcjBlcUEwNG1CTVdNXzcyWFdIRVh3NFhGWENESy1r?oc=5"
+        },
+        {
+          "title": "'No vacancies': Australia is getting older — and we're facing a 'conundrum' - SBS Australia",
+          "link": "https://www.sbs.com.au/news/article/will-federal-budget-keep-pace-with-ageing-australians/ltljydliy",
+          "source": "SBS Australia",
+          "description": "'No vacancies': Australia is getting older — and we're facing a 'conundrum'  SBS Australia",
+          "date": "16 Jun 2026, 05:00 PM",
+          "date_iso": "2026-06-16T17:00:00+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQT1NoRklDNkxzRFVZQ3FId3hJQXRWOFZPZ1I2bzhvQlp4Y2FieGV4WlQzX05EZXcyZnl2MjhLVWR5NHhFbkpTcmU4UGs0TzFlbEl4UDFwUkhSSFBIZGNvNmNndk9oU0V5Qk4zNEtYbUlyMEh0WWNJTWZWYWVfbmVfUTJlanZ1NWFkZndtUHItd3J3dExvUjhzT21HalAxcVdH?oc=5"
+        },
+        {
+          "title": "Urgent action needed to ensure high-quality care for aged care residents - Australian Medical Association",
+          "link": "https://www.ama.com.au/media/urgent-action-needed-ensure-high-quality-care-aged-care-residents",
+          "source": "Australian Medical Association",
+          "description": "Urgent action needed to ensure high-quality care for aged care residents  Australian Medical Association",
+          "date": "09 Jun 2026, 11:36 AM",
+          "date_iso": "2026-06-09T11:36:02+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQQzdhbXlLc1pRYlZ5eW1WR0VBUGRrYkxnOUUxQWRzeXBlYXY4UnZxQklEeTZYX1A0dmp3YlkyaXl5cHdKWmZHcnQ2YUVlVDJwWnBZcXVOdHRicEtjREJsMmlXamQtcjhueXZMM1lQZXdBUGdHNTlQYTZ2Y2czQmxqLWRHR0xTZnJHSXJvYmY3M0pvNXE2WmpKRVhn?oc=5"
+        },
+        {
+          "title": "Position statement on medical care for people in residential aged care homes - Australian Medical Association",
+          "link": "https://www.ama.com.au/articles/position-statement-medical-care-people-residential-aged-care-homes",
+          "source": "Australian Medical Association",
+          "description": "Position statement on medical care for people in residential aged care homes  Australian Medical Association",
+          "date": "09 Jun 2026, 11:08 AM",
+          "date_iso": "2026-06-09T11:08:12+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxORnowNHo1c1dKamNaRFdxUnIyVk5DX2NIUi02Q0RYdWxaRzNyOHZTQU9ic3c0VHpZaFQ2djVHb0VuZ0hmU0tUWlppY2o0TWdNQzFaTTFMY2NKUVhxM1J0SlVHbHcxNVhBQnphNjBKME5ub01zeUtGS0thcWVobHZ5WFZMcDlDQTNPOVdZb3dRVzNWd2J0OHE0YWNlMnFQVFE?oc=5"
+        }
+      ],
+      "synthesis": null
+    },
+    "public_service": {
+      "articles": [
+        {
+          "title": "2026 National NAIDOC Award finalists announced as NAIDOC Week begins",
+          "link": "https://ministers.pmc.gov.au/mccarthy/2026-national-naidoc-award-finalists-announced-naidoc-week-begins",
+          "source": "PM&C Ministers",
+          "description": "2026 National NAIDOC Award finalists announced as NAIDOC Week begins\nScott Kimber\nSun, 05/07/2026 - 07:49\n\n\n            The 2026 National NAIDOC Awards finalists have been announced, marking the start of NAIDOC Week 2026, which runs from 5 to 12 July.This year’s finalists reflect the National NAIDOC",
+          "date": "05 Jul 2026, 07:49 AM",
+          "date_iso": "2026-07-05T07:49:48+10:00",
+          "source_type": "press_release",
+          "jurisdiction": "commonwealth"
+        },
+        {
+          "title": "Investing in tomorrow's First Nations leaders today",
+          "link": "https://ministers.pmc.gov.au/mccarthy/investing-tomorrows-first-nations-leaders-today",
+          "source": "PM&C Ministers",
+          "description": "Investing in tomorrow's First Nations leaders today\nScott Kimber\nFri, 03/07/2026 - 14:30\n\n\n            The Albanese Labor Government is investing in the next generation of First Nations leaders, with Winmarra Foundation receiving $552,000 to expand its Emerging Leaders Program for a further two year",
+          "date": "03 Jul 2026, 02:30 PM",
+          "date_iso": "2026-07-03T14:30:33+10:00",
+          "source_type": "press_release",
+          "jurisdiction": "commonwealth"
+        },
+        {
+          "title": "Dedication ceremony for Umpila Indigenous Protected Area in Cape York",
+          "link": "https://ministers.pmc.gov.au/mccarthy/dedication-ceremony-umpila-indigenous-protected-area-cape-york",
+          "source": "PM&C Ministers",
+          "description": "Dedication ceremony for Umpila Indigenous Protected Area in Cape York\nScott Kimber\nThu, 02/07/2026 - 15:40\n\n\n            The dedication of the Umpila Indigenous Protected Area (IPA) has been celebrated with a ceremony in Lockhart River, in Far North Queensland, marking a major milestone for Umpila T",
+          "date": "02 Jul 2026, 03:40 PM",
+          "date_iso": "2026-07-02T15:40:19+10:00",
+          "source_type": "press_release",
+          "jurisdiction": "commonwealth"
+        },
+        {
+          "title": "Next round of APS-wide bargaining commences ",
+          "link": "https://ministers.pmc.gov.au/gallagher/next-round-aps-wide-bargaining-commences",
+          "source": "PM&C Ministers",
+          "description": "Next round of APS-wide bargaining commences \nKatie Saarikko\nThu, 02/07/2026 - 14:06\n\n\n            Today Australian Public Service (APS) agencies are taking formal steps to begin the enterprise agreement bargaining process by issuing the Notice of Employee Representational Rights to eligible employee",
+          "date": "02 Jul 2026, 02:06 PM",
+          "date_iso": "2026-07-02T14:06:50+10:00",
+          "source_type": "press_release",
+          "jurisdiction": "commonwealth"
+        },
+        {
+          "title": "Radio interview",
+          "link": "https://ministers.pmc.gov.au/gorman/radio-interview-abc-perth-drive-0",
+          "source": "ABC Perth Drive",
+          "description": "Radio interview - ABC Perth Drive\nKatie Saarikko\nThu, 02/07/2026 - 12:48\n\n\n            GERALDINE MELLET, HOST: And in the blue corner, we have Senator Dean Smith, Shadow Assistant Treasurer. And in the red corner, we have Patrick Gorman, Assistant Minister to the PM. I don't know, do you have your b",
+          "date": "02 Jul 2026, 12:48 PM",
+          "date_iso": "2026-07-02T12:48:03+10:00",
+          "source_type": "press_release",
+          "jurisdiction": "commonwealth"
+        },
+        {
+          "title": "Dedication ceremony for the Ngurra Kayanta Indigenous Protected Area",
+          "link": "https://ministers.pmc.gov.au/mccarthy/dedication-ceremony-ngurra-kayanta-indigenous-protected-area",
+          "source": "PM&C Ministers",
+          "description": "Dedication ceremony for the Ngurra Kayanta Indigenous Protected Area\nScott Kimber\nThu, 02/07/2026 - 12:02\n\n\n            A celebration at Jalyirr (Lady Edith Lagoon) near Balgo in the Southeastern Kimberley region of Western Australia has officially marked the dedication of the Ngurra Kayanta Indigen",
+          "date": "02 Jul 2026, 12:02 PM",
+          "date_iso": "2026-07-02T12:02:44+10:00",
+          "source_type": "press_release",
+          "jurisdiction": "commonwealth"
+        },
+        {
+          "title": "Doorstop",
+          "link": "https://ministers.pmc.gov.au/white/doorstop-parliament-house",
+          "source": "Parliament House",
+          "description": "Doorstop - Parliament House\nSia Lipapis\nWed, 01/07/2026 - 11:53\n\n\n            JULIE-ANN CAMPBELL MP: Well it's 1 July, and that means a lot of big firsts for everyday Australians. It's the first time that supermarket price gouging will be banned. It's the first time that superannuation will be paid ",
+          "date": "01 Jul 2026, 11:53 AM",
+          "date_iso": "2026-07-01T11:53:55+10:00",
+          "source_type": "press_release",
+          "jurisdiction": "commonwealth"
+        },
+        {
+          "title": "Television interview",
+          "link": "https://ministers.pmc.gov.au/gorman/television-interview-sky-news",
+          "source": "Sky News",
+          "description": "Television interview - Sky News\nKatie Saarikko\nFri, 26/06/2026 - 09:04\n\n\n            KIERAN GILBERT, HOST: Welcome back to the program. Let's bring in the Assistant Minister to the Prime Minister, Patrick Gorman. We saw the Teals today, the Independents, they've launched a party. Does it make them m",
+          "date": "26 Jun 2026, 09:04 AM",
+          "date_iso": "2026-06-26T09:04:50+10:00",
+          "source_type": "press_release",
+          "jurisdiction": "commonwealth"
+        },
+        {
+          "title": "Tasmania ranks best for business confidence and conditions - Premier of Tasmania",
+          "link": "https://www.premier.tas.gov.au/latest-news/2026/june/tasmania-ranks-best-for-business-confidence-and-conditions",
+          "source": "Premier of Tasmania",
+          "description": "Tasmania ranks best for business confidence and conditions  Premier of Tasmania",
+          "date": "25 Jun 2026, 02:34 PM",
+          "date_iso": "2026-06-25T14:34:29+10:00",
+          "source_type": "press_release",
+          "jurisdiction": "tas",
+          "raw_link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOZGlMMXZONm43X1laTDlkODQzWmc5eHNTOEhkRElYeHJHcGJXRmg5OXp3NGVka2JDYTlTTUF2eE0zckl1akxHUU5pR0lmcUg1RE5nTGJmcVJQdjlkclhqU1kwYV9lMnZ6bUEzS2FUaFV0RHJiZktCdEtPUXpraGpDdks5VGMxbHB3ZVh5ckY0NWFqMk5aQ25ta0Y4NGNlLW03a01uS3lzT1JFR3R4QnM1eQ?oc=5"
         }
       ],
       "synthesis": null
@@ -421,6 +684,83 @@
       ],
       "synthesis": null
     },
+    "child_protection": {
+      "articles": [
+        {
+          "title": "Support at Home fails to keep older Australians out of residential care - Health Services Daily",
+          "link": "https://www.healthservicesdaily.com.au/support-at-home-fails-to-keep-older-australians-out-of-residential-care/47912",
+          "source": "Health Services Daily",
+          "description": "Support at Home fails to keep older Australians out of residential care  Health Services Daily",
+          "date": "25 Jun 2026, 03:23 PM",
+          "date_iso": "2026-06-25T15:23:58+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOMGwweHZ2OTZ2NkdaSktERWIwQlphT2E5ekI2X0t4a3J4bDlnOVhrMFFKMmtCb1ZTWXNScEd2UHE0X1kwdWhWbUdra0RJR3JtbklnNk04UVllekIxa3VrVFUwQjlpUGVWVXU1N0VGeTJvRVlQbjVNd2l3Mkl1Wm1sZFJzZnZoaDk0eW1ObnlxRXRFeHZqWlJqNGVYdFcxQVFzejdnclRUZ3NlYnFQREk0bWJlMlVBMkk?oc=5"
+        },
+        {
+          "title": "Carers in need of care: Wellbeing in Australia’s aged care workforce - Monash University",
+          "link": "https://www.monash.edu/medicine/news/latest/2026-articles/carers-in-need-of-care-wellbeing-in-australias-aged-care-workforce",
+          "source": "Monash University",
+          "description": "Carers in need of care: Wellbeing in Australia’s aged care workforce  Monash University",
+          "date": "18 Jun 2026, 05:00 PM",
+          "date_iso": "2026-06-18T17:00:00+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNUGVpR3VaWnAtUXFnYlEwcURuMnNZZUxsazRyWG5BSUg1elJrOTR2dWNIZThiNU55bnhmTVVpVi1TckdrQ3VjQ3ZpSkZ4RjBBelRWQzNoOWRvRmY4RzFBS3ZlM05aelZxbk1McGZwelRSelBHdXRWdkxqU0hTNGxfcmVKRElaa25sblk3TE9ETFF6VW9KT3NaWno0Z2p1Q0tKbTgtc0g4WHJlSzc3UjBLVDg3YUU4SHZtTmVlSVQ4MHY1QQ?oc=5"
+        },
+        {
+          "title": "Low level of engagement with children and young people - Western Australian Government",
+          "link": "https://www.wa.gov.au/organisation/local-government/low-level-of-engagement-children-and-young-people",
+          "source": "Western Australian Government",
+          "description": "Low level of engagement with children and young people  Western Australian Government",
+          "date": "18 Jun 2026, 04:39 PM",
+          "date_iso": "2026-06-18T16:39:19+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPTXN2VzllbW9MQV9wNXR0dUtIX0ZrTlpmQ1c0b3pkY05DTl9hZkVJOXdmX1htVThhNWVIWjhacjNwR0JZTWVNVXZvUXE0ay1tUjFQRzZZWHU5VXRHeFFNUnMxZkdpblRBQzB3bHB1b0syS2VveVU3N0JuaEwwdndPTVd5a09aTXNiYzFQU2FsMFdvR2g1SnlleEQyY0RUV0VHT3pr?oc=5"
+        },
+        {
+          "title": "PRESS RELEASE: Young people leaving care gain new tool for navigating adulthood - Press Release Distribution Australia",
+          "link": "https://getthewordout.com.au/press-release/press-release-young-people-leaving-care-gain-new-tool-for-navigating-adulthood/",
+          "source": "Press Release Distribution Australia",
+          "description": "PRESS RELEASE: Young people leaving care gain new tool for navigating adulthood  Press Release Distribution Australia",
+          "date": "17 Jun 2026, 11:32 AM",
+          "date_iso": "2026-06-17T11:32:16+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNV21DRXpmdzlsLVBUSmRQZlVDcVU4cjBwanhIenFmTVRRTVlycThwVmNaYWJvSXBTQm12cnA2NnQ3eTBZTjhfdk1kWGM3cElHYzBja2twdER1NzFlOTJPVXhPT1g4UERGUHczbVp5SHdIWVFyTlRLdG5vcUJLeHFMVGdtZlh5WE4yaDJWLUYtLVg5NmZQYnFOanhQNE84TW5zRGs4WHluaVV4UjVXTVhKanlDeHpoN2l4LVFLMVcyVQ?oc=5"
+        },
+        {
+          "title": "Indigenous kids are still overrepresented in out-of-home care. This alliance says its time for reform - SBS Australia",
+          "link": "https://www.sbs.com.au/nitv/article/indigenous-children-are-still-overrepresented-in-out-of-home-care-this-alliance-says-its-time-for-reform/e0tljakj0",
+          "source": "SBS Australia",
+          "description": "Indigenous kids are still overrepresented in out-of-home care. This alliance says its time for reform  SBS Australia",
+          "date": "17 Jun 2026, 05:00 AM",
+          "date_iso": "2026-06-17T05:00:00+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxQUWZTZmFQbWVWSTRUVFc4N0ZackhnTUYwYVdOTC10Z1hSZlg4Q1U1Yl90SDVwcy1vbjNUX1NoYzR2ZWRRNW40NzNDZVhxMkVOeGFkeHRqaVpxYmhGek93dW1hTkQ2VmtBOWdlM01hczIxcUpJVFpMNWRVS2pseEd0MjFWa3BwRkxETlBCRFVJbzZ4RHhDYWFXSjBaNjh0OVZkcnJGdWpwNjdTQ212N0pIZV9ETFg0TmFfMGhheEtSbW1TRmluMTZYUEVyWDlOSmhkd3RMNzVkb1kyNkswcDdfVENKUEQ?oc=5"
+        },
+        {
+          "title": "A-G says new child protection commission will absorb existing body - Brisbane Times",
+          "link": "https://www.brisbanetimes.com.au/politics/queensland/qld-to-get-new-centralised-child-protection-commission-20260616-p60785.html",
+          "source": "Brisbane Times",
+          "description": "A-G says new child protection commission will absorb existing body  Brisbane Times",
+          "date": "16 Jun 2026, 01:51 PM",
+          "date_iso": "2026-06-16T13:51:13+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMixwFBVV95cUxOeDdqSU9jTFlkN3ZNVzJubHZRUFpNSEEtNnV1TW5NSGE2LWhacXN6eTNXcnlpdXVvaHF0VHN4NzVFMEc0alRRY2o1Z0psSUE3TDg0cl95eHJ0VkxWS0R3bnFKcXBFaTZVa2Nzc0FESUdnV2hUTXI1RDZXRG5QXzhoYzdNM29zTWNuVFV1SUVleHVsT29uRGFHVGFFZDZoTlhacnpBYXNDckdOUmhqTmZvNU8tZnRIQWNVY3NrRGVKWlRxVVg1U1hB?oc=5"
+        },
+        {
+          "title": "Serious concerns over impact of rushed NT child protection reforms - National Justice Project",
+          "link": "https://www.justice.org.au/serious-concerns-impact-rushed-nt-child-protection-reforms/",
+          "source": "National Justice Project",
+          "description": "Serious concerns over impact of rushed NT child protection reforms  National Justice Project",
+          "date": "15 Jun 2026, 02:25 PM",
+          "date_iso": "2026-06-15T14:25:07+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPNUd3LV9SNkVyWjVYZDFSTnFZMTlxamVyZWpwVWVJcF9JcGtZR0gwWXhySWVYd0twRENMNVFkREZuSk4wdWxhWTBPSFJkbHd1aElwNTFUZHBqY0tLaXAtbF9vclFRYXMxTElZSi02bzI4WHJNcEJhN0NNakpYYjBwNUhaZ042M3VYQXJlUFoyVQ?oc=5"
+        },
+        {
+          "title": "How active play supports child safety - The Sector",
+          "link": "https://thesector.com.au/article/how-active-play-supports-child-safety-in-early-learning-services",
+          "source": "The Sector",
+          "description": "How active play supports child safety  The Sector",
+          "date": "12 Jun 2026, 05:32 AM",
+          "date_iso": "2026-06-12T05:32:18+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMingFBVV95cUxNaURQVEFfRDRpTFNjSVdyUklqR1oxLUQzV2hMbWxfRGVnb2tRdmp2WWo4RHlNS2RqdHlxNU9BVzZZemktS3J5TTZZZHRoNlI4OUNkMXpPVTJ3Z2hrMUd1ZUNtb1loUlkzdEtRblViOENEam1yQ29ydzg5cFktbHhRQ3B5SXFNUmNqVjBWVjRGeWxUaUhnTDFLRTVoZUpHZw?oc=5"
+        }
+      ],
+      "synthesis": null
+    },
     "health": {
       "articles": [
         {
@@ -441,15 +781,6 @@
           "date": "25 Jun 2026, 01:18 PM",
           "date_iso": "2026-06-25T13:18:00+10:00",
           "raw_link": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxQamZTY2ptNmY4UFlxenAwaEF6TjJUcUNZME5GN3ZyQmNtOWtLOEk5RXQ4a1hIa0l0U2N5dmw2MFJKNm5GaDBJeVlJWl9CSzZNU05uNmRxdUF3VWZwOTl5aEZ0NnRKYlFvM0pHTTVYQmxRR1Q5RFlGbW83TTZkQ0JRd3VPY3VqaHZVekNoZ1ZxZnF6ZlRlQlR1X0EtaDh5SWRTd1RBQ2puaVYxMlJCZ05vR21LUGF4ZndPTDgwTFoyUUN5emd6bnd3TDhRUWZwTUNNT3pKdg?oc=5"
-        },
-        {
-          "title": "Australia’s first study of bi+ people’s sexual health uncovers critical gaps - UNSW Sydney",
-          "link": "https://www.unsw.edu.au/newsroom/news/2026/06/australias-first-study-of-bi-people-sexual-health-uncovers-critical-gaps",
-          "source": "UNSW Sydney",
-          "description": "Australia’s first study of bi+ people’s sexual health uncovers critical gaps  UNSW Sydney",
-          "date": "24 Jun 2026, 09:25 AM",
-          "date_iso": "2026-06-24T09:25:01+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNX01BRXFRYUE0TTlsWnpqUFpackpTRFBteGYxbDMxbEFnV19UODZ5ckRZSTJTZDlndXpmUzZHakdULUV0NUZzYUJ4YzJoM3QwYndNU1NodmZtSlQ0b003bzQwNEtCdTMzc1huWnFHZndWNi1lWUxTN1RnTEcxOTh2bjRWV0NUdVpjNE9YdFdNbFM5N3RpdktWR0pNM1JKWlp0RnhHTUVNV3V3OXNuSVFNTGthc1FrUkRDdnc?oc=5"
         },
         {
           "title": "What's changing from 1 July? The new rules affecting your wallet - SBS Australia",
@@ -520,6 +851,15 @@
           "raw_link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPRFdFUTRGTkJwTHRDb2ZKOUlXeHZKMXAwbTVlTld1eEUxTEpTaHVGSjVCV0R0YjhTcDJseFlnU0M4RV9oRy1HOG5sTWFsVEtvcjE5akNrSXh2N2tfZlQzeXM0TmlmV1BGTDVSVDMtTmpqSWJMUl9pb1YySng5ZG1JM044bGhaUVFfWmplMlBzUmJRYkNWb0h3UkhTYnlLZDA?oc=5"
         },
         {
+          "title": "One Nation’s health policies based on misconceptions and may cost the taxpayer, experts warn - The Guardian",
+          "link": "https://www.theguardian.com/australia-news/2026/jun/17/one-nation-health-policies-errors-pauline-hanson-ntwnfb",
+          "source": "The Guardian",
+          "description": "One Nation’s health policies based on misconceptions and may cost the taxpayer, experts warn  The Guardian",
+          "date": "16 Jun 2026, 05:00 PM",
+          "date_iso": "2026-06-16T17:00:00+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPemtfZUU1MEQ1QUExbTZ4MFdNWkNUMko3ZWV4T19sc2ZWd1U1RC1vdWtDLUFkaHlvMm1KcWFwMjZjSUl4UFozcXkwdTBGWWlrWldvRk1fdVJTMjN4d05hOXRINmltZWFQb3RibEkyV1R3YmF4NExfV1k3UFNYc3ByWGVmTzl0Y3k3MlVabFlvVjhhaFdiTDNtcFhYZi0wbmJoUFBpZzBqaG9Mbmc0d05J?oc=5"
+        },
+        {
           "title": "CHARM 2026 highlights research transforming healthcare in the ACT - Chief Minister, Treasury and Economic Development Directorate",
           "link": "https://www.cmtedd.act.gov.au/open_government/inform/act_government_media_releases/rachel-stephen-smith-mla-media-releases/2026/charm-2026-highlights-research-transforming-healthcare-in-the-act",
           "source": "Chief Minister, Treasury and Economic Development Directorate",
@@ -529,6 +869,15 @@
           "source_type": "press_release",
           "jurisdiction": "act",
           "raw_link": "https://news.google.com/rss/articles/CBMingJBVV95cUxOV1RrT0oySkdLMm9WN0piWkp0V2xpUkVUQlBDWnVpR1lhWFVaOHpnMl9hTmJfSjdJbUp6TGVqNHVudjNhZ0FDUDJJU19GN0ZVenBsSnA2ZUpxOHJKNzllVFozN2V6cmxkLTAxUkdfZ1pncEN1WVdzUWl2S2hvLXljSWRXNnY4T2NCSFdVaXZNQUQ5TlFSRjJ1c29kcmtjSjBmVlRETDBkZGJRbDBOR2Z5Z3kwUjlFNWlyVFRaeTJlNTI0NTZ1MnJqMVJFZzB2N2thbUNtQXZRNlQ4cktId1FRaDZWNFhkUldvbDlpaEhXRFAzVGZfTnFxdVlMZnl6ZFl2RGpRRUZDTGlHQkV2THNqekRmRTVOMHNDOC1GX2xB?oc=5"
+        },
+        {
+          "title": "Online racism is significantly affecting mental health, First Nations people say: ‘It’s like carrying a bully in your pocket’ - The Guardian",
+          "link": "https://www.theguardian.com/australia-news/2026/jun/13/online-racism-mental-health-first-nations-australians-social-media-ntwnfb",
+          "source": "The Guardian",
+          "description": "Online racism is significantly affecting mental health, First Nations people say: ‘It’s like carrying a bully in your pocket’  The Guardian",
+          "date": "12 Jun 2026, 05:00 PM",
+          "date_iso": "2026-06-12T17:00:00+10:00",
+          "raw_link": "https://news.google.com/rss/articles/CBMixwFBVV95cUxOemhDYWdkamRUcTEtOTVlNTBGN3AwcnR4WTNVSVI2TmVuV01lZG1wSWZYY2JqV3Q4M0R6RXotM1ZfTXItR3VyT1ZoNzhsYWZNa2FlemtXZnFqMC1qNnh6aGM0VWJnaVR2RGlQTEdfamdzRjNaMzRzMGtnR2wtVUJLSTFWU1V5QUNYNXhXVG9hZElReDV5QkVYNldQcjF5aWxjQl9WQ200Ul9UUW5wc2lxMHBVbUJ3ejdRRXhPV09mNXY4QU5iTlNN?oc=5"
         },
         {
           "title": "Young teens risk mental health harm after one year of social media use - SMH.com.au",
@@ -558,15 +907,6 @@
           "raw_link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQaUFMRVVaU1hHc1JkcWkxTDAtNUNrbFJPeEF4OWpvV1VaTkUzMUw0SW9LZXhhN05lSnVXYjZXZDhTejZYZ1Y5eWp3NTJlSU4wdVY3X2FMNEgxVER2OHFHdlJ0V3VoOUNMSXJsZ0x5WkladHlUaTE2NjBXYzVueU0zQi1CX0g0ZkNMYlJSWEUwZEp1TGVmSGtfV0RFejlGLUJhc1pNcHhDMFVPVUxpSEhHV09TRERBRFV6bC02TEphWnYzdw?oc=5"
         },
         {
-          "title": "newsGP - Significant telehealth-only reforms taking shape - Royal Australian College of General Practitioners (RACGP)",
-          "link": "https://www1.racgp.org.au/newsgp/professional/move-to-get-complete-picture-of-medication-history",
-          "source": "Royal Australian College of General Practitioners (RACGP)",
-          "description": "newsGP - Significant telehealth-only reforms taking shape  Royal Australian College of General Practitioners (RACGP)",
-          "date": "11 Jun 2026, 04:03 PM",
-          "date_iso": "2026-06-11T16:03:17+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPOGp4UEt5ZFNfSXVOM1VveV91Ymk1ZlloV2lraWRYc0RYY1QwSnEybzhGdEVMMzZoaEZxQ21idXJZZFdGMzRGQ0lFYmZNUEtSQjRhaFdkSE5ZblM5TE5HTm4yWmZmT0MwcjRRbHZQNGRyVlJhQ0swdHctMWI4NG1iemNsdlBIWm05MnRSVTZEbjJoVjVkeXNWanVuMXc?oc=5"
-        },
-        {
           "title": "Opening of Institute for Musculoskeletal Health - Prime Minister of Australia",
           "link": "https://www.pm.gov.au/media/opening-institute-musculoskeletal-health",
           "source": "Prime Minister of Australia",
@@ -576,436 +916,6 @@
           "source_type": "press_release",
           "jurisdiction": "commonwealth",
           "raw_link": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBtbU5JZGtYZmFXdXN5TG5VUEwxMEx0Qml2eXg5RXd5TXhFSlAwNEQ1REhFd3hWNXZEM1lkRThCTW41bE8wSGd2TTFhSjhNMXFVS2kzeGp4NjdRcFI1VDU2amFqYTdzTkIyQkI0Z0JBcnNjaDlmV0lr?oc=5"
-        }
-      ],
-      "synthesis": null
-    },
-    "public_service": {
-      "articles": [
-        {
-          "title": "2026 National NAIDOC Award finalists announced as NAIDOC Week begins",
-          "link": "https://ministers.pmc.gov.au/mccarthy/2026-national-naidoc-award-finalists-announced-naidoc-week-begins",
-          "source": "PM&C Ministers",
-          "description": "2026 National NAIDOC Award finalists announced as NAIDOC Week begins\nScott Kimber\nSun, 05/07/2026 - 07:49\n\n\n            The 2026 National NAIDOC Awards finalists have been announced, marking the start of NAIDOC Week 2026, which runs from 5 to 12 July.This year’s finalists reflect the National NAIDOC",
-          "date": "05 Jul 2026, 07:49 AM",
-          "date_iso": "2026-07-05T07:49:48+10:00",
-          "source_type": "press_release",
-          "jurisdiction": "commonwealth"
-        },
-        {
-          "title": "Investing in tomorrow's First Nations leaders today",
-          "link": "https://ministers.pmc.gov.au/mccarthy/investing-tomorrows-first-nations-leaders-today",
-          "source": "PM&C Ministers",
-          "description": "Investing in tomorrow's First Nations leaders today\nScott Kimber\nFri, 03/07/2026 - 14:30\n\n\n            The Albanese Labor Government is investing in the next generation of First Nations leaders, with Winmarra Foundation receiving $552,000 to expand its Emerging Leaders Program for a further two year",
-          "date": "03 Jul 2026, 02:30 PM",
-          "date_iso": "2026-07-03T14:30:33+10:00",
-          "source_type": "press_release",
-          "jurisdiction": "commonwealth"
-        },
-        {
-          "title": "Dedication ceremony for Umpila Indigenous Protected Area in Cape York",
-          "link": "https://ministers.pmc.gov.au/mccarthy/dedication-ceremony-umpila-indigenous-protected-area-cape-york",
-          "source": "PM&C Ministers",
-          "description": "Dedication ceremony for Umpila Indigenous Protected Area in Cape York\nScott Kimber\nThu, 02/07/2026 - 15:40\n\n\n            The dedication of the Umpila Indigenous Protected Area (IPA) has been celebrated with a ceremony in Lockhart River, in Far North Queensland, marking a major milestone for Umpila T",
-          "date": "02 Jul 2026, 03:40 PM",
-          "date_iso": "2026-07-02T15:40:19+10:00",
-          "source_type": "press_release",
-          "jurisdiction": "commonwealth"
-        },
-        {
-          "title": "Next round of APS-wide bargaining commences ",
-          "link": "https://ministers.pmc.gov.au/gallagher/next-round-aps-wide-bargaining-commences",
-          "source": "PM&C Ministers",
-          "description": "Next round of APS-wide bargaining commences \nKatie Saarikko\nThu, 02/07/2026 - 14:06\n\n\n            Today Australian Public Service (APS) agencies are taking formal steps to begin the enterprise agreement bargaining process by issuing the Notice of Employee Representational Rights to eligible employee",
-          "date": "02 Jul 2026, 02:06 PM",
-          "date_iso": "2026-07-02T14:06:50+10:00",
-          "source_type": "press_release",
-          "jurisdiction": "commonwealth"
-        },
-        {
-          "title": "Radio interview",
-          "link": "https://ministers.pmc.gov.au/gorman/radio-interview-abc-perth-drive-0",
-          "source": "ABC Perth Drive",
-          "description": "Radio interview - ABC Perth Drive\nKatie Saarikko\nThu, 02/07/2026 - 12:48\n\n\n            GERALDINE MELLET, HOST: And in the blue corner, we have Senator Dean Smith, Shadow Assistant Treasurer. And in the red corner, we have Patrick Gorman, Assistant Minister to the PM. I don't know, do you have your b",
-          "date": "02 Jul 2026, 12:48 PM",
-          "date_iso": "2026-07-02T12:48:03+10:00",
-          "source_type": "press_release",
-          "jurisdiction": "commonwealth"
-        },
-        {
-          "title": "Dedication ceremony for the Ngurra Kayanta Indigenous Protected Area",
-          "link": "https://ministers.pmc.gov.au/mccarthy/dedication-ceremony-ngurra-kayanta-indigenous-protected-area",
-          "source": "PM&C Ministers",
-          "description": "Dedication ceremony for the Ngurra Kayanta Indigenous Protected Area\nScott Kimber\nThu, 02/07/2026 - 12:02\n\n\n            A celebration at Jalyirr (Lady Edith Lagoon) near Balgo in the Southeastern Kimberley region of Western Australia has officially marked the dedication of the Ngurra Kayanta Indigen",
-          "date": "02 Jul 2026, 12:02 PM",
-          "date_iso": "2026-07-02T12:02:44+10:00",
-          "source_type": "press_release",
-          "jurisdiction": "commonwealth"
-        },
-        {
-          "title": "Doorstop",
-          "link": "https://ministers.pmc.gov.au/white/doorstop-parliament-house",
-          "source": "Parliament House",
-          "description": "Doorstop - Parliament House\nSia Lipapis\nWed, 01/07/2026 - 11:53\n\n\n            JULIE-ANN CAMPBELL MP: Well it's 1 July, and that means a lot of big firsts for everyday Australians. It's the first time that supermarket price gouging will be banned. It's the first time that superannuation will be paid ",
-          "date": "01 Jul 2026, 11:53 AM",
-          "date_iso": "2026-07-01T11:53:55+10:00",
-          "source_type": "press_release",
-          "jurisdiction": "commonwealth"
-        },
-        {
-          "title": "One year of delivering cheaper essentials for remote First Nations communities",
-          "link": "https://ministers.pmc.gov.au/mccarthy/one-year-delivering-cheaper-essentials-remote-first-nations-communities",
-          "source": "PM&C Ministers",
-          "description": "One year of delivering cheaper essentials for remote First Nations communities\nMichael Dean\nWed, 01/07/2026 - 09:26\n\n\n            The Albanese Labor Government is delivering on its commitment to provide cost of living relief in remote First Nations communities, with 120 remote stores signing up to t",
-          "date": "01 Jul 2026, 09:26 AM",
-          "date_iso": "2026-07-01T09:26:36+10:00",
-          "source_type": "press_release",
-          "jurisdiction": "commonwealth"
-        },
-        {
-          "title": "Television interview",
-          "link": "https://ministers.pmc.gov.au/gorman/television-interview-sky-news",
-          "source": "Sky News",
-          "description": "Television interview - Sky News\nKatie Saarikko\nFri, 26/06/2026 - 09:04\n\n\n            KIERAN GILBERT, HOST: Welcome back to the program. Let's bring in the Assistant Minister to the Prime Minister, Patrick Gorman. We saw the Teals today, the Independents, they've launched a party. Does it make them m",
-          "date": "26 Jun 2026, 09:04 AM",
-          "date_iso": "2026-06-26T09:04:50+10:00",
-          "source_type": "press_release",
-          "jurisdiction": "commonwealth"
-        },
-        {
-          "title": "Tasmania ranks best for business confidence and conditions - Premier of Tasmania",
-          "link": "https://www.premier.tas.gov.au/latest-news/2026/june/tasmania-ranks-best-for-business-confidence-and-conditions",
-          "source": "Premier of Tasmania",
-          "description": "Tasmania ranks best for business confidence and conditions  Premier of Tasmania",
-          "date": "25 Jun 2026, 02:34 PM",
-          "date_iso": "2026-06-25T14:34:29+10:00",
-          "source_type": "press_release",
-          "jurisdiction": "tas",
-          "raw_link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOZGlMMXZONm43X1laTDlkODQzWmc5eHNTOEhkRElYeHJHcGJXRmg5OXp3NGVka2JDYTlTTUF2eE0zckl1akxHUU5pR0lmcUg1RE5nTGJmcVJQdjlkclhqU1kwYV9lMnZ6bUEzS2FUaFV0RHJiZktCdEtPUXpraGpDdks5VGMxbHB3ZVh5ckY0NWFqMk5aQ25ta0Y4NGNlLW03a01uS3lzT1JFR3R4QnM1eQ?oc=5"
-        },
-        {
-          "title": "Question and answer - CEDA State of the Nation Conference - Prime Minister of Australia",
-          "link": "https://www.pm.gov.au/media/question-and-answer-ceda-state-nation-conference",
-          "source": "Prime Minister of Australia",
-          "description": "Question and answer - CEDA State of the Nation Conference  Prime Minister of Australia",
-          "date": "25 Jun 2026, 01:06 PM",
-          "date_iso": "2026-06-25T13:06:00+10:00",
-          "source_type": "press_release",
-          "jurisdiction": "commonwealth",
-          "raw_link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPcWo4aFhoM191Z1lnV19FV3JFdlNLT3laR1VzS2YyQmhMTUJ5OU1sZFh4cVItcko5QXozS2FWdVVza0RKY01ZTzRNZFVjYUZRcU11N1dmWDRfQXozN3pkYXh5UGIwWlNqSUI3aWo2blVDMjAycHNWT3V1d3JiMmpJLXVB?oc=5"
-        },
-        {
-          "title": "We're Stepping In To Deliver More Homes For Geelong - Premier of Victoria",
-          "link": "https://www.premier.vic.gov.au/were-stepping-deliver-more-homes-geelong",
-          "source": "Premier of Victoria",
-          "description": "We're Stepping In To Deliver More Homes For Geelong  Premier of Victoria",
-          "date": "25 Jun 2026, 11:25 AM",
-          "date_iso": "2026-06-25T11:25:17+10:00",
-          "source_type": "press_release",
-          "jurisdiction": "vic",
-          "raw_link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE1zU2tGSV9KYl9SYlg5UXpQN21INmlvNTBhQ2FzSmNMbW9BbDlJZ2V1LXV4MVplZjd5ZXRIMHNYbVM3NGRuUV9jVC0wcnVUOU1pSloweG9mTUFWNmJWQzlpd191dDlVQzZEQ2xiR1U2YmZXekpZSE9sX0RmNA?oc=5"
-        },
-        {
-          "title": "Ministerial statement – Condolence motion for former NT Senator Trish Crossin AM",
-          "link": "https://ministers.pmc.gov.au/mccarthy/ministerial-statement-condolence-motion-former-nt-senator-trish-crossin-am",
-          "source": "PM&C Ministers",
-          "description": "Ministerial statement – Condolence motion for former NT Senator Trish Crossin AM\nMichael Dean\nThu, 25/06/2026 - 10:10\n\n\n            I rise today to remember someone who means so much to me and my families in the Gulf Country of Borroloola. I first met Trish when I was a young mum in Borroloola and I",
-          "date": "25 Jun 2026, 10:10 AM",
-          "date_iso": "2026-06-25T10:10:02+10:00",
-          "source_type": "press_release",
-          "jurisdiction": "commonwealth"
-        }
-      ],
-      "synthesis": null
-    },
-    "housing": {
-      "articles": [
-        {
-          "title": "Social and affordable housing: from funding ambition to delivery reality - Corrs Chambers Westgarth",
-          "link": "https://www.corrs.com.au/insights/social-and-affordable-housing-from-funding-ambition-to-delivery-reality",
-          "source": "Corrs Chambers Westgarth",
-          "description": "Social and affordable housing: from funding ambition to delivery reality  Corrs Chambers Westgarth",
-          "date": "25 Jun 2026, 08:56 AM",
-          "date_iso": "2026-06-25T08:56:07+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxOWllHd0h0MVhkLVl0bTFLNUJlTURYUE9ueGFWOW03eG9taTZnVkxzQUNGVHZmTzdIOGI2SXZJN250R2Jlb0FCbkUxV0pDaVBla3d0U1NWbmotdDg2ekZkcXNRWDMxWFhRT25EMHd3U24ydGhPbTUtd25BUGVqb1JReWZUX2VvVVBLSXAwWWlNaU9FRUdGeVNzalczMFVSaWZZMTRKUUNGRlg?oc=5"
-        },
-        {
-          "title": "Paid Parental Leave to expand to 6 months",
-          "link": "https://ministers.pmc.gov.au/gallagher/paid-parental-leave-expand-6-months",
-          "source": "PM&C Ministers",
-          "description": "Paid Parental Leave to expand to 6 months\nSia Lipapis\nWed, 24/06/2026 - 09:33\n\n\n            One week to go: Bundle of joy for new parents as paid parental leave expands to 6 monthsIn one week, the Albanese Labor Government will deliver a major expansion of Paid Parental Leave, helping new parents sp",
-          "date": "24 Jun 2026, 09:33 AM",
-          "date_iso": "2026-06-24T09:33:22+10:00",
-          "source_type": "press_release",
-          "jurisdiction": "commonwealth"
-        },
-        {
-          "title": "Paid Parental Leave to expand to 6 months - Prime Minister of Australia",
-          "link": "https://www.pm.gov.au/media/paid-parental-leave-expand-6-months",
-          "source": "Prime Minister of Australia",
-          "description": "Paid Parental Leave to expand to 6 months  Prime Minister of Australia",
-          "date": "24 Jun 2026, 08:55 AM",
-          "date_iso": "2026-06-24T08:55:52+10:00",
-          "source_type": "press_release",
-          "jurisdiction": "commonwealth",
-          "raw_link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5rb2o4U2htMTYwYU1DNlZqd0tpOEkxVHI1WUhRTnhtc1RVUEVMdm05RHg0bHVfT2JKZEd5d3FLbEpQZjE5cWtObm96MU52UjByWm5JYUlVZHhDUlhMYi1FcUFmYXl3MTBnVFZXNHNKSWg?oc=5"
-        },
-        {
-          "title": "Support 'desperately needed' for Aboriginal-led housing solutions as new data shows social housing failing to keep pace in WA - National Indigenous Times",
-          "link": "https://nit.com.au/23-06-2026/24965/support-desperately-needed-for-aboriginal-led-housing-solutions-as-new-data-shows-social-housing-failing-to-keep-pace-in-wa",
-          "source": "National Indigenous Times",
-          "description": "Support 'desperately needed' for Aboriginal-led housing solutions as new data shows social housing failing to keep pace in WA  National Indigenous Times",
-          "date": "23 Jun 2026, 06:35 PM",
-          "date_iso": "2026-06-23T18:35:00+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxPOUdSTVByRVRkV1UwZG5oZ0lSdlIydFAyaG1mQzJfSUhOVzBabXNYdlBsbVpTR1VlaVZWOVBJRm9MZHNoY0xGWEpnelk1SG4zdHBlWXBtdGlCZ2tZWlpGRmJyMEx4MVIxMldIcHczbExuM1R6Tjc3RVY2UmVhLW5vWTJBbklfVmVVT084Szg4by1VaG12anBleFRvendEMVdrdFlNU3BiYUIyXzdZOWRUOGVXVkFiMXBFTW5mYlg4anlEc1lHdk85XzZUWWlKSW1hMXpHb3VocGJVRVFNRFp4N2draWlVZEFCQ3ZIYzd2ZkI?oc=5"
-        },
-        {
-          "title": "Call for youth foyer to help tackle homelessness in the NT - Australian Broadcasting Corporation",
-          "link": "https://www.abc.net.au/news/2026-06-18/call-for-nt-youth-foyer-to-tackle-homelessness/106814932",
-          "source": "Australian Broadcasting Corporation",
-          "description": "Call for youth foyer to help tackle homelessness in the NT  Australian Broadcasting Corporation",
-          "date": "18 Jun 2026, 05:55 PM",
-          "date_iso": "2026-06-18T17:55:00+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQT1p1YXV3SUx6MW8tdHZqSjYyUEhqYzJVTlBzY2F6ak50NU5kWGNRQVQxU0ZhVUpFTEZDN2xTMWZKYVA0T24ybUFOX2ZZOXVWa3BvTFdndkRpeGkzR3VCZkxlcVV3R3FINkFtWHBzTUMtN2JRYlNsYTVfQ2d3clJpMVI5d21JNll5SXE3UGotWlBLb1NnbFJ6M0VLYw?oc=5"
-        },
-        {
-          "title": "Homeless woman feels safer living in vehicle than shared housing - Australian Broadcasting Corporation",
-          "link": "https://www.abc.net.au/news/2026-06-18/homeless-woman-feels-safer-in-motorhome-than-shared-housing/106712346",
-          "source": "Australian Broadcasting Corporation",
-          "description": "Homeless woman feels safer living in vehicle than shared housing  Australian Broadcasting Corporation",
-          "date": "18 Jun 2026, 06:02 AM",
-          "date_iso": "2026-06-18T06:02:15+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPTEtaQ240bmFMamZQNkJKUWFwMEpnUXFJcWEyUmFpWk1CeEFCWlhrQWVsNGZ0ZUZvNDFrTjFkV2ZmSjZFamt2Q0JUS1hGcFFQVVlGODZCeXNveXZ0QVE2NUR6WjZnNUpsazQ5ekp1ankyQl9wRHBjMTFOTWVzUzBkcTNtNXRlQkhHQUw2eGdadjI1Wk5qMGpxYno1RkFWbEVsQnVSelFlSF95SFJm?oc=5"
-        },
-        {
-          "title": "Pauline Hanson declares $1.3b stripped from ABC will help tackle homelessness - Sky News Australia",
-          "link": "https://www.skynews.com.au/australia-news/politics/pauline-hanson-declares-13b-stripped-from-abc-will-help-tackle-homelessness-and-slash-debt/news-story/2be58484f2cc5fc2577c7898da0a2e5c",
-          "source": "Sky News Australia",
-          "description": "Pauline Hanson declares $1.3b stripped from ABC will help tackle homelessness  Sky News Australia",
-          "date": "17 Jun 2026, 10:42 PM",
-          "date_iso": "2026-06-17T22:42:21+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMikwJBVV95cUxOLTlIbTBBR3I2TmlZUW03YnJFREVSdE1GT0RKSGNTZ0IxRUd4NDFXQlNOYzhmNU80MDJSQUJOVXJseExOMWs3eXg5eGxycnE3RzF2OVYxNUJhbWFWcTQzbzhfZG9ZcFlPSTlDWVN2QmJWZGpmaVFOMld1VXZjaWxpUGFCMDVDRWRNQWd0dnJjLTVNYkltX1dMSHF4dWxvd0FRLWNDZ3hYNE9ncGFnTU1LdktKVk5yLW9tNXFUdnNKX21mLWxwbTdPNnY2SzMtOTBUS25JWTdpRW9PTWR4VFI4REttSkhjazU3bzhXdHhITThMWDR1eGhySVVYTGdOVjVaYnlyTWhGUVBsSnJNWVk2cTBmSdIBmAJBVV95cUxPR3pYLW9LZnA4cUhIZTZ2RjVNZVI3aDEwdXNtVzVVTm1IQldoNV9NUGYwdWNTQWxOLUdHcGZtTW1OSHUzX0s5TzJlMk45cTJSZzBHY2FkbW9WTDVZMHQwNkhtd3FpSk9jUU1MdnhXY0VNbG1mdzRMVjRNMjZTdG1DTlhYTWRDcW9FZzU0MkRRZ05fbjd6OVZXdUZtc2pjN1dSQXRkVFZMOWZZME85dlRGcFFUUzYwMkxDZ2lTWHNTbjU1aTBRVDlNSnFzSDgwaVRGMkNaZzdwYktUR21OU2lCc1BtbXJaeDhBa2pFT2FNRl9kX0hydnFvTGowaXpKZjg1ZXRUZ3JJREpCVGxkMG5fYXc2V1NCYk03?oc=5"
-        },
-        {
-          "title": "Australia's Housing Shortage To Worsen As Home Building Falls Behind Population Growth - Housing Industry Association | HIA",
-          "link": "https://hia.com.au/our-industry/newsroom/economic-research-and-forecasting/2026/06/australias-housing-shortage-to-worsen-as-home-building-falls-behind-population-growth",
-          "source": "Housing Industry Association | HIA",
-          "description": "Australia's Housing Shortage To Worsen As Home Building Falls Behind Population Growth  Housing Industry Association | HIA",
-          "date": "17 Jun 2026, 11:30 AM",
-          "date_iso": "2026-06-17T11:30:46+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMi_AFBVV95cUxQckRSeVpEWUdPS0VMSkhySHpFbzBSSjhteXBmeEJyblRrcUdQMnJkQjFhV09IUmVoSHVvZTFQMVFVQnFSNXluQ0ZCMTdoR05wX3lzUUpVSnhlSlRpcjhHRzFwajlEakh6Y205LWgyamNCVnEzT0VxdzRpRDNOR3REVDZ3eXIwTEtrVDU4YVhVeTdzcmlpZy14dzU1SzlHSlprWU1zejJHQ2lMdWphdnM5SXMtdzgtOUZRSjBQRG1zdjVrQm9pb3g0VTFMd0NkQTFBcE52QV93TjJhR3JiSS05WjJCblktNTQxNkpRenFWd0VpOGc4UkdqTVd6TVU?oc=5"
-        },
-        {
-          "title": "Building more apartments won’t ease housing crisis: new research - UNSW Sydney",
-          "link": "https://www.unsw.edu.au/newsroom/news/2026/06/building-more-apartments-wont-ease-housing-crisis-new-research",
-          "source": "UNSW Sydney",
-          "description": "Building more apartments won’t ease housing crisis: new research  UNSW Sydney",
-          "date": "17 Jun 2026, 09:22 AM",
-          "date_iso": "2026-06-17T09:22:30+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNR2E0YzhYbWN6ZTNURlpfdW56V0hkUXU5cDFMdjBsSFpIUDlyaHNHRlYzLUdPMnNHZkxFV1ZPTDJmLXdHVkVWOHk2SnJWZGlSY2VNQm1OWXlOTUljYzJUNnBJaHB1WlNGajdQaHhvOG0zX08xeFU3R2ktQ3c4LWxKOENWYUswdTVtMktveEZ5eDBweVhRdEx2UDhkaWRUTmpXaTJlNy1fWC1sZE1j?oc=5"
-        },
-        {
-          "title": "WA social housing waitlist to be overhauled for first time in 70 years - Australian Broadcasting Corporation",
-          "link": "https://www.abc.net.au/news/2026-06-16/major-reforms-to-wa-social-housing-public-housing-waitlist/106803924",
-          "source": "Australian Broadcasting Corporation",
-          "description": "WA social housing waitlist to be overhauled for first time in 70 years  Australian Broadcasting Corporation",
-          "date": "16 Jun 2026, 05:15 PM",
-          "date_iso": "2026-06-16T17:15:05+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOdlRiTzNibDJwY3hxWWdlQTh0bWlCdm0wQVlMcm5hakJJUGQxOHNHQjdISUsyamxlc0pXU2R4Qlo2cjVrSU01dGNtVVdvRlU5UDllTE1WWHM1a20yR0VMbkFZVlpZYlRkdkVRS3hMVmpGSDMzbnhVUUlIekdvSE53cS10LTkwN0xONGFiTFN6SnBqaHNLOWIwYjlxQlJTc0NIVWNMZGVXZXhGQm8?oc=5"
-        },
-        {
-          "title": "One Nation plan could smash housing - News.com.au",
-          "link": "https://www.news.com.au/finance/real-estate/expert-predicts-one-nations-migration-plan-could-cause-15-per-cent-house-price-drop/news-story/d0776b9c419c01d81bc5c6c69924cdfd",
-          "source": "News.com.au",
-          "description": "One Nation plan could smash housing  News.com.au",
-          "date": "12 Jun 2026, 05:00 PM",
-          "date_iso": "2026-06-12T17:00:00+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMigAJBVV95cUxOaFRKN3FfRm5aeXVWRXBhNXdlVGRQOVR2MUY1d0plS3hLbTEwVFJ6cEhKYnMwc0FUbkd2eC1vbkhQT3QtSTRWYzVzd3NJLUNUVjBLLWdzcWktQktlaWRLVU5feGhSZHI4c2RZNkw1bEx4QXZ3Mk9TR0xvQ2xzMkpRel9pcnR3a1RHdUREbG9tUGNkMjV6V2JCS2hpNU9iV2pwYXZabnR2V0tXNk51b2xEOWw5eHBtVE5wNy1jRGZLaUJuS0RfaFhfcmoyZ1dndjFPR0RmcEJib3ZoanZteTd1SlAwMi1sZko1OVZ1cXdtX0J3TWhKRmNjMkFzanRKcG9w0gGGAkFVX3lxTFAtTXNtS0d0ZzZTWko0cW9XbGJnU0JLN19Td253endndTZVbDM3N181MmlBVlVveUJGbEZqQzY2SUkyU0plTENmY0NrX2FhelAtZEV1S0NLNWtPUkFhSWlOT0diMEVGcVJwMU1BcDhCcXJ3M3dlSlkzaFpMNGNxVl9FSEZEc19NTHNIbVYtTEtzajdfZ296dHQ4bnI4aEk1THBOR0NQSTJ5YUp4dlBzS3hnamZ6bElFQzMwWXJjY0xmdUVOWmRKT211N2x5WWs0Z1pwc3E0SXBSWWNKRkY5RHc1Zzk3TVF3dzA1VjJ2YmE1bV9aMDF2dGtZV2NVdXIwMGJnWTlyaXc?oc=5"
-        },
-        {
-          "title": "Housing by scapegoat - The Spectator Australia",
-          "link": "https://www.spectator.com.au/2026/06/housing-by-scapegoat/",
-          "source": "The Spectator Australia",
-          "description": "Housing by scapegoat  The Spectator Australia",
-          "date": "11 Jun 2026, 04:05 AM",
-          "date_iso": "2026-06-11T04:05:23+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1lcnJzLU5ncV9kZ3JMaml3U2JuaTA3a3FpZGItMVp5MmpOZ3ZEbkJZSFJiT3YwLXdsNWlXY19HemZzVEJPRHVwSXFIOW9nazVPMzBSTWJWUTdsQ2ROMmxIX3pVRUFFekNIeFE?oc=5"
-        },
-        {
-          "title": "‘Huge’ social housing tower planned for busy Perth street - PerthNow",
-          "link": "https://www.perthnow.com.au/wa/perth/central/central/huge-72-social-and-affordable-home-development-proposed-for-busy-bayswater-town-centre-c-22378930",
-          "source": "PerthNow",
-          "description": "‘Huge’ social housing tower planned for busy Perth street  PerthNow",
-          "date": "10 Jun 2026, 05:00 PM",
-          "date_iso": "2026-06-10T17:00:00+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxPMHJhTFRpOU5LZnZ5anB3ak5OZi1Eb2FIN0hZZjJzUW5oOGZGRHR6VWw5d3Utc3NNQkM3YUNlMmRlel9UeVlqZVRqOFNUcWVKcTdFYUhpeUZjd0xWbWxFZWx6MC1heWdSeUpjZzJUdDdfREQ5TS1ZWHgwZ0xFZWZSVl9razR6LXRFWEI0Z0xwMjBvOGxTcW82RGdMeWdmSWp1cUw0LWl0dy1lQkNfNVJGRXRYemQ2cUZhSzhiTzU2cm5ZMk1XeWtnbEVCY2xDX1Zoa2xmVEIxYUtaVzd3ZmNuZXRyYlQ?oc=5"
-        },
-        {
-          "title": "Too poor to leave Australia. These people are trapped with no safety net - Australian Broadcasting Corporation",
-          "link": "https://www.abc.net.au/news/2026-06-10/international-students-arranged-marriage-women-homeless-crisis/106731596",
-          "source": "Australian Broadcasting Corporation",
-          "description": "Too poor to leave Australia. These people are trapped with no safety net  Australian Broadcasting Corporation",
-          "date": "09 Jun 2026, 05:00 PM",
-          "date_iso": "2026-06-09T17:00:00+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOVkpkVm5mcWRQNzhWeWhCYWFGY0I5c3dPT0VNZXppdGJ5Ym8tdGs1RFFNSEtqdi1sbEtrM1Y3Z0hNclVxOXZySGlVNlIwaU92SkFMb3NlaTNrSjJGRXE1RXZqMDlxbkxRM29aX09kd3VuV3hNM2k2SnhHRFRiMGVDWktwbFJRZDVETnlrTnN3NlJmamZ6aF9uRWFDdTlHeTd1NXpJV1lEbjJwbTIwTVp3MQ?oc=5"
-        },
-        {
-          "title": "Homelessness service concerned by changing demographic in clients - Australian Broadcasting Corporation",
-          "link": "https://www.abc.net.au/news/2026-06-07/south-australian-homelessness-service-sees-changing-demographic/106769764",
-          "source": "Australian Broadcasting Corporation",
-          "description": "Homelessness service concerned by changing demographic in clients  Australian Broadcasting Corporation",
-          "date": "07 Jun 2026, 05:00 PM",
-          "date_iso": "2026-06-07T17:00:00+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQa1lFUUNLczF6X3dtYjVvalRDZElLNGc0RVdkbkM4RHR4cG9KaTEtSEFOOWdtdDZBUTdiSzAtYTQzR1ZpVzdld3ZBd0NHMDctSHIwM0diUTJibGZZajBxYWhibkpPV2Fsa1Rhc2xiZ3pvdTdyVDdCYUZTX0dzWmNtWTAtWWpMWm9iWUNjTlNJZFFrckQ4QTZKRUc3Y3RLdTF2ZEEtaTJnVzR1M1IyN0VwcEpn?oc=5"
-        },
-        {
-          "title": "ACT Budget: Government touts 'generational change' in public and social housing delivery - Region Canberra",
-          "link": "https://region.com.au/act-budget-government-touts-generational-change-in-public-and-social-housing-delivery/972410/",
-          "source": "Region Canberra",
-          "description": "ACT Budget: Government touts 'generational change' in public and social housing delivery  Region Canberra",
-          "date": "06 Jun 2026, 05:00 PM",
-          "date_iso": "2026-06-06T17:00:00+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPcUdTSk9qU3Ixa1M4dy1rSTlMdThQeGFQUDIweS1QclJkLVlteUl5UlpzMFdGRW5QaVBwcGt5TUU2cFF1MHluWVBuVFY2TWp6US15QlhnMzZoUWdnMHBFWV9jSHlzZm4tMEZMaDhtTDlnRFQzZVBFNFg0YzdDNmpZT3ZaSl9xVmxMM2p6bTlaRDlJeGI0WFZTeHMyMlRySndLVnM5bi1Ha3FJb1BKeEYzWFdjQUQ3UQ?oc=5"
-        }
-      ],
-      "synthesis": null
-    },
-    "ndis": {
-      "articles": [
-        {
-          "title": "$11 million grant to boost Autism research - Australian Government Department of Health, Disability and Ageing",
-          "link": "https://www.health.gov.au/ministers/senator-the-hon-jenny-mcallister/media/11-million-grant-to-boost-autism-research?language=en",
-          "source": "Australian Government Department of Health, Disability and Ageing",
-          "description": "$11 million grant to boost Autism research  Australian Government Department of Health, Disability and Ageing",
-          "date": "25 Jun 2026, 09:42 AM",
-          "date_iso": "2026-06-25T09:42:31+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMixwFBVV95cUxOWjZMb05qRzJZMHlJS2ktSllxR19FSWszZzNmVnBhYm45WFVBaGxSMUh3aUxCb095Y1d1WXhKS3YxcXA2SjliSkY0c2pONjIzbkpVVXZ4TUFZemMzSFNKaUFaUk4td1BWTkN4a1FhY3JmSEVVUWtnbm9feWhOVm5KYU5DLVM4QmhZLTE2UXBfQU9MMGFlUVRwUjVRVjlSMl81VzdES2VWUFpITXB0ekt4NzBPWGNiaHVDb2ZYVWpxaUY4Y3R2R1RR?oc=5"
-        },
-        {
-          "title": "'Ridiculous and disrespectful': Inquiry into NDIS cuts extended - Australian Broadcasting Corporation",
-          "link": "https://www.abc.net.au/news/2026-06-23/ndis-bill-senate-inquiry-extended/106818164",
-          "source": "Australian Broadcasting Corporation",
-          "description": "'Ridiculous and disrespectful': Inquiry into NDIS cuts extended  Australian Broadcasting Corporation",
-          "date": "23 Jun 2026, 02:52 PM",
-          "date_iso": "2026-06-23T14:52:44+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOZV9aS1lzczVQU24xTGVENVBiZ2VTQy1pWHJTZEhKZ1J5RnJtWFZjOEtPZk54Y2pKWWNSaUt4bG5QUWZrRTdRb3N2SHIyMXh5WmNnVTc4Nzh5d2l1UXBpSldMU0VEZUdLT1RoN3p1bVFXdnNKYTVNZ3ExWktVb01Bc1JkYVdBVzZTUGc?oc=5"
-        },
-        {
-          "title": "Senate inquiry delays NDIS reforms for second time - CathNews",
-          "link": "https://cathnews.com/2026/06/22/senate-inquiry-delays-ndis-reforms-for-second-time/",
-          "source": "CathNews",
-          "description": "Senate inquiry delays NDIS reforms for second time  CathNews",
-          "date": "22 Jun 2026, 08:07 AM",
-          "date_iso": "2026-06-22T08:07:34+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOYlRCY1NRVDVaWEdGc1dVZ280Z3VzNmR5SUJ6UjNJVVYtSHBWX2dIZEJfR21DRWRSYVNPQWhCTmFCOUItLUV5OTZwckdZVFdmaVA5RWlHQTdXel84d1VEaDFua3M3QUExSVdLZU82YlRjcXZFOGhzZTRNVnEwREgxSFdPM0JCSktVVGRn?oc=5"
-        },
-        {
-          "title": "NDIS inquiry misses second deadline - News.com.au",
-          "link": "https://www.news.com.au/national/politics/governments-national-disability-insurance-scheme-overhaul-stalled-by-second-report-delay/news-story/dee712e7b6886c79c232b57c98b6db1f",
-          "source": "News.com.au",
-          "description": "NDIS inquiry misses second deadline  News.com.au",
-          "date": "19 Jun 2026, 06:45 PM",
-          "date_iso": "2026-06-19T18:45:24+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMihAJBVV95cUxQek9oZ3ZORVgtSkFueHFpTFZVVzVXbERZYU9zMV9HUHozSWFYcVRtQWFxQ0ZSNTlucXlLd1NJczRiamx4cV9aTk9vOVFON0pUdS1HQjVZQWw0MHc3OUY1SzIzYkJJX0Y2X0VqTEtvVnNBZFBqUldzbG5nWXFiNi13X1R5VDhTa2gzQllab0ZEeGlXUGhRakQwbHdiaVczNEFaNnNsa1FpdXFoSlZWMUV4cVNLa210UHJqMHBJQ0cwc3piTHk2Y3ZYeGNjcXJEcFp4MGtWUTg2Y25fdzh4SHVpSG5qUEt4RkNITFVrYkVvYmQ1ZEJhR3FzWDZzSUJRSnFQc2d6MNIBigJBVV95cUxNWmV6MmUwQjNMLWNCaWhXZnhNVWVEQlZJblJkbHFGcE1STUdzQnYwT09aRWhSUXFXbXdUVXl2ZUc5aUY3V3F0dmV0TUQzeWZ5clpXb3ZqUkstSTlOS2ZUeDhqLXhKYlJjdHZyVzJIc3I0U2JPZk5ZUU5tOXd2UGJvbHBWN3ZPdzBtOHB0MDRRa1dyX092YTVRTk5nNlV6VVBqMkRzNXFscEtCUldWNl9yLVpTaXNjZDBGcjh6SUw0WW9GZWt1VmNjbUxNTzhHNGRBQ0d2aEMyN01vMnRNZ2JibTA2QlBkVC12U1JaVmliZW1tRVN5THdOOWNraEd0R0luX0FTMWthUExCQQ?oc=5"
-        },
-        {
-          "title": "QLS recommends more time for critical consultation on NDIS reform Bill - qlsproctor.com.au",
-          "link": "https://www.qlsproctor.com.au/2026/06/qls-recommends-more-time-for-critical-consultation-on-ndis-reform-bill/",
-          "source": "qlsproctor.com.au",
-          "description": "QLS recommends more time for critical consultation on NDIS reform Bill  qlsproctor.com.au",
-          "date": "18 Jun 2026, 10:45 AM",
-          "date_iso": "2026-06-18T10:45:25+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOZmc5WEVfblExZklzX3dBeUl3bVhpWmJlN0Q1cFNxT09tMHFnOGxYMDFMS296dFVsdDd4QnVITEthMGItMWdpd0VCZjAxeFQtalpFNXVvbkNiNnNCVWUyYTE3dU1DRlAwdFVZSG1lS3BEWXBYU3phZTRWLUlnQi1ock05SkQwZXFqTmJUaG5JaW1VYVhLZEcwS001MXdTbkRHdVUzOHZuLW85MFlkQlE?oc=5"
-        },
-        {
-          "title": "Speech to the Australian Chamber of Commerce and Industry - Australia’s Demographic Danger - Australian Government Department of Foreign Affairs and Trade",
-          "link": "https://ministers.dfat.gov.au/minister/matt-thistlethwaite/speech/speech-australian-chamber-commerce-and-industry-australias-demographic-danger",
-          "source": "Australian Government Department of Foreign Affairs and Trade",
-          "description": "Speech to the Australian Chamber of Commerce and Industry - Australia’s Demographic Danger  Australian Government Department of Foreign Affairs and Trade",
-          "date": "17 Jun 2026, 03:51 PM",
-          "date_iso": "2026-06-17T15:51:55+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxNTWJKRFllMEJpVEZHbl91N0RKUDVYc0s0amxFZm5Fbjdfc19ibjdqUVFYX0V2QmljcDJPZ1Byd0NhZGNWNWpqQnJwOW9OOFZiNXlHcU1IQ0FqMTN4X3FjNGF2NGIxNjVWT2hZR0p5QnNsT2pGQ0x5X3FPb3ZXQS1YTF9LVm9MWjdkTldreWtjenNVa0FCalZHVnp6TFRYczhGZ2JqRzEydHFaWG1JWTRlMVo1T1A1QnFnWHl1WDhEZE12WmRsc1luWVhOS3dMaW1jLWFtaEFNTnYyUUk?oc=5"
-        },
-        {
-          "title": "Good policy is a choice | Between the Lines - The Australia Institute",
-          "link": "https://australiainstitute.org.au/post/good-policy-is-a-choice-between-the-lines/",
-          "source": "The Australia Institute",
-          "description": "Good policy is a choice | Between the Lines  The Australia Institute",
-          "date": "13 Jun 2026, 09:00 AM",
-          "date_iso": "2026-06-13T09:00:47+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNc2EyZ0FmekFPcEFINjJybWt5c1hwZmMxZmpyelBrMG5oMXp4Y2Z4RnJWbWttWHEwY3ZMLXZRZEQtemo5aVBiN21DN2k2QVJFdVdtT3hQWHk4R1Z6Qm1lTnhJcHJZaVhfckF5VEJ0Q3JkeVF6S2VncFd1cUJUQ1B2YzBzc0l5elYz?oc=5"
-        },
-        {
-          "title": "State disability ministers lash NDIS overhaul - Australian Broadcasting Corporation",
-          "link": "https://www.abc.net.au/news/2026-06-11/state-and-territories-lash-ndis-changes/106785788",
-          "source": "Australian Broadcasting Corporation",
-          "description": "State disability ministers lash NDIS overhaul  Australian Broadcasting Corporation",
-          "date": "11 Jun 2026, 05:00 PM",
-          "date_iso": "2026-06-11T17:00:00+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNSEZXT2JzaG1lY29PUW92Tml4Ymp2MjU0NEVSMUpnNlFyX2FDaU5ZcFE0UDlwR0NRWUhFbG4yNlRTUnhYWWJDRU9YZm0xOG1VQ1Fsb2pLQXlnTUE2akVnLWZSR2RFUlZRMlFOaDFXYTBYZGlYZGRkaENQTzgteGdGVnVGMXNiVzcyRkhuZFNzNmNDQQ?oc=5"
-        },
-        {
-          "title": "Disabled people will die 'as a direct result of NDIS bill', advocate says in 'dire' warning - SBS Australia",
-          "link": "https://www.sbs.com.au/news/article/disabled-people-will-die-as-a-direct-result-of-ndis-bill-advocate-says-in-dire-warning/q2wq3zhxd",
-          "source": "SBS Australia",
-          "description": "Disabled people will die 'as a direct result of NDIS bill', advocate says in 'dire' warning  SBS Australia",
-          "date": "10 Jun 2026, 05:00 PM",
-          "date_iso": "2026-06-10T17:00:00+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMizAFBVV95cUxOR0ozVi1hUDFiZWlsNFpxQ2NMM3BDQU81WXgtWWNGM1JoMjJjbFJEMDl4a19XVDF5bUpCMk5FX3NDVUJ2UEhvaDJ3SHFPaFZMNDdGNmRQQmdYY2tGcnhHUGx2TEx0ckpxR0psa2pfaHViZmxMdkM2Wm4wOHh1VHJEZERmUndBUkkwdTRUaG1oZWdGOE9vNUVpSTZLXzdGLTFuc19yeUtxUU84ZFQ5U25vcEIzeG1ic1QxYUMwOGJjUmkzYVNiazN3NTNGTkc?oc=5"
-        },
-        {
-          "title": "Aged care is sinking - Australian Ageing Agenda",
-          "link": "https://www.australianageingagenda.com.au/executive/aged-care-is-sinking/",
-          "source": "Australian Ageing Agenda",
-          "description": "Aged care is sinking  Australian Ageing Agenda",
-          "date": "10 Jun 2026, 10:45 AM",
-          "date_iso": "2026-06-10T10:45:18+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE5VVy1aWFR5dXhpdm14YnN3WG8zWFZlN3VrSEJyM04yWlhMSnJaakt1em9tdUQ2RjFMdUdINGx2aks1UWJIZ1FwNGF1NEkxdExTeDBxN0g2V0t6SjRVb3hNYzNoXzNRNmV4OWRkcV9mVFY4c3ZFY19aQTRVTmFYdw?oc=5"
-        },
-        {
-          "title": "Brutal NDIS cuts will hurt the most vulnerable - Grattan Institute",
-          "link": "https://grattan.edu.au/news/brutal-ndis-cuts-will-hurt-the-most-vulnerable/",
-          "source": "Grattan Institute",
-          "description": "Brutal NDIS cuts will hurt the most vulnerable  Grattan Institute",
-          "date": "09 Jun 2026, 05:00 PM",
-          "date_iso": "2026-06-09T17:00:00+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPZHowd2EzUDhrdDdMYW9pMFpnSU9Ha1BDdVNmRU1vVFE0dk1Sb0FycjV4emdjNlJmdE5MdlFkX1pJYklUZUw4amlTdUNCSEtFMU1HV1VzUVN6OU9NbXpkWDhyRTRXSGxmOEhOTU1DUUk5bjJkT1MzUFFpcUx3M1YxRw?oc=5"
-        },
-        {
-          "title": "Coalition demands NDIS modelling before backing reform - The Australian",
-          "link": "https://www.theaustralian.com.au/breaking-news/coalition-to-back-ndis-reforms-if-albanese-government-releases-modelling/news-story/8ea9572f48e73ae5e15f17caa0a343be",
-          "source": "The Australian",
-          "description": "Coalition demands NDIS modelling before backing reform  The Australian",
-          "date": "09 Jun 2026, 05:00 PM",
-          "date_iso": "2026-06-09T17:00:00+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxQYjV1WmR5UVYtRm9rblJMOUlnZjNObm92a1JsaGhSVGhBTUh1SnQtaVdOOTNqSjRXXzQyNFJwSFhaX3h1cEd1YlhJTHBoYVBDNklZZ1dvSkxtVDEzMVV0NkpvRS1DVmx4c2RjbW1OdzlJT0VCbTNRTEdaNEY1YjNwUnJWN25oTWNhRUg5NnZfUFNYbldXM0pSTjJ6TlRYa29rektWTTctZUJ6eE9JYUYxeFRLY0Q1RkE3bWctcDNtTHFqOF9FNzhCSmVCWkpVaUt6RHU3cjd5X0FoY3hHOVhibFE0eC1WZVpweUpFcGhrcGdXcUVRMUHSAfsBQVVfeXFMUEs1RGlfSHZvR2Q4ak91UE8tY1ZUMHJXeHg3ZFhXN3hGT3p2OXp5a1BOaGIwMTV1RlNQQUdUSFJzY3BaczdUMmVNRUE4RGVwWVdPYW5aTFVzSXFaVkxEX2FQcXRSNkdhOVBJZUtSSl9IZmlOSHZjT21waGstdVZKUlA2ZnJFRC1VVVRNSW11QU15dUdGNmJTeGJfZDNOak9HbW01NDhOZURJZ1lGc3A2YTBtS2hvWkNBTzRrLTFCZUw2enNUMkhjcXJpSTZ5dEpnampyeE9VY1I4aFZ4S3B5Rzd2QVpNamU2bVVLd2o0RkRkQ3B6YjNXUkFxYmc?oc=5"
-        },
-        {
-          "title": "NDIS changes could push families into crisis, inquiry warned - Australian Broadcasting Corporation",
-          "link": "https://www.abc.net.au/news/2026-06-09/warning-ndis-changes-could-push-families-into-crisis/106776534",
-          "source": "Australian Broadcasting Corporation",
-          "description": "NDIS changes could push families into crisis, inquiry warned  Australian Broadcasting Corporation",
-          "date": "09 Jun 2026, 05:00 PM",
-          "date_iso": "2026-06-09T17:00:00+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNT04tQXA1enY1VjJzRDhqbmdCZ1ZjSnQzU1k0cVNwQ2hoaWwteWJaQ0tpS25ua2J3a2MzVVVCcnBaOWFJQTFUeUtFTjN5bDJEamZpXzN5S2lxdmRYWURESldzb19rM0hvMWdWNW1VNFMtTDQtVTd0LUswM1hjNzluaVRJbnNiajd4cktPNkxiQlB3bzZONHFEN21ISGhyVFRGV1Nz?oc=5"
-        },
-        {
-          "title": "NDIS inquiry warned changes could push families into crisis and towards child protection services - Australian Broadcasting Corporation",
-          "link": "https://www.abc.net.au/news/2026-06-09/warning-ndis-changes-could-push-families-into-crisis/106776534",
-          "source": "Australian Broadcasting Corporation",
-          "description": "NDIS inquiry warned changes could push families into crisis and towards child protection services  Australian Broadcasting Corporation",
-          "date": "09 Jun 2026, 05:00 PM",
-          "date_iso": "2026-06-09T17:00:00+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNT04tQXA1enY1VjJzRDhqbmdCZ1ZjSnQzU1k0cVNwQ2hoaWwteWJaQ0tpS25ua2J3a2MzVVVCcnBaOWFJQTFUeUtFTjN5bDJEamZpXzN5S2lxdmRYWURESldzb19rM0hvMWdWNW1VNFMtTDQtVTd0LUswM1hjNzluaVRJbnNiajd4cktPNkxiQlB3bzZONHFEN21ISGhyVFRGV1Nz?oc=5"
-        },
-        {
-          "title": "Six of the most contentious parts of the NDIS bill - Australian Broadcasting Corporation",
-          "link": "https://www.abc.net.au/news/2026-06-09/ndis-bill-explained/106677706",
-          "source": "Australian Broadcasting Corporation",
-          "description": "Six of the most contentious parts of the NDIS bill  Australian Broadcasting Corporation",
-          "date": "08 Jun 2026, 05:00 PM",
-          "date_iso": "2026-06-08T17:00:00+10:00",
-          "raw_link": "https://news.google.com/rss/articles/CBMid0FVX3lxTFAtN1g3Um9rdGxiVk9LcDIxQVpGZkdHenVfMFdWMlV6SVRQWWhacjVvWjZGYzQxeFFMUkFoQlB6VjZYRkVJU3BxQTJZaWg4X01jX1JJMmpvdVY5cXpkTjNPYmNvWTNVdXktNmVWV1FIb0wwdElJeXdV?oc=5"
         }
       ],
       "synthesis": null
