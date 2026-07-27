@@ -7,6 +7,15 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            /* overflow:hidden already stops document scrolling, which is why no
+               scroll is observable under a hold in Chromium. overscroll-behavior
+               is the iOS Safari case that cannot be tested from this devbox: an
+               over-scroll drag at the top of the document can still reach
+               pull-to-refresh even when the page itself does not scroll, and this
+               is the one game whose core input is a sustained hold. */
+            overscroll-behavior: none;
+        }
         body {
             background: #2B0A1E;
             font-family: Arial, Helvetica, sans-serif;

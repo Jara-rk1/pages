@@ -2,9 +2,9 @@
 
 ## What It Is
 
-A browser-based gaming platform embedded in the monthly KPMG PEPI newsletter. Staff authenticate with their `@kpmg.com.au` email and compete across 12 consulting-themed minigames, with scores tracked on a shared leaderboard. One game is featured per month, with 3 attempts allowed per player per edition.
+A browser-based gaming platform embedded in the monthly KPMG PEPI newsletter. Staff authenticate with their `@kpmg.com.au` email and compete across 14 themed minigames, with scores tracked on a shared leaderboard. One game is featured per month, with 3 attempts allowed per player per edition.
 
-## The 12 Games
+## The 14 Games
 
 | # | Game | Type | Theme | Controls |
 |---|---|---|---|---|
@@ -39,13 +39,15 @@ All games show a **How to Play** instructions screen before the countdown, with 
 
 ### Monthly Rotation
 
-Each month, one game is activated. The schedule runs April 2026 to March 2027, then repeats or new editions are added.
+Each month, one game is activated. The schedule runs April 2026 to May 2027, then repeats or new editions are added. Every registered game holds exactly one slot.
 
-| Apr 26 | May 26 | Jun 26 | Jul 26 | Aug 26 | Sep 26 | Oct 26 | Nov 26 | Dec 26 | Jan 27 | Feb 27 | Mar 27 | Apr 27 |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Easter Egg Rush | Audit Ascent | After-Hours Shootout | Deal Spell | **FLASH! Red Carpet Rush** | Slide Deck Stacker | Budget Blitz | Merger Match | Risk Radar | Pipeline Plumber | KPI Catcher | Strategy Snake | Tax Tetris |
+| Apr 26 | May 26 | Jun 26 | Jul 26 | Aug 26 | Sep 26 | Oct 26 | Nov 26 | Dec 26 | Jan 27 | Feb 27 | Mar 27 | Apr 27 | May 27 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Easter Egg Rush | Audit Ascent | After-Hours Shootout | Deal Spell | **FLASH! Red Carpet Rush** | Slide Deck Stacker | Budget Blitz | Merger Match | Risk Radar | Pipeline Plumber | KPI Catcher | Strategy Snake | Tax Tetris | Flappy Brief |
 
 Tax Tetris was displaced from August 2026 by the paparazzi edition and moved to April 2027.
+Flappy Brief lost the June 2026 slot to After-Hours Shootout and was never rescheduled, so it
+held no slot at all until May 2027 was added on 2026-07-27.
 
 Activation: `python3 manage.py activate 2026-08`
 

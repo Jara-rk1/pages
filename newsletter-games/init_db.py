@@ -186,6 +186,9 @@ SEED_EDITIONS = [
     ("2027-03", "March 2027 Newsletter",      "strategy-snake",       0, "2027-03-31"),
     # tax-tetris displaced from 2026-08 by the August paparazzi edition.
     ("2027-04", "April 2027 Newsletter",      "tax-tetris",           0, "2027-04-30"),
+    # flappy-brief lost the 2026-06 slot to penalty-pressure and was never
+    # rescheduled, so it was the only registered game in no edition at all.
+    ("2027-05", "May 2027 Newsletter",        "flappy-brief",         0, "2027-05-31"),
 ]
 
 
