@@ -151,6 +151,21 @@ SEED_GAMES = [
         "Two-tap aim and power, beat the keeper, chase the top corners.",
         20000, 13,
     ),
+    (
+        "red-carpet-rush", "FLASH! Red Carpet Rush",
+        "MIFF opening night in Melbourne. Hold to rack focus, release to fire "
+        "the shutter. Frame them, focus them, catch them mid-pose.",
+        # max_score is the server-side reject bound (see server.py / wsgi.py), so it
+        # has to sit just above the true maximum, not at a guessed target. The exact
+        # maximum after the 2026-07-27 tuning pass is 93,333: ten FRONT PAGE shots
+        # (2500) against the fixed 4A/3B/2C/1S tier draw with the best possible tier
+        # order against the streak ramp (sum of tier x streak = 34.333), plus the
+        # newlyweds 3.5x, plus SILVERWARE 1500 and GOLDEN BOOT 1000, plus the 5000
+        # full-issue bonus. A frame-perfect simulated run over 3000 rounds topped out
+        # at 93,125. 100000 leaves ~7% headroom; the plan's original 120000 was an
+        # estimate that left 29% of unreachable score open to a forged submission.
+        100000, 14,
+    ),
 ]
 
 # One edition per month, each featuring a different game.
@@ -161,7 +176,7 @@ SEED_EDITIONS = [
     ("2026-05", "May 2026 Newsletter",        "audit-ascent",         0, "2026-05-31"),
     ("2026-06", "June 2026 Newsletter",       "penalty-pressure",     0, "2026-07-31"),
     ("2026-07", "July 2026 Newsletter",       "deal-spell",           0, "2026-07-31"),
-    ("2026-08", "August 2026 Newsletter",     "tax-tetris",           0, "2026-08-31"),
+    ("2026-08", "August 2026 Newsletter",     "red-carpet-rush",      0, "2026-08-31"),
     ("2026-09", "September 2026 Newsletter",  "slide-deck-stacker",   0, "2026-09-30"),
     ("2026-10", "October 2026 Newsletter",    "budget-blitz",         0, "2026-10-31"),
     ("2026-11", "November 2026 Newsletter",   "merger-match",         0, "2026-11-30"),
@@ -169,6 +184,8 @@ SEED_EDITIONS = [
     ("2027-01", "January 2027 Newsletter",    "pipeline-plumber",     0, "2027-01-31"),
     ("2027-02", "February 2027 Newsletter",   "kpi-catcher",          0, "2027-02-28"),
     ("2027-03", "March 2027 Newsletter",      "strategy-snake",       0, "2027-03-31"),
+    # tax-tetris displaced from 2026-08 by the August paparazzi edition.
+    ("2027-04", "April 2027 Newsletter",      "tax-tetris",           0, "2027-04-30"),
 ]
 
 
@@ -187,6 +204,28 @@ def init_db(db_path: str) -> None:
             game,
         )
 
+    # Reconcile max_score on an EXISTING database.
+    #
+    # max_score is not cosmetic: server.py and wsgi.py both reject a submission
+    # with `score > game["max_score"]` (400), so it is the anti-forgery bound on
+    # the leaderboard. Because the seed above is INSERT OR IGNORE, re-tuning a
+    # game and re-running this file would leave a stale, looser bound in place
+    # on any environment already seeded, silently keeping a forgery window open.
+    # Lowering the bound is always safe: the check runs only at submit time, so
+    # scores already recorded above a new, lower bound are untouched.
+    for game_id, title, description, max_score, sort_order in SEED_GAMES:
+        row = conn.execute(
+            "SELECT max_score FROM games WHERE id = ?", (game_id,)
+        ).fetchone()
+        if row is None or row[0] == max_score:
+            continue
+        conn.execute(
+            "UPDATE games SET title = ?, description = ?, max_score = ?, "
+            "sort_order = ? WHERE id = ?",
+            (title, description, max_score, sort_order, game_id),
+        )
+        print(f"[MINIGAMES] Reconciled {game_id} max_score: {row[0]} -> {max_score}")
+
     # Seed monthly editions (one game per edition)
     for edition in SEED_EDITIONS:
         conn.execute(
@@ -195,10 +234,46 @@ def init_db(db_path: str) -> None:
             edition,
         )
 
+    # Reconcile the rotation on an EXISTING database.
+    #
+    # INSERT OR IGNORE above deliberately preserves live rows, which means a
+    # re-pointed edition (e.g. 2026-08 moving from tax-tetris to the August
+    # paparazzi game) would silently keep the OLD game_id and the wrong game
+    # would go live on activation. Reconcile it here, but only where doing so
+    # cannot rewrite history: the edition must be inactive AND have no attempts
+    # recorded against it. Editions that are live or already played are left
+    # exactly as they are.
+    reconciled = 0
+    for slug, title, game_id, _, closes_at in SEED_EDITIONS:
+        row = conn.execute(
+            "SELECT id, game_id FROM editions WHERE slug = ?", (slug,)
+        ).fetchone()
+        if row is None or row[1] == game_id:
+            continue
+        played = conn.execute(
+            "SELECT 1 FROM attempts WHERE edition_id = ? LIMIT 1", (row[0],)
+        ).fetchone()
+        if played is not None:
+            print(
+                f"[MINIGAMES] SKIP reconcile {slug}: has recorded attempts "
+                f"(still points at '{row[1]}', seed wants '{game_id}')"
+            )
+            continue
+        updated = conn.execute(
+            "UPDATE editions SET title = ?, game_id = ?, closes_at = ? "
+            "WHERE id = ? AND active = 0",
+            (title, game_id, closes_at, row[0]),
+        ).rowcount
+        if updated:
+            reconciled += 1
+            print(f"[MINIGAMES] Reconciled {slug}: '{row[1]}' -> '{game_id}'")
+
     conn.commit()
     conn.close()
     print(f"[MINIGAMES] Database initialised: {db_path}")
     print(f"[MINIGAMES] Seeded {len(SEED_GAMES)} games + {len(SEED_EDITIONS)} monthly editions")
+    if reconciled:
+        print(f"[MINIGAMES] Reconciled {reconciled} edition(s) to the current rotation")
 
 
 if __name__ == "__main__":

@@ -20,6 +20,8 @@ A browser-based gaming platform embedded in the monthly KPMG PEPI newsletter. St
 | 10 | **Pipeline Plumber** | Pipe puzzle | Rotate pipe segments to connect LEAD source to WON sink | Click / tap to rotate |
 | 11 | **KPI Catcher** | Paddle catcher | Catch green KPIs, dodge red vanity metrics, grab gold bonuses | Arrow keys / mouse |
 | 12 | **Strategy Snake** | Snake variant | Collect strategic initiatives while avoiding scope creep walls | Arrow keys / swipe |
+| 13 | **After-Hours Shootout** | Penalty shootout | Two-tap aim and power vs a read-AI keeper, 10 World Cup penalties | Tap / Space x2 |
+| 14 | **FLASH! Red Carpet Rush** | Paparazzi timing | MIFF opening night: hold to rack focus, release to fire the shutter, catch them mid-pose | Hold / release tap or Space |
 
 All games show a **How to Play** instructions screen before the countdown, with objective, controls, and a tip.
 
@@ -39,11 +41,20 @@ All games show a **How to Play** instructions screen before the countdown, with 
 
 Each month, one game is activated. The schedule runs April 2026 to March 2027, then repeats or new editions are added.
 
-| Apr | May | Jun | Jul | Aug | Sep | Oct | Nov | Dec | Jan | Feb | Mar |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| Easter Egg Rush | Audit Ascent | Flappy Brief | Deal Spell | Tax Tetris | Slide Deck Stacker | Budget Blitz | Merger Match | Risk Radar | Pipeline Plumber | KPI Catcher | Strategy Snake |
+| Apr 26 | May 26 | Jun 26 | Jul 26 | Aug 26 | Sep 26 | Oct 26 | Nov 26 | Dec 26 | Jan 27 | Feb 27 | Mar 27 | Apr 27 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Easter Egg Rush | Audit Ascent | After-Hours Shootout | Deal Spell | **FLASH! Red Carpet Rush** | Slide Deck Stacker | Budget Blitz | Merger Match | Risk Radar | Pipeline Plumber | KPI Catcher | Strategy Snake | Tax Tetris |
 
-Activation: `python3 manage.py activate 2026-05`
+Tax Tetris was displaced from August 2026 by the paparazzi edition and moved to April 2027.
+
+Activation: `python3 manage.py activate 2026-08`
+
+> **Re-pointing an edition on a live database.** `init_db.py` seeds with
+> `INSERT OR IGNORE`, so changing a `SEED_EDITIONS` row does not by itself update
+> an existing `games.db`, so the old game would still go live on activation. The
+> seeder therefore reconciles `game_id` for any edition that is inactive and has
+> no recorded attempts, and prints what it changed. Editions that are live or
+> already played are never rewritten.
 
 ## Architecture
 

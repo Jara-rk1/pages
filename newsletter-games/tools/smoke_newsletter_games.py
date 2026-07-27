@@ -4,7 +4,7 @@ Smoke test for the newsletter-games surface.
 Covers:
   * Easter Egg Rush instructions overlay assertions (legend rows, brand copy)
   * Sibling regression — non-Easter games must NOT show the legend rows
-  * Responsive scaling across 9 viewports for all 12 games (10 canvas, 2 DOM)
+  * Responsive scaling across 9 viewports for all 14 games (12 canvas, 2 DOM)
 
 Run: python newsletter-games/tools/smoke_newsletter_games.py
 Assumes a server at http://localhost:8765 serving newsletter-games/.
@@ -48,6 +48,7 @@ CANVAS_GAMES = [
     ("strategy-snake",      400, 470, 640),
     ("tax-tetris",          400, 700, 640),
     ("penalty-pressure",    400, 700, 640),
+    ("red-carpet-rush",     400, 700, 640),
 ]
 DOM_GAMES = [
     "deal-spell",

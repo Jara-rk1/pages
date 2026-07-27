@@ -17,7 +17,8 @@ const GAME_ICONS = {
     'pipeline-plumber': '\u{1F527}',
     'kpi-catcher': '\u{1F4C8}',
     'strategy-snake': '\u{1F40D}',
-    'penalty-pressure': '⚽'
+    'penalty-pressure': '⚽',
+    'red-carpet-rush': '\u{1F4F8}'
 };
 
 /** Maximum attempts per game per edition */
@@ -54,7 +55,8 @@ const Hub = {
         { id: 'pipeline-plumber', title: 'Pipeline Plumber', description: 'Connect the deal pipeline before it leaks' },
         { id: 'kpi-catcher', title: 'KPI Catcher', description: 'Catch the right KPIs and dodge the vanity metrics' },
         { id: 'strategy-snake', title: 'Strategy Snake', description: 'Grow your strategy by collecting insights' },
-        { id: 'penalty-pressure', title: 'After-Hours Shootout', description: 'Match night at the pub — take 10 World Cup penalties for KPMG United' }
+        { id: 'penalty-pressure', title: 'After-Hours Shootout', description: 'Match night at the pub — take 10 World Cup penalties for KPMG United' },
+        { id: 'red-carpet-rush', title: 'FLASH! Red Carpet Rush', description: 'MIFF opening night: hold to focus, release to shoot, catch them mid-pose' }
     ],
 
     async init() {
@@ -194,7 +196,7 @@ const Hub = {
         }
     },
 
-    /** Fallback renderer for when edition.json is missing — shows all 12 games, no attempt cap. */
+    /** Fallback renderer for when edition.json is missing: shows all 14 games, no attempt cap. */
     _renderAllGamesGrid: function() {
         var grid = document.getElementById('games-grid');
         if (!grid) return;
