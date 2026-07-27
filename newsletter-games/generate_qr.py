@@ -3,7 +3,7 @@
 KPMG Newsletter Minigames -- QR Code SVG Generator
 ===================================================
 
-Generates scannable SVG QR codes for each of the 12 newsletter minigames.
+Generates scannable SVG QR codes for each of the 14 newsletter minigames.
 Pure Python 3.8+ stdlib -- no pip installs required.
 
 Implements QR Code specification (ISO/IEC 18004) for versions 1-6,
@@ -13,8 +13,8 @@ Usage:
     python generate_qr.py --edition 2026-04 --base-url http://games.kpmg.internal:8080
 
 Outputs:
-    newsletters/{edition}/qr-{game-id}.svg   (12 individual SVG files)
-    newsletters/{edition}/qr-codes.html       (printable A4 sheet, 3x4 grid)
+    newsletters/{edition}/qr-{game-id}.svg   (14 individual SVG files)
+    newsletters/{edition}/qr-codes.html       (printable A4 sheet, 3 per row)
 """
 
 import argparse
@@ -37,7 +37,13 @@ GAMES: List[Tuple[str, str]] = [
     ("pipeline-plumber", "Pipeline Plumber"),
     ("kpi-catcher", "KPI Catcher"),
     ("strategy-snake", "Strategy Snake"),
+    ("penalty-pressure", "After-Hours Shootout"),
+    ("red-carpet-rush", "FLASH! Red Carpet Rush"),
 ]
+# Keep this list in step with SEED_GAMES in init_db.py. It is a registration
+# touchpoint in its own right: a game missing here is simply absent from the
+# printable sheet, with no error, so the newsletter ships without its QR code.
+# penalty-pressure and red-carpet-rush were both missing until 2026-07-27.
 
 # KPMG Blue -- used instead of black for branded QR codes
 KPMG_BLUE = "#00338D"
@@ -59,14 +65,40 @@ VERSION_TABLE = {
     # For V3: 70 total cw, 26 EC cw => 44 data cw, 1 block of 44
     # For V4: 100 total cw, 36 EC cw => 64 data cw, 2 blocks of 32
     # For V5: 134 total cw, 48 EC cw => 86 data cw, 2 blocks of 43
-    # For V6: 172 total cw, 64 EC cw => 108 data cw, 4 blocks (2x27 + 2x28)
+    # For V6: 172 total cw, 64 EC cw => 108 data cw, 4 UNIFORM blocks of 27
+    #
+    # V6 was (2, 27, 2, 28) until 2026-07-27, i.e. 110 data codewords for a version
+    # that has 108. compute_ec_and_interleave then sliced 27/27/28/26, and because
+    # block 4 started at 82 instead of 81 every one of its 26 codewords landed one
+    # position off the spec's 4x27 de-interleave. EC-M corrects 8 byte errors per
+    # block, so 26 is unrecoverable: every version 6 code (any payload over 84
+    # bytes) was a hard no-read on a compliant scanner. Versions 1-5 were fine.
     1: (21, 16, 10, 1, 16, 0, 0),
     2: (25, 28, 16, 1, 28, 0, 0),
     3: (29, 44, 26, 1, 44, 0, 0),
     4: (33, 64, 18, 2, 32, 0, 0),
     5: (37, 86, 24, 2, 43, 0, 0),
-    6: (41, 108, 16, 2, 27, 2, 28),
+    6: (41, 108, 16, 4, 27, 0, 0),
 }
+
+
+def _assert_version_table_consistent() -> None:
+    """Fail loudly at import if a version row cannot produce its own data count.
+
+    The V6 row was internally inconsistent for a long time without anything
+    noticing, because a wrong block split still yields a plausible-looking QR
+    image. This is the cheap invariant that would have caught it.
+    """
+    for ver, (_size, total_data, _ec, nb1, d1, nb2, d2) in VERSION_TABLE.items():
+        got = nb1 * d1 + nb2 * d2
+        if got != total_data:
+            raise AssertionError(
+                f"VERSION_TABLE[{ver}]: blocks give {got} data codewords, "
+                f"but the row declares {total_data}"
+            )
+
+
+_assert_version_table_consistent()
 
 # Maximum *data* bytes (after mode/length/terminator overhead) for byte mode, EC-M
 # Overhead: 4 bits mode + 8 bits length (v1-9) + up to 4 bits terminator = 2 codewords
@@ -741,7 +773,7 @@ def generate_html_sheet(
     output_dir: str,
 ) -> str:
     """
-    Generate an A4-printable HTML page with all 12 QR codes in a 3x4 grid.
+    Generate an A4-printable HTML page with every QR code, 3 per row.
     QR codes are embedded inline as SVG.
     """
     cells: List[str] = []
@@ -853,7 +885,7 @@ def generate_html_sheet(
 <body>
   <div class="header">
     <h1>KPMG Newsletter Minigames</h1>
-    <div class="edition">Edition: {edition} &mdash; Scan to play!</div>
+    <div class="edition">Edition: {edition} - Scan to play!</div>
   </div>
   <div class="grid">
 {grid_html}
@@ -923,7 +955,7 @@ def main() -> None:
     html_content = generate_html_sheet(GAMES, args.edition, base_url, out_dir)
     with open(html_path, "w", encoding="utf-8") as f:
         f.write(html_content)
-    print(f"\n  {'qr-codes.html':40s}  (printable A4 sheet, 3x4 grid)")
+    print(f"\n  {'qr-codes.html':40s}  (printable A4 sheet, 3 per row)")
 
     print(f"\nDone. {len(GAMES)} QR codes + 1 HTML sheet written to {out_dir}")
 
