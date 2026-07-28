@@ -344,6 +344,12 @@ const GameEngine = {
                     this.state.startTime = performance.now();
                     this.lastTimestamp = performance.now();
                     if (this.canvas && this.ctx) {
+                        // Never leave a second rAF chain running: gameLoop reassigns
+                        // animFrameId every frame, so an untracked chain would double
+                        // the effective clock and survive endGame's single cancel.
+                        if (this.animFrameId) {
+                            cancelAnimationFrame(this.animFrameId);
+                        }
                         this.animFrameId = requestAnimationFrame((t) => this.gameLoop(t));
                     }
                     if (this._callbacks.onCountdownComplete) {
@@ -615,11 +621,20 @@ const GameEngine = {
 
         const hasGSAP = typeof gsap !== 'undefined';
 
+        // A countdown hands control to exactly one game loop. Two things can advance
+        // a step (a deadline check and a tween's onComplete), so gate the handover.
+        let handedOver = false;
+        const finish = () => {
+            if (handedOver) return;
+            handedOver = true;
+            callback();
+        };
+
         // DOM-based games have no canvas context — use a DOM overlay countdown
         if (!ctx) {
             const overlay = this._overlayEl;
             if (!overlay) {
-                callback();
+                finish();
                 return;
             }
 
@@ -635,7 +650,7 @@ const GameEngine = {
                 if (stepIndex >= steps.length) {
                     overlay.style.display = 'none';
                     overlay.innerHTML = '';
-                    callback();
+                    finish();
                     return;
                 }
                 countdownEl.textContent = steps[stepIndex];
@@ -659,8 +674,9 @@ const GameEngine = {
         }
 
         const drawStep = () => {
+            if (handedOver) return;
             if (stepIndex >= steps.length) {
-                callback();
+                finish();
                 return;
             }
 
@@ -1049,6 +1065,11 @@ const GameEngine = {
         startBtn.addEventListener('mouseenter', function () { startBtn.style.transform = 'scale(1.05)'; });
         startBtn.addEventListener('mouseleave', function () { startBtn.style.transform = 'scale(1)'; });
         startBtn.addEventListener('click', function () {
+            // Unbind the key handler too. Without this it survives a pointer START
+            // and the player's first Space (the control the instructions tell them
+            // to use) restarts the countdown over the live game and spawns a second
+            // game loop, running the rest of the round at double speed.
+            document.removeEventListener('keydown', keyHandler);
             overlay.style.display = 'none';
             overlay.innerHTML = '';
             callback();
