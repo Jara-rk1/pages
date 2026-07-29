@@ -426,7 +426,7 @@
     var queue, qi, subject, realDone, score, streak, bestShot, shotLog;
     var holding, focusT, focusActive;
     var verdictT, verdictCard;
-    var obstruction, ambient, coverT, coverReady;
+    var obstruction, ambient, coverT, coverReady, coverSettling;
     var flashes, flashGlow, shutterWipe, camShake;
 
     /* Displayed sharpness of the viewfinder image, 0 = fully soft, 1 = tack
@@ -463,7 +463,7 @@
         verdictT = 0; verdictCard = null;
         obstruction = null;
         ambient = { t: 0, pops: [] };
-        coverT = 0; coverReady = false;
+        coverT = 0; coverReady = false; coverSettling = false;
         flashes = []; flashGlow = 0; shutterWipe = 0; camShake = 0;
         sceneSharp = 1; panX = 0; coverArt = null; _cseed = 0x9E3779B9;
         particlesClear();
@@ -1102,15 +1102,57 @@
             }
 
         } else if (phase === 'cover') {
-            coverT += dt;
-            if (coverT > 2.2) coverReady = true;   // long enough to actually be read
-            if (coverT > 6.0) finish();
+            if (coverSettling) {
+                /* Discard exactly one frame's dt - the frame right after the
+                   print plate was built - and hold the slide at its start rather
+                   than advancing it.
+
+                   The plate is a single 45-98 ms build (242-294 ms at 4x
+                   throttle). Whichever frame pays for it runs long, so the frame
+                   AFTER it arrives with a real dt that the engine clamps to its
+                   0.1 s ceiling (game-engine.js gameLoop). Letting that clamped
+                   dt be the first thing to drive the 0.7 s slide moved the cover
+                   18.41 px of its 40 px travel in a single frame, against a
+                   3.68 px nominal step: the results screen appeared already 46%
+                   of the way home and the ease was effectively gone. Measured on
+                   the real clock, 3 runs, in cover-slide-before.json.
+
+                   Building earlier does NOT fix it - the long frame is wherever
+                   the build is, and the inflated dt always lands on the frame
+                   after it. The dt has to be dropped. That costs one frame of
+                   hold at the slide's start and nothing else.
+
+                   The build itself is unchanged and still the one honest cost in
+                   §5.5 of the evidence pack; this is not an attempt to make it
+                   cheaper, only to stop it eating the animation that follows.
+
+                   capture.py cannot see any of this: its virtual clock steps by
+                   exactly one frame regardless of real work done, so it is immune
+                   to the spike by construction. Hence realtime_round.py
+                   --cover-trace. */
+                coverSettling = false;
+            } else {
+                coverT += dt;
+                if (coverT > 2.2) coverReady = true;   // long enough to actually be read
+                if (coverT > 6.0) finish();
+            }
         }
     }
 
     function beginCover() {
         phase = 'cover'; coverT = 0; coverReady = false;
         subject = null; obstruction = null;
+        /* Own the plate build here, explicitly, and tell the slide to drop the dt
+           of the frame that follows it. See the cover branch in update().
+
+           Leaving it to drawCover()'s lazy guard landed the build on this same
+           frame anyway - this function is called from the VERDICT branch, so the
+           cover branch does not get a frame of its own until the next one - but it
+           built the plate without setting the flag, so the inflated dt went
+           straight into the slide. Doing it here makes the pairing explicit:
+           whoever pays for the build also declares the frame to skip. */
+        coverSettling = true;
+        if (!coverArt) coverArt = buildCover();
         /* full-issue bonus: every one of the ten landed PAGE SIX or better */
         var clean = shotLog.length >= TOTAL_SUBJECTS && shotLog.every(function (l) {
             return l.kind === 'front' || l.kind === 'exclusive' || l.kind === 'page';
@@ -3214,6 +3256,9 @@
     var coverArt = null;
 
     function drawCover(ctx) {
+        /* Normally already built by the cover update branch, which runs first and
+           deliberately owns the cost. Kept as a fallback so this function cannot
+           dereference a null plate if it is ever reached by another path. */
         if (!coverArt) coverArt = buildCover();
         var t = clamp01(coverT / 0.7);
         var slide = RM ? 0 : (1 - outQuart(t)) * 40;
@@ -3585,6 +3630,13 @@
                 verdictLabel: verdictCard ? verdictCard.label : null,
                 obstruction: obstruction ? { x: obstruction.x, kind: obstruction.kind, w: obstruction.w } : null,
                 realDone: realDone,
+                /* Cover slide clock, and the offset it produces. Exposed so a
+                   harness can measure the slide frame by frame instead of taking
+                   a screenshot of it: the 40px -> 21.6px snap this pair now rules
+                   out is two frames long and invisible in a still. */
+                coverT: coverT === undefined ? null : coverT,
+                coverSlide: phase === 'cover' && coverArt
+                    ? (RM ? 0 : (1 - outQuart(clamp01(coverT / 0.7))) * 40) : null,
                 score: score,
                 reducedMotion: RM,
                 particles: pcount,
