@@ -96,6 +96,56 @@ URL=$("$AZ" webapp show \
     --resource-group "$RESOURCE_GROUP" \
     --query "defaultHostName" -o tsv)
 
+# ---------------------------------------------------------------------------
+# Smoke the deploy before claiming success.
+#
+# gunicorn 23.0.0 -> 26.0.0 (PR #30, merged 2026-08-20) is the one bump in that PR
+# that NO test covers: no workflow installs newsletter-games/requirements.txt, and
+# news-dashboard.yml rsyncs with --exclude='requirements.txt'. So CI cannot catch a
+# gunicorn regression here; only this deploy can.
+#
+# Analysis clears the obvious failure modes. startup.sh runs the DEFAULT sync worker
+# (no --worker-class, and no eventlet/gevent anywhere in newsletter-games/), so 26's
+# headline breaking change, eventlet worker removal, does not apply. Its three flags
+# (--bind, --timeout, --workers) are all core and unchanged. PyPI reports
+# requires_python ">=3.10" for 26.0.0 and PYTHON_VERSION above is exactly "3.10", so
+# pip will not refuse at SCM_DO_BUILD_DURING_DEPLOYMENT. Note that is the FLOOR, not
+# headroom: a future major that raises the floor breaks this deploy.
+#
+# What analysis cannot clear is 26's stricter RFC 9112 request-target validation and
+# its dropped body framing on HEAD/204/304. Only a live request rules those out, so
+# make one rather than printing SUCCESS and assuming.
+#
+# The retry loop is load-bearing, not defensive padding: `az webapp deploy` returns
+# before App Service has restarted the container, so an immediate single request gets
+# a cold-start 503 and would read as a gunicorn regression that is not there.
+echo "  Smoke test (App Service cold start, up to 2 min)..."
+CODE=""
+for _ in $(seq 1 12); do
+    CODE=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 20 "https://$URL/" 2>/dev/null) || CODE=""
+    [ "$CODE" = "200" ] && break
+    sleep 10
+done
+
+if [ "$CODE" != "200" ]; then
+    echo ""
+    echo "  ========================================"
+    echo "  SMOKE TEST FAILED"
+    echo ""
+    echo "  URL:  https://$URL"
+    echo "  GET / returned: ${CODE:-no response} after ~2 minutes."
+    echo ""
+    echo "  The deploy itself succeeded, so the app is up but not serving."
+    echo "  Logs:     az webapp log tail --name kpmg-minigames --resource-group kpmg-minigames-rg"
+    echo "  Rollback: pin gunicorn==23.0.0 in newsletter-games/requirements.txt, redeploy."
+    echo "  ========================================"
+    exit 1
+fi
+
+echo "  Smoke OK: GET / returned 200."
+echo ""
+# ---------------------------------------------------------------------------
+
 echo "  ========================================"
 echo "  DEPLOYED SUCCESSFULLY!"
 echo ""
