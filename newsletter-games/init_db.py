@@ -166,6 +166,43 @@ SEED_GAMES = [
         # estimate that left 29% of unreachable score open to a forged submission.
         100000, 14,
     ),
+    (
+        "multiplex", "MULTIPLEX",
+        "Hop between nine screens in a Melbourne multiplex on movie night. "
+        "One quick move clears each screen, three lives, and the whole "
+        "gauntlet gets faster every lap.",
+        # MEASURED 2026-08-28, replacing the provisional 10,000,000.
+        #
+        # This game has NO natural ceiling: the gauntlet loops forever and the
+        # score multiplier is (1 + 0.25 * loop), which grows without bound. So
+        # this is a defensible PRACTICAL bound, not a maximum. Two facts set it.
+        #
+        # 1. MEASURED, by a headless oracle over 2,000 seeds driving the real
+        #    MULTIPLEX.advance: the highest score ACTUALLY ACHIEVED after loop 12
+        #    is 92,886, and reaching it costs 149.3 s of flawless play. The oracle
+        #    is explicitly superhuman (zero reaction latency, exact positioning),
+        #    so a human scores well below this.
+        # 2. Fitting the achieved maxima gives score(loop) ~ 339*L^2 + 3598*L,
+        #    i.e. about 414,000 by loop 30, which is roughly five minutes of
+        #    unbroken flawless play across 270 consecutive screens at the 400 ms
+        #    floor without losing three lives.
+        #
+        # The bound below sits at about loop 72 (648 consecutive screens cleared,
+        # ~5 minutes), which is ~21x the measured achieved maximum. ASSUMPTION,
+        # stated because it is the load-bearing one: no real player reaches loop
+        # 72. Direction of error matters and is not symmetric - server.py:440 and
+        # wsgi.py:305 hard-reject anything above this with an HTTP 400 and no
+        # clamp, so too LOW refuses real players' scores in production while too
+        # HIGH is merely a looser anti-forgery bound. This is deliberately set on
+        # the safe side of that asymmetry.
+        #
+        # What it does NOT defend against: TUNING is exported writable on
+        # window.MULTIPLEX, so a console edit can inflate a score by ~100x and
+        # still land underneath this bound. Nothing client-side can fix that, and
+        # anyone with a console can POST directly anyway. This bound is an
+        # anti-forgery floor for casual submissions, not a security control.
+        2000000, 15,
+    ),
 ]
 
 # One edition per month, each featuring a different game.
@@ -177,18 +214,23 @@ SEED_EDITIONS = [
     ("2026-06", "June 2026 Newsletter",       "penalty-pressure",     0, "2026-07-31"),
     ("2026-07", "July 2026 Newsletter",       "deal-spell",           0, "2026-07-31"),
     ("2026-08", "August 2026 Newsletter",     "red-carpet-rush",      0, "2026-08-31"),
-    ("2026-09", "September 2026 Newsletter",  "slide-deck-stacker",   0, "2026-09-30"),
+    ("2026-09", "September 2026 Newsletter",  "multiplex",            0, "2026-09-30"),
     ("2026-10", "October 2026 Newsletter",    "budget-blitz",         0, "2026-10-31"),
     ("2026-11", "November 2026 Newsletter",   "merger-match",         0, "2026-11-30"),
     ("2026-12", "December 2026 Newsletter",   "risk-radar",           0, "2026-12-31"),
     ("2027-01", "January 2027 Newsletter",    "pipeline-plumber",     0, "2027-01-31"),
     ("2027-02", "February 2027 Newsletter",   "kpi-catcher",          0, "2027-02-28"),
     ("2027-03", "March 2027 Newsletter",      "strategy-snake",       0, "2027-03-31"),
-    # tax-tetris displaced from 2026-08 by the August paparazzi edition.
-    ("2027-04", "April 2027 Newsletter",      "tax-tetris",           0, "2027-04-30"),
+    # slide-deck-stacker displaced from 2026-09 by the September cinema
+    # edition (MULTIPLEX). It must land a slot in the same change: flappy-brief
+    # lost 2026-06 to penalty-pressure and then held no slot at all for a year.
+    ("2027-04", "April 2027 Newsletter",      "slide-deck-stacker",   0, "2027-04-30"),
     # flappy-brief lost the 2026-06 slot to penalty-pressure and was never
     # rescheduled, so it was the only registered game in no edition at all.
     ("2027-05", "May 2027 Newsletter",        "flappy-brief",         0, "2027-05-31"),
+    # tax-tetris displaced from 2027-04 by slide-deck-stacker, in this same
+    # change, onto a genuinely new slot (2027-05 is already flappy-brief).
+    ("2027-06", "June 2027 Newsletter",       "tax-tetris",           0, "2027-06-30"),
 ]
 
 

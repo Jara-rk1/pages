@@ -28,7 +28,7 @@ import sys
 
 from playwright.sync_api import sync_playwright
 
-# 12 canvas games plus the 2 DOM games, which have no ctx and therefore no rAF
+# 13 canvas games plus the 2 DOM games, which have no ctx and therefore no rAF
 # loop to double - they still run a countdown, so they still prove the unbind.
 CANVAS_GAMES = [
     "audit-ascent",
@@ -43,6 +43,7 @@ CANVAS_GAMES = [
     "slide-deck-stacker",
     "strategy-snake",
     "tax-tetris",
+    "multiplex",
 ]
 DOM_GAMES = ["deal-spell", "merger-match"]
 

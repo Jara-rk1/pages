@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MULTIPLEX | KPMG Minigames</title>
+    <!-- No GSAP. The harness animates from its own clock so the gauntlet can be
+         stepped headlessly with no animation frame, which is what makes the
+         balance and verification passes possible. A tweening library would put
+         wall-clock timing back into the loop. -->
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            /* overflow:hidden already stops document scrolling. overscroll-behavior
+               is the iOS Safari case: an over-scroll drag at the top of the document
+               can still reach pull-to-refresh even when the page does not scroll.
+               Two of the nine screens are driven by a sustained hold, so this is
+               load-bearing here, not decoration. */
+            overscroll-behavior: none;
+        }
+        body {
+            /* Film Black. See the brand-deviation note at the top of harness.js:
+               the canvas palette is a bespoke cinema set for this edition, scoped
+               to this directory. */
+            background: #12100F;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex; flex-direction: column; align-items: center;
+            height: 100dvh; overflow: hidden;
+        }
+        /* Header stays KPMG Blue so the tile still reads as part of the hub. The
+           cinema palette is scoped to the canvas, and the engine's 48px HUD is
+           KPMG Blue for the same reason. */
+        .game-header {
+            width: 100%; background: #00338D; color: white;
+            padding: 8px 16px; display: flex; align-items: center; gap: 12px;
+            font-size: 14px;
+        }
+        .game-header a { color: white; text-decoration: none; font-size: 20px; }
+        .game-header h1 { font-size: 16px; font-weight: bold; letter-spacing: 2px; }
+        #game-container {
+            position: relative; width: 100%; max-width: 1600px;
+            flex: 1; min-height: 0; display: flex; justify-content: center; align-items: center;
+        }
+        #game-canvas {
+            display: block;
+            touch-action: none;
+        }
+        /* The overlay is deliberately EMPTY markup. GameEngine clears innerHTML and
+           builds the instructions, countdown and game-over content itself, so any
+           markup placed here is overwritten and never read. What the page still owns
+           is the box: the engine only applies its own inline layout when it has to
+           CREATE the overlay, so supplying it here means supplying its geometry too.
+           Doing that is what lets the backdrop be Film Black rather than the engine's
+           default KPMG Blue. */
+        .game-over-overlay {
+            display: none; position: absolute; inset: 0;
+            background: rgba(18, 16, 15, 0.94); color: #F3E9D2;
+            flex-direction: column; align-items: center; justify-content: safe center;
+            gap: 16px; z-index: 100; padding: 24px; text-align: center;
+            overflow-y: auto;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-header">
+        <a href="../../" title="Back to hub">&larr;</a>
+        <h1>MULTIPLEX</h1>
+    </div>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+        <div class="game-over-overlay" id="game-over"></div>
+    </div>
+
+    <!-- Load order is the contract, not a convention.
+
+         1. game-engine.js defines GameEngine, which harness.js reads at load.
+         2. harness.js defines window.MULTIPLEX and defers boot() to DOMContentLoaded.
+         3. Every microgame then registers against window.MULTIPLEX.
+
+         Because boot is deferred and these tags are synchronous, all nine screens
+         have registered before the first frame. A screen file that is missing or
+         throws does not take the page down: the harness logs the missing slugs with
+         console.error at start and runs the gauntlet short, which is deliberate so a
+         partial build is playable and its gap is loud.
+
+         All nine tags are pre-wired so the implementers never have to edit this file
+         and cannot collide in it. Until each screen lands, its tag is a 404 in the
+         console and a named slug in the harness's missing-screen error. Both are
+         expected during the build. -->
+    <script src="../../assets/game-engine.js"></script>
+    <script src="harness.js"></script>
+
+    <script src="microgames/food-falls.js"></script>
+    <script src="microgames/pivot.js"></script>
+    <script src="microgames/sunnies-on.js"></script>
+    <script src="microgames/nothing-but-net.js"></script>
+    <script src="microgames/the-chase.js"></script>
+    <script src="microgames/incoming.js"></script>
+    <script src="microgames/dig.js"></script>
+    <script src="microgames/make-the-gate.js"></script>
+    <script src="microgames/compact.js"></script>
+
+    <!-- The worked example from MICROGAME-CONTRACT.md. Its slug is not in the
+         running order, so it never appears in a real round; it exists to be played
+         at index.html?only=_reference while a screen is being built. Safe to drop at
+         ship, and harmless to keep. -->
+    <script src="microgames/_reference.js"></script>
+</body>
+</html>

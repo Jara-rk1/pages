@@ -7,13 +7,12 @@
  * subject centred), FOCUS (where the lens sweep was at release) and THE MOMENT
  * (did you catch the pose). Best frame of the night makes the cover.
  *
- * Plan: docs/plans/2026-07-26-red-carpet-rush.md (repo root, NOT inside
- * newsletter-games/: this tree is rsynced to a public Pages repo on merge to
- * main, and the plan carries internal-only material. See the exclude in
- * .github/workflows/news-dashboard.yml.)
+ * The build plan for this game lives in the private workspace, deliberately
+ * NOT inside newsletter-games/: this tree is rsynced to a public Pages repo on
+ * merge to main, and the plan carries internal-only material.
  *
  * ---------------------------------------------------------------------------
- * BRAND DEVIATION (deliberate, approved by Jara 2026-07-26)
+ * BRAND DEVIATION (deliberate, approved 2026-07-26)
  * This game uses a BESPOKE magazine-pink palette that is OFF the mandatory KPMG
  * 8-colour palette, for the August paparazzi-magazine newsletter theme. The
  * deviation is scoped to this directory only: no shared asset is touched, and

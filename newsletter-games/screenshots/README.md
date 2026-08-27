@@ -10,4 +10,4 @@ Captures of the "flight to mum" newsletter game prototype taken 2026-05-12 durin
 - `flight-to-mum-08-with-flower-coffee.png` — flower + coffee pickup variant
 - `flight-to-mum-09-early.png` / `flight-to-mum-10-mid.png` / `flight-to-mum-11-late.png` — early / mid / late game stages
 
-Relocated from workspace root on 2026-05-20 during the relocation orchestrator run (`docs/plans/is-the-llm-wikis-sparkling-thunder.md`).
+Relocated from the workspace root on 2026-05-20 during a directory reorganisation.

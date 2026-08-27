@@ -39,6 +39,7 @@ GAMES: List[Tuple[str, str]] = [
     ("strategy-snake", "Strategy Snake"),
     ("penalty-pressure", "After-Hours Shootout"),
     ("red-carpet-rush", "FLASH! Red Carpet Rush"),
+    ("multiplex", "MULTIPLEX"),
 ]
 # Keep this list in step with SEED_GAMES in init_db.py. It is a registration
 # touchpoint in its own right: a game missing here is simply absent from the

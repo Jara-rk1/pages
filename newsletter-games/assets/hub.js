@@ -18,7 +18,8 @@ const GAME_ICONS = {
     'kpi-catcher': '\u{1F4C8}',
     'strategy-snake': '\u{1F40D}',
     'penalty-pressure': '⚽',
-    'red-carpet-rush': '\u{1F4F8}'
+    'red-carpet-rush': '\u{1F4F8}',
+    'multiplex': '\u{1F3AC}'
 };
 
 /** Maximum attempts per game per edition */
@@ -56,7 +57,8 @@ const Hub = {
         { id: 'kpi-catcher', title: 'KPI Catcher', description: 'Catch the right KPIs and dodge the vanity metrics' },
         { id: 'strategy-snake', title: 'Strategy Snake', description: 'Grow your strategy by collecting insights' },
         { id: 'penalty-pressure', title: 'After-Hours Shootout', description: 'Match night at the pub — take 10 World Cup penalties for KPMG United' },
-        { id: 'red-carpet-rush', title: 'FLASH! Red Carpet Rush', description: 'MIFF opening night: hold to focus, release to shoot, catch them mid-pose' }
+        { id: 'red-carpet-rush', title: 'FLASH! Red Carpet Rush', description: 'MIFF opening night: hold to focus, release to shoot, catch them mid-pose' },
+        { id: 'multiplex', title: 'MULTIPLEX', description: 'Hop between nine screens in a multiplex on movie night, one quick move each, three lives' }
     ],
 
     async init() {
