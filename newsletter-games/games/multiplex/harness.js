@@ -27,27 +27,56 @@
  * re-running that check.
  * ---------------------------------------------------------------------------
  *
- * ACCESSIBILITY - PHOTOSENSITIVITY (WCAG 2.3.1). A gauntlet that cuts between
- * nine visually distinct surfaces has a flash problem BEFORE any effect is
- * added: a screen-to-screen cut is itself a flash, so at 333ms per screen the
- * cuts alone hit the 3-per-second ceiling with nothing else on the canvas. Two
- * mechanisms answer that, and neither is advisory:
+ * ACCESSIBILITY - PHOTOSENSITIVITY (WCAG 2.3.1). This note used to say that a
+ * screen-to-screen cut "is itself a flash" and that the 400ms screen floor was
+ * the answer to it. Both halves were MEASURED and both were false: a cut to the
+ * wipe is not a flash for this palette, and the 400ms floor is not what bounds
+ * the cut rate. What follows is what actually carries the compliance, in the
+ * order it matters. None of it is advisory.
  *
- *   1. MIN_SCREEN_MS = 400 is a hard floor on per-screen duration, on every
- *      loop. screenDurationMs() is the only path that yields a duration and it
- *      clamps through that constant. A load-time self-test throws if it ever
- *      stops holding. Tuning cannot get underneath it.
- *   2. ONE ledger. canFlash() below is the single global scheduler. Transitions
+ *   1. THE PALETTE IS DARK. That, and nothing else, is why a cut is not a
+ *      flash. The general flash threshold needs an opposing relative-luminance
+ *      change of >= 0.10 over more than 25% of the 10-degree visual field. The
+ *      wipe (P.black) sits at luminance 0.0053, so a surface only becomes a
+ *      flash against it at 0.1053; the nine surfaces run 0.0223 to 0.0649, so
+ *      the worst of them (food-falls) clears the threshold by 1.62x. The AREA
+ *      half is always met, at 12.6x, because the wipe covers the whole play
+ *      rect on every viewport - so the luminance half is the only thing between
+ *      this game and a 2.3.1 breach, and it was the one thing with no
+ *      executable test. paletteSelfTest() in section 6 is now that test: a
+ *      tenth surface at mid grey (0.2159) or Ticket Gold (0.4493) throws at
+ *      load and the game does not run.
+ *   2. THE GAP FLOORS BOUND THE CUT RATE. A cut costs one whole screen cycle,
+ *      playMs + gapMs, and playMs has NO lower bound: MIN_SCREEN_MS is a
+ *      timeout ceiling on the play phase, not a minimum, because a screen may
+ *      resolve on its first update frame. So the gap is the entire bound, and
+ *      with wipeMs and verdictHoldMs at zero the cut rate was measured at
+ *      4.2/second, squarely inside the photosensitive band. MIN_WIPE_MS and
+ *      MIN_VERDICT_HOLD_MS floor the gap at 420ms, i.e. 2.38 cuts/second, and
+ *      selfTest() proves that under hostile tuning.
+ *   3. ONE ledger. canFlash() below is the single global scheduler. Transitions
  *      and in-game effects draw from the same 3-per-second budget - screens do
  *      not get their own allowance, because nine independent 3/sec budgets is
  *      27/sec. A screen cannot paint a flash at all; it calls stage.flash() and
  *      the harness paints it, blooming inward from the play-rect edge, capped
  *      at Ticket Cream, never a full-canvas white-out, and never red.
+ *   4. MIN_SCREEN_MS = 400 is still a hard floor on per-screen duration, on
+ *      every loop, with screenDurationMs() the only path to a duration and a
+ *      load-time self-test on it. It is a playability and legibility floor
+ *      rather than the photosensitivity one it was described as.
  *
  * Under reduced motion canFlash() returns false unconditionally, the wipe stops
  * animating and every kinetic multiplier goes to zero through j(). Information
- * always stays; kinetics drop. Set window.__mpxFlashAudit = [] before load to
- * have the scheduler record every granted flash for an empirical rate audit.
+ * always stays; kinetics drop. NOTE that the reduced-motion gap is
+ * verdictHoldMs alone (200ms, not 420ms), so the (2) bound there is 5/second
+ * rather than 2.38, held under 3 in practice only by how long a screen takes to
+ * resolve. Raising it would change shipped reduced-motion behaviour, so it is
+ * recorded as an open item, not silently fixed.
+ *
+ * Set window.__mpxFlashAudit = [] before load to have the scheduler record
+ * every granted flash for an empirical rate audit. Every figure above is
+ * measured; the arithmetic and the instruments are in the R2 harness-invariants
+ * record.
  */
 (function () {
     'use strict';
@@ -100,6 +129,51 @@
         'incoming', 'dig', 'make-the-gate', 'compact'
     ];
 
+    /* The film each screen references, drawn under the stage title. This table
+       IS the "make the references explicit" change: Jara played the live build
+       and said the references were unclear, and the art alone does not fix that,
+       because a player who has not seen a film cannot recognise a silhouette
+       from it. Naming the film is the only thing that does. Authorisation, and
+       the exposure it accepts, are section 0 of the explicit-references plan.
+
+       The `title` column is not decoration. It is asserted against the screen's
+       own registered title in register() below, so this table and the nine
+       screens cannot drift apart silently; MICROGAME-CONTRACT.md section 14 is
+       the tiebreaker if they ever disagree.
+
+       FRIENDS is a television series, not a film, and is labelled so rather than
+       quietly listed among them. LOVE ACTUALLY is an ASSUMPTION: the IP
+       assessment tied make-the-gate to no single title, so being explicit
+       required choosing one, and this is the one chosen. It is overridable on a
+       word, and changing it means changing this row and nothing else.
+
+       _reference has no row on purpose: it is the implementer's mark screen and
+       never ships in the gauntlet. */
+    var CREDITS = {
+        'food-falls':      { title: 'FOOD FALLS',      film: 'CLOUDY WITH A CHANCE OF MEATBALLS (2009)' },
+        'pivot':           { title: 'PIVOT!',          film: 'FRIENDS (TV, 1994)' },
+        'sunnies-on':      { title: 'SUNNIES ON',      film: 'THE MATRIX (1999)' },
+        'nothing-but-net': { title: 'NOTHING BUT NET', film: 'SPACE JAM (1996)' },
+        'the-chase':       { title: 'SEEKER',          film: 'HARRY POTTER (2001)' },
+        'incoming':        { title: 'ASSEMBLE',        film: 'THE AVENGERS (2012)' },
+        'dig':             { title: 'DIG',             film: 'FANTASTIC MR FOX (2009)' },
+        'make-the-gate':   { title: 'MAKE THE GATE',   film: 'LOVE ACTUALLY (2003)' },
+        'compact':         { title: 'COMPACT',         film: 'WALL-E (2008)' }
+    };
+
+    /* A screen in the running order with no credit row would ship a blank
+       second line rather than a loud failure, so it throws here instead. ORDER
+       is known at load; the title half of the pair is checked in register(),
+       which is the first moment both halves exist. */
+    (function creditSelfTest() {
+        for (var _i = 0; _i < ORDER.length; _i++) {
+            if (!CREDITS[ORDER[_i]]) {
+                throw new Error('MULTIPLEX: screen "' + ORDER[_i] + '" is in the running ' +
+                    'order with no row in CREDITS, so it would name no film.');
+            }
+        }
+    })();
+
     var F_UI = 'Arial, Helvetica, sans-serif';
     var F_DISPLAY = '"Arial Black", "Helvetica Neue", Impact, Arial, sans-serif';
 
@@ -113,12 +187,41 @@
     var FOOT_H = H - FOOT_Y;                 // 40
 
     /* ============================================================
-       3. THE FLOOR  -  not tunable, not a comment
+       3. THE FLOORS  -  not tunable, not comments
        ============================================================ */
-    /* Per-screen duration may not drop below this on any loop. See the
-       photosensitivity note at the top of this file. Nothing in this file reads
-       a duration except through screenDurationMs(). */
+    /* Per-screen duration may not drop below this on any loop. Nothing in this
+       file reads a duration except through screenDurationMs(). Read the
+       photosensitivity note at the top of this file before assuming what it
+       buys: it is a TIMEOUT ceiling on the play phase, not a minimum, so it
+       does NOT bound the cut rate. */
     var MIN_SCREEN_MS = 400;
+
+    /* The 3-per-second ceiling of the WCAG 2.3.1 general flash threshold. ONE
+       constant, shared by the flash ledger in canFlash() and by the cut-rate
+       floors below, so the two can never drift apart. */
+    var MAX_EVENTS_PER_SEC = 3;
+
+    /* Cut-rate floors. A screen-to-screen cut costs one whole cycle,
+       playMs + gapMs, and playMs has no lower bound (a screen may resolve on
+       its first update frame), so the gap is the only thing that bounds the cut
+       rate:
+           cuts/sec <= 1000 / gapMs      gapMs = 2 * wipeMs + verdictHoldMs
+       Holding cuts/sec at or under 3 therefore needs gapMs >= 1000/3 = 333.33.
+       These two floors give 2*110 + 200 = 420ms, i.e. 2.38 cuts/second, a 1.26x
+       margin. They are deliberately EQUAL to the shipped tuning values, on three
+       requirements: hold the 3/second bound, leave shipped behaviour untouched,
+       and never raise a worst case above what already ships. The 200 is FORCED by
+       those; the 110 is CHOSEN CONSERVATIVELY from an admissible [67, 110], since
+       the 3/second bound alone would permit any wipe floor at or above 66.67 once
+       the hold is pinned at 200. Derivation, and why the top of that range: the R2
+       harness-invariants record, section 2.3.
+       Any lower pair of floors fails the third requirement. Raising either TUNING
+       value is still free and always safe; lowering one now means editing a
+       photosensitivity constant with its derivation next to it, which is exactly
+       when the arithmetic should be re-run. */
+    var MIN_WIPE_MS = 110;
+    var MIN_VERDICT_HOLD_MS = 200;
+    var MIN_GAP_MS = 1000 / MAX_EVENTS_PER_SEC;
 
     /* ============================================================
        4. TUNING  -  C2 owns every number in here
@@ -162,6 +265,11 @@
         value: MIN_SCREEN_MS, writable: false, enumerable: true, configurable: false
     });
 
+    /* The shipped lives count, captured here, before TUNING is exported on
+       window.MULTIPLEX and so before anything can tamper with it. livesCount()
+       falls back to this rather than to a duplicated literal. */
+    var SAFE_LIVES = TUNING.lives;
+
     /**
      * The ONLY source of a per-screen duration. Clamps through MIN_SCREEN_MS and
      * survives nonsense tuning (a NaN would otherwise propagate through Math.max
@@ -173,13 +281,55 @@
         return Math.max(MIN_SCREEN_MS, d);
     }
 
-    /* Executable proof, at load, that the floor holds at an absurd loop count and
-       under hostile tuning. If this ever throws, the floor has been defeated and
-       the game must not run. */
+    /**
+     * The ONLY sources of a gap timing, same shape and same guard as
+     * screenDurationMs. Returning a NUMBER matters as much as the clamp does:
+     * a raw TUNING.wipeMs of "5000" string-CONCATENATES in swapAt and hangs the
+     * gauntlet forever, and a NaN or an Infinity makes every `G.gapT >= x` test
+     * false forever, which is the same hang by a different route. Math.max
+     * always returns a Number; clamp() would hand the string straight through.
+     */
+    function wipeMs() {
+        var v = TUNING.wipeMs;
+        if (!isFinite(v)) return MIN_WIPE_MS;
+        return Math.max(MIN_WIPE_MS, v);
+    }
+    function verdictHoldMs() {
+        var v = TUNING.verdictHoldMs;
+        if (!isFinite(v)) return MIN_VERDICT_HOLD_MS;
+        return Math.max(MIN_VERDICT_HOLD_MS, v);
+    }
+    /** Total gap length, and the quantity the cut rate is actually bounded by. */
+    function gapDurationMs(rm) {
+        return rm ? verdictHoldMs() : wipeMs() * 2 + verdictHoldMs();
+    }
+
+    /**
+     * The ONLY source of a lives count. A non-finite value is not merely odd, it
+     * is UNENDABLE: `G.lives <= 0` is false for NaN, and Infinity never
+     * decrements to zero, so the run has no exit. A large FINITE value is left
+     * alone on purpose - the headless census rigs raise lives to 1e6 to reach
+     * the floor loop, and clamping that would silently change every gate - and
+     * is bounded instead where it actually hurts, in drawBand's render loop.
+     */
+    function livesCount() {
+        var v = TUNING.lives;
+        return isFinite(v) ? +v : SAFE_LIVES;
+    }
+
+    /* Executable proof, at load, that both floors hold at an absurd loop count
+       and under hostile tuning. If this ever throws, a floor has been defeated
+       and the game must not run. */
     (function selfTest() {
-        var keep = { b: TUNING.baseScreenMs, s: TUNING.loopStepMs };
+        var keep = {
+            b: TUNING.baseScreenMs, s: TUNING.loopStepMs,
+            w: TUNING.wipeMs, v: TUNING.verdictHoldMs, l: TUNING.lives
+        };
         var probes = [0, 1, 8, 50, 1e6];
+        var hostile = [0, -1, NaN, Infinity, -Infinity, '5000', 'abc', null, undefined];
         var i;
+
+        /* The screen-duration floor. */
         for (i = 0; i < probes.length; i++) {
             if (screenDurationMs(probes[i]) < MIN_SCREEN_MS) {
                 throw new Error('MULTIPLEX: screen-duration floor defeated at loop ' + probes[i]);
@@ -190,6 +340,45 @@
             throw new Error('MULTIPLEX: screen-duration floor defeated by non-finite tuning');
         }
         TUNING.baseScreenMs = keep.b; TUNING.loopStepMs = keep.s;
+
+        /* The CUT RATE, which is what the gap floors exist for and what the
+           screen floor above does not bound. Asserts the rate, not that the
+           numbers are positive: a cut costs one whole cycle and the play phase
+           can be a single frame, so cuts/sec <= 1000 / gapDurationMs(false).
+           Driving every hostile value through the accessors also means a raw
+           TUNING read reintroduced anywhere in this file fails here rather than
+           in a player's browser. */
+        function assertCutRate(label) {
+            var gap = gapDurationMs(false);
+            if (!(gap >= MIN_GAP_MS)) {       // !(>=) so a NaN gap fails too
+                throw new Error('MULTIPLEX: cut rate ' + (1000 / gap).toFixed(2) +
+                    '/second exceeds ' + MAX_EVENTS_PER_SEC + '/second (gap ' + gap +
+                    'ms, floor ' + MIN_GAP_MS.toFixed(2) + 'ms) at ' + label);
+            }
+        }
+        assertCutRate('the shipped tuning');
+        for (i = 0; i < hostile.length; i++) {
+            TUNING.wipeMs = hostile[i]; TUNING.verdictHoldMs = hostile[i];
+            assertCutRate('wipeMs = verdictHoldMs = ' + String(hostile[i]));
+        }
+        TUNING.wipeMs = keep.w; TUNING.verdictHoldMs = keep.v;
+
+        /* Two guards that were added as one-line fixes and had no test at all
+           until a positive-control sweep pointed that out. Both are cheap and
+           both fail closed. */
+        if (clamp(NaN, 0, 1) !== 0) {
+            throw new Error('MULTIPLEX: clamp() is not NaN-safe, so one NaN tuning value ' +
+                'reaches stage.difficulty and every screen sizes itself with NaN');
+        }
+        for (i = 0; i < hostile.length; i++) {
+            TUNING.lives = hostile[i];
+            if (!isFinite(livesCount())) {
+                throw new Error('MULTIPLEX: livesCount() returned ' + livesCount() +
+                    ' for lives = ' + String(hostile[i]) + '; a non-finite lives count is ' +
+                    'an unendable run, because G.lives <= 0 is never true');
+            }
+        }
+        TUNING.lives = keep.l;
     })();
 
     /* ============================================================
@@ -208,7 +397,7 @@
         if (RM) return false;                // reduced motion: never strobe
         var now = performance.now();
         while (flashTimes.length && now - flashTimes[0] > 1000) flashTimes.shift();
-        if (flashTimes.length >= 3) return false;
+        if (flashTimes.length >= MAX_EVENTS_PER_SEC) return false;
         flashTimes.push(now);
         if (window.__mpxFlashAudit) window.__mpxFlashAudit.push(now);
         return true;
@@ -236,7 +425,87 @@
                         Math.round(x[1] + (y[1] - x[1]) * t) + ',' +
                         Math.round(x[2] + (y[2] - x[2]) * t) + ')';
     }
-    function clamp(v, lo, hi) { return v < lo ? lo : (v > hi ? hi : v); }
+    /* NaN-safe by ordering, not by an extra branch: NaN fails `v >= lo` and
+       falls to lo. The obvious `v < lo ? lo : v > hi ? hi : v` returns NaN for
+       NaN, because both comparisons are false, and a single NaN there poisoned
+       stage.difficulty and with it the sizing of all nine screens. */
+    function clamp(v, lo, hi) { return v >= lo ? (v > hi ? hi : v) : lo; }
+
+    /**
+     * WCAG relative luminance from a hex literal. Same three lines as the
+     * reference implementation, including the 0.03928 linearisation break rather
+     * than the 0.04045 of the later erratum, so this agrees by construction with
+     * the offline instrument that derived the bounds below (the R2 luminance
+     * derivation).
+     */
+    function relLum(hex) {
+        var c = hx(hex), k = [0.2126, 0.7152, 0.0722], out = 0, i, v;
+        for (i = 0; i < 3; i++) {
+            v = c[i] / 255;
+            out += k[i] * (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+        }
+        return out;
+    }
+
+    /* Executable proof, at load, of the ONE invariant the photosensitivity
+       compliance actually rests on: the palette is dark enough that a cut to the
+       wipe is not a flash. Read the note at the top of this file for why this is
+       the load-bearing test and the 400ms floor is not. It sits here rather than
+       beside selfTest() only because it needs hx() from this section.
+
+       Two bounds, and they differ on purpose:
+
+         SURFACE   L < L(wipe) + 0.10, the general flash threshold delta, derived
+                   from P.black so it moves if the wipe colour ever does. A
+                   surface fills the play rect, so the AREA half of the threshold
+                   is always met (12.6x) and the luminance half is the whole
+                   defence. Measured worst case food-falls at 0.0649 against
+                   0.1053, a 1.62x margin. A tenth surface at mid grey (0.2159)
+                   or Ticket Gold (0.4493) throws.
+
+         ACCENT    L <= L(P.cream). Accents are bright by design and all 14 of
+                   them are ABOVE the surface bound, so that bound is not a legal
+                   accent bound and applying it would stop the game running. What
+                   an accent may not do is exceed the harness's own flash cap:
+                   drawGlow paints at most Ticket Cream and never a full-canvas
+                   white-out, so an accent brighter than Cream would put a bigger
+                   luminance flip on the canvas, at the UNLIMITED cut rate, than a
+                   rate-limited flash is permitted to. Worst case today is
+                   pivot's #F0C93F at 0.6066 against 0.8199, a 1.35x margin.
+
+       Iterating TINTS rather than ORDER is deliberate: it covers _reference and
+       any future tenth entry, which is the case that made this test necessary. */
+    (function paletteSelfTest() {
+        var wipeL = relLum(P.black);
+        var surfaceMax = wipeL + 0.10;
+        var accentMax = relLum(P.cream);
+        var roles = ['accent', 'accent2'];
+        var slug, t, l, i;
+        for (slug in TINTS) {
+            if (!Object.prototype.hasOwnProperty.call(TINTS, slug)) continue;
+            t = TINTS[slug];
+            if (!t || typeof t.surface !== 'string') {
+                throw new Error('MULTIPLEX: tint "' + slug + '" has no surface hex');
+            }
+            l = relLum(t.surface);
+            if (!(l < surfaceMax)) {
+                throw new Error('MULTIPLEX: screen surface "' + slug + '" ' + t.surface +
+                    ' has relative luminance ' + l.toFixed(4) + ', at or above ' +
+                    surfaceMax.toFixed(4) + '. A cut to the ' + P.black + ' wipe would be a ' +
+                    'WCAG 2.3.1 flash, and the cut rate is not rate limited.');
+            }
+            for (i = 0; i < roles.length; i++) {
+                if (t[roles[i]] == null) continue;
+                l = relLum(t[roles[i]]);
+                if (!(l <= accentMax)) {
+                    throw new Error('MULTIPLEX: accent "' + slug + '.' + roles[i] + '" ' +
+                        t[roles[i]] + ' has relative luminance ' + l.toFixed(4) +
+                        ', brighter than Ticket Cream ' + P.cream + ' at ' +
+                        accentMax.toFixed(4) + ', the brightest flash the harness will paint.');
+                }
+            }
+        }
+    })();
 
     /* ============================================================
        7. SEEDED RNG
@@ -276,6 +545,16 @@
         if (typeof def.prompt !== 'string' || !def.prompt) throw new Error('MULTIPLEX.register(' + slug + '): missing prompt');
         if (typeof def.hint !== 'string' || !def.hint) throw new Error('MULTIPLEX.register(' + slug + '): missing hint');
         if (REGISTRY[slug]) throw new Error('MULTIPLEX.register(' + slug + '): already registered');
+        /* The credit table names a title as well as a film, and this is the
+           first moment both halves of that pair exist. Asserting it here is what
+           makes the table a check rather than a duplicate: a screen renamed
+           without updating CREDITS, or the reverse, fails at load naming the
+           slug, instead of shipping a title and a film that disagree. */
+        if (CREDITS[slug] && def.title !== CREDITS[slug].title) {
+            throw new Error('MULTIPLEX.register(' + slug + '): title "' + def.title +
+                '" does not match the credit table entry "' + CREDITS[slug].title +
+                '". One of the two is stale. MICROGAME-CONTRACT.md section 14 decides.');
+        }
         REGISTRY[slug] = def;
     }
 
@@ -337,14 +616,44 @@
        40px window: the reachable positions formed a lattice whose pitch equalled
        the window, and a keyboard player stepped clean over the target. That screen
        also needs 0.18s of CONTINUOUS contact, 11 frames at 60Hz, which is
-       unreachable when every held frame crosses a whole window. So the rate now
-       eases from KEY_RATE to the derived rate over KEY_ACCEL_T of continuous hold:
-       a tap positions finely (first frame 0.04 units, 6.7px on the-chase) and only
-       a sustained hold reaches traverse speed. Cost, stated rather than hidden: a
-       full edge-to-edge sweep at the floor is 173ms, not the 140ms a flat derived
-       rate gave, which still fits inside pivot's 200ms descent floor with 27ms
-       spare. KEY_RATE remains the floor so the long early screens never get
-       twitchier, where precision matters more than traverse. */
+       unreachable when every held frame crosses a whole window. So the rate eases
+       from KEY_RATE to the derived rate over a ramp: a tap positions finely and
+       only a sustained hold reaches traverse speed.
+
+       FIRST FRAME, THE TRUE FIGURE: 0.0813 units, 13.7px on the-chase, about a
+       third of the 40px catch window. This comment claimed 0.04 units and 6.7px
+       until 2026-08-28. That is the k = 0 value, i.e. what the first frame WOULD
+       move if easeAxis ran at the ramp's start, but updateInput does keyT += dt
+       BEFORE calling easeAxis, so the first held frame is always one dt in and
+       never at k = 0. The old figure understated the real step by 2.03x, and the
+       headroom it invented is exactly what runs out below 60Hz.
+
+       THE RAMP IS A FRAME COUNT, NOT A DURATION, and that is a fix rather than a
+       flourish. Because the first frame sits at k = dt / ramp, a FIXED 0.08s ramp
+       made the first step dt-dependent: measured at the 400ms floor, 13.7px at
+       dt 1/60, 41.2px at 1/30, 82.6px at 0.05, and at the engine's 0.1 clamp the
+       axis went 0 to +1 in ONE frame. Against a 40px window that is the flat-rate
+       lattice this ramp exists to remove, back again from 30Hz down, i.e. a WCAG
+       2.1.1 operability failure at frame rates game-engine.js:377 explicitly
+       permits. Scaling the ramp by 60 * dt holds it at a constant ~4.8 frames
+       instead, giving 13.7 / 27.3 / 41.0 / 81.9px across those same four rates.
+       Bit-identical at 60Hz by construction, not by luck: 60 * (1/60) is exactly
+       1.0 in IEEE 754, so Math.max(1, 60 * dt) * KEY_ACCEL_T === KEY_ACCEL_T.
+
+       Cost, stated rather than hidden: a full edge-to-edge sweep at the floor is
+       173ms, not the 140ms a flat derived rate gave, which still fits inside
+       pivot's 200ms descent floor with 27ms spare. KEY_RATE remains the floor so
+       the long early screens never get twitchier, where precision matters more
+       than traverse. And the frame-count ramp costs traverse at coarse dt, so
+       mid-loop screens that need a long reach get measurably harder there; the
+       full before-and-after matrix is in the R2 harness-invariants record,
+       section 12.
+
+       NOT FIXED, and not fixable in the ramp: KEY_RATE * 0.1 * 168 = 40.3px, so at
+       the engine's dt clamp the SLOWEST possible keyboard step already equals the
+       whole catch window. A per-frame cap tight enough to protect a 40px window
+       makes the full-width traverse guarantee unreachable inside a 400ms screen at
+       four frames. Documented deliberately rather than half-fixed. */
     var KEY_RATE = 2.4;
     var KEY_SWEEP_FRAC = 0.35;
     var KEY_ACCEL_T = 0.08;      // seconds of hold before the derived rate is reached
@@ -452,7 +761,10 @@
     /* Eased key steering. See the KEY_ACCEL_T note in the block comment above for
        why this ramps instead of applying the derived rate flat. */
     function easeAxis(cur, dir, heldT, dt, full) {
-        var k = KEY_ACCEL_T > 0 ? Math.min(1, heldT / KEY_ACCEL_T) : 1;
+        /* KEY_ACCEL_T is a 60Hz figure, so the ramp is scaled to hold a constant
+           FRAME count at any frame time. See the block comment above. */
+        var ramp = KEY_ACCEL_T * Math.max(1, 60 * dt);
+        var k = ramp > 0 ? Math.min(1, heldT / ramp) : 1;
         return clamp(cur + dir * (KEY_RATE + (full - KEY_RATE) * k) * dt, -1, 1);
     }
 
@@ -600,7 +912,7 @@
         RUN = runningOrder();
         if (!RUN.length) throw new Error('MULTIPLEX: no microgames registered');
         G = {
-            loop: 0, index: 0, lives: TUNING.lives, streak: 0, cleared: 0,
+            loop: 0, index: 0, lives: livesCount(), streak: 0, cleared: 0,
             phase: 'play',                   // 'play' | 'gap'
             screen: null, mem: null, tint: null,
             screenMs: 0, elapsed: 0, verdict: null, gapVerdict: null,
@@ -654,9 +966,7 @@
         G.gapVerdict = verdict;
         G.phase = 'gap';
         G.gapT = 0;
-        G.gapMs = RM
-            ? TUNING.verdictHoldMs
-            : TUNING.wipeMs * 2 + TUNING.verdictHoldMs;
+        G.gapMs = gapDurationMs(RM);
         G.swapped = false;
 
         if (verdict === 'win') {
@@ -738,7 +1048,7 @@
         G.gapT += dt * 1000;
         clearEdges();
 
-        var swapAt = RM ? TUNING.verdictHoldMs * 0.5 : TUNING.wipeMs + TUNING.verdictHoldMs * 0.5;
+        var swapAt = RM ? verdictHoldMs() * 0.5 : wipeMs() + verdictHoldMs() * 0.5;
         if (!G.swapped && G.gapT >= swapAt) {
             G.swapped = true;
             if (G.lives <= 0) return;        // hold the covered frame, end below
@@ -853,15 +1163,17 @@
        flip, and it carries the verdict as a SHAPE so the outcome reads with no
        colour and no motion at all. */
     function drawGap(ctx) {
-        var cover;
+        /* Read once per frame, through the accessors, so the cover ramp cannot
+           disagree with the swapAt and gapMs the state machine used. */
+        var cover, wm = wipeMs(), vh = verdictHoldMs();
         if (RM) {
             cover = 1;
-        } else if (G.gapT < TUNING.wipeMs) {
-            cover = G.gapT / TUNING.wipeMs;
-        } else if (G.gapT < TUNING.wipeMs + TUNING.verdictHoldMs) {
+        } else if (G.gapT < wm) {
+            cover = G.gapT / wm;
+        } else if (G.gapT < wm + vh) {
             cover = 1;
         } else {
-            cover = clamp(1 - (G.gapT - TUNING.wipeMs - TUNING.verdictHoldMs) / TUNING.wipeMs, 0, 1);
+            cover = clamp(1 - (G.gapT - wm - vh) / wm, 0, 1);
         }
 
         ctx.save();
@@ -903,6 +1215,40 @@
         ctx.restore();
     }
 
+    /* The credit is up to 40 characters against a 400px canvas, so its size is
+       MEASURED rather than eyeballed, and measured PER STRING: one long film
+       title is not allowed to shrink the other eight, and truncating with an
+       ellipsis is not an option, because the film name is the entire message.
+       11px is the preferred size and the loop only ever comes down from it.
+
+       Cached per string. Both the string set and the font are fixed for the life
+       of the page, so this measures nine times, not once a frame.
+
+       7px is a legibility floor, not a fitting floor: below it the line is
+       unreadable and the change defeats itself, so a string that still does not
+       fit is reported rather than silently squeezed. The fix for that is the
+       plan's own order of preference: drop the year, then shorten the title. */
+    var CREDIT_MAX_W = W - 28;           // the timer rule's own left/right margins
+    var CREDIT_MIN_PX = 7;
+    var _creditSize = {}, _creditWarned = {};
+    function creditSize(ctx, str) {
+        if (_creditSize[str]) return _creditSize[str];
+        var size = 11;
+        ctx.font = 'bold ' + size + 'px ' + F_UI;
+        while (size > CREDIT_MIN_PX && ctx.measureText(str).width > CREDIT_MAX_W) {
+            size -= 0.5;
+            ctx.font = 'bold ' + size + 'px ' + F_UI;
+        }
+        if (ctx.measureText(str).width > CREDIT_MAX_W && !_creditWarned[str]) {
+            _creditWarned[str] = true;
+            console.warn('MULTIPLEX: film credit "' + str + '" does not fit ' + CREDIT_MAX_W +
+                'px at the ' + CREDIT_MIN_PX + 'px legibility floor. Drop the year or ' +
+                'shorten the title; do not truncate it.');
+        }
+        _creditSize[str] = size;
+        return size;
+    }
+
     /* The MULTIPLEX chrome band, immediately under the engine's HUD. Gold and
        cream live here and nowhere else, so the interface never reads as a tenth
        screen. */
@@ -919,10 +1265,33 @@
         ctx.textBaseline = 'middle';
         ctx.fillText(G.screen.title, W / 2, BAND_Y + 20);
 
+        /* The film credit, a second line directly under the stage title. It sits
+           here, persistent for the whole screen, rather than in the 420ms
+           transition where nobody could read it - and putting it there would
+           also have meant lengthening the gap, which R2 has just floored against
+           a photosensitivity argument.
+
+           It is chrome, not play: the wipe clips to PLAY, so this line never
+           takes part in a cut and contributes nothing to the flashing-area
+           budget the art lanes work against. The gold is #D4AF37 on #12100F,
+           9.0:1, so an 11px line clears WCAG AA for normal text with margin. */
+        var _credit = CREDITS[G.screen.slug];
+        if (_credit) {
+            ctx.font = 'bold ' + creditSize(ctx, _credit.film) + 'px ' + F_UI;
+            ctx.fillStyle = P.gold;
+            ctx.fillText(_credit.film, W / 2, BAND_Y + 37);
+        }
+
         /* Lives as ticket stubs. Shape and fill both change, so the state does
-           not depend on colour alone. */
-        var i, sx = W - 16 - (TUNING.lives * 16), sy = BAND_Y + 13;
-        for (i = 0; i < TUNING.lives; i++) {
+           not depend on colour alone. The stub COUNT is bounded because this
+           loop runs inside requestAnimationFrame: a hostile lives of 1e9 is a
+           frozen tab, not a long band (measured). 16 is the stub pitch and the
+           right margin, so (W - 16) / 16 = 24 stubs is the most that fit before
+           the first one leaves the canvas. livesCount() carries the non-finite
+           guard; this carries the finite-but-absurd one. */
+        var i, pips = clamp(livesCount(), 0, (W - 16) / 16), sy = BAND_Y + 13;
+        var sx = W - 16 - (pips * 16);
+        for (i = 0; i < pips; i++) {
             var x = sx + i * 16;
             GameEngine.drawRoundedRect(ctx, x, sy, 12, 14, 2);
             if (i < G.lives) { ctx.fillStyle = P.gold; ctx.fill(); }

@@ -86,6 +86,8 @@ def add_cors(resp):
 @app.route("/api/auth/register", methods=["POST"])
 def register():
     body = request.get_json(silent=True) or {}
+    if not server._is_str_or_none(body.get("email")) or not server._is_str_or_none(body.get("display_name")):
+        return _json({"error": "email and display_name are required"}, 400)
     email = (body.get("email") or "").strip().lower()
     display_name = (body.get("display_name") or "").strip()
 
@@ -113,6 +115,8 @@ def register():
 @app.route("/api/auth/login", methods=["POST"])
 def login():
     body = request.get_json(silent=True) or {}
+    if not server._is_str_or_none(body.get("email")):
+        return _json({"error": "email is required"}, 400)
     email = (body.get("email") or "").strip().lower()
 
     if not email:
@@ -251,6 +255,9 @@ def get_attempts():
     except (ValueError, TypeError):
         return _json({"error": "edition_id must be an integer"}, 400)
 
+    if not server._fits_sqlite_int(edition_id):
+        return _json({"error": "edition_id must be an integer"}, 400)
+
     conn = server._get_db()
     rows = conn.execute(
         "SELECT id, score, duration_ms, attempt_num, played_at FROM attempts "
@@ -283,14 +290,20 @@ def submit_attempt():
     score = body.get("score")
     duration_ms = body.get("duration_ms")
 
-    if not game_id or edition_id is None or score is None:
+    if not game_id or not isinstance(game_id, str) or edition_id is None or score is None:
         return _json({"error": "game_id, edition_id, and score are required"}, 400)
 
     try:
         score = int(score)
         edition_id = int(edition_id)
-    except (ValueError, TypeError):
+    except (ValueError, TypeError, OverflowError):
         return _json({"error": "score and edition_id must be integers"}, 400)
+
+    if not server._fits_sqlite_int(edition_id):
+        return _json({"error": "score and edition_id must be integers"}, 400)
+
+    if not server._is_valid_duration_ms(duration_ms):
+        return _json({"error": "duration_ms is out of range"}, 400)
 
     if score < 0:
         return _json({"error": "Score cannot be negative"}, 400)
@@ -305,6 +318,13 @@ def submit_attempt():
     if game["max_score"] is not None and score > game["max_score"]:
         conn.close()
         return _json({"error": f"Score exceeds maximum ({game['max_score']})"}, 400)
+
+    # A NULL max_score means the game-specific check above is skipped, so a
+    # huge finite score (still not caught by any exception, int() succeeds)
+    # would otherwise reach an unguarded INSERT bind below.
+    if not server._fits_sqlite_int(score):
+        conn.close()
+        return _json({"error": "score and edition_id must be integers"}, 400)
 
     edition = conn.execute("SELECT * FROM editions WHERE id = ?", (edition_id,)).fetchone()
     if not edition:
@@ -383,6 +403,10 @@ def leaderboard():
         conn.close()
         return _json({"error": "edition_id must be an integer"}, 400)
 
+    if not server._fits_sqlite_int(edition_id):
+        conn.close()
+        return _json({"error": "edition_id must be an integer"}, 400)
+
     rows = conn.execute(
         "SELECT lc.user_id, u.display_name, lc.total_score, lc.games_played, lc.best_scores_json "
         "FROM leaderboard_cache lc JOIN users u ON u.id = lc.user_id "
@@ -444,6 +468,10 @@ def leaderboard_me():
     try:
         edition_id = int(edition_id)
     except (ValueError, TypeError):
+        conn.close()
+        return _json({"error": "edition_id must be an integer"}, 400)
+
+    if not server._fits_sqlite_int(edition_id):
         conn.close()
         return _json({"error": "edition_id must be an integer"}, 400)
 

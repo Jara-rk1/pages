@@ -493,8 +493,10 @@ Screen duration shrinks as the loops climb, from five seconds down to a hard flo
 hard-code a duration.** Read `stage.timeLeft` or `stage.progress`. A screen that assumes it has five
 seconds breaks on loop 3 and is unplayable on loop 8.
 
-The floor exists for photosensitivity reasons and is enforced by a load-time self-test that throws
-if it is ever defeated, so it is not something you can be handed a shorter screen than.
+The floor exists for playability and legibility reasons and is enforced by a load-time self-test
+that throws if it is ever defeated, so it is not something you can be handed a shorter screen
+than. It is **not** what carries the photosensitivity compliance: that is the darkness of the
+palette plus the gap floors, both of which have their own load-time self-tests in `harness.js`.
 
 ---
 
@@ -677,11 +679,11 @@ against this exact sequence, so it is not shuffled and your screen's neighbours 
 | # | `slug` | `title` | Verb | `goal` | `accent2`? |
 |---|---|---|---|---|---|
 | 1 | `food-falls` | FOOD FALLS | Catch it before it lands | `achieve` | no |
-| 2 | `pivot` | PIVOT | Rotate to clear the gap | `achieve` | no |
+| 2 | `pivot` | PIVOT! | Rotate to clear the gap | `achieve` | no |
 | 3 | `sunnies-on` | SUNNIES ON | Lean out of the way | **`survive`** | no |
 | 4 | `nothing-but-net` | NOTHING BUT NET | Time the release | `achieve` | no |
-| 5 | `the-chase` | THE CHASE | Chase a darting target | `achieve` | no |
-| 6 | `incoming` | INCOMING | Deflect what is incoming | **`survive`** | **yes** |
+| 5 | `the-chase` | SEEKER | Chase a darting target | `achieve` | no |
+| 6 | `incoming` | ASSEMBLE | Deflect what is incoming | **`survive`** | **yes** |
 | 7 | `dig` | DIG | Tunnel, grab, get out | `achieve` | **yes** |
 | 8 | `make-the-gate` | MAKE THE GATE | Dash before it closes | `achieve` | **yes** |
 | 9 | `compact` | COMPACT | Crush on the beat | `achieve` | **yes** |
@@ -696,8 +698,24 @@ against this exact sequence, so it is not shuffled and your screen's neighbours 
 > correct code: a player who dodges or deflects everything for the full duration would lose at the
 > timeout. Declare `goal` exactly as this table states it.
 
-`title` must be exactly the string above. Three of these stage names were changed on the IP ruling
-before any art was made, and the superseded names must not appear in any shipped file.
+`title` must be exactly the string above, and the screen-verification gate reads this table as its
+source of truth, so the two cannot drift apart without the gate saying so.
+
+> **Three of these names changed twice, and this row is the second change.** The A3 IP assessment
+> renamed `SEEKER` to `THE CHASE`, `ASSEMBLE` to `INCOMING` and dropped the exclamation mark from
+> `PIVOT!`. Jara overrode that assessment in writing on 2026-08-28, choosing to name the films
+> explicitly, so all three original names are restored above and are the shipped titles.
+> Authorisation and its exposure are recorded in the explicit-references plan, section 0.
+>
+> **What the override did NOT touch**, and no screen may add: real people's names and likenesses,
+> and any personal-data string on the internal appendix list. Those remain executable blockers in
+> the screen-verification gate, which is where the list lives; this file does not restate it.
+>
+> **Film wordmarks belong in the harness credit table, not in a screen file.** Every screen names
+> its film through `CREDITS` in `harness.js`, which is one place to read and one place to change.
+> A screen that also spells the title out in a comment gives the gate two things to keep in step
+> for no gain, so the gate keeps the wordmarks out of screen files even where the title itself is
+> authorised.
 
 `prompt` and `hint` are yours to write, within section 2.
 
