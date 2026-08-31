@@ -196,6 +196,47 @@
        does NOT bound the cut rate. */
     var MIN_SCREEN_MS = 400;
 
+    /* THE SAMPLE FLOOR: the game never advances more than one 60Hz step of GAME
+       time per frame, however long the real frame took.
+       ============================================================
+       A player's control resolution is the number of times the game SAMPLES their
+       input, and that is a frame count, not a duration. game-engine.js:377 clamps
+       dt at 0.1, so at the engine's own worst permitted frame time a 400ms screen
+       is FOUR frames. Four samples cannot be both precise and traversable at any
+       step size: the input note further down proves the ramp cannot fix it,
+       because KEY_RATE * 0.1 * 168 = 40.3px already equals the-chase's whole catch
+       window at the SLOWEST possible step. That proof is correct, and it is also
+       only half the problem. The other half is the sample count.
+
+       Measured 2026-08-31 by the R6 blind census at dt = 0.1: pivot 57 to 63%,
+       the-chase 55 to 62%, dig 60 to 64% of seeds unwinnable by keyboard at the
+       floor loops, against 0.0% for pointer-strong on all 468 cells at the same
+       dt. A gap that large between two control schemes, at a frame rate the engine
+       explicitly permits, is an operability failure and not a difficulty setting.
+
+       CAP THE CLOCK, NOT THE CONTENT, and that distinction was measured rather
+       than reasoned. The first attempt at this fix floored the screen DURATION at
+       24 frames instead, which is the same idea applied to the wrong quantity. It
+       fixed the steered screens and made `incoming` far WORSE: 0% to 65% at the
+       floor loops, because incoming sizes its arrival schedule off stage.timeLeft,
+       so handing it a 2.4s budget scheduled five objects where 0.4s scheduled one,
+       against a player who still had only 24 samples to answer them with. Every
+       screen that sizes itself in seconds would have done the same thing to some
+       degree. Stretching the clock instead leaves every screen bit-identical in
+       content to its 60Hz self and gives the samples back on their own.
+
+       INERT AT 60Hz BY CONSTRUCTION, not by luck: a 60Hz caller passes exactly
+       1/60 and Math.min(1/60, 1/60) is 1/60, so no digest moves. Callers faster
+       than 60Hz are untouched, since the cap is a maximum.
+
+       THE COST, STATED. At 10 FPS the game runs at one sixth speed in real time:
+       a floor screen takes 2.4 real seconds to play its 0.4 game-seconds, and the
+       whole gauntlet takes six times as long on that device. It is slow motion,
+       not a different game, and the alternative measured above is unplayable.
+       Flash safety is unaffected in the safe direction: the ledger's window is
+       game time, so a slowed clock emits FEWER flashes per real second. */
+    var MAX_SIM_DT = 1 / 60;
+
     /* The 3-per-second ceiling of the WCAG 2.3.1 general flash threshold. ONE
        constant, shared by the flash ledger in canFlash() and by the cut-rate
        floors below, so the two can never drift apart. */
@@ -274,6 +315,10 @@
      * The ONLY source of a per-screen duration. Clamps through MIN_SCREEN_MS and
      * survives nonsense tuning (a NaN would otherwise propagate through Math.max
      * and produce a screen that never ends).
+     *
+     * Frame rate does NOT enter here. The sample floor is applied to the clock in
+     * advance(), so a screen is the same number of game-milliseconds at every
+     * frame rate and this stays the pure loop -> ms function it always was.
      */
     function screenDurationMs(loop) {
         var d = TUNING.baseScreenMs - loop * TUNING.loopStepMs;
@@ -649,11 +694,19 @@
        full before-and-after matrix is in the R2 harness-invariants record,
        section 12.
 
-       NOT FIXED, and not fixable in the ramp: KEY_RATE * 0.1 * 168 = 40.3px, so at
-       the engine's dt clamp the SLOWEST possible keyboard step already equals the
-       whole catch window. A per-frame cap tight enough to protect a 40px window
-       makes the full-width traverse guarantee unreachable inside a 400ms screen at
-       four frames. Documented deliberately rather than half-fixed. */
+       NOT FIXABLE IN THE RAMP, and that part still stands: KEY_RATE * 0.1 * 168 =
+       40.3px, so at the engine's dt clamp the SLOWEST possible keyboard step
+       already equals the whole catch window. A per-frame cap tight enough to
+       protect a 40px window makes the full-width traverse guarantee unreachable
+       inside a 400ms screen at four frames.
+
+       FIXED ELSEWHERE, 2026-08-31. The sentence above is a proof about the ramp,
+       and it quietly assumes the frame is 0.1s of GAME time. It is not, any more:
+       MAX_SIM_DT caps a simulated step at 1/60 however long the real frame took,
+       so `KEY_RATE * 0.1` is no longer a step this code can produce. The slowest
+       possible step is back to KEY_RATE / 60 = 6.7px at every frame rate, and the
+       lattice the proof is about cannot form. Measured before and after in the
+       2026-08-31 accessibility record. */
     var KEY_RATE = 2.4;
     var KEY_SWEEP_FRAC = 0.35;
     var KEY_ACCEL_T = 0.08;      // seconds of hold before the derived rate is reached
@@ -998,6 +1051,15 @@
      */
     function advance(dt) {
         if (!G) return;
+        /* THE SAMPLE FLOOR. See the MAX_SIM_DT note. Applied once, here, at the
+           single entry point every frame goes through, so no later line in this
+           file or in any microgame can see an uncapped dt. A non-finite or
+           negative dt becomes a zero-length frame rather than being propagated
+           (NaN would poison stage.t and every `>=` test against it forever) and
+           rather than an early return, so a dt of 0 still processes and clears
+           input edges exactly as it did before. */
+        if (!isFinite(dt) || dt < 0) dt = 0;
+        if (dt > MAX_SIM_DT) dt = MAX_SIM_DT;
         updateInput(dt);
 
         if (G.shake > 0) G.shake = Math.max(0, G.shake - dt * 26);
@@ -1427,6 +1489,16 @@
     };
     Object.defineProperty(MULTIPLEX, 'MIN_SCREEN_MS', {
         value: MIN_SCREEN_MS, writable: false, enumerable: true, configurable: false
+    });
+
+    /* Exposed for the same reason MIN_SCREEN_MS is: an instrument that predicts
+       where the game will be on the next frame has to know how much game time a
+       frame actually buys, and the honest way to tell it is to publish the number
+       rather than let it copy a literal. A headless rig that models t + dt with
+       the dt IT passed is now wrong by up to 6x, which shows up as a pure timing
+       screen reading 100% unwinnable while every position screen improves. */
+    Object.defineProperty(MULTIPLEX, 'MAX_SIM_DT', {
+        value: MAX_SIM_DT, writable: false, enumerable: true, configurable: false
     });
 
     window.MULTIPLEX = MULTIPLEX;
