@@ -14,7 +14,7 @@
  * Styled after the 2008 animated waste-compactor robot film. The title itself is
  * carried by the harness credit table and is deliberately not repeated here, so
  * this screen names no wordmark at all. Design record and area derivation: the
- * ART3 lane record for compact and dig.
+ * internal art direction for compact and dig.
  *
  * THE COMPOSITION: THE ROBOT IS THE COMPACTOR. He is a waste allocation load
  * lifter and compacting trash inside his own torso is literally his function in
@@ -109,7 +109,7 @@
     /* ---- Art only. Nothing below this line is read by init or update. ----
        Every large mass is `lift` or `deep`, and full-alpha `accent` / `accent2`
        / `ink` is spent only on small high-read detail. That is not taste, it is
-       the flashing-area bound derived in ART3-compact-dig-art.md section 3:
+       the flashing-area bound derived in the internal art direction, section 3:
        bright drawn area must stay under 7.95% of the play rect, about 16,500
        logical px2, because cuts run at 2.38/second and bright drawn content is
        what actually flips by more than the 0.10 luminance delta on a cut from

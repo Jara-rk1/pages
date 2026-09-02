@@ -6,8 +6,8 @@
  *
  * Styled after Fantastic Mr Fox (2009): the digger is the fox in the corduroy
  * suit, the rock is a tree root, the loot is a cider jug, and the shaft is a
- * cutaway burrow. Design record and area derivation: the ART3 lane record for
- * compact and dig.
+ * cutaway burrow. Design record and area derivation: the internal art direction
+ * for compact and dig.
  *
  * DRAW-ONLY. The torso circle is drawn at exactly DIGGER_R + (held ? 3 : 0), so
  * the thing on screen still IS the hitbox; no constant, init, update or win
@@ -32,8 +32,8 @@
 
     /* ---- Art only. Nothing below this line is read by init or update. ----
        The area bound that shaped this (bright drawn area under ~16,500 px2, at
-       the same 25%-of-field threshold R2 applied to surfaces) is derived in
-       ART3-compact-dig-art.md section 3. On this screen `lift` composites over
+       the same 25%-of-field threshold applied to surfaces) is derived in the
+       internal art direction, section 3. On this screen `lift` composites over
        the #3A2418 surface to a warm tan-brown, which is why the suit is `lift`
        and not a bright fill: it is free AND it is the right colour. The four
        vertical wale lines in `deep` across it are the corduroy, and they are the
@@ -89,7 +89,12 @@
     MULTIPLEX.register({
         slug: 'dig',
         title: 'DIG',
-        prompt: 'DODGE, GRAB, OUT',
+        /* Was 'DODGE, GRAB, OUT': three separate instructions for a three-stage
+           sequence, compressed into one banner that is 600ms at loop 0 and
+           132ms at the floor. The contract asks for two or three words carrying
+           the WHOLE instruction, and the dodge is already legible from the
+           geometry, so the banner only has to name the part that is not. */
+        prompt: 'GRAB AND GO',
         hint: 'Steer left / right, hold to grab',
         goal: 'achieve',
 

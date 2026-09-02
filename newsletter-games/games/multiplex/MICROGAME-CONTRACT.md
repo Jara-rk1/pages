@@ -701,11 +701,11 @@ against this exact sequence, so it is not shuffled and your screen's neighbours 
 `title` must be exactly the string above, and the screen-verification gate reads this table as its
 source of truth, so the two cannot drift apart without the gate saying so.
 
-> **Three of these names changed twice, and this row is the second change.** The A3 IP assessment
-> renamed `SEEKER` to `THE CHASE`, `ASSEMBLE` to `INCOMING` and dropped the exclamation mark from
-> `PIVOT!`. Jara overrode that assessment in writing on 2026-08-28, choosing to name the films
-> explicitly, so all three original names are restored above and are the shipped titles.
-> Authorisation and its exposure are recorded in the explicit-references plan, section 0.
+> **Three of these names changed twice, and this row is the second change.** The internal IP
+> assessment renamed `SEEKER` to `THE CHASE`, `ASSEMBLE` to `INCOMING` and dropped the exclamation
+> mark from `PIVOT!`. The build owner overrode that assessment in writing on 2026-08-28, choosing to
+> name the films explicitly, so all three original names are restored above and are the shipped
+> titles. Authorisation and its exposure are recorded internally.
 >
 > **What the override did NOT touch**, and no screen may add: real people's names and likenesses,
 > and any personal-data string on the internal appendix list. Those remain executable blockers in

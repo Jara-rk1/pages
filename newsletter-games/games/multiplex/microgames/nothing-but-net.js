@@ -5,15 +5,15 @@
  * the target band for a made shot; release outside it, or hold too long, and
  * the shot is blown.
  *
- * THEMING (2026-08-28, ART2). A rabbit-eared cartoon character, a cartoon
+ * THEMING (2026-08-28). A rabbit-eared cartoon character, a cartoon
  * court and a cartoon hoop, plus a basketball instead of a plain disc and a
  * legible release band. All of it is DRAW-ONLY: the release-window arithmetic
  * in init (chargeTime, bandW, bandLo, and the reason bandW is clamped against
  * chargeTime rather than moving BAND_HI_MAX) is untouched, as is every line of
  * update, which is why the headless census comes out byte-identical. NO
  * REAL-PERSON LIKENESS: no player, no jersey, no number, no name. Rationale,
- * the authorisation it rests on and the measured colour figures: the ART2 lane
- * record.
+ * the authorisation it rests on and the measured colour figures: the internal
+ * art direction.
  */
 (function () {
     'use strict';

@@ -7,12 +7,12 @@
  * ends the screen. Survive the clock with nothing getting through and the
  * screen resolves as a win.
  *
- * THEMING (2026-08-28, ART2). The deflector the player aims is drawn as a
+ * THEMING (2026-08-28). The deflector the player aims is drawn as a
  * circular star shield with concentric rings. That was cosmetic and DRAW-ONLY:
  * no tuning constant, no win or lose condition and no line of update changed,
  * which is why the headless census came out byte-identical at the time.
  * Rationale, the authorisation it rests on and the measured colour figures: the
- * ART2 lane record.
+ * internal art direction.
  *
  * ACCESSIBILITY (2026-08-31). A thrown shield now stays live for SHIELD_T rather
  * than deflecting only on the tap frame. That IS behavioural and deliberately
@@ -40,7 +40,7 @@
     /* HOW LONG A THROWN SHIELD STAYS LIVE, and why this screen needs one at all.
        ==========================================================================
        Deflection used to resolve only on the `tapped` edge, i.e. inside a SINGLE
-       frame. Measured 2026-08-31 by the R6 blind census: at loops 8 to 12 the
+       frame. Measured 2026-08-31 by the blind keyboard census: at loops 8 to 12 the
        deflect radius is only 1.25x the distance an object covers in one 60Hz
        frame, so an object is inside the disc for about one frame and sometimes
        less. A bot tapping every frame clears every seed; a player caps out near
@@ -175,6 +175,17 @@
                 var progress = (stage.t - o.spawnT) / m.flightT;
                 if (progress >= 1) {
                     stage.shake(6);
+                    /* Mark the breach where it happened. Every DEFLECTED object
+                       already gets a precise two-ring marker at its impact point
+                       (see the hitPulse block below), and the one object that
+                       actually ends the screen used to get a camera shake and
+                       nothing else: the screen was more informative about the
+                       hits that did not matter than about the one that did.
+                       The core is the impact point, so the same latched fields
+                       and the same draw path cover this with no new state. */
+                    m.hitPulse = 1;
+                    m.hitX = stage.w / 2;
+                    m.hitY = stage.h / 2;
                     return 'lose';
                 }
             }

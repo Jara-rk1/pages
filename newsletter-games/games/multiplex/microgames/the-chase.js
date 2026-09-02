@@ -60,9 +60,9 @@
        mass against this screen's #234A34 surface. That is what a DISTANT
        silhouette should be, and it is also what keeps it free: `deep` sits
        0.008 above the wipe luminance, well under the 0.10 delta that would make
-       it count toward the flashing-area bound (the derivation is ART3's, in its
-       lane record section 3, and it binds every art lane in this wave, not just
-       ART3's two screens).
+       it count toward the flashing-area bound (the derivation is in the internal
+       art direction, section 3, and it binds every screen in this wave, not just
+       the two it was written for).
        The lit windows are `accent` and DO cost area, which is why there are two
        per tower at 4x7px: 392 px2 against a 16,500 px2 budget.
        Static on purpose. The target's motion is the information on this screen,

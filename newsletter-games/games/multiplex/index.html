@@ -9,6 +9,27 @@
          balance and verification passes possible. A tweening library would put
          wall-clock timing back into the loop. -->
     <style>
+        /* Bebas Neue, SIL OFL 1.1, Dharma Type. Self-hosted and subsetted to the
+           glyphs this game actually draws (7.7KB), with the licence vendored
+           beside it at assets/fonts/BebasNeue-OFL.txt as OFL 1.1 requires.
+
+           NOT hotlinked from a font CDN, deliberately: this page is published
+           publicly under a firm's name, and a third-party font request would
+           send every visitor's IP to that third party and add a live runtime
+           dependency this build was built without.
+
+           `font-weight: 400 700` is not a typo. Bebas Neue ships one weight, and
+           the harness asks canvas for `bold`; declaring a range maps that request
+           onto this file instead of letting the browser synthesise a smeared
+           faux-bold. `font-display: swap` is harmless here because the canvas is
+           gated separately in harness.js whenFontReady(). */
+        @font-face {
+            font-family: 'Bebas Neue';
+            src: url('../../assets/fonts/BebasNeue-subset.woff2') format('woff2');
+            font-weight: 400 700;
+            font-style: normal;
+            font-display: swap;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body {
             /* overflow:hidden already stops document scrolling. overscroll-behavior
@@ -37,6 +58,18 @@
         }
         .game-header a { color: white; text-decoration: none; font-size: 20px; }
         .game-header h1 { font-size: 16px; font-weight: bold; letter-spacing: 2px; }
+        /* Sound is opt-in and muted by default: this is played at a desk. The
+           control sits in the KPMG Blue header rather than on the canvas so it
+           is reachable between rounds and never competes with a live screen.
+           44px is the NN/g touch-target floor, and a 5-second screen gives no
+           time to recover from a mis-tap. */
+        .game-header .mute-btn {
+            margin-left: auto; background: rgba(255,255,255,0.12); border: none;
+            color: white; font-size: 16px; line-height: 1; cursor: pointer;
+            width: 44px; height: 32px; border-radius: 4px; padding: 0;
+        }
+        .game-header .mute-btn:hover { background: rgba(255,255,255,0.24); }
+        .game-header .mute-btn:focus-visible { outline: 2px solid #F3E9D2; outline-offset: 2px; }
         #game-container {
             position: relative; width: 100%; max-width: 1600px;
             flex: 1; min-height: 0; display: flex; justify-content: center; align-items: center;
@@ -66,6 +99,7 @@
     <div class="game-header">
         <a href="../../" title="Back to hub">&larr;</a>
         <h1>MULTIPLEX</h1>
+        <button class="mute-btn" id="mute-toggle" type="button" aria-label="Toggle sound" title="Sound on / off">&#128263;</button>
     </div>
     <div id="game-container">
         <canvas id="game-canvas"></canvas>
@@ -89,6 +123,12 @@
          console and a named slug in the harness's missing-screen error. Both are
          expected during the build. -->
     <script src="../../assets/game-engine.js"></script>
+    <!-- audio.js before harness.js only for tidiness; harness.js reads
+         window.MPXAudio lazily at each call site, never at load, so a 404 here
+         costs sound and nothing else. That is also why the headless instrument,
+         which loads harness.js and the nine screens and not this file, steps an
+         unchanged simulation. -->
+    <script src="audio.js"></script>
     <script src="harness.js"></script>
 
     <script src="microgames/food-falls.js"></script>
@@ -106,5 +146,30 @@
          at index.html?only=_reference while a screen is being built. Safe to drop at
          ship, and harmless to keep. -->
     <script src="microgames/_reference.js"></script>
+
+    <script>
+        /* Mute toggle. The first click also unlocks the AudioContext, because
+           the browser autoplay policy requires a user gesture and because the
+           default posture here is silence: nothing should make a noise at a
+           desk until somebody has asked it to. The stored key is shared with
+           the other audio-enabled games, so one opt-in covers the hub. */
+        (function () {
+            var btn = document.getElementById('mute-toggle');
+            if (!btn) return;
+            function sync() {
+                var on = window.MPXAudio && !window.MPXAudio.isMuted();
+                btn.innerHTML = on ? '&#128266;' : '&#128263;';
+                btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+            }
+            btn.addEventListener('click', function () {
+                if (window.MPXAudio) {
+                    window.MPXAudio.unlock();
+                    window.MPXAudio.toggle();
+                }
+                sync();
+            });
+            sync();
+        })();
+    </script>
 </body>
 </html>

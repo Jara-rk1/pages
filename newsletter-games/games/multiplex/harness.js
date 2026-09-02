@@ -75,8 +75,8 @@
  *
  * Set window.__mpxFlashAudit = [] before load to have the scheduler record
  * every granted flash for an empirical rate audit. Every figure above is
- * measured; the arithmetic and the instruments are in the R2 harness-invariants
- * record.
+ * measured; the arithmetic and the instruments are in the internal
+ * harness-invariants record.
  */
 (function () {
     'use strict';
@@ -130,11 +130,11 @@
     ];
 
     /* The film each screen references, drawn under the stage title. This table
-       IS the "make the references explicit" change: Jara played the live build
-       and said the references were unclear, and the art alone does not fix that,
+       IS the "make the references explicit" change: playtesting the live build
+       found the references were unclear, and the art alone does not fix that,
        because a player who has not seen a film cannot recognise a silhouette
        from it. Naming the film is the only thing that does. Authorisation, and
-       the exposure it accepts, are section 0 of the explicit-references plan.
+       the exposure it accepts, are recorded internally.
 
        The `title` column is not decoration. It is asserted against the screen's
        own registered title in register() below, so this table and the nine
@@ -161,6 +161,21 @@
         'compact':         { title: 'COMPACT',         film: 'WALL-E (2008)' }
     };
 
+    /* THE COMING-SOON SLATE, shown on the intermission card between loops.
+       Sourced from the newsletter's own upcoming-films list, which was the one
+       piece of its content the game never used: the nine screens take the nine
+       favourite-film answers, and this takes the page that looks forward.
+
+       It lives HERE, beside CREDITS, for the same reason CREDITS does. A film
+       wordmark belongs in the harness table, one place to read and one place to
+       change, and never in a screen file. Nothing in microgames/ names a film. */
+    var COMING_SOON = [
+        'RESIDENT EVIL',
+        'THE HUNGER GAMES: SUNRISE ON THE REAPING',
+        'DUNE: PART THREE',
+        'AVENGERS: DOOMSDAY'
+    ];
+
     /* A screen in the running order with no credit row would ship a blank
        second line rather than a loud failure, so it throws here instead. ORDER
        is known at load; the title half of the pair is checked in register(),
@@ -174,8 +189,28 @@
         }
     })();
 
+    /* TYPE.
+
+       F_UI stays a system stack on purpose. It is what creditSize() measures
+       against, and CREDIT_MAX_W's whole job is to fit a 40-character film title
+       into a 400px canvas by measuring it; swapping the face there would move
+       every one of those measurements for a fraction of the visible gain.
+
+       F_DISPLAY is the marquee face: the wordmark, the stage titles, the prompt
+       banner, the score delta. Bebas Neue, SIL OFL 1.1, Dharma Type, vendored
+       as a subsetted woff2 at assets/fonts/ with its OFL.txt beside it as the
+       licence requires. It is SELF-HOSTED and deliberately not hotlinked: a
+       font request to a third party from a public, firm-branded page sends
+       every visitor's IP to that third party, and it would reintroduce the one
+       thing this build was made without, a live runtime dependency on someone
+       else's host.
+
+       The system stack is retained behind it as a real fallback, not a
+       formality. See whenFontReady(): if the file is slow, blocked by a
+       corporate proxy or simply missing, the game starts anyway and renders in
+       Arial Black exactly as it did before. */
     var F_UI = 'Arial, Helvetica, sans-serif';
-    var F_DISPLAY = '"Arial Black", "Helvetica Neue", Impact, Arial, sans-serif';
+    var F_DISPLAY = '"Bebas Neue", "Arial Black", "Helvetica Neue", Impact, Arial, sans-serif';
 
     /* ============================================================
        2. GEOMETRY (logical px, 400 x 700)
@@ -208,7 +243,7 @@
        window at the SLOWEST possible step. That proof is correct, and it is also
        only half the problem. The other half is the sample count.
 
-       Measured 2026-08-31 by the R6 blind census at dt = 0.1: pivot 57 to 63%,
+       Measured 2026-08-31 by the blind keyboard census at dt = 0.1: pivot 57 to 63%,
        the-chase 55 to 62%, dig 60 to 64% of seeds unwinnable by keyboard at the
        floor loops, against 0.0% for pointer-strong on all 468 cells at the same
        dt. A gap that large between two control schemes, at a frame rate the engine
@@ -254,8 +289,8 @@
        and never raise a worst case above what already ships. The 200 is FORCED by
        those; the 110 is CHOSEN CONSERVATIVELY from an admissible [67, 110], since
        the 3/second bound alone would permit any wipe floor at or above 66.67 once
-       the hold is pinned at 200. Derivation, and why the top of that range: the R2
-       harness-invariants record, section 2.3.
+       the hold is pinned at 200. Derivation, and why the top of that range: the
+       internal harness-invariants record, section 2.3.
        Any lower pair of floors fails the third requirement. Raising either TUNING
        value is still free and always safe; lowering one now means editing a
        photosensitivity constant with its derivation next to it, which is exactly
@@ -263,6 +298,16 @@
     var MIN_WIPE_MS = 110;
     var MIN_VERDICT_HOLD_MS = 200;
     var MIN_GAP_MS = 1000 / MAX_EVENTS_PER_SEC;
+    /* The intermission floor is a READABILITY floor, not a photosensitivity one:
+       the card carries a film title to read, and it only ever LENGTHENS the time
+       between cuts, so it cannot move the flash arithmetic in the unsafe
+       direction. 900ms is about the shortest that a line of text can appear,
+       be read and leave without feeling like a glitch. */
+    var MIN_INTER_MS = 900;
+    /* The end card. Long enough to read nine lines at a glance, short enough
+       that a player who wants their score is not made to wait for it, and
+       skippable on any press regardless. */
+    var CREDITS_MS = 5200;
 
     /* ============================================================
        4. TUNING  -  C2 owns every number in here
@@ -296,7 +341,30 @@
 
         /* How long the big prompt verb sits over the play area. Capped at a
            third of the screen so it can never eat a short late-loop screen. */
-        bannerMs: 600
+        bannerMs: 600,
+
+        /* THE INTERMISSION, once per completed pass of the nine.
+
+           Why it exists. The format's whole promise is that it gets faster
+           forever, and the moment it got faster was the least marked moment in
+           the game: the loop counter ticked over in small grey text under a wipe
+           identical to every other cut. This is the beat that says so. It is
+           also the breather the shape needs. Nine screens at a shrinking timer
+           with no pause is a flat ramp, and a flat ramp reads as attrition
+           rather than escalation.
+
+           It costs nothing against the photosensitivity budget and in fact helps:
+           a cut costs one whole screen cycle, so inserting 1900ms once every nine
+           screens can only LOWER the cuts-per-second this game can reach. The
+           assertCutRate bound below does not know about it, which leaves that
+           assertion conservative, which is the safe direction for it to be wrong
+           in.
+
+           It awards nothing. Points and lives are deliberately not on this card:
+           a breather that pays out changes the score distribution and the flow's
+           plausibility bounds with it, and that is a measured balance decision,
+           not a presentation one. */
+        interMs: 1900
     };
 
     /* The floor is exported read-only. TUNING.minScreenMs mirrors it and cannot
@@ -347,6 +415,18 @@
     /** Total gap length, and the quantity the cut rate is actually bounded by. */
     function gapDurationMs(rm) {
         return rm ? verdictHoldMs() : wipeMs() * 2 + verdictHoldMs();
+    }
+    /**
+     * Intermission length, same guard and same reason as the two above: a
+     * non-finite value here makes `G.interT >= interMs()` false forever, which
+     * parks the gauntlet on the breather card with no way out. The floor is a
+     * real floor rather than 0 because a zero-length card would fire the sound
+     * and swallow the frame, which is worse than not having one.
+     */
+    function interMs() {
+        var v = TUNING.interMs;
+        if (!isFinite(v)) return MIN_INTER_MS;
+        return Math.max(MIN_INTER_MS, v);
     }
 
     /**
@@ -449,6 +529,31 @@
     }
 
     /* ============================================================
+       5b. SOUND
+       ============================================================
+       The ONLY route from this file to audio.js. Every call is guarded here, in
+       one place, for three reasons that all matter:
+
+         1. audio.js is a separate script tag, and a missing or failed load must
+            cost sound and nothing else.
+         2. mpx_headless.mjs loads harness.js and the nine screens and nothing
+            else, so window.MPXAudio is undefined under every determinism,
+            balance and census run. Those runs must step exactly the simulation
+            they stepped before sound existed.
+         3. A screen cannot reach this. Sound is a gauntlet-level event (a
+            verdict, a lost life, a loop-up, the end of a run), so it stays on
+            the harness side of the contract and no microgame file changes.
+
+       Never make this return a value a caller branches on. Sound is an output,
+       and the moment the simulation can observe it, the guard in point 2 stops
+       being a guard. */
+    function snd(name, arg) {
+        var A = (typeof window !== 'undefined') && window.MPXAudio;
+        if (!A || typeof A[name] !== 'function') return;
+        try { A[name](arg); } catch (_) { /* a nicety, never a failure path */ }
+    }
+
+    /* ============================================================
        6. COLOUR HELPERS
        ============================================================ */
     var _rgbCache = {};
@@ -480,8 +585,8 @@
      * WCAG relative luminance from a hex literal. Same three lines as the
      * reference implementation, including the 0.03928 linearisation break rather
      * than the 0.04045 of the later erratum, so this agrees by construction with
-     * the offline instrument that derived the bounds below (the R2 luminance
-     * derivation).
+     * the offline instrument that derived the bounds below (the internal
+     * luminance derivation).
      */
     function relLum(hex) {
         var c = hx(hex), k = [0.2126, 0.7152, 0.0722], out = 0, i, v;
@@ -691,7 +796,7 @@
        the long early screens never get twitchier, where precision matters more
        than traverse. And the frame-count ramp costs traverse at coarse dt, so
        mid-loop screens that need a long reach get measurably harder there; the
-       full before-and-after matrix is in the R2 harness-invariants record,
+       full before-and-after matrix is in the internal harness-invariants record,
        section 12.
 
        NOT FIXABLE IN THE RAMP, and that part still stands: KEY_RATE * 0.1 * 168 =
@@ -706,7 +811,7 @@
        so `KEY_RATE * 0.1` is no longer a step this code can produce. The slowest
        possible step is back to KEY_RATE / 60 = 6.7px at every frame rate, and the
        lattice the proof is about cannot form. Measured before and after in the
-       2026-08-31 accessibility record. */
+       internal 2026-08-31 accessibility record. */
     var KEY_RATE = 2.4;
     var KEY_SWEEP_FRAC = 0.35;
     var KEY_ACCEL_T = 0.08;      // seconds of hold before the derived rate is reached
@@ -754,8 +859,26 @@
             INPUT.tapY = clamp(ly - PLAY.y, 0, PLAY.h);
         }
 
+        /* Gesture-gated AudioContext unlock, latched to once.
+
+           This exists for a specific case that is easy to miss: the mute state
+           is shared across the hub under one localStorage key, so a player who
+           opted in on another game arrives here already unmuted but with no
+           context, and every sound would be a silent no-op until they pressed
+           the mute button, which would then mute them. Unlocking on the first
+           real gesture is what the sibling game does and it is the reason it
+           works there. Muted players still get nothing: unlock() creates the
+           context, and every play call checks `muted` separately. */
+        var unlocked = false;
+        function unlockAudioOnce() {
+            if (unlocked) return;
+            unlocked = true;
+            snd('unlock');
+        }
+
         el.addEventListener('pointerdown', function (e) {
             if (!e.isPrimary) return;
+            unlockAudioOnce();
             axisFromEvent(e);
             press(INPUT.tapX, INPUT.tapY);
         });
@@ -772,6 +895,7 @@
 
         document.addEventListener('keydown', function (e) {
             if (!live || e.repeat) return;
+            unlockAudioOnce();          // keyboard players are players too
             var k = e.key;
             if (k === 'ArrowLeft' || k === 'a' || k === 'A') { keyDir = -1; }
             else if (k === 'ArrowRight' || k === 'd' || k === 'D') { keyDir = 1; }
@@ -949,7 +1073,21 @@
            success and failure to carry a shape cue as well. */
         if (RM) return false;
         if (!canFlash()) { G.glow = Math.max(G.glow, 0.24); return false; }
-        G.glow = clamp(intensity == null ? 0.8 : intensity, 0, 1);
+        /* A hot run blooms brighter. Every clear used to flash at exactly the
+           intensity its own screen asked for, so the twelfth in a row felt
+           mechanically identical to the first, and the streak was the one thing
+           the game rewarded and never showed.
+
+           This is safe against the photosensitivity analysis in three separate
+           ways and it is worth naming all three, because this is the one lever
+           here that could break it. The RATE is untouched: canFlash() is the
+           single ledger and it has already granted before this line runs. The
+           CEILING is untouched: the clamp still ends at 1, which is Ticket Cream,
+           which is what the luminance figures at the top of this file were
+           computed against, and which a screen could already request on its own.
+           And reduced motion never reaches here at all. */
+        var hot = 1 + Math.min(0.3, G.streak * 0.035);
+        G.glow = clamp((intensity == null ? 0.8 : intensity) * hot, 0, 1);
         return true;
     };
     stage.shake = function (px) { if (G) G.shake = Math.max(G.shake, j(px || 4)); };
@@ -971,6 +1109,28 @@
             screenMs: 0, elapsed: 0, verdict: null, gapVerdict: null,
             gapT: 0, gapMs: 0, swapped: false, armInput: false,
             banner: 0, glow: 0, shake: 0,
+            /* Feedback-only, and deliberately NOT exported on MULTIPLEX.state():
+               the determinism digest hashes the fields state() returns, so a
+               presentation field that leaked into it would make every future
+               "did this change the simulation" check unanswerable. `gained` and
+               `gainMult` are the points the last verdict was worth, latched so
+               drawGap can show the number the player actually earned rather
+               than recomputing it against a G.elapsed that has since moved on.
+               `ticked` is a once-per-screen latch for the closing-seconds
+               click. */
+            gained: 0, gainMult: 1, ticked: false,
+            /* The intermission. `pendingInter` is raised by advanceIndex() when
+               the running order wraps, and consumed at the end of the gap that
+               is already in flight, because a loop-up is discovered mid-gap and
+               the card has to come after the wipe rather than inside it. */
+            pendingInter: false, interT: 0,
+            /* Session record, for the end card. The results overlay this game
+               shares with fourteen others can only say "score" and "best", so a
+               run that got somewhere and a run that did not looked identical.
+               `fails` is per-slug so the card can name the screen that actually
+               ended the player's runs, which is the one piece of advice the game
+               is in a position to give. */
+            bestStreak: 0, fails: {}, creditsT: 0,
             rand: mulberry32(_seed)
         };
         resetInput();
@@ -986,6 +1146,7 @@
         G.screenMs = screenDurationMs(G.loop);
         G.elapsed = 0;
         G.verdict = null;
+        G.ticked = false;                // re-arm the closing-seconds click
         /* Consumed on this screen's first play frame, not here: enterScreen runs
            mid-gap, and a press or a release landing between the last gap frame
            and the first play frame would otherwise survive into the new screen. */
@@ -1025,10 +1186,30 @@
         if (verdict === 'win') {
             G.cleared++;
             G.streak++;
-            GameEngine.state.score += screenPoints();
+            /* Latch BEFORE adding, and keep the multiplier separately, so the
+               gap can show both halves of a number the player otherwise only
+               ever sees as an unexplained jump in the HUD total. Note that
+               screenPoints() is called after the increment, which is what makes
+               the first clear of a run worth 1.15x rather than 1.0x. That is
+               the shipped behaviour and changing it here would move every score
+               on the leaderboard, so it stays. */
+            G.gained = screenPoints();
+            G.gainMult = Math.min(TUNING.streakCap, 1 + G.streak * TUNING.streakStep);
+            if (G.streak > G.bestStreak) G.bestStreak = G.streak;
+            GameEngine.state.score += G.gained;
+            snd('clear', G.streak);
         } else {
+            var _slug = RUN[G.index];
+            if (_slug) G.fails[_slug] = (G.fails[_slug] || 0) + 1;
             G.streak = 0;
             G.lives--;
+            G.gained = 0;
+            G.gainMult = 1;
+            /* Every loss costs a life, so "miss versus life" is not the useful
+               split. The useful split is "there is another go" versus "that was
+               the last one": the heavier sound marks the run-ending loss, and
+               gameOver() then resolves after the gap. */
+            snd(G.lives > 0 ? 'miss' : 'life');
         }
     }
 
@@ -1041,7 +1222,17 @@
 
     function advanceIndex() {
         G.index++;
-        if (G.index >= RUN.length) { G.index = 0; G.loop++; }
+        if (G.index >= RUN.length) {
+            G.index = 0;
+            G.loop++;
+            /* The gauntlet getting faster is the single structural hook of the
+               whole format, and until now it was small grey chrome text and a
+               wipe indistinguishable from every other cut. Solo mode
+               (?only=<slug>) wraps every single screen, so the card would fire
+               constantly and drown the thing it is meant to punctuate. */
+            if (RUN.length > 1) G.pendingInter = true;
+            snd('loopUp');
+        }
     }
 
     /**
@@ -1090,6 +1281,15 @@
             stage.progress = clamp(G.elapsed / G.screenMs, 0, 1);
             stage.mem = G.mem;
 
+            /* Closing-seconds click. Latched so it fires once per screen rather
+               than every frame, and gated on the screen being long enough for
+               "closing" to mean anything: below about 900ms the whole screen is
+               the closing moments and a click there is noise, not information. */
+            if (!G.ticked && G.screenMs > 900 && stage.timeLeft <= 0.85) {
+                G.ticked = true;
+                snd('tick');
+            }
+
             var out = G.screen.update(dt, stage);
             clearEdges();
 
@@ -1101,10 +1301,66 @@
                    screen wanted the clock run out. Declaring this in the
                    registration removes a whole class of off-by-one verdict bug
                    from nine separate implementations. */
-                finishScreen(G.screen.goal === 'survive' ? 'win' : 'lose');
+                var timedOut = G.screen.goal === 'survive' ? 'win' : 'lose';
+
+                /* A TIMEOUT LOSS HAD NO LOCAL REACTION ANYWHERE.
+                   Seven screens shake on the way out, but they do it themselves,
+                   from an explicit `return 'lose'`. `the-chase` and
+                   `make-the-gate` can only ever lose by running the clock out,
+                   which is resolved here rather than in the screen, so neither
+                   file had anywhere to put a reaction and neither had one: the
+                   loss was silent, and the player learned about it from the wipe.
+
+                   The fix belongs here rather than in those two files. A screen
+                   cannot see its own timeout, this is the one place that can, and
+                   putting it here makes it automatically true of the tenth screen
+                   as well as the ninth. It is also free against the determinism
+                   digest, which hashes the screen's own `mem` and the fields
+                   state() exports, and G.shake is neither. */
+                if (timedOut === 'lose') stage.shake(6);
+                finishScreen(timedOut);
             }
             return;
         }
+
+        /* 'inter': the breather between passes. The NEXT screen has already been
+           entered by the gap's swap, so its clock is at zero and its armInput is
+           still set; this phase simply does not advance it. Edges are cleared
+           every frame so a tap on the card cannot survive into the first play
+           frame of the new loop. */
+        if (G.phase === 'inter') {
+            G.interT += dt * 1000;
+            clearEdges();
+            if (G.interT >= interMs()) G.phase = 'play';
+            return;
+        }
+
+        /* 'credits': the end card, before the shared results overlay.
+           ALWAYS SKIPPABLE, and that is not a nicety. A player who has just lost
+           wants their score, and a roll they cannot get out of is a tax on
+           losing, which is the worst possible moment to add one. Any press skips
+           it. It also self-terminates, so a player who does nothing still gets
+           to the overlay. */
+        if (G.phase === 'credits') {
+            G.creditsT += dt * 1000;
+            /* A 450ms grace before a press can skip. A player who was HOLDING at
+               the moment they died releases within a few frames, and without this
+               that release is read as "skip" and the card is gone before it was
+               ever seen. Two of the nine screens are driven by a sustained hold,
+               so this is the common case, not the edge case. */
+            var skip = G.creditsT > 450 && (INPUT.tapped || INPUT.released);
+            clearEdges();
+            if (skip || G.creditsT >= CREDITS_MS) {
+                G.phase = 'over';
+                GameEngine.endGame();
+            }
+            return;
+        }
+
+        /* 'over': the DOM overlay owns the screen. endGame() has already been
+           called exactly once and must not be called again, which is the whole
+           reason this phase exists rather than the credits phase simply ending. */
+        if (G.phase === 'over') return;
 
         /* 'gap': wipe out, hold (the cut happens here, hidden), wipe in. */
         G.gapT += dt * 1000;
@@ -1123,7 +1379,19 @@
         }
 
         if (G.gapT >= G.gapMs) {
-            if (G.lives <= 0) { GameEngine.endGame(); return; }
+            if (G.lives <= 0) {
+                snd('gameOver');
+                G.phase = 'credits';
+                G.creditsT = 0;
+                return;
+            }
+            if (G.pendingInter) {
+                G.pendingInter = false;
+                G.phase = 'inter';
+                G.interT = 0;
+                snd('intermission');
+                return;
+            }
             G.phase = 'play';
         }
     }
@@ -1172,9 +1440,189 @@
         drawGlow(ctx);
         if (G.phase === 'play' && G.banner > 0) drawBanner(ctx);
         if (G.phase === 'gap') drawGap(ctx);
+        if (G.phase === 'inter') drawInter(ctx);
+        if (G.phase === 'credits' || G.phase === 'over') drawCredits(ctx);
 
         drawBand(ctx);
         drawFoot(ctx);
+    }
+
+    /**
+     * THE END CARD: what the player just played, named.
+     *
+     * This is the whole newsletter tie-in. Each of the nine screens is one
+     * colleague's favourite-film answer, and the game deliberately never says
+     * whose: it publishes publicly and the attribution belongs in the newsletter,
+     * which does not. So the game names the FILMS and leaves the join to the
+     * reader, which is the point. Nothing here is a name, a team or a quote.
+     *
+     * It also carries the run's own record, because the results overlay cannot.
+     * That overlay is shared by fifteen games and knows only score, best, rank
+     * and attempts, so "I reached loop 6 and DIG killed me three times" had
+     * nowhere to be said. Drawing it here rather than extending the overlay is
+     * deliberate: assets/game-engine.js is shared and this is not its business.
+     */
+    function drawCredits(ctx) {
+        var t = clamp(G.creditsT / CREDITS_MS, 0, 1);
+        var cx = W / 2;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(PLAY.x, PLAY.y, PLAY.w, PLAY.h);
+        ctx.clip();
+        ctx.fillStyle = P.black;
+        ctx.fillRect(PLAY.x, PLAY.y, PLAY.w, PLAY.h);
+
+        /* The crawl. Starts just below the frame and rises; under reduced motion
+           it is simply parked at its readable position and does not move. */
+        var y = PLAY.y + (RM ? 34 : PLAY.h * 0.92 - t * PLAY.h * 0.86);
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        ctx.font = 'bold 26px ' + F_DISPLAY;
+        ctx.fillStyle = P.gold;
+        ctx.fillText('THAT IS A WRAP', cx, y);
+
+        ctx.font = 'bold 11px ' + F_UI;
+        ctx.fillStyle = P.cream;
+        ctx.fillText('LOOP ' + (G.loop + 1) + '   ·   ' + G.cleared + ' CLEARED   ·   BEST STREAK '
+            + G.bestStreak, cx, y + 26);
+
+        /* The screen that actually ended the runs. Only shown when one screen is
+           strictly the worst, because "TOUGHEST" between a two-way tie is not
+           information, it is noise. */
+        var worst = null, worstN = 0, tied = false, s;
+        for (s in G.fails) {
+            if (!Object.prototype.hasOwnProperty.call(G.fails, s)) continue;
+            if (G.fails[s] > worstN) { worst = s; worstN = G.fails[s]; tied = false; }
+            else if (G.fails[s] === worstN) { tied = true; }
+        }
+        if (worst && !tied && worstN > 1 && CREDITS[worst]) {
+            ctx.fillStyle = rgba(P.grey, 0.95);
+            ctx.fillText('TOUGHEST SCREEN: ' + CREDITS[worst].title, cx, y + 44);
+        }
+
+        ctx.font = 'bold 10px ' + F_UI;
+        ctx.fillStyle = rgba(P.grey, 0.85);
+        ctx.fillText('TONIGHT\'S PROGRAMME', cx, y + 76);
+
+        /* The nine, in running order, each on its own line. Measured down per
+           line for the same reason the chrome credit is: one long title must not
+           be allowed to overflow, and truncating it would defeat the point. */
+        var i, row, size;
+        for (i = 0; i < ORDER.length; i++) {
+            row = CREDITS[ORDER[i]];
+            if (!row) continue;
+            size = 11;
+            ctx.font = 'bold ' + size + 'px ' + F_UI;
+            while (size > 7 && ctx.measureText(row.film).width > PLAY.w - 20) {
+                size -= 1;
+                ctx.font = 'bold ' + size + 'px ' + F_UI;
+            }
+            ctx.fillStyle = P.cream;
+            ctx.fillText(row.film, cx, y + 98 + i * 19);
+        }
+
+        ctx.font = 'bold 10px ' + F_UI;
+        ctx.fillStyle = rgba(P.grey, 0.85);
+        ctx.fillText('COMING SOON', cx, y + 98 + ORDER.length * 19 + 14);
+        ctx.font = 'bold 11px ' + F_UI;
+        ctx.fillStyle = P.gold;
+        ctx.fillText(COMING_SOON[0], cx, y + 98 + ORDER.length * 19 + 32);
+
+        ctx.restore();
+
+        /* The skip affordance, pinned rather than crawling: a player looking for
+           the way out should not have to wait for it to scroll past.
+
+           It gets its own opaque strip because the crawl passes underneath it.
+           Without one the tail of the programme rides up through this line and
+           the two render on top of each other, which is exactly what the first
+           render of this card did. */
+        if (G.phase === 'credits') {
+            ctx.save();
+            ctx.fillStyle = P.black;
+            ctx.fillRect(PLAY.x, PLAY.y + PLAY.h - 26, PLAY.w, 26);
+            ctx.font = 'bold 10px ' + F_UI;
+            ctx.fillStyle = rgba(P.grey, 0.75);
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('TAP TO SKIP', cx, PLAY.y + PLAY.h - 13);
+            ctx.restore();
+        }
+    }
+
+    /**
+     * The intermission card: the house lights coming up between passes.
+     *
+     * It covers the play rect completely and opaquely, on purpose. The next
+     * screen has already been entered and is being drawn underneath, at its own
+     * frame zero, and letting that show through would be a preview of the
+     * screen the player is about to be asked to react to.
+     *
+     * The one moving part is the curtain, which parts from the centre. Under
+     * reduced motion it is simply open, because a curtain that does not move is
+     * still a curtain and the card still reads.
+     */
+    function drawInter(ctx) {
+        var t = clamp(G.interT / interMs(), 0, 1);
+        var cx = W / 2, top = PLAY.y, h = PLAY.h;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(PLAY.x, PLAY.y, PLAY.w, PLAY.h);
+        ctx.clip();
+
+        ctx.fillStyle = P.black;
+        ctx.fillRect(PLAY.x, PLAY.y, PLAY.w, PLAY.h);
+
+        /* Curtain. Open over the first third, hold, close over the last sixth,
+           so the card is legible for the whole middle of its life. */
+        var open = RM ? 1 : clamp(t / 0.33, 0, 1) - clamp((t - 0.84) / 0.16, 0, 1);
+        var half = PLAY.w / 2 * (1 - clamp(open, 0, 1));
+        ctx.fillStyle = P.curtain;
+        ctx.fillRect(PLAY.x, top, half, h);
+        ctx.fillRect(PLAY.x + PLAY.w - half, top, half, h);
+
+        /* Everything below is text, and it fades in behind the curtain rather
+           than appearing at full strength the instant the phase starts. */
+        var a = RM ? 1 : clamp((t - 0.18) / 0.22, 0, 1) * (1 - clamp((t - 0.86) / 0.14, 0, 1));
+        ctx.globalAlpha = a;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        ctx.font = 'bold 15px ' + F_UI;
+        ctx.fillStyle = P.grey;
+        ctx.fillText('INTERMISSION', cx, top + h * 0.30);
+
+        ctx.font = 'bold 40px ' + F_DISPLAY;
+        ctx.fillStyle = P.gold;
+        ctx.fillText('LOOP ' + (G.loop + 1), cx, top + h * 0.39);
+
+        ctx.font = 'bold 13px ' + F_UI;
+        ctx.fillStyle = P.cream;
+        ctx.fillText('EVERYTHING GETS FASTER', cx, top + h * 0.47);
+
+        /* The slate. This is the newsletter's own upcoming-films page, and it is
+           the reason the card carries information rather than just a pause. */
+        ctx.fillStyle = rgba(P.grey, 0.8);
+        ctx.font = 'bold 10px ' + F_UI;
+        ctx.fillText('COMING SOON', cx, top + h * 0.63);
+
+        var film = COMING_SOON[G.loop % COMING_SOON.length];
+        ctx.fillStyle = P.cream;
+        /* Measured down, never truncated, exactly as the credit line is: one long
+           title must not be allowed to overflow the strip, and the title IS the
+           message so an ellipsis would defeat it. */
+        var size = 15;
+        ctx.font = 'bold ' + size + 'px ' + F_UI;
+        while (size > 8 && ctx.measureText(film).width > PLAY.w - 24) {
+            size -= 1;
+            ctx.font = 'bold ' + size + 'px ' + F_UI;
+        }
+        ctx.fillText(film, cx, top + h * 0.69);
+
+        ctx.restore();
     }
 
     /* Film-strip gutters. Static: a scrolling sprocket run would be a second
@@ -1273,6 +1721,34 @@
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(win ? 'CLEARED' : (G.lives > 0 ? 'MISSED' : 'OUT'), cx, cy + 46);
+
+            /* THE POINTS. screenPoints() multiplies a base by a speed bonus, a
+               streak multiplier and a loop bonus, and until now the player saw
+               none of the four: the HUD total simply jumped by an unexplained
+               amount. Showing the delta is what turns "I cleared it" into "I
+               cleared it FAST", which is the only thing the speed bonus was ever
+               going to reward.
+
+               Drifts up and fades slightly across the verdict hold. This is
+               drawing, not simulation: it reads G.gained, which finishScreen
+               latched, and mutates nothing. */
+            if (win && G.gained > 0) {
+                var hp = clamp((G.gapT - (RM ? 0 : wm)) / Math.max(1, vh), 0, 1);
+                ctx.save();
+                ctx.globalAlpha = 1 - hp * 0.22;
+                ctx.font = 'bold 23px ' + F_DISPLAY;
+                ctx.fillStyle = P.gold;
+                ctx.fillText('+' + G.gained, cx, cy + 72 - hp * 8);
+                /* The multiplier only appears once it is actually doing
+                   something. A permanent "x1.0" is chrome; "x2.1" is a reward. */
+                if (G.gainMult > 1.001) {
+                    ctx.font = 'bold 11px ' + F_UI;
+                    ctx.fillStyle = rgba(P.cream, 0.95);
+                    ctx.fillText('STREAK x' + G.gainMult.toFixed(2).replace(/0$/, ''),
+                        cx, cy + 92 - hp * 8);
+                }
+                ctx.restore();
+            }
         }
         ctx.restore();
     }
@@ -1330,8 +1806,8 @@
         /* The film credit, a second line directly under the stage title. It sits
            here, persistent for the whole screen, rather than in the 420ms
            transition where nobody could read it - and putting it there would
-           also have meant lengthening the gap, which R2 has just floored against
-           a photosensitivity argument.
+           also have meant lengthening the gap, which the photosensitivity floors
+           above have just pinned.
 
            It is chrome, not play: the wipe clips to PLAY, so this line never
            takes part in a cut and contributes nothing to the flashing-area
@@ -1385,9 +1861,24 @@
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(G.screen.hint, W / 2, FOOT_Y + FOOT_H / 2 - 4);
+        /* The streak drives a real scoring multiplier and was displayed nowhere
+           at all. It appears from 2 up, because a "streak" of 1 is just having
+           cleared a screen, and it is drawn in gold rather than grey so the run
+           going well is legible at a glance without reading the number. */
         ctx.font = 'bold 10px ' + F_UI;
-        ctx.fillStyle = rgba(P.grey, 0.75);
-        ctx.fillText('CLEARED ' + G.cleared, W / 2, FOOT_Y + FOOT_H / 2 + 11);
+        if (G.streak >= 2) {
+            var cl = 'CLEARED ' + G.cleared + '   ', sk = 'STREAK ' + G.streak;
+            var wc = ctx.measureText(cl).width, ws = ctx.measureText(sk).width;
+            var x0 = W / 2 - (wc + ws) / 2, yb = FOOT_Y + FOOT_H / 2 + 11;
+            ctx.textAlign = 'left';
+            ctx.fillStyle = rgba(P.grey, 0.75);
+            ctx.fillText(cl, x0, yb);
+            ctx.fillStyle = rgba(P.gold, 0.95);
+            ctx.fillText(sk, x0 + wc, yb);
+        } else {
+            ctx.fillStyle = rgba(P.grey, 0.75);
+            ctx.fillText('CLEARED ' + G.cleared, W / 2, FOOT_Y + FOOT_H / 2 + 11);
+        }
         ctx.restore();
     }
 
@@ -1444,12 +1935,47 @@
         });
     }
 
+    /**
+     * Hold the first frame until the display face is usable, then start.
+     *
+     * WHY THIS IS NEEDED ON CANVAS AND NOT IN THE DOM. DOM text repaints itself
+     * when a deferred @font-face resolves. Canvas does not: fillText bakes a
+     * raster of whatever font was active at the instant it ran, and nothing
+     * redraws it afterwards. Without this gate the wordmark and the first stage
+     * title would be painted in the fallback and simply stay that way.
+     *
+     * WHY IT CANNOT BLOCK. A corporate proxy that blocks or stalls the font
+     * file must cost typography, never the game. Hence the cap: whichever of
+     * the load and the timeout arrives first wins, and `done` makes the loser a
+     * no-op.
+     *
+     * WHY THE FEATURE TEST COMES FIRST, AND WHY THAT ORDER IS LOAD-BEARING.
+     * mpx_headless.mjs supplies a minimal `document` stub with no `fonts`, so
+     * the guard fires and start() is called SYNCHRONOUSLY, exactly as it was
+     * before this function existed. Move the setTimeout above the guard and
+     * every headless determinism, balance and census run starts depending on a
+     * timer the stub does not implement.
+     */
+    function whenFontReady(cb) {
+        var done = false;
+        function go() { if (done) return; done = true; cb(); }
+        if (typeof document === 'undefined' || !document.fonts ||
+            typeof document.fonts.load !== 'function') { go(); return; }
+        setTimeout(go, 400);
+        try {
+            Promise.all([
+                document.fonts.load('700 34px "Bebas Neue"'),
+                document.fonts.load('400 17px "Bebas Neue"')
+            ]).then(go, go);
+        } catch (_) { go(); }
+    }
+
     function boot() {
         GameEngine.initCanvas('game-container', {
             width: W, height: H, maxWidth: 460, background: P.black
         });
         bindInput();
-        start();
+        whenFontReady(start);
     }
 
     /* ============================================================

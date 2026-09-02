@@ -38,12 +38,12 @@
 
     /* The code rain. Ten sparse columns, and sparse is a REQUIREMENT rather than
        a taste: the WCAG 2.3.1 area condition is met at 7.95% of the play rect at
-       maxWidth 460 (R2-luminance-derivation.py section 5), not at 25%. Only the
+       maxWidth 460 (the internal luminance derivation, section 5), not at 25%. Only the
        white leading glyph of each column changes luminance by the 0.10 the
        threshold needs; a green trail glyph at the 0.38 cap below moves it by
        0.0854, and does not cross 0.10 until alpha 0.55. So the qualifying area
        is ten glyph cells, 0.95% of the rect, an 8.3x margin. Arithmetic: the
-       ART1 luminance record. */
+       internal luminance record. */
     var RAIN_COLS = 10;
     var RAIN_CELL = 18;       // glyph pitch down a column, px
     var RAIN_SIZE = 13;
@@ -105,8 +105,12 @@
     MULTIPLEX.register({
         slug: 'sunnies-on',
         title: 'SUNNIES ON',
-        prompt: 'LEAN OUT',
-        hint: 'Tap to lean',
+        /* Was 'LEAN OUT', which reads as a steering verb: the natural first
+           attempt is to drag or hold, and the actual control (one tap) was only
+           ever stated in the small footer hint, which nobody reads inside a
+           five-second screen. The banner has to carry the whole instruction. */
+        prompt: 'TAP TO DUCK',
+        hint: 'Tap to duck under it',
         goal: 'survive',
 
         init: function (stage) {
