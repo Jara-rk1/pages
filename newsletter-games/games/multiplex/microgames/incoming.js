@@ -29,9 +29,18 @@
  * it, a thrown shield is now solid against a hollow aim so a MISS has a signal of
  * its own, and the shield resolves before the loss loop so the arrival frame can
  * be saved. The first two are draw-only; the third is not, and is measured rather
- * than claimed neutral. NOT fixed, and a real defect: from loop 6 the screen
- * schedules one object where it asks for seven, so its difficulty ramp inverts.
- * That needs the simulation moved and was deliberately left out of this pass.
+ * than claimed neutral.
+ *
+ * THE ARRIVAL SCHEDULE (D1, 2026-09-02, the pass after those three). The screen
+ * asked difficulty for up to seven objects and created one from loop 7, and it
+ * opened on an empty field for a fifth to a quarter of every screen, because the
+ * scheduling loop truncated a window instead of filling it. Both are fixed by
+ * arithmetic, with NO tuning constant moved - see the arrival-window note in
+ * init(). The count still falls at loops 7-12 and that is forced by MIN_GAP, not
+ * chosen: a 400ms screen holds exactly one fair arrival. This moved the
+ * simulation, so it is measured rather than claimed neutral, and the one thing it
+ * broke on the way (a lone arrival placed early is unwinnable at a 250ms reaction
+ * time) is recorded in init() beside the rule that prevents it.
  */
 (function () {
     'use strict';
@@ -175,15 +184,83 @@
                aimed tap, and spacing that against a shrinking screen alone asked
                for three of them inside 150ms at the floor loop. make-the-gate
                uses 0.18 for a bare re-tap; this is longer because a tap here has
-               to be aimed as well as landed. Objects that would arrive after the
-               clock are not scheduled at all: an object that cannot reach the
-               core is not a threat, just a distraction the player must ignore. */
+               to be aimed as well as landed.
+
+               THE ARRIVAL WINDOW, and why this is computed rather than walked
+               (D1, 2026-09-02). This loop used to start at `flightT + gap` and
+               step forward until it ran past `lastArrive`, dropping every
+               remaining object on the stated grounds that an object which cannot
+               reach the core is a distraction rather than a threat. That is sound
+               about ONE object. Measured over 200 seeds per loop, it was doing it
+               to six of seven: the screen asked for 7 and created 1 from loop 7,
+               and it opened on an EMPTY FIELD for 14% to 28% of every screen
+               because the first arrival was a whole `gap` later than it needed to
+               be. Two consequences a player feels: a `survive` screen that shows
+               nothing for its first fifth reads as broken before it reads as
+               hard, and the load it demands FELL from 1.50 aimed taps per second
+               at loop 5 to 0.71 at loop 6, so the screen got easier exactly as
+               the gauntlet sped up.
+
+               Both come from truncating a window instead of filling it. The
+               earliest an object can possibly arrive is one full flight after
+               t = 0; the latest is `lastArrive`. So the window is a known width,
+               its capacity at the fairness floor is a division, and the arrivals
+               are spread across the whole of it:
+
+                   capacity = floor(window / gap) + 1
+                   scheduled = min(wanted, capacity)
+
+               NO TUNING CONSTANT MOVES. This only stops the screen discarding
+               slots it already had: 3 objects become 4 at loops 0-2, 4 become 5
+               at loops 3-4, 3 become 4 at loop 5, 1 becomes 2 at loop 6, and the
+               first object is now on screen from frame one at every loop.
+
+               THE COUNT STILL FALLS AT LOOPS 7-12, and that is forced rather than
+               chosen. At the 400ms duration floor the window is 0.072s wide and
+               MIN_GAP is 0.3s, so the screen holds exactly ONE arrival however the
+               flight is capped - even a zero-length flight only reaches two. Seven
+               aimed taps in 400ms is not a difficulty setting, it is a target that
+               cannot be operated, which is the same class of defect MIN_GAP and
+               SHIELD_T both exist to prevent. So `count` is a DESIRE that the
+               window clamps, the clamp is stated here rather than left to look like
+               a bug, and the ramp past loop 6 is carried by the two dimensions that
+               can still move: the deflect radius tightens 50px to 28px and the
+               flight shortens 1.6s to 0.248s, so objects cross about 6x faster. */
             var lastArrive = stage.timeLeft - ARRIVE_TAIL;
             var gap = Math.max(MIN_GAP, stage.timeLeft / (count + 1));
-            var arriveT = Math.min(flightT + gap, lastArrive);
+            var arriveWindow = lastArrive - flightT;
+            var capacity = arriveWindow >= 0 ? Math.floor(arriveWindow / gap + 1e-9) + 1 : 0;
+            var n = Math.min(count, capacity);
+            /* Even spacing across the whole span, with the first object at the
+               earliest arrival the flight allows, so the field is never empty at
+               t = 0 and the last object still arrives at lastArrive.
+
+               A LONE ARRIVAL IS THE EXCEPTION, and it is a fairness rule rather
+               than a rhythm one (measured 2026-09-02). Reaction time from the
+               screen's start IS the arrival time, and dead air is the arrival time
+               minus the flight, so the two move together and cannot both be
+               minimised: the only freedom is where the arrival sits. With two or
+               more arrivals the earliest slot costs nothing, because a later
+               object still occupies the tail of the screen. With exactly ONE it
+               costs everything, and placing it early measured as a real
+               regression: at the 400ms floor the single object arrived at 0.248s
+               instead of 0.320s, which is inside a 250ms reaction time, and the
+               latency sweep went from 0.0% to 100.0% unwinnable at loops 8 and 12
+               on the `predict` arm - the UPPER bound on a person, so that is not a
+               pessimistic reading. So a lone arrival goes as late as the span
+               allows. The cost is 72ms of empty field at the floor and 224ms at
+               loop 7, which is 4 and 13 frames: the opening this fix exists to
+               remove was a FULL SECOND at loop 0, and an unwinnable screen is a
+               worse defect than four frames of quiet. */
+            var step = n > 1 ? arriveWindow / (n - 1) : 0;
+            var first = n > 1 ? flightT : lastArrive;
+            /* Jitter so the rhythm is not a metronome, bounded at half the slack
+               above MIN_GAP so the fairness floor survives it: two neighbours can
+               close on each other by at most (step - MIN_GAP), leaving MIN_GAP. */
+            var jitter = Math.max(0, (step - MIN_GAP) / 2);
 
             var objects = [];
-            for (var i = 0; i < count && arriveT <= lastArrive; i++) {
+            for (var i = 0; i < n; i++) {
                 /* Random point on the rectangle's own perimeter, so objects read
                    as arriving from off-screen rather than from a fixed side. */
                 var side = Math.floor(stage.rand() * 4);
@@ -193,6 +270,13 @@
                 else if (side === 2) { sx = stage.rand() * stage.w; sy = 0; }
                 else { sx = stage.rand() * stage.w; sy = stage.h; }
 
+                /* Clamped to the window, so a jittered first arrival can never
+                   ask for a negative spawn time and the last can never land
+                   after the clock. */
+                var arriveT = first + step * i + (stage.rand() * 2 - 1) * jitter;
+                if (arriveT < flightT) arriveT = flightT;
+                if (arriveT > lastArrive) arriveT = lastArrive;
+
                 objects.push({
                     sx: sx, sy: sy,
                     spawnT: arriveT - flightT,
@@ -200,10 +284,6 @@
                     deflectT: 0,
                     deflectX: 0, deflectY: 0
                 });
-
-                /* Jittered so the rhythm is not a metronome, never below 0.85 of
-                   the gap, so the fairness floor above survives the jitter. */
-                arriveT += gap * (0.85 + stage.rand() * 0.3);
             }
 
             return {
