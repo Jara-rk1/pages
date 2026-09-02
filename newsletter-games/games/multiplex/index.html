@@ -62,11 +62,27 @@
            control sits in the KPMG Blue header rather than on the canvas so it
            is reachable between rounds and never competes with a live screen.
            44px is the NN/g touch-target floor, and a 5-second screen gives no
-           time to recover from a mis-tap. */
+           time to recover from a mis-tap.
+
+           IT IS A STATE, NOT A VERB, and that is a fix rather than a preference.
+           The control used to be a 44px square whose entire content was one
+           speaker emoji, so its polarity had to be inferred. The mute key is
+           SHARED across the hub, so a player who opted in on red-carpet-rush or
+           penalty-pressure arrives here already unmuted, sees the speaker glyph,
+           presses it to "take the sound off mute" and MUTES themselves - measured
+           on the live page 2026-09-02, and the measured output peak after that
+           press is exactly 0.0. A label that reads SOUND: ON cannot be pressed by
+           mistake for that reason. min-width rather than width, so the wider of
+           the two labels sets the box and the button never resizes as it toggles,
+           which would move the whole header. 122px is MEASURED, not guessed: the
+           two rendered widths are 120px for SOUND: OFF and 113px for SOUND: ON,
+           and a min-width under the larger of those lets the button jump 7px on
+           every press. */
         .game-header .mute-btn {
             margin-left: auto; background: rgba(255,255,255,0.12); border: none;
-            color: white; font-size: 16px; line-height: 1; cursor: pointer;
-            width: 44px; height: 32px; border-radius: 4px; padding: 0;
+            color: white; font-size: 12px; font-weight: bold; letter-spacing: 0.5px;
+            line-height: 1; cursor: pointer; white-space: nowrap;
+            min-width: 122px; height: 32px; border-radius: 4px; padding: 0 10px;
         }
         .game-header .mute-btn:hover { background: rgba(255,255,255,0.24); }
         .game-header .mute-btn:focus-visible { outline: 2px solid #F3E9D2; outline-offset: 2px; }
@@ -99,7 +115,14 @@
     <div class="game-header">
         <a href="../../" title="Back to hub">&larr;</a>
         <h1>MULTIPLEX</h1>
-        <button class="mute-btn" id="mute-toggle" type="button" aria-label="Toggle sound" title="Sound on / off">&#128263;</button>
+        <!-- No aria-label: the visible text IS the accessible name, which is what
+             WCAG 2.5.3 Label in Name asks for. A static "Toggle sound" label would
+             override the text for a screen reader and say nothing about the state,
+             which is the exact defect being fixed here. aria-pressed tracks ON, so
+             the two channels agree by construction and can never contradict. The
+             text is set by sync() below; this is the muted default. -->
+        <button class="mute-btn" id="mute-toggle" type="button" aria-pressed="false"
+                title="Turn game sound on or off">&#128263; SOUND: OFF</button>
     </div>
     <div id="game-container">
         <canvas id="game-canvas"></canvas>
@@ -148,20 +171,28 @@
     <script src="microgames/_reference.js"></script>
 
     <script>
-        /* Mute toggle. The first click also unlocks the AudioContext, because
-           the browser autoplay policy requires a user gesture and because the
-           default posture here is silence: nothing should make a noise at a
-           desk until somebody has asked it to. The stored key is shared with
-           the other audio-enabled games, so one opt-in covers the hub. */
+        /* Sound control. The click also unlocks the AudioContext, because the
+           browser autoplay policy requires a user gesture and because the default
+           posture here is silence: nothing should make a noise at a desk until
+           somebody has asked it to. The stored key is shared with the other
+           audio-enabled games, so one opt-in covers the hub - which is exactly why
+           the label states the STATE and not the action. See the .mute-btn note.
+
+           sync() runs once at load as well as after every click, so a player who
+           arrives already unmuted from a sibling game sees SOUND: ON before they
+           touch anything. */
         (function () {
             var btn = document.getElementById('mute-toggle');
             if (!btn) return;
             function sync() {
                 var on = window.MPXAudio && !window.MPXAudio.isMuted();
-                btn.innerHTML = on ? '&#128266;' : '&#128263;';
+                btn.innerHTML = on ? '&#128266; SOUND: ON' : '&#128263; SOUND: OFF';
                 btn.setAttribute('aria-pressed', on ? 'true' : 'false');
             }
             btn.addEventListener('click', function () {
+                /* unlock() BEFORE toggle() so the context exists, and toggle()
+                   itself now resumes a suspended one when it lands on unmuted,
+                   which is what recovers a backgrounded tab. */
                 if (window.MPXAudio) {
                     window.MPXAudio.unlock();
                     window.MPXAudio.toggle();

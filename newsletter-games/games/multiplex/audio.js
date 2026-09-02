@@ -27,9 +27,13 @@
  * localStorage key `mg_audio` ('on' = unmuted), shared with the sibling games
  * so a single opt-in covers the whole hub.
  *
- * TIMING NOTE. At the 400ms screen floor a verdict can fire 2.5 times a second,
- * so every sound here is kept short and quiet enough not to smear into the next
- * one. Nothing is longer than 320ms except gameOver, which only ever plays once.
+ * TIMING NOTE. Every sound is short - nothing is longer than 320ms except
+ * gameOver, which only ever plays once - so nothing here smears into the next
+ * one. That was ALSO the stated reason the level was set low, and it stopped
+ * being true: at the 400ms screen floor a verdict could once fire 2.5 times a
+ * second, and since harness.js gained the briefing card (TUNING.briefMs) a
+ * screen-to-screen cycle is at least 5.4 seconds, so the ceiling is 0.18 verdicts
+ * a second. See the LEVEL note on master.gain below.
  *
  * Public API (window.MPXAudio):
  *   unlock()        - create/resume the context; call from a click/tap handler
@@ -66,9 +70,42 @@
                 if (!AC) return;
                 ctx = new AC();
                 master = ctx.createGain();
-                /* Lower than the sibling kits' 0.22: this game fires a verdict
-                   sound far more often than they do. */
-                master.gain.value = 0.18;
+                /* THE LEVEL, and why it moved from 0.18 to 0.35.
+                   ====================================================
+                   0.18 was chosen as "lower than the sibling kits' 0.22, because
+                   this game fires a verdict far more often". MEASURED 2026-09-02
+                   by the audio-diagnosis instrument recorded internally, which
+                   renders every sound in all three kits through an
+                   OfflineAudioContext and loads these files verbatim rather than
+                   re-implementing them:
+
+                     kit                 loudest sound, peak dBFS
+                     multiplex                     -29.6  (clear)
+                     red-carpet-rush               -23.3  (flashPop)
+                     penalty-pressure              -12.7  (kick)
+
+                   So this kit at its LOUDEST was 6.3 dB below one sibling and
+                   16.9 dB below the other, and `tick` sat at -42.4 dBFS, which is
+                   under the noise floor of an open-plan office by any reasonable
+                   measure. The same figure was confirmed live and end to end on
+                   the deployed page by tapping the real audio graph: peak
+                   -30.6 dBFS. Two methods, one answer.
+
+                   0.35 with every per-sound peak tripled is a uniform 5.83x, so
+                   every relative decision in this file - tick near-subliminal,
+                   clear the loudest, miss lighter than life - is preserved
+                   exactly, and the kit lands at about -14 dBFS peak and -30 dBFS
+                   RMS on `clear`, level with penalty-pressure's kick.
+
+                   HEADROOM, CHECKED, not assumed: the worst instantaneous sum is
+                   gameOver's three overlapping 0.48 sines, 1.44 pre-master, which
+                   is 0.504 at the destination. Nothing in this kit can clip.
+
+                   The gain sits at 0.35 rather than 1.05 with the peaks left
+                   alone, which is arithmetically the same, because a master fader
+                   above unity is an invitation to clip the moment somebody adds a
+                   tenth sound. */
+                master.gain.value = 0.35;
                 master.connect(ctx.destination);
                 noiseBuf = makeNoise(1.0);
             }
@@ -79,6 +116,17 @@
     function toggle() {
         muted = !muted;
         try { localStorage.setItem(STORAGE_KEY, muted ? 'off' : 'on'); } catch (_) {}
+        /* Un-muting must also RESUME, and this is the line penalty-pressure has
+           and this file did not. A context suspended by a backgrounded tab or an
+           audio-device change stays suspended, and ready() below does not test
+           ctx.state, so every sound was scheduled into a dead context and
+           silently produced nothing. Measured 2026-09-02 on the live page: after
+           one suspend, fourteen taps produced a peak of exactly 0.0 and the
+           context was still 'suspended' at the end.
+           Calling unlock() here is safe from a non-gesture caller too: it only
+           CREATES a context when there is none, and a creation outside a gesture
+           merely starts suspended, which is the state it was already in. */
+        if (!muted) unlock();
         return muted;
     }
 
@@ -147,14 +195,14 @@
         if (!ready()) return;
         var step = Math.max(0, Math.min(6, (streak | 0) - 1));
         var base = 660 * Math.pow(1.0595, step * 2);      // two semitones a step
-        tone(base, 0.075, 'triangle', 0.20);
-        setTimeout(function () { tone(base * 1.5, 0.10, 'triangle', 0.18); }, 62);
+        tone(base, 0.075, 'triangle', 0.60);
+        setTimeout(function () { tone(base * 1.5, 0.10, 'triangle', 0.54); }, 62);
     }
 
     /** A screen failed but a life remains. Short descending sweep. */
     function miss() {
         if (!ready()) return;
-        tone(300, 0.16, 'sawtooth', 0.13, 130);
+        tone(300, 0.16, 'sawtooth', 0.39, 130);
     }
 
     /**
@@ -164,14 +212,14 @@
      */
     function life() {
         if (!ready()) return;
-        tone(180, 0.28, 'sawtooth', 0.15, 70);
-        noise(0.20, 'lowpass', 320, 0.18);
+        tone(180, 0.28, 'sawtooth', 0.45, 70);
+        noise(0.20, 'lowpass', 320, 0.54);
     }
 
     /** The closing moments of a screen. Deliberately near-subliminal. */
     function tick() {
         if (!ready()) return;
-        tone(1500, 0.022, 'square', 0.045);
+        tone(1500, 0.022, 'square', 0.135);
     }
 
     /** The gauntlet speeds up. The one genuinely triumphant sound in the kit. */
@@ -179,15 +227,15 @@
         if (!ready()) return;
         var notes = [660, 880, 990, 1320];
         notes.forEach(function (n, i) {
-            setTimeout(function () { tone(n, 0.13, 'triangle', 0.17); }, i * 78);
+            setTimeout(function () { tone(n, 0.13, 'triangle', 0.51); }, i * 78);
         });
     }
 
     /** The breather card. A soft two-note house bell, lights going down. */
     function intermission() {
         if (!ready()) return;
-        tone(523, 0.30, 'sine', 0.14);
-        setTimeout(function () { tone(392, 0.42, 'sine', 0.13); }, 210);
+        tone(523, 0.30, 'sine', 0.42);
+        setTimeout(function () { tone(392, 0.42, 'sine', 0.39); }, 210);
     }
 
     /** End of run. Longer, rounder and resolving, so it reads as final. */
@@ -195,9 +243,9 @@
         if (!ready()) return;
         var notes = [440, 392, 330, 262];
         notes.forEach(function (n, i) {
-            setTimeout(function () { tone(n, 0.32, 'sine', 0.16); }, i * 130);
+            setTimeout(function () { tone(n, 0.32, 'sine', 0.48); }, i * 130);
         });
-        setTimeout(function () { noise(0.30, 'lowpass', 260, 0.10); }, 420);
+        setTimeout(function () { noise(0.30, 'lowpass', 260, 0.30); }, 420);
     }
 
     window.MPXAudio = {

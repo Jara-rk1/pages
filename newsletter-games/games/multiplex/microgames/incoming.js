@@ -19,11 +19,34 @@
  * breaks the byte-identical census: see the SHIELD_T note below for the measured
  * defect it fixes, which was a 100% unwinnable screen from loop 7 at a human tap
  * rate.
+ *
+ * LEGIBILITY (2026-09-02). Raised from live play, "the deflection game doesn't
+ * seem to work", and investigated before anything was changed. The finding was
+ * that the screen is not harder than the ones beside it - a latency sweep put it
+ * at 0.0% unwinnable on every prediction arm, level with both control screens -
+ * but that three things made it read as broken. Each has its own note at the
+ * point it is fixed: the core is drawn larger than the reticle that sat on top of
+ * it, a thrown shield is now solid against a hollow aim so a MISS has a signal of
+ * its own, and the shield resolves before the loss loop so the arrival frame can
+ * be saved. The first two are draw-only; the third is not, and is measured rather
+ * than claimed neutral. NOT fixed, and a real defect: from loop 6 the screen
+ * schedules one object where it asks for seven, so its difficulty ramp inverts.
+ * That needs the simulation moved and was deliberately left out of this pass.
  */
 (function () {
     'use strict';
 
-    var CORE_SIZE = 44;            // width/height of the core square
+    /* THE CORE IS DRAWN LARGER THAN THE RETICLE, and that is the whole of it.
+       Measured 2026-09-02: the aim reticle sat 0.00px from the core's centre with
+       a radius (24) exceeding the core's half-extent (22), so the cursor overhung
+       the thing it protects and a player saw one object where there were two. Not
+       only on the first frame either: the SHIELD_T note below states the optimal
+       strategy as "cover the centre", so the reticle is SUPPOSED to sit where it
+       could not be told apart. 64 leaves 8px of plate visible around a thrown
+       shield and 12px around the aim reticle. DRAW-ONLY: there is no core hitbox
+       at all, a loss is an object's flight reaching progress >= 1, which is a
+       point at the centre. */
+    var CORE_SIZE = 64;            // width/height of the core square
     var OBJ_R = 11;
     var COUNT_EASY = 4;
     var COUNT_HARD = 7;
@@ -36,6 +59,7 @@
     var DEFLECT_R_HARD = 28;
     var RECOIL_T = 0.3;            // seconds a deflected object takes to fade out
     var SHIELD_R = 24;             // the deflector, drawn where the next tap lands
+    var AIM_R = 20;                // the aim reticle, smaller so a throw READS as a change
 
     /* HOW LONG A THROWN SHIELD STAYS LIVE, and why this screen needs one at all.
        ==========================================================================
@@ -77,17 +101,52 @@
 
     /* The shield: concentric rings and a star, built entirely from roles this
        screen's tint already registers, so it introduces no colour and cannot
-       move a contrast or luminance figure. Draw-time only. */
-    function drawShield(stage, cx, cy, r, alpha) {
+       move a contrast or luminance figure. Draw-time only.
+
+       SOLID VERSUS HOLLOW IS THE MISS SIGNAL (2026-09-02). Measured, with a
+       positive control so a null reading could not be the probe failing to look:
+       a tap 631px from the only object in flight, against a 50px deflect radius,
+       gives 0 flash() calls, hitPulse 0.00 to 0.00 and 0 deflected; the same tap
+       on the object gives 1 flash, hitPulse 1.00 and 1 deflected. It is NOT that
+       nothing happens - shieldT goes 0.000 to 0.163, so the reticle does relocate
+       to the tap and fade. What was missing is a change a player can SEE, and at
+       the centre the relocation is zero-distance and the fade lands on top of the
+       core, so THERE it really was nothing, and a missed tap was indistinguishable
+       from a dead control.
+
+       Solid is a thrown shield, hollow is the aim, and m.shieldT > 0 already tells
+       those apart, so this carries NO new state and cannot move the memory gate's
+       per-screen stableJSON byte figures. Hollow paints strictly less area than
+       solid, so the flashing-area budget stays where it was measured. The star
+       motif stays in both, so the art direction is unchanged and only the STATE
+       becomes legible.
+
+       Two designs rejected, so they are not re-invented. A GREY RIM on a shield
+       that hit nothing: it would have to read "nothing was hit" off
+       m.hitPulse <= 0, but hitPulse is also set on a breach and decays over 0.25s
+       while SHIELD_T is 0.18s, so a missed tap within 0.25s of a hit would show
+       the HIT rim, and a false signal is worse than a missing one. A new
+       m.missPulse field: it would move the memory gate's reported byte figures for
+       a cue existing state already supports. */
+    function drawShield(stage, cx, cy, r, alpha, solid) {
         var o = { alpha: alpha };
-        stage.circle(cx, cy, r, 'accent', o);
-        stage.circle(cx, cy, r * 0.83, 'accent2', o);
-        stage.circle(cx, cy, r * 0.66, 'accent', o);
-        stage.circle(cx, cy, r * 0.49, 'deep', o);
-        stage.poly(starPoints(cx, cy, r * 0.46, r * 0.19), 'ink', o);
-        /* A pale rim, so an incoming object crossing the shield never merges
-           into its red outer ring at the moment it matters most. */
-        stage.circle(cx, cy, r, 'accent2', { stroke: true, width: 1.5, alpha: alpha });
+        if (solid) {
+            stage.circle(cx, cy, r, 'accent', o);
+            stage.circle(cx, cy, r * 0.83, 'accent2', o);
+            stage.circle(cx, cy, r * 0.66, 'accent', o);
+            stage.circle(cx, cy, r * 0.49, 'deep', o);
+            stage.poly(starPoints(cx, cy, r * 0.46, r * 0.19), 'ink', o);
+            /* A pale rim, so an incoming object crossing the shield never merges
+               into its red outer ring at the moment it matters most. */
+            stage.circle(cx, cy, r, 'accent2', { stroke: true, width: 1.5, alpha: alpha });
+            return;
+        }
+        /* The aim: the same three motifs, stroked and dimmer. */
+        var h = { stroke: true, width: 1.5, alpha: alpha * 0.7 };
+        stage.circle(cx, cy, r, 'accent', h);
+        stage.circle(cx, cy, r * 0.66, 'accent2', h);
+        stage.poly(starPoints(cx, cy, r * 0.46, r * 0.19), 'ink',
+                   { stroke: true, width: 1, alpha: alpha * 0.7 });
     }
 
     MULTIPLEX.register({
@@ -166,29 +225,23 @@
 
             if (m.hitPulse > 0) m.hitPulse = Math.max(0, m.hitPulse - dt * 4);
 
-            /* Advance every in-flight object; the first one to complete its
-               flight undeflected ends the screen. */
-            for (var i = 0; i < m.objects.length; i++) {
-                var o = m.objects[i];
-                if (o.deflected || stage.t < o.spawnT) continue;
+            /* THE SHIELD RESOLVES BEFORE THE LOSS LOOP, and the order is the fix
+               (2026-09-02). It used to run after, so the frame an object reached
+               the core was a frame nothing could save: measured, a tap on the
+               arrival frame at the object's exact position gave verdict 'lose' and
+               0 deflected, while the same tap one frame (16.7ms) earlier deflected
+               and the screen survived. One frame is narrow, but it is precisely
+               the frame a player reacts on, and worse, a shield ALREADY THROWN was
+               not consulted either, because the whole block sat after the
+               `return 'lose'` - so a player who had correctly covered the core in
+               advance still lost to an object crossing it on that frame. Resolved
+               first, an arriving object is still un-deflected when the shield is
+               tested, can be deflected, and the loss loop then skips it on its
+               existing `if (o.deflected) continue`.
 
-                var progress = (stage.t - o.spawnT) / m.flightT;
-                if (progress >= 1) {
-                    stage.shake(6);
-                    /* Mark the breach where it happened. Every DEFLECTED object
-                       already gets a precise two-ring marker at its impact point
-                       (see the hitPulse block below), and the one object that
-                       actually ends the screen used to get a camera shake and
-                       nothing else: the screen was more informative about the
-                       hits that did not matter than about the one that did.
-                       The core is the impact point, so the same latched fields
-                       and the same draw path cover this with no new state. */
-                    m.hitPulse = 1;
-                    m.hitX = stage.w / 2;
-                    m.hitY = stage.h / 2;
-                    return 'lose';
-                }
-            }
+               This is the ONLY part of the 2026-09-02 legibility pass that is not
+               draw-only, so it is not claimed to be census-neutral: it is measured
+               against gates-baseline.txt and what moved is reported. */
 
             /* tapped is a one-frame edge, so it ARMS the shield rather than being
                the only frame that can deflect. See the SHIELD_T note above. The
@@ -231,6 +284,30 @@
                 }
             }
 
+            /* Advance every in-flight object; the first one to complete its
+               flight undeflected ends the screen. */
+            for (var i = 0; i < m.objects.length; i++) {
+                var o = m.objects[i];
+                if (o.deflected || stage.t < o.spawnT) continue;
+
+                var progress = (stage.t - o.spawnT) / m.flightT;
+                if (progress >= 1) {
+                    stage.shake(6);
+                    /* Mark the breach where it happened. Every DEFLECTED object
+                       already gets a precise two-ring marker at its impact point
+                       (see the hitPulse block below), and the one object that
+                       actually ends the screen used to get a camera shake and
+                       nothing else: the screen was more informative about the
+                       hits that did not matter than about the one that did.
+                       The core is the impact point, so the same latched fields
+                       and the same draw path cover this with no new state. */
+                    m.hitPulse = 1;
+                    m.hitX = stage.w / 2;
+                    m.hitY = stage.h / 2;
+                    return 'lose';
+                }
+            }
+
             /* Returning nothing means "still playing". Running the clock out
                resolves as a win here, because goal is 'survive'. */
         },
@@ -253,23 +330,25 @@
                Deliberately NOT wrapped in j(): where the player is aiming is
                information, and only kinetics go through j(). Drawn UNDER the
                objects, so the thing being aimed at is never hidden by the thing
-               aiming at it. Its radius is a fixed 24 against a real deflect
-               radius of 50 down to 28, so it understates the tolerance at every
-               difficulty rather than promising one. */
-            /* While a shield is LIVE it is drawn where it was thrown, fading over
-               its life, and the aim reticle is suppressed. Two shields on screen
-               would be a lie about where the tolerance is, and drawing exactly one
-               either way keeps the flashing-area budget where it was measured.
-               An invisible 0.18s hitbox would be the worse defect: the player has
-               to be able to see that a thrown shield is still holding. */
+               aiming at it. Its radius is a fixed 20 aiming and 24 thrown against
+               a real deflect radius of 50 down to 28, so it understates the
+               tolerance at every difficulty rather than promising one. */
+            /* While a shield is LIVE it is drawn where it was thrown, SOLID and
+               fading over its life; the aim is the same motifs HOLLOW and smaller.
+               Two shields on screen would be a lie about where the tolerance is,
+               and drawing exactly one either way keeps the flashing-area budget
+               where it was measured. An invisible 0.18s hitbox would be the worse
+               defect: the player has to be able to see that a thrown shield is
+               still holding - and, per the drawShield note, that a tap happened at
+               all when it hit nothing. */
             var input = stage.input;
             if (m.shieldT > 0) {
-                drawShield(stage, m.shieldX, m.shieldY, SHIELD_R, m.shieldT / SHIELD_T);
+                drawShield(stage, m.shieldX, m.shieldY, SHIELD_R, m.shieldT / SHIELD_T, true);
             } else {
                 drawShield(stage,
                            (input.axis + 1) / 2 * stage.w,
                            (input.axisY + 1) / 2 * stage.h,
-                           SHIELD_R, 1);
+                           AIM_R, 1, false);
             }
 
             for (var i = 0; i < m.objects.length; i++) {

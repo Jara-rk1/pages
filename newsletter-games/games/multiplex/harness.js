@@ -176,15 +176,72 @@
         'AVENGERS: DOOMSDAY'
     ];
 
+    /* THE BRIEFING LINES, one row per screen, read only by drawBrief().
+
+       Two lines, and the split between them is the whole design: `does` is what
+       the player physically does, `why` is the reference explained. Naming the
+       film was never enough on its own - a player who has not seen it learns
+       nothing from a wordmark - and the reference is the part the game could
+       never say anywhere else, because it will not fit in a 17px chrome line.
+       Title and film are NOT duplicated here: they come from CREDITS, which
+       already carries them and is already asserted against each screen's own
+       registered title, so there is exactly one place to change either.
+
+       `does` is derived from each screen's own registered `hint` and `prompt`,
+       checked against the file rather than invented: food-falls 'Move left /
+       right' + 'CATCH IT ALL', pivot 'Tilt left / right' + 'ROTATE TO FIT',
+       sunnies-on 'Tap to duck under it', nothing-but-net 'Hold, then release',
+       the-chase 'Move left / right' + 'CHASE IT DOWN', incoming 'Tap near an
+       object', dig 'Steer left / right, hold to grab' + 'GRAB AND GO',
+       make-the-gate 'Tap / press, repeatedly', compact 'Tap on the beat'.
+
+       NOTHING IN microgames/ NAMES A FILM, and nothing here names a colleague.
+       Same discipline as CREDITS and for the same reason: the game publishes
+       publicly, the attribution belongs in the newsletter, and the join is left
+       to the reader.
+
+       make-the-gate's film is an ASSUMPTION flagged as one in the CREDITS
+       comment above. Its `why` line is written to survive that title changing,
+       so it describes the scene and not the picture. */
+    var BRIEFS = {
+        'food-falls':      { does: 'Move left and right to catch what falls',
+                             why:  'The weather turns to dinner' },
+        'pivot':           { does: 'Tilt left and right until the load fits',
+                             why:  'A sofa, a stairwell, and one word of advice' },
+        'sunnies-on':      { does: 'Tap to duck under what comes at you',
+                             why:  'The bullet dodge, in sunglasses' },
+        'nothing-but-net': { does: 'Hold to load the shot, let go to take it',
+                             why:  'The buzzer-beater, with a cartoon on the wing' },
+        'the-chase':       { does: 'Move left and right to run it down',
+                             why:  'Chasing the golden snitch' },
+        'incoming':        { does: 'Tap near each thing flying in, before it lands',
+                             why:  'The team ringed up, holding the line' },
+        'dig':             { does: 'Steer to it, hold to grab, get out with it',
+                             why:  'Digging into the farmers\' stores' },
+        'make-the-gate':   { does: 'Tap, and keep tapping, to make it in time',
+                             why:  'The airport dash' },
+        'compact':         { does: 'Tap on the beat to crush it down',
+                             why:  'A lonely robot cubing the rubbish' }
+    };
+
     /* A screen in the running order with no credit row would ship a blank
        second line rather than a loud failure, so it throws here instead. ORDER
        is known at load; the title half of the pair is checked in register(),
-       which is the first moment both halves exist. */
+       which is the first moment both halves exist.
+       BRIEFS is asserted in the same pass and for the same reason: a missing row
+       there is a card with two blank lines, which is worse than a loud failure
+       because it looks deliberate. */
     (function creditSelfTest() {
         for (var _i = 0; _i < ORDER.length; _i++) {
             if (!CREDITS[ORDER[_i]]) {
                 throw new Error('MULTIPLEX: screen "' + ORDER[_i] + '" is in the running ' +
                     'order with no row in CREDITS, so it would name no film.');
+            }
+            var _b = BRIEFS[ORDER[_i]];
+            if (!_b || !_b.does || !_b.why) {
+                throw new Error('MULTIPLEX: screen "' + ORDER[_i] + '" is in the running ' +
+                    'order with no complete row in BRIEFS, so its briefing card would ' +
+                    'be blank where the instruction and the reference belong.');
             }
         }
     })();
@@ -304,10 +361,32 @@
        direction. 900ms is about the shortest that a line of text can appear,
        be read and leave without feeling like a glitch. */
     var MIN_INTER_MS = 900;
+    /* THE BRIEFING FLOOR IS ZERO, AND THAT IS THE WHOLE POINT.
+       Unlike MIN_INTER_MS this is neither a photosensitivity constant nor a
+       readability one. The card emits no flash and only ever LENGTHENS the
+       screen-to-screen cycle, so it cannot move the flash arithmetic in the
+       unsafe direction; and a card nobody can read is a card nobody sees, which
+       costs presentation and nothing else.
+
+       Zero has to be REACHABLE because MULTIPLEX.advance is what every headless
+       rig drives. A five-second phase per screen would run every census trial
+       out of its frame budget mid-screen and report false losses. The rigs
+       therefore set TUNING.briefMs = 0, exactly as they already raise
+       TUNING.lives to 1e6, and enterPlay() below then never enters the phase at
+       all - so at briefMs 0 the state machine is the one those baselines were
+       measured against, frame for frame, not merely a fast version of a new one. */
+    var MIN_BRIEF_MS = 0;
     /* The end card. Long enough to read nine lines at a glance, short enough
        that a player who wants their score is not made to wait for it, and
        skippable on any press regardless. */
     var CREDITS_MS = 5200;
+    /* A press cannot skip a card for its first 450ms. A player who was HOLDING
+       at the moment the previous screen ended releases within a few frames, and
+       without this that release is read as "skip" and the card is gone before it
+       was ever seen. Two of the nine screens are driven by a sustained hold, so
+       this is the common case, not the edge case. ONE constant for both cards:
+       the briefing card inherits the figure and the reason together. */
+    var SKIP_GRACE_MS = 450;
 
     /* ============================================================
        4. TUNING  -  C2 owns every number in here
@@ -364,7 +443,30 @@
            a breather that pays out changes the score distribution and the flow's
            plausibility bounds with it, and that is a measured balance decision,
            not a presentation one. */
-        interMs: 1900
+        interMs: 1900,
+
+        /* THE BRIEFING CARD, before EVERY screen on EVERY loop.
+
+           Why it exists. Live play on the deployed build found that nothing in
+           the game explains what a screen references, and nothing at all appears
+           before its clock starts. The pieces were there and all three were shown
+           DURING play: the film name is a 17px chrome line, the verb is a 600ms
+           banner over a running clock, the control hint is a foot strip. Reading
+           time for a new screen was therefore 600ms, concurrent with having to
+           act - and 132ms once the screen duration reaches its floor. This is the
+           beat that carries the title, the film, the reference and the control
+           with the clock stopped.
+
+           THE COST, STATED. At loop 0 this is 45s of card per 45s of play, and
+           from loop 4 on the cards outlast the games they introduce. That is the
+           shape asked for, and it is one number to change if it reads as too
+           much. It is skippable on any press after SKIP_GRACE_MS, so a player who
+           already knows the screen pays nothing.
+
+           It awards nothing and it advances nothing: the next screen has already
+           been entered by the gap's swap, and this phase simply does not step it.
+           Same construction as interMs, and the same reason. */
+        briefMs: 5000
     };
 
     /* The floor is exported read-only. TUNING.minScreenMs mirrors it and cannot
@@ -427,6 +529,17 @@
         var v = TUNING.interMs;
         if (!isFinite(v)) return MIN_INTER_MS;
         return Math.max(MIN_INTER_MS, v);
+    }
+    /**
+     * Briefing-card length, same guard and the same failure mode as interMs: a
+     * non-finite value makes `G.briefT >= briefMs()` false forever, which parks
+     * the gauntlet on the card with no way out except the skip. The floor is 0
+     * rather than a real floor, for the reason MIN_BRIEF_MS carries.
+     */
+    function briefMs() {
+        var v = TUNING.briefMs;
+        if (!isFinite(v)) return MIN_BRIEF_MS;
+        return Math.max(MIN_BRIEF_MS, v);
     }
 
     /**
@@ -495,6 +608,31 @@
             throw new Error('MULTIPLEX: clamp() is not NaN-safe, so one NaN tuning value ' +
                 'reaches stage.difficulty and every screen sizes itself with NaN');
         }
+        /* The briefing card, and the one property the headless rigs depend on.
+           A non-finite briefMs is the same class of failure interMs guards
+           against - `G.briefT >= briefMs()` is false forever, so the gauntlet
+           parks on the card - and a briefMs that does not reach EXACTLY 0 would
+           silently put every census baseline out of date, because enterPlay()
+           tests `briefMs() > 0` to decide whether the phase exists at all. */
+        var keepBrief = TUNING.briefMs;
+        for (i = 0; i < hostile.length; i++) {
+            TUNING.briefMs = hostile[i];
+            if (!isFinite(briefMs()) || briefMs() < 0) {
+                throw new Error('MULTIPLEX: briefMs() returned ' + briefMs() +
+                    ' for briefMs = ' + String(hostile[i]) + '; a non-finite briefing ' +
+                    'length parks the gauntlet on the card, because G.briefT >= ' +
+                    'briefMs() is never true');
+            }
+        }
+        TUNING.briefMs = 0;
+        if (briefMs() !== 0) {
+            throw new Error('MULTIPLEX: briefMs() is ' + briefMs() + ' at TUNING.briefMs = 0. ' +
+                'The headless census rigs zero it to step the simulation their ' +
+                'baselines were measured against, and a floor above zero makes every ' +
+                'one of those baselines incomparable.');
+        }
+        TUNING.briefMs = keepBrief;
+
         for (i = 0; i < hostile.length; i++) {
             TUNING.lives = hostile[i];
             if (!isFinite(livesCount())) {
@@ -859,26 +997,45 @@
             INPUT.tapY = clamp(ly - PLAY.y, 0, PLAY.h);
         }
 
-        /* Gesture-gated AudioContext unlock, latched to once.
+        /* GESTURE-GATED AudioContext unlock: on the DOCUMENT, in the CAPTURE
+           phase, and deliberately NOT LATCHED.
 
-           This exists for a specific case that is easy to miss: the mute state
-           is shared across the hub under one localStorage key, so a player who
-           opted in on another game arrives here already unmuted but with no
-           context, and every sound would be a silent no-op until they pressed
-           the mute button, which would then mute them. Unlocking on the first
-           real gesture is what the sibling game does and it is the reason it
-           works there. Muted players still get nothing: unlock() creates the
-           context, and every play call checks `muted` separately. */
-        var unlocked = false;
-        function unlockAudioOnce() {
-            if (unlocked) return;
-            unlocked = true;
-            snd('unlock');
-        }
+           Why it exists at all. The mute state is shared across the hub under one
+           localStorage key, so a player who opted in on another game arrives here
+           already unmuted but with no context, and every sound is a silent no-op
+           until they press the mute button - which then mutes them. Unlocking on
+           the first real gesture is what the sibling games do and it is the reason
+           sound works there. Muted players still get nothing: unlock() creates
+           the context, and every play call checks `muted` separately.
+
+           WHY THE CANVAS WAS THE WRONG PLACE, measured 2026-09-02 on the deployed
+           page. This used to be bound to canvas `pointerdown` and to document
+           `keydown` behind the `!live` guard. The engine's instructions overlay
+           sits at inset 0, z-index 100 OVER the canvas and starts the game on a
+           click or Space, so the first real gesture is consumed by the overlay and
+           reaches neither handler; and the keydown path cannot fire before the
+           countdown, because `live` is false until onCountdownComplete. The
+           instrument drove the actual player sequence (click START, sit through the
+           3-2-1) and found NO AudioContext in existence at all afterwards: 0
+           contexts created, state null. Document plus capture is the fix, because
+           it sees the overlay's own click.
+
+           WHY THE LATCH HAD TO GO, same measurement. A context suspended by a
+           backgrounded tab or an audio-device change stays suspended, and with the
+           latch set nothing ever called unlock() again: after one suspend,
+           fourteen taps produced a measured output peak of exactly 0.0 and the
+           context was still 'suspended' at the end. unlock() is already
+           idempotent - it only builds a context when there is none, and otherwise
+           just resumes a suspended one - so every gesture retrying it costs a
+           state read and recovers the case the latch made permanent. It also
+           closes the smaller defect that the latch was set BEFORE the call, so a
+           throw inside unlock() meant nothing ever tried again. */
+        function unlockAudio() { snd('unlock'); }
+        document.addEventListener('pointerdown', unlockAudio, true);
+        document.addEventListener('keydown', unlockAudio, true);
 
         el.addEventListener('pointerdown', function (e) {
             if (!e.isPrimary) return;
-            unlockAudioOnce();
             axisFromEvent(e);
             press(INPUT.tapX, INPUT.tapY);
         });
@@ -895,7 +1052,6 @@
 
         document.addEventListener('keydown', function (e) {
             if (!live || e.repeat) return;
-            unlockAudioOnce();          // keyboard players are players too
             var k = e.key;
             if (k === 'ArrowLeft' || k === 'a' || k === 'A') { keyDir = -1; }
             else if (k === 'ArrowRight' || k === 'd' || k === 'D') { keyDir = 1; }
@@ -1104,7 +1260,10 @@
         if (!RUN.length) throw new Error('MULTIPLEX: no microgames registered');
         G = {
             loop: 0, index: 0, lives: livesCount(), streak: 0, cleared: 0,
-            phase: 'play',                   // 'play' | 'gap'
+            /* Set by enterPlay() at the bottom of this function, and by the two
+               places a screen begins: the end of the gap and the end of the
+               intermission. Never assigned 'brief' directly - see enterPlay. */
+            phase: 'play',                   // 'brief' | 'play' | 'gap' | 'inter' | 'credits' | 'over'
             screen: null, mem: null, tint: null,
             screenMs: 0, elapsed: 0, verdict: null, gapVerdict: null,
             gapT: 0, gapMs: 0, swapped: false, armInput: false,
@@ -1124,6 +1283,12 @@
                is already in flight, because a loop-up is discovered mid-gap and
                the card has to come after the wipe rather than inside it. */
             pendingInter: false, interT: 0,
+            /* The briefing card's own clock. Presentation-adjacent but it does
+               gate a phase, so unlike `gained` it is real state; it is still not
+               exported on state(), because the phase name already says
+               everything an assertion needs and adding a field would move the
+               determinism digest for nothing. */
+            briefT: 0,
             /* Session record, for the end card. The results overlay this game
                shares with fourteen others can only say "score" and "best", so a
                run that got somewhere and a run that did not looked identical.
@@ -1135,6 +1300,28 @@
         };
         resetInput();
         enterScreen();
+        enterPlay();
+    }
+
+    /**
+     * THE ONLY WAY A SCREEN BEGINS, and the only place 'brief' is ever entered.
+     *
+     * Routing both entry points through here is what makes the briefing card
+     * provably free at briefMs 0. The alternative - always enter 'brief' and let
+     * the phase fall through on its first frame - costs the headless rigs a frame
+     * they did not spend before: MULTIPLEX.state() would report 'brief' on the
+     * frame that used to report 'play' with elapsed 0, so every instrument's
+     * `armed` test would miss, no policy would act on the armed frame, and the
+     * whole census would shift. Not entering the phase at all leaves the state
+     * machine bit-identical to the one the baselines were measured against.
+     */
+    function enterPlay() {
+        if (briefMs() > 0) {
+            G.phase = 'brief';
+            G.briefT = 0;
+        } else {
+            G.phase = 'play';
+        }
     }
 
     function enterScreen() {
@@ -1256,6 +1443,23 @@
         if (G.shake > 0) G.shake = Math.max(0, G.shake - dt * 26);
         if (G.glow > 0) G.glow = Math.max(0, G.glow - dt * 3.2);
 
+        /* 'brief': the card that says what this screen is, before its clock
+           starts. Structurally identical to 'inter': the screen has already been
+           entered, so its clock is at zero and its armInput is still set, and
+           this phase simply does not advance it. Edges are cleared every frame so
+           a tap on the card cannot survive into the first play frame.
+
+           Unreachable at briefMs 0 - enterPlay() is the only writer of this
+           phase and it does not enter it there - so nothing below this line runs
+           under any headless rig that zeroes the tuning. */
+        if (G.phase === 'brief') {
+            G.briefT += dt * 1000;
+            var skipBrief = G.briefT > SKIP_GRACE_MS && (INPUT.tapped || INPUT.released);
+            clearEdges();
+            if (skipBrief || G.briefT >= briefMs()) G.phase = 'play';
+            return;
+        }
+
         if (G.phase === 'play') {
             /* First frame of a screen: drop the press state carried across the
                cut. A hold that began on the previous screen is not this screen's
@@ -1331,7 +1535,7 @@
         if (G.phase === 'inter') {
             G.interT += dt * 1000;
             clearEdges();
-            if (G.interT >= interMs()) G.phase = 'play';
+            if (G.interT >= interMs()) enterPlay();
             return;
         }
 
@@ -1343,12 +1547,9 @@
            to the overlay. */
         if (G.phase === 'credits') {
             G.creditsT += dt * 1000;
-            /* A 450ms grace before a press can skip. A player who was HOLDING at
-               the moment they died releases within a few frames, and without this
-               that release is read as "skip" and the card is gone before it was
-               ever seen. Two of the nine screens are driven by a sustained hold,
-               so this is the common case, not the edge case. */
-            var skip = G.creditsT > 450 && (INPUT.tapped || INPUT.released);
+            /* SKIP_GRACE_MS before a press can skip; the constant carries the
+               reason, and the briefing card reads the same one. */
+            var skip = G.creditsT > SKIP_GRACE_MS && (INPUT.tapped || INPUT.released);
             clearEdges();
             if (skip || G.creditsT >= CREDITS_MS) {
                 G.phase = 'over';
@@ -1392,7 +1593,7 @@
                 snd('intermission');
                 return;
             }
-            G.phase = 'play';
+            enterPlay();
         }
     }
 
@@ -1441,6 +1642,7 @@
         if (G.phase === 'play' && G.banner > 0) drawBanner(ctx);
         if (G.phase === 'gap') drawGap(ctx);
         if (G.phase === 'inter') drawInter(ctx);
+        if (G.phase === 'brief') drawBrief(ctx);
         if (G.phase === 'credits' || G.phase === 'over') drawCredits(ctx);
 
         drawBand(ctx);
@@ -1625,6 +1827,122 @@
         ctx.restore();
     }
 
+    /**
+     * THE BRIEFING CARD: what this screen is, before its clock starts.
+     *
+     * It answers three questions the game previously answered only while the
+     * player was already being asked to act, or did not answer at all: what am I
+     * looking at (the title and the film), what do I do (the screen's own
+     * registered hint, plus a plain-language line), and what is this a reference
+     * TO (the one thing no 17px chrome line could ever carry).
+     *
+     * OPAQUE OVER THE PLAY RECT, for the same reason drawInter is: the next
+     * screen has already been entered and is being drawn underneath at its own
+     * frame zero, and letting that show through would be a free preview of the
+     * thing the player is about to have to react to.
+     *
+     * STATIC, deliberately. No fade, no curtain, nothing that moves except the
+     * countdown - which is information, not kinetics, and so is not routed
+     * through j(). The card exists to be read, and a card that animates in is a
+     * card whose first few hundred milliseconds cannot be.
+     *
+     * NOTHING HERE IS A FLASH. It emits no ledger charge and it only lengthens
+     * the screen-to-screen cycle, so the cut-rate bound the load-time self-test
+     * asserts (cuts/sec <= 1000 / gapDurationMs(false)) stays true and stays
+     * conservative. Same argument the interMs comment makes, and the reason
+     * assertCutRate does not need to know this phase exists.
+     */
+    function drawBrief(ctx) {
+        var cx = W / 2, top = PLAY.y, h = PLAY.h;
+        var slug = G.screen.slug;
+        var credit = CREDITS[slug], brief = BRIEFS[slug];
+        var total = briefMs();
+        var left = Math.max(0, total - G.briefT);
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(PLAY.x, PLAY.y, PLAY.w, PLAY.h);
+        ctx.clip();
+        ctx.fillStyle = P.black;
+        ctx.fillRect(PLAY.x, PLAY.y, PLAY.w, PLAY.h);
+
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        ctx.font = 'bold 10px ' + F_UI;
+        ctx.fillStyle = rgba(P.grey, 0.85);
+        ctx.fillText('NEXT UP', cx, top + h * 0.07);
+
+        /* Measured, not eyeballed, and measured on the DISPLAY face: at 40px a
+           long title is three times the width the chrome band ever asks of it,
+           and if the vendored Bebas is blocked the fallback stack is Arial Black,
+           which is wider again. */
+        var title = G.screen.title;
+        ctx.font = 'bold ' + fitSize(ctx, title, PLAY.w - 24, 40, 18, F_DISPLAY) + 'px ' + F_DISPLAY;
+        ctx.fillStyle = P.cream;
+        ctx.fillText(title, cx, top + h * 0.13);
+
+        if (credit) {
+            ctx.font = 'bold ' + fitSize(ctx, credit.film, PLAY.w - 24, 13, CREDIT_MIN_PX, F_UI) + 'px ' + F_UI;
+            ctx.fillStyle = P.gold;
+            ctx.fillText(credit.film, cx, top + h * 0.19);
+        }
+
+        /* A hairline, so the card reads as two things: what it is, and what to
+           do about it. Static, in the sprocket backing colour, never a motif. */
+        ctx.fillStyle = rgba(P.graphite, 0.9);
+        ctx.fillRect(PLAY.x + 60, top + h * 0.24, PLAY.w - 120, 1);
+
+        ctx.font = 'bold 10px ' + F_UI;
+        ctx.fillStyle = rgba(P.grey, 0.85);
+        ctx.fillText('WHAT YOU DO', cx, top + h * 0.31);
+        ctx.font = 'bold ' + fitSize(ctx, brief.does, PLAY.w - 24, 15, 10, F_UI) + 'px ' + F_UI;
+        ctx.fillStyle = P.cream;
+        ctx.fillText(brief.does, cx, top + h * 0.35);
+
+        ctx.font = 'bold 10px ' + F_UI;
+        ctx.fillStyle = rgba(P.grey, 0.85);
+        ctx.fillText('THE REFERENCE', cx, top + h * 0.44);
+        ctx.font = 'bold ' + fitSize(ctx, brief.why, PLAY.w - 24, 15, 10, F_UI) + 'px ' + F_UI;
+        ctx.fillStyle = P.cream;
+        ctx.fillText(brief.why, cx, top + h * 0.48);
+
+        /* The control, VERBATIM from the screen's own registration, so the card
+           and the permanent foot strip can never disagree about how to play. */
+        ctx.font = '11px ' + F_UI;
+        ctx.fillStyle = rgba(P.grey, 0.9);
+        ctx.fillText(G.screen.hint, cx, top + h * 0.57);
+
+        /* THE COUNTDOWN, in two channels. The digit is the precise answer and the
+           rule is the glanceable one, so the wait is legible without reading a
+           number - which matters most at the moment the player is deciding
+           whether to wait or to skip. Ceil, so it reads 5 4 3 2 1 and never a
+           zero that sits on screen for a frame. */
+        ctx.font = 'bold 46px ' + F_DISPLAY;
+        ctx.fillStyle = P.gold;
+        ctx.fillText(String(Math.ceil(left / 1000)), cx, top + h * 0.70);
+
+        var rw = PLAY.w - 120, rx = PLAY.x + 60, ry = top + h * 0.78;
+        ctx.fillStyle = rgba(P.graphite, 1);
+        ctx.fillRect(rx, ry, rw, 4);
+        ctx.fillStyle = P.gold;
+        ctx.fillRect(rx, ry, rw * clamp(left / Math.max(1, total), 0, 1), 4);
+
+        /* The skip affordance, in its own strip and pinned to the bottom of the
+           card, exactly as the end card's is: a player looking for the way out
+           should not have to hunt for it. It is honest about the grace period
+           only by being generous with it - SKIP_GRACE_MS is 450ms and the card is
+           five seconds, so a player who reads this line and then presses is
+           always past it. */
+        ctx.fillStyle = P.black;
+        ctx.fillRect(PLAY.x, top + h - 26, PLAY.w, 26);
+        ctx.font = 'bold 10px ' + F_UI;
+        ctx.fillStyle = rgba(P.grey, 0.75);
+        ctx.fillText('TAP TO SKIP', cx, top + h - 13);
+
+        ctx.restore();
+    }
+
     /* Film-strip gutters. Static: a scrolling sprocket run would be a second
        motion source for no information gain. */
     function drawSprockets(ctx) {
@@ -1757,33 +2075,57 @@
        MEASURED rather than eyeballed, and measured PER STRING: one long film
        title is not allowed to shrink the other eight, and truncating with an
        ellipsis is not an option, because the film name is the entire message.
-       11px is the preferred size and the loop only ever comes down from it.
-
-       Cached per string. Both the string set and the font are fixed for the life
-       of the page, so this measures nine times, not once a frame.
-
-       7px is a legibility floor, not a fitting floor: below it the line is
-       unreadable and the change defeats itself, so a string that still does not
-       fit is reported rather than silently squeezed. The fix for that is the
-       plan's own order of preference: drop the year, then shorten the title. */
+       11px is the preferred size and the loop only ever comes down from it. */
     var CREDIT_MAX_W = W - 28;           // the timer rule's own left/right margins
     var CREDIT_MIN_PX = 7;
-    var _creditSize = {}, _creditWarned = {};
-    function creditSize(ctx, str) {
-        if (_creditSize[str]) return _creditSize[str];
-        var size = 11;
-        ctx.font = 'bold ' + size + 'px ' + F_UI;
-        while (size > CREDIT_MIN_PX && ctx.measureText(str).width > CREDIT_MAX_W) {
+    var _fitSize = {}, _creditChecked = {};
+    /**
+     * Fit `str` into `maxW` by MEASURING it: come down from `startPx` in half
+     * pixels, never below `minPx`, never truncate. One implementation, because
+     * the briefing card has exactly the same problem the film credit has and
+     * solving it twice is how the two answers drift apart.
+     *
+     * Keyed on every argument that can change the answer rather than on the
+     * string alone: the same film title is measured at two sizes on this card and
+     * in the chrome band, and a string-only key would hand the band the card's
+     * number. Both the strings and the two faces are fixed for the life of the
+     * page, so this measures a few dozen times, not once a frame.
+     */
+    function fitSize(ctx, str, maxW, startPx, minPx, font) {
+        var key = str + '|' + maxW + '|' + startPx + '|' + minPx + '|' + font;
+        if (_fitSize[key]) return _fitSize[key];
+        var size = startPx;
+        ctx.font = 'bold ' + size + 'px ' + font;
+        while (size > minPx && ctx.measureText(str).width > maxW) {
             size -= 0.5;
+            ctx.font = 'bold ' + size + 'px ' + font;
+        }
+        _fitSize[key] = size;
+        return size;
+    }
+    /* The chrome band's film credit: fitSize does the measuring, this adds the
+       one thing the generic helper must not have, a warning that names the film.
+       7px is a LEGIBILITY floor, not a fitting floor: below it the line is
+       unreadable and the change defeats itself, so a string that still does not
+       fit is reported rather than silently squeezed. The fix is the plan's own
+       order of preference: drop the year, then shorten the title.
+
+       The check is latched to ONCE PER STRING rather than left to fitSize's
+       cache. It used to sit behind that cache and so ran once; measureText is not
+       free and drawBand runs every frame, so leaving it unlatched would put nine
+       measurements back into the frame budget for a warning that can only ever
+       fire on the first one. */
+    function creditSize(ctx, str) {
+        var size = fitSize(ctx, str, CREDIT_MAX_W, 11, CREDIT_MIN_PX, F_UI);
+        if (!_creditChecked[str]) {
+            _creditChecked[str] = true;
             ctx.font = 'bold ' + size + 'px ' + F_UI;
+            if (ctx.measureText(str).width > CREDIT_MAX_W) {
+                console.warn('MULTIPLEX: film credit "' + str + '" does not fit ' + CREDIT_MAX_W +
+                    'px at the ' + CREDIT_MIN_PX + 'px legibility floor. Drop the year or ' +
+                    'shorten the title; do not truncate it.');
+            }
         }
-        if (ctx.measureText(str).width > CREDIT_MAX_W && !_creditWarned[str]) {
-            _creditWarned[str] = true;
-            console.warn('MULTIPLEX: film credit "' + str + '" does not fit ' + CREDIT_MAX_W +
-                'px at the ' + CREDIT_MIN_PX + 'px legibility floor. Drop the year or ' +
-                'shorten the title; do not truncate it.');
-        }
-        _creditSize[str] = size;
         return size;
     }
 
