@@ -2,16 +2,16 @@
 # the public origin (Jara-rk1/pages), which receives automated dashboard deploys daily.
 # Runs ONLY on the KPMG repo (repo-gated below); on the public repo this file is inert.
 # Fast-forward only: a kpmg-only commit makes this fail loudly rather than fork history.
-# NEVER push directly to the mirror's main — all content must arrive via this sync,
+# NEVER push directly to the mirror's main: all content must arrive via this sync,
 # or the next ff-only merge fails. This includes commits touching .github/workflows/**:
 # those used to need a manual hand-push because GITHUB_TOKEN is blocked from updating
 # workflow files ("refusing to allow a GitHub App to update workflow without workflows
 # permission", run 27328805250). As of 2026-06-17 the push below authenticates with the
 # MIRROR_SYNC_PAT secret (a PAT scoped to THIS repo with Workflows:write + Contents:write),
-# which CAN carry workflow-file changes — so the sync is now fully automatic. If that
+# which CAN carry workflow-file changes, so the sync is now fully automatic. If that
 # secret is ever missing/expired, workflow-file commits fail here and must be hand-pushed
 # with matching SHAs (git -C pages push kpmg main) until it's restored.
-# Setup / rotation: docs/runbooks/gh-pages-manual-actions.md — Job 5.
+# Setup / rotation: docs/runbooks/gh-pages-manual-actions.md, Job 5.
 name: Sync mirror from public origin
 on:
   schedule:
@@ -25,6 +25,10 @@ permissions:
   contents: write
   pages: write
   issues: write
+  # Load-bearing for the alert step: it reads its own run's jobs to name the
+  # step that failed. `permissions:` is declared, so anything unlisted is
+  # `none` and listJobsForWorkflowRun would 403.
+  actions: read
 jobs:
   sync:
     if: github.repository == 'kpmg-au-emu/pepi-portfolio'
@@ -53,24 +57,57 @@ jobs:
         run: |
           gh api -X POST "repos/${{ github.repository }}/pages/builds" \
             || echo "Pages build request failed (a build may already be queued)"
-      - name: Alert on failure (mirror diverged or sync broke)
-        # An --ff-only failure means the mirror has a commit the public repo
-        # lacks (someone pushed directly to the mirror) — by design this must
-        # fail loudly, and scheduled failures generate no notification.
+      - name: Alert on failure (sync broke)
+        # Names the step that actually failed, because the two real causes are
+        # different problems with different fixes: an expired MIRROR_SYNC_PAT
+        # fails at CHECKOUT, a genuine divergence fails at the FAST-FORWARD.
+        # Asserting divergence unconditionally has already filed issues carrying
+        # the wrong diagnosis, more than once.
+        # `actions: read` below is load-bearing: `permissions:` is declared, so
+        # anything unlisted is `none` and listJobsForWorkflowRun would 403.
         if: failure() || cancelled()
         uses: actions/github-script@v8
         with:
           script: |
+            // Never let the diagnosis break the alert: a thrown lookup must
+            // still file an issue, or a failure becomes silent.
+            let step = 'unknown (lookup failed)'
+            try {
+              const jobs = await github.rest.actions.listJobsForWorkflowRun({
+                owner: context.repo.owner, repo: context.repo.repo, run_id: context.runId,
+              })
+              const failed = jobs.data.jobs
+                .flatMap(j => j.steps || [])
+                .find(s => s.conclusion === 'failure')
+              step = failed ? failed.name : 'none (job cancelled, or it never started)'
+            } catch (e) {
+              step = `unknown (${e.message})`
+            }
+            const cause = /checkout/i.test(step)
+              ? [`Checkout failed, so this is AUTHENTICATION, not divergence.`,
+                 `MIRROR_SYNC_PAT is most likely expired or revoked: org policy caps`,
+                 `fine-grained PAT lifetime at about 90 days, so it lapses on a schedule.`,
+                 `Rotate it per docs/runbooks/gh-pages-manual-actions.md, Job 5 (skip its`,
+                 `step 3, the one-time bootstrap hand-push, which is already done).`].join('\n')
+              : /fast-forward/i.test(step)
+              ? [`The fast-forward failed, so the mirror holds a commit the public origin`,
+                 `lacks. Someone pushed directly to the mirror. Find that commit and move`,
+                 `it to the public origin instead; never push to the mirror, because every`,
+                 `later --ff-only sync fails until it is gone.`].join('\n')
+              : `Not one of the two known causes. Read the run log.`
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: `Mirror sync from public origin failed (run ${context.runId})`,
+              title: `Mirror sync failed at "${step}" (run ${context.runId})`,
               body: [
-                `The nightly mirror sync failed — most likely the mirror's main has`,
-                `diverged from the public origin (direct push to the mirror?).`,
-                `The internal Pages surface stops updating until this is resolved.`,
+                `The mirror sync failed. The internal Pages surface stops updating until`,
+                `this is resolved.`,
                 ``,
-                `Investigate: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+                `**Failed step:** \`${step}\``,
+                ``,
+                cause,
+                ``,
+                `Run log: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
               ].join('\n'),
               labels: ['automation'],
             })
