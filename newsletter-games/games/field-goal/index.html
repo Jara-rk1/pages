@@ -17,7 +17,7 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: #F5F5F5;
+            background: #C3E7F4;       /* the newsletter's sky */
             font-family: Arial, Helvetica, sans-serif;
             display: flex; flex-direction: column; align-items: center;
             height: 100dvh; overflow: hidden;
@@ -40,20 +40,33 @@
             flex: 1; min-height: 0; display: flex; justify-content: center; align-items: center;
         }
         #game-canvas { display: block; touch-action: none; }
+        /* Overlays in the newsletter's page 5 colours: navy (#023C91, 7.80:1 on the sky) on
+           the sky, a red rule under the title. The engine writes inline styles, hence !important. */
         .game-over-overlay {
             display: none; position: absolute; inset: 0;
-            background: rgba(0, 51, 141, 0.92); color: white;
+            background: rgba(195, 231, 244, 0.97); color: #023C91;
             flex-direction: column; align-items: center; justify-content: safe center;
             gap: 16px; z-index: 10; padding: 24px; text-align: center;
             overflow-y: auto;
         }
         .game-over-overlay.active { display: flex; }
-        /* The engine writes each overlay's title first, with inline Arial: set it in the
-           newsletter's headline face instead. */
-        .game-over-overlay > div:first-child {
+        .game-over-overlay > div { opacity: 1 !important; }            /* faded labels drop below 4.5:1 */
+        .game-over-overlay > div:first-of-type {
             font-family: 'Bebas Neue', 'Arial Black', Arial, sans-serif !important;
             font-size: 40px !important; font-weight: 400 !important; letter-spacing: 2px !important;
         }
+        .game-over-overlay > div:first-of-type::after {
+            content: ''; display: block; width: 72px; height: 5px; margin: 6px auto 0;
+            background: #F0001B; border-radius: 3px;
+        }
+        .game-over-overlay > div > div { background: rgba(255, 255, 255, 0.7) !important; }   /* legend tiles */
+        .game-over-overlay button {
+            background: #023C91 !important; color: #FFFFFF !important; border: 2px solid #023C91 !important;
+        }
+        .game-over-overlay button + button { background: transparent !important; color: #023C91 !important; }
+        /* a figure, not a div: cobe wraps its canvas in a div, which would take the title rule */
+        .fg-globe-wrap { width: 190px; height: 190px; margin: -6px auto -4px; flex-shrink: 0; }
+        .fg-globe { display: block; width: 100%; height: 100%; }
         .game-over-overlay .score-display { font-size: 48px; font-weight: bold; }
         .game-over-overlay .label { font-size: 14px; opacity: 0.8; }
         .game-over-overlay .stat { font-size: 20px; font-weight: bold; }
@@ -87,6 +100,56 @@
             <button class="btn-hub" onclick="window.location.href='../../'">Back to Hub</button>
         </div>
     </div>
+    <script type="module">
+        /* The intro globe on the instructions card: San Francisco and Los Angeles to Melbourne,
+           the two trips in the newsletter's story (49ers a week early, Rams 28 hours out).
+           cobe 2.0.1, MIT, vendored beside its LICENSE; it makes no network calls (its map is
+           an inline data URI) and has no loop of its own, so we drive it. No WebGL: no globe.
+           Reduced motion: a still globe over the Pacific. */
+        import createGlobe from '../../assets/vendor/cobe/cobe-2.0.1.esm.js';
+        var SFO = [37.62, -122.38], LAX = [33.94, -118.41], MEL = [-37.82, 144.98];
+        var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var container = document.getElementById('game-container');
+        var globe = null, raf = 0;
+        function phiFor(lng) { return Math.PI - (lng * Math.PI / 180 - Math.PI / 2); }   // cobe's centring rule
+        function stop() { cancelAnimationFrame(raf); raf = 0; if (globe) { globe.destroy(); globe = null; } }
+        function mount(overlay) {
+            var cv = document.createElement('canvas');
+            cv.className = 'fg-globe'; cv.width = 380; cv.height = 380;
+            var fig = document.createElement('figure');
+            fig.className = 'fg-globe-wrap'; fig.setAttribute('aria-hidden', 'true');
+            fig.appendChild(cv);
+            overlay.insertBefore(fig, overlay.firstChild);
+            try {
+                globe = createGlobe(cv, {
+                    devicePixelRatio: 2, width: 380, height: 380,
+                    phi: phiFor(still ? -170 : SFO[1]), theta: still ? 0 : 0.4, dark: 0, diffuse: 1.2,
+                    mapSamples: 12000, mapBrightness: 5, baseColor: [1, 1, 1],
+                    markerColor: [0.94, 0, 0.11], glowColor: [0.76, 0.91, 0.96],
+                    markers: [{ location: SFO, size: 0.05 }, { location: LAX, size: 0.05 }, { location: MEL, size: 0.07 }],
+                    arcs: [{ from: SFO, to: MEL, color: [0.67, 0, 0] }, { from: LAX, to: MEL, color: [0, 0.21, 0.58] }],
+                    arcColor: [0.01, 0.24, 0.57], arcWidth: 0.7, arcHeight: 0.3
+                });
+            } catch (e) { fig.remove(); globe = null; return; }
+            globe.update({});
+            if (still) return;
+            var t0 = performance.now();
+            (function tick(now) {                   // hold on California, cross the Pacific, settle on Melbourne
+                var t = Math.min(1, Math.max(0, ((now - t0) / 1000 - 0.6) / 2.8)), e = 1 - Math.pow(1 - t, 3);
+                if (globe) globe.update({ phi: phiFor(SFO[1] - 92.6 * e), theta: 0.4 - 1.0 * e });
+                if (t < 1 && globe) raf = requestAnimationFrame(tick);
+            })(t0);
+        }
+        function check() {
+            var ov = container.querySelector('.game-over-overlay');
+            var start = ov && ov.style.display !== 'none' &&
+                Array.prototype.some.call(ov.querySelectorAll('button'), function (b) { return /^start$/i.test(b.textContent.trim()); });
+            if (start && !ov.querySelector('.fg-globe')) mount(ov);
+            else if (!start && globe) stop();
+        }
+        new MutationObserver(check).observe(container, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] });
+        check();
+    </script>
     <script src="../../assets/game-engine.js"></script>
     <!-- ponytail: borrows the shootout's synthesised kit (kick, roar, ohh, tick) rather than copying it; fork it if this game ever needs its own sounds -->
     <script src="../penalty-pressure/audio.js"></script>

@@ -60,7 +60,7 @@ const Hub = {
         { id: 'penalty-pressure', title: 'After-Hours Shootout', description: 'Match night at the pub — take 10 World Cup penalties for KPMG United' },
         { id: 'red-carpet-rush', title: 'FLASH! Red Carpet Rush', description: 'MIFF opening night: hold to focus, release to shoot, catch them mid-pose' },
         { id: 'multiplex', title: 'MULTIPLEX', description: 'Hop between nine screens in a multiplex on movie night, one quick move each, three lives' },
-        { id: 'field-goal', title: "Field Goal at the 'G", description: 'Gridiron comes to the MCG: ten field goals in the spring sun, 20 to 62 yards, into the wind' }
+        { id: 'field-goal', title: "Field Goal at the 'G", description: "Kick for the 49ers in their 27-7 MCG win: Piñeiro's six kicks from the day, then chase the 68-yard NFL record" }
     ],
 
     async init() {

@@ -205,13 +205,13 @@ SEED_GAMES = [
     ),
     (
         "field-goal", "Field Goal at the 'G",
-        "Gridiron comes to the MCG. Ten field goals in the spring sun from 20 to "
-        "62 yards: tap to aim into the wind, tap to set the power, split the uprights.",
-        # The exact ceiling is 9,235: all ten kicks dead centre (yards x 10 x 1.5,
-        # 419 yards in all = 6,285), the streak ramp capped at +300 (1,950), and the
-        # 1,000 perfect-ten bonus. A zero-error oracle over 20,000 runs of the game's
-        # own MODEL topped out at 9,178. 10000 leaves ~8% headroom.
-        10000, 16,
+        "Kick for the 49ers in their 27-7 win at the MCG: the six kicks from the day, "
+        "then four to chase the 68-yard NFL record, into a gusting wind.",
+        # The exact ceiling is 10,150: all ten kicks dead centre (yards x 10 x 1.5,
+        # 480 yards in all = 7,200), the streak ramp capped at +300 (1,950), and the
+        # 1,000 perfect-ten bonus. A perfect-timing oracle over 20,000 runs of the
+        # game's own MODEL topped out at 10,031. 11000 leaves ~8% headroom.
+        11000, 16,
     ),
 ]
 
