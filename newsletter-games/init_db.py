@@ -205,7 +205,7 @@ SEED_GAMES = [
     ),
     (
         "field-goal", "Field Goal at the 'G",
-        "Gridiron comes to the MCG. Ten field goals under the lights from 20 to "
+        "Gridiron comes to the MCG. Ten field goals in the spring sun from 20 to "
         "62 yards: tap to aim into the wind, tap to set the power, split the uprights.",
         # The exact ceiling is 9,235: all ten kicks dead centre (yards x 10 x 1.5,
         # 419 yards in all = 6,285), the streak ramp capped at +300 (1,950), and the

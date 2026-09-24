@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Field Goal at the 'G | KPMG Minigames</title>
     <style>
+        /* Bebas Neue, SIL OFL 1.1, Dharma Type: the site's own vendored subset
+           (licence beside it), shared with MULTIPLEX. Self-hosted, never a font CDN.
+           The weight range maps canvas 'bold' onto the one real weight. */
+        @font-face {
+            font-family: 'Bebas Neue';
+            src: url('../../assets/fonts/BebasNeue-subset.woff2') format('woff2');
+            font-weight: 400 700;
+            font-style: normal;
+            font-display: swap;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: #F5F5F5;
@@ -38,6 +48,12 @@
             overflow-y: auto;
         }
         .game-over-overlay.active { display: flex; }
+        /* The engine writes each overlay's title first, with inline Arial: set it in the
+           newsletter's headline face instead. */
+        .game-over-overlay > div:first-child {
+            font-family: 'Bebas Neue', 'Arial Black', Arial, sans-serif !important;
+            font-size: 40px !important; font-weight: 400 !important; letter-spacing: 2px !important;
+        }
         .game-over-overlay .score-display { font-size: 48px; font-weight: bold; }
         .game-over-overlay .label { font-size: 14px; opacity: 0.8; }
         .game-over-overlay .stat { font-size: 20px; font-weight: bold; }

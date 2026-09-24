@@ -2,7 +2,7 @@
  * Field Goal at the 'G
  * KPMG Newsletter Minigame, October 2026 edition: gridiron comes to the MCG.
  *
- * Ten field goals under the lights, 20 to 62 yards, from the hashes, in the wind.
+ * Ten field goals on a spring afternoon, 20 to 62 yards, from the hashes, in the wind.
  * Two taps per kick: lock the AIM (allow for the wind), then set the POWER.
  * Not enough power falls short; too much sprays the kick. Mirrors
  * games/penalty-pressure/ (Canvas 2D, zero deps, one cached stadium layer,
@@ -12,6 +12,14 @@
  * X lateral (0 = the ball), Y height, Z downfield (0 = the holder's spot).
  * Deliberately generic: no league or club names, logos, colours or players.
  * Colours are KPMG palette only (rgba() values derive from palette hexes).
+ *
+ * Styled to the "Spring into Play" newsletter it ships with: its sky blue
+ * (Light Blue at 44% on white, #C3EBFF, against the page's #C3E7F4),
+ * clouds and sun, blossom (which also shows the wind), red, white and blue pyro
+ * after the MCG debut photo, a halftone burst after the page's halftone kicker
+ * print, and Bebas Neue for display type (the page's condensed headline caps,
+ * and kpmg-bold's heavy-sans display). All drawn here: nothing is lifted from
+ * the Canva file, and the font is the site's own vendored OFL subset.
  */
 (function () {
     'use strict';
@@ -20,6 +28,10 @@
     var W = 400, H = 700;
     var HUD_H = GameEngine.HUD_HEIGHT;       // 48
     var C = KPMG.colours;
+    var PINK = '#FD349C', BLUSH = '#FFA3DA';     // extended palette (brand-colours.md, series 9 and 10)
+    var BLOSSOM = [BLUSH, PINK, C.lightPurple, C.white];
+    // the site's vendored subset (see ../multiplex/index.html); it has A-Z a-z 0-9 and ' ! . , / + - :
+    var FD = '"Bebas Neue", "Arial Black", Arial, sans-serif';
 
     /* ---- camera (yards -> logical px) ----
        The camera looks along the ball-to-posts line, so the posts are always
@@ -106,7 +118,9 @@
     var aimT, aimDir, aimOff, powT, powDir, power;
     var result, flightT, flightDur, outcomeTimer;
     var ball, kicker, refs, cam, flash, callout, trail, streamT;
-    var bg = null, field = null;
+    var bg = null, field = null, tone = null;
+    var pyro = [];             // queued bursts: { t, x, y, color }
+    var petals = [];           // spring blossom on the wind, screen space
 
     function reset() {
         RM = GameEngine.prefersReducedMotion();
@@ -115,7 +129,11 @@
         cam = { trauma: 0, shakeX: 0, shakeY: 0, zoom: 1 };
         flash = { a: 0, color: C.white };
         callout = { text: '', sub: '', color: C.white, glyph: '', t: 0, life: 0, active: false };
-        trail = []; streamT = 0;
+        trail = []; streamT = 0; pyro.length = 0;
+        if (!petals.length) for (var i = 0; i < 18; i++) petals.push({
+            x: Math.random() * W, y: HUD_H + 50 + Math.random() * 560, s: lerp(2.5, 5, Math.random()),
+            ph: Math.random() * 6.28, color: BLOSSOM[i % BLOSSOM.length]
+        });
         particlesClear();
         setupKick();
     }
@@ -186,14 +204,26 @@
                 ctx.save(); ctx.translate(P.x[i], P.y[i]); ctx.rotate(P.rot[i]);
                 ctx.fillRect(-P.size[i] / 2, -P.size[i] / 3, P.size[i], P.size[i] * 0.6);
                 ctx.restore();
+            } else if (P.kind[i] === 2) {                 // a spark: a short streak along its velocity
+                ctx.strokeStyle = P.color[i]; ctx.lineWidth = P.size[i] * 0.7; ctx.lineCap = 'round';
+                ctx.beginPath(); ctx.moveTo(P.x[i], P.y[i]); ctx.lineTo(P.x[i] - P.vx[i] * 0.06, P.y[i] - P.vy[i] * 0.06); ctx.stroke();
             } else {
                 ctx.fillRect(P.x[i] - P.size[i] / 2, P.y[i] - P.size[i] / 2, P.size[i], P.size[i]);
             }
         }
         ctx.globalAlpha = 1;
     }
-    var CONFETTI = { kind: 0, colors: C.palette, spread: 1.6, spMin: 120, spMax: 300, lifeMin: 1.0, lifeMax: 1.9, szMin: 5, szMax: 9, grav: 260, spreadX: 30, spreadY: 10 };
+    var CONFETTI = { kind: 0, colors: BLOSSOM.concat([C.amber]), spread: 1.6, spMin: 120, spMax: 300, lifeMin: 1.0, lifeMax: 1.9, szMin: 5, szMax: 9, grav: 260, spreadX: 30, spreadY: 10 };
     var TURF = { kind: 1, colors: [C.green, C.white, C.dark], spread: 1.2, spMin: 40, spMax: 150, lifeMin: 0.3, lifeMax: 0.6, szMin: 2, szMax: 4, grav: 520, spreadX: 10, spreadY: 4 };
+    // pyro fountains along the dead-ball line, red, white and blue as in the debut photo;
+    // four pulses each, one colour per pulse
+    var PYRO = { kind: 2, colors: null, spread: 0.45, spMin: 200, spMax: 320, lifeMin: 0.9, lifeMax: 1.4, szMin: 3, szMax: 4.5, grav: 260, spreadX: 6, spreadY: 2 };
+    var PYRO_RWB = [C.red, C.white, C.pacific];
+    function queuePyro(n) {
+        var y = sy(0, postsZ + 12);
+        for (var i = 0; i < n; i++) for (var j = 0; j < 4; j++)
+            pyro.push({ t: j * 0.12 + i * 0.05, x: lerp(40, 360, i / (n - 1)), y: y, color: PYRO_RWB[(i + j) % 3] });
+    }
 
     /* ============================================================
        INPUT: one verb (tap / Space / Enter / Up)
@@ -256,10 +286,11 @@
             GameEngine.state.score = score;
             refs.up = 0.0001;
             flashNow(C.teal, 0.35); addTrauma(0.5);
-            emit(55, CONFETTI, gx - 60, gy, -Math.PI / 2 + 0.5);
-            emit(55, CONFETTI, gx + 60, gy, -Math.PI / 2 - 0.5);
+            emit(35, CONFETTI, gx - 60, gy, -Math.PI / 2 + 0.5);
+            emit(35, CONFETTI, gx + 60, gy, -Math.PI / 2 - 0.5);
+            queuePyro(perfect ? 6 : 4);
             var title = result.kind === 'middle' ? 'DOWN THE MIDDLE!' : result.doink ? 'DOINK... GOOD!' : "IT'S GOOD!";
-            showCallout(perfect ? 'PERFECT TEN!' : title, '+' + pts + (perfect ? '  +' + MODEL.PERFECT + ' BONUS' : '  ·  ' + dist + ' YD'),
+            showCallout(perfect ? 'PERFECT TEN!' : title, '+' + pts + (perfect ? '  +' + MODEL.PERFECT + ' BONUS' : ' FROM ' + dist + ' YD'),
                         result.kind === 'middle' || perfect ? C.pacific : C.teal, '✔');
             sfx('roar');
         } else {
@@ -327,6 +358,20 @@
         }
         if (refs.up > 0) refs.up = Math.min(1, refs.up + dt * 5);
         if (refs.wave > 0) refs.wave += dt;
+        for (var q = pyro.length - 1; q >= 0; q--) {
+            if ((pyro[q].t -= dt) > 0) continue;
+            PYRO.colors = [pyro[q].color];
+            emit(10, PYRO, pyro[q].x, pyro[q].y, -Math.PI / 2);
+            pyro.splice(q, 1);
+        }
+        if (!RM) for (var n = 0; n < petals.length; n++) {     // blossom rides the wind: ~5 px/s per km/h
+            var pt = petals[n];
+            pt.ph += dt * 2.2;
+            pt.x += (wind * 5 + Math.sin(pt.ph) * 14) * dt;
+            pt.y += (10 + Math.cos(pt.ph * 0.7) * 8) * dt;
+            if (pt.x > W + 8) pt.x = -8; else if (pt.x < -8) pt.x = W + 8;
+            if (pt.y > H - 30) pt.y = HUD_H + 44;
+        }
         updateParticles(dt);
         if (callout.active) { callout.life += dt; callout.t = Math.min(1, callout.t + dt / 0.3); if (callout.life > 1.3) callout.active = false; }
         if (cam.trauma > 0) {
@@ -346,56 +391,64 @@
         cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
         var b = cv.getContext('2d'); b.scale(dpr, dpr);
 
-        var sky = b.createLinearGradient(0, HUD_H, 0, 300);
-        sky.addColorStop(0, C.purple); sky.addColorStop(0.55, C.blue); sky.addColorStop(1, C.cobalt);
+        // the newsletter's spring sky: Light Blue on white, a touch deeper overhead
+        b.fillStyle = C.white; b.fillRect(0, 0, W, H);
+        var sky = b.createLinearGradient(0, HUD_H, 0, 170);
+        sky.addColorStop(0, rgba(C.lightBlue, 0.6)); sky.addColorStop(1, rgba(C.lightBlue, 0.38));
         b.fillStyle = sky; b.fillRect(0, 0, W, H);
-        for (var st = 0; st < 40; st++) {                       // a few stars
-            b.fillStyle = rgba(C.white, 0.25 + Math.random() * 0.4);
-            b.fillRect(Math.random() * W, HUD_H + 40 + Math.random() * 70, 1.2, 1.2);
-        }
 
-        // city skyline beyond the far stand: a generic CBD, one crowned tower
+        // city skyline beyond the far stand, pale as on the cover: a generic CBD, one crowned tower
         var towers = [[8, 22, 58], [30, 16, 40], [46, 20, 72], [66, 14, 50], [80, 24, 96], [104, 12, 44],
                       [300, 18, 48], [318, 22, 80], [340, 14, 58], [354, 26, 104], [380, 16, 62]];
-        for (var t = 0; t < towers.length; t++) {
-            var tx = towers[t][0], tw = towers[t][1], th = towers[t][2];
-            b.fillStyle = rgba(C.blue, 0.95); b.fillRect(tx, 176 - th, tw, th + 10);
-            for (var wy = 176 - th + 5; wy < 176; wy += 6) for (var wx = tx + 3; wx < tx + tw - 2; wx += 5)
-                if (Math.random() < 0.35) { b.fillStyle = rgba(C.lightBlue, 0.45); b.fillRect(wx, wy, 1.6, 2); }
-        }
+        b.fillStyle = rgba(C.pacific, 0.3);
+        for (var t = 0; t < towers.length; t++) b.fillRect(towers[t][0], 176 - towers[t][2], towers[t][1], towers[t][2] + 10);
         b.fillStyle = C.amber; b.fillRect(354, 72, 26, 6);        // the crowned tower's gold cap
         b.fillStyle = rgba(C.amber, 0.6); b.fillRect(364, 60, 6, 12);
 
-        // six leaning light towers ringing the ground, lamp banks up top
-        var lt = [[24, 120, 0.18], [120, 108, -0.05], [280, 108, 0.05], [376, 120, -0.18]];   // clear of the scoreboard
-        b.save(); b.globalCompositeOperation = 'lighter';
-        for (var i = 0; i < lt.length; i++) {
-            var g = b.createRadialGradient(lt[i][0], lt[i][1], 3, lt[i][0], lt[i][1], 150);
-            g.addColorStop(0, rgba(C.lightBlue, 0.55)); g.addColorStop(0.35, rgba(C.pacific, 0.16)); g.addColorStop(1, rgba(C.pacific, 0));
-            b.fillStyle = g; b.fillRect(0, 0, W, 330);
+        // the sun, peeking out as on the starters page: rounded rays, then the disc
+        var sunX = 62, sunY = 104;
+        b.strokeStyle = C.amber; b.lineCap = 'round'; b.lineWidth = 5;
+        for (var ray = 0; ray < 10; ray++) {
+            var ra = ray / 10 * Math.PI * 2;
+            b.beginPath(); b.moveTo(sunX + Math.cos(ra) * 27, sunY + Math.sin(ra) * 27);
+            b.lineTo(sunX + Math.cos(ra) * 37, sunY + Math.sin(ra) * 37); b.stroke();
         }
-        b.restore();
+        b.fillStyle = C.amber; b.beginPath(); b.arc(sunX, sunY, 21, 0, Math.PI * 2); b.fill();
+
+        // soft cloud banks drifting over the skyline, as on the cover
+        [[168, 112, 1], [252, 96, 0.8], [330, 128, 0.9], [10, 136, 0.7]].forEach(function (cl) {
+            var cx = cl[0], cy = cl[1], k2 = cl[2];
+            b.fillStyle = rgba(C.white, 0.92);
+            b.beginPath();
+            b.arc(cx, cy, 13 * k2, 0, Math.PI * 2); b.arc(cx + 16 * k2, cy - 7 * k2, 16 * k2, 0, Math.PI * 2);
+            b.arc(cx + 34 * k2, cy, 12 * k2, 0, Math.PI * 2); b.rect(cx, cy, 34 * k2, 12 * k2);
+            b.fill();
+        });
+
+        // four leaning light towers ringing the ground, lamps off in daylight
+        var lt = [[24, 120, 0.18], [120, 108, -0.05], [280, 108, 0.05], [376, 120, -0.18]];   // clear of the scoreboard
         for (var m = 0; m < lt.length; m++) {
             var x0 = lt[m][0], y0 = lt[m][1], lean = lt[m][2];
-            b.strokeStyle = rgba(C.dark, 0.95); b.lineWidth = 4;
+            b.strokeStyle = rgba(C.dark, 0.85); b.lineWidth = 4;
             b.beginPath(); b.moveTo(x0 - lean * 90, 190); b.lineTo(x0, y0 + 6); b.stroke();
             b.save(); b.translate(x0, y0); b.rotate(lean);
-            b.fillStyle = rgba(C.dark, 0.95); GameEngine.drawRoundedRect(b, -16, -8, 32, 14, 2); b.fill();
+            b.fillStyle = rgba(C.dark, 0.9); GameEngine.drawRoundedRect(b, -16, -8, 32, 14, 2); b.fill();
             for (var r = 0; r < 2; r++) for (var c = 0; c < 6; c++) {
-                b.fillStyle = C.white; b.fillRect(-13 + c * 4.6, -5.5 + r * 5.5, 3, 3.5);
+                b.fillStyle = C.light; b.fillRect(-13 + c * 4.6, -5.5 + r * 5.5, 3, 3.5);
             }
             b.restore();
         }
 
-        // the stand: a deep bowl, three tiers, a roof line, crowd speckle
-        var tiers = [[150, 186, 0.9], [186, 226, 0.85], [226, 300, 0.95]];
+        // the stand: a deep bowl in the shade of its roof, three tiers, crowd speckle
+        var tiers = [[150, 186, 0.92], [186, 226, 0.85], [226, 300, 0.8]];
         for (var tr = 0; tr < tiers.length; tr++) {
             b.fillStyle = rgba(tr === 1 ? C.cobalt : C.blue, tiers[tr][2]);
             b.fillRect(0, tiers[tr][0], W, tiers[tr][1] - tiers[tr][0]);
             b.fillStyle = rgba(C.dark, 0.45); b.fillRect(0, tiers[tr][1] - 3, W, 3);
         }
-        b.fillStyle = rgba(C.dark, 0.9); b.fillRect(0, 146, W, 6);           // roof edge
-        var crowd = [C.lightPurple, C.light, C.lightBlue, C.white, C.pacific, C.amber];
+        b.fillStyle = C.border; b.fillRect(0, 144, W, 5);                   // white roof edge
+        b.fillStyle = rgba(C.dark, 0.5); b.fillRect(0, 149, W, 3);          // its shadow
+        var crowd = [C.lightPurple, C.light, C.lightBlue, C.white, C.pacific, C.amber, C.red, BLUSH];
         for (var cc = 0; cc < 1500; cc++) {
             var cy = 153 + Math.random() * 145;
             if (cy > 183 && cy < 189 || cy > 223 && cy < 229) continue;
@@ -451,7 +504,7 @@
         if (fs < 4) return;
         var squash = clamp01((sy(0, p[1]) - sy(0, p[1] + sizeYd)) / fs);   // lie it flat on the turf
         b.save(); b.translate(sx(p[0], p[1]), sy(0, p[1] + sizeYd / 2)); b.scale(1, Math.max(0.1, squash));
-        b.font = 'bold ' + Math.round(fs) + 'px Arial, Helvetica, sans-serif';
+        b.font = 'bold ' + Math.round(fs) + 'px ' + FD;
         b.textAlign = 'center'; b.textBaseline = 'middle'; b.fillStyle = rgba(C.white, alpha);
         b.fillText(text, 0, 0); b.restore();
     }
@@ -492,15 +545,15 @@
         }
         b.strokeStyle = rgba(C.pacific, 0.9); fline(b, L, 7, R, 7, 0.16);   // line of scrimmage
 
-        // depth fade at the fence, a light pool on the spot, the vignette
+        // the stand's shadow across the far turf, sun on the spot, a light vignette
         var fade = b.createLinearGradient(0, fence, 0, fence + 60);
-        fade.addColorStop(0, rgba(C.cobalt, 0.5)); fade.addColorStop(1, rgba(C.cobalt, 0));
+        fade.addColorStop(0, rgba(C.dark, 0.35)); fade.addColorStop(1, rgba(C.dark, 0));
         b.fillStyle = fade; b.fillRect(0, fence, W, 60);
-        var pool = b.createRadialGradient(200, sy(0, 0), 8, 200, sy(0, 0), 150);
-        pool.addColorStop(0, rgba(C.lightBlue, 0.14)); pool.addColorStop(1, rgba(C.lightBlue, 0));
+        var pool = b.createRadialGradient(200, sy(0, 0), 8, 200, sy(0, 0), 170);
+        pool.addColorStop(0, rgba(C.amber, 0.12)); pool.addColorStop(1, rgba(C.amber, 0));
         b.fillStyle = pool; b.fillRect(0, fence, W, H - fence);
-        var vg = b.createRadialGradient(200, 380, 140, 200, 380, 430);
-        vg.addColorStop(0, rgba(C.blue, 0)); vg.addColorStop(1, rgba(C.dark, 0.5));
+        var vg = b.createRadialGradient(200, 380, 160, 200, 380, 430);
+        vg.addColorStop(0, rgba(C.dark, 0)); vg.addColorStop(1, rgba(C.dark, 0.3));
         b.fillStyle = vg; b.fillRect(0, fence, W, H - fence);
         return cv;
     }
@@ -529,6 +582,7 @@
         if (!behind) drawBall(ctx);
         drawParticles(ctx);
         ctx.restore();
+        drawPetals(ctx);
 
         if (flash.a > 0) {
             ctx.save(); ctx.globalAlpha = flash.a; ctx.fillStyle = flash.color;
@@ -546,15 +600,22 @@
         var lw = Math.max(2.5, s * 0.22);
         ctx.save();
         ctx.lineCap = 'round';
-        // shadow side then face, so the yellow reads round under the lights
-        ctx.strokeStyle = rgba(C.dark, 0.5); ctx.lineWidth = lw + 2;
-        ctx.beginPath(); ctx.moveTo(xm + 1, base); ctx.lineTo(xm + 1, bar + s * 0.6);
-        ctx.quadraticCurveTo(xm + 1, bar, xm - s * 1.2, bar); ctx.lineTo(xl + 1, bar); ctx.lineTo(xl + 1, top);
-        ctx.moveTo(xm, bar); ctx.lineTo(xr + 1, bar); ctx.lineTo(xr + 1, top); ctx.stroke();
-        ctx.strokeStyle = C.amber; ctx.lineWidth = lw;
-        ctx.beginPath(); ctx.moveTo(xm, base); ctx.lineTo(xm, bar + s * 0.6);
-        ctx.quadraticCurveTo(xm, bar, xm - s * 1.2, bar); ctx.lineTo(xl, bar); ctx.lineTo(xl, top);
-        ctx.moveTo(xm, bar); ctx.lineTo(xr, bar); ctx.lineTo(xr, top); ctx.stroke();
+        // marker-pen posts, as in the newsletter's hand-drawn goal graphic: dark outline,
+        // yellow body, a white highlight. The outline also keeps them clear of a pale sky.
+        function frame(w, color) {
+            ctx.strokeStyle = color; ctx.lineWidth = w;
+            ctx.beginPath(); ctx.moveTo(xm, base); ctx.lineTo(xm, bar + s * 0.6);
+            ctx.quadraticCurveTo(xm, bar, xm - s * 1.2, bar); ctx.lineTo(xl, bar); ctx.lineTo(xl, top);
+            ctx.moveTo(xm, bar); ctx.lineTo(xr, bar); ctx.lineTo(xr, top); ctx.stroke();
+        }
+        frame(lw + 3, C.dark);
+        frame(lw, C.amber);
+        if (lw > 3) {                                    // highlight on the uprights only
+            var hx = -lw * 0.22;
+            ctx.strokeStyle = rgba(C.white, 0.75); ctx.lineWidth = Math.max(1, lw * 0.25);
+            ctx.beginPath(); ctx.moveTo(xl + hx, bar - lw); ctx.lineTo(xl + hx, top);
+            ctx.moveTo(xr + hx, bar - lw); ctx.lineTo(xr + hx, top); ctx.stroke();
+        }
         // padding on the base post
         ctx.fillStyle = C.blue; ctx.fillRect(xm - lw * 1.3, base - s * 2, lw * 2.6, s * 2);
         // wind streamers on top of each upright, streaming downwind
@@ -679,7 +740,7 @@
         ctx.beginPath(); ctx.moveTo(ks * 0.1, -ks * 0.6); ctx.quadraticCurveTo(ks * 0.25, -ks * 0.25, fx, fy); ctx.stroke();
         ctx.fillStyle = C.dark; ctx.beginPath(); ctx.ellipse(fx, fy, ks * 0.14, ks * 0.08, 0.4, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = C.blue; GameEngine.drawRoundedRect(ctx, -ks * 0.32, -ks * 1.35, ks * 0.64, ks * 0.8, ks * 0.14); ctx.fill();
-        ctx.fillStyle = C.white; ctx.font = 'bold ' + Math.round(ks * 0.42) + 'px Arial, Helvetica, sans-serif';
+        ctx.fillStyle = C.white; ctx.font = 'bold ' + Math.round(ks * 0.52) + 'px ' + FD;
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('3', 0, -ks * 0.98);
         ctx.fillStyle = C.pacific; ctx.fillRect(-ks * 0.32, -ks * 0.66, ks * 0.64, ks * 0.08);
         ctx.strokeStyle = C.blue; ctx.lineWidth = ks * 0.16;
@@ -716,7 +777,7 @@
         }
         ctx.rotate(ball.flying || phase === 'kick' ? ball.spin : -0.12);
         var g = ctx.createRadialGradient(-r * 0.4, -r * 0.3, r * 0.1, 0, 0, r * 1.5);
-        g.addColorStop(0, C.amber); g.addColorStop(1, C.dark);      // leather under the lights
+        g.addColorStop(0, C.amber); g.addColorStop(1, C.dark);      // leather
         ctx.fillStyle = g;
         ctx.beginPath(); ctx.ellipse(0, 0, r * 0.62, r, 0, 0, Math.PI * 2); ctx.fill();
         ctx.strokeStyle = rgba(C.white, 0.9); ctx.lineWidth = 1; ctx.stroke();
@@ -732,13 +793,17 @@
         if (phase !== 'aim' && phase !== 'power') return;
         var off = phase === 'aim' ? lerp(-MODEL.AIM_SPAN, MODEL.AIM_SPAN, aimT) : aimOff;
         var z = postsZ, x = sx(off, z), top = sy(MODEL.TOP, z), bar = sy(MODEL.BAR, z);
+        var y1 = Math.max(HUD_H + 44, top);
         ctx.save();
-        ctx.strokeStyle = rgba(C.white, phase === 'aim' ? 0.9 : 0.55); ctx.lineWidth = 2;
         ctx.setLineDash([5, 5]);
-        ctx.beginPath(); ctx.moveTo(x, bar + 8); ctx.lineTo(x, Math.max(HUD_H + 44, top)); ctx.stroke();
+        ctx.strokeStyle = rgba(C.dark, phase === 'aim' ? 0.7 : 0.4); ctx.lineWidth = 4;   // outline: it crosses a pale sky
+        ctx.beginPath(); ctx.moveTo(x, bar + 8); ctx.lineTo(x, y1); ctx.stroke();
+        ctx.strokeStyle = rgba(C.white, phase === 'aim' ? 0.95 : 0.6); ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(x, bar + 8); ctx.lineTo(x, y1); ctx.stroke();
         ctx.setLineDash([]);
         ctx.fillStyle = phase === 'aim' ? C.white : rgba(C.white, 0.6);
-        ctx.beginPath(); ctx.moveTo(x, bar + 6); ctx.lineTo(x - 7, bar + 18); ctx.lineTo(x + 7, bar + 18); ctx.closePath(); ctx.fill();
+        ctx.strokeStyle = rgba(C.dark, 0.7); ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(x, bar + 6); ctx.lineTo(x - 7, bar + 18); ctx.lineTo(x + 7, bar + 18); ctx.closePath(); ctx.fill(); ctx.stroke();
         ctx.restore();
         label(ctx, phase === 'aim' ? 'TAP TO AIM' : 'TAP TO SET POWER', 200, 668, C.white, 14);
     }
@@ -767,7 +832,7 @@
 
     function label(ctx, text, x, y, color, size) {
         ctx.save();
-        ctx.font = 'bold ' + size + 'px Arial, Helvetica, sans-serif';
+        ctx.font = 'bold ' + Math.round(size * 1.3) + 'px ' + FD;
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillStyle = rgba(C.dark, 0.6); ctx.fillText(text, x + 1, y + 1);
         ctx.fillStyle = color; ctx.fillText(text, x, y);
@@ -778,19 +843,52 @@
         if (!callout.active) return;
         var s = RM ? 1 : 0.4 + outBack(callout.t) * 0.6;
         var a = callout.life > 0.9 ? Math.max(0, 1 - (callout.life - 0.9) / 0.4) : 1;
+        if (!tone) tone = buildTone();
         ctx.save();
         ctx.translate(200, 400); ctx.scale(s, s); ctx.globalAlpha = a;
+        ctx.drawImage(tone, -tone.W / 2, -tone.H / 2 - 8, tone.W, tone.H);   // halftone burst, as in the print
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.font = 'bold 38px Arial, Helvetica, sans-serif';          // shape channel: tick or cross
-        ctx.lineWidth = 5; ctx.strokeStyle = C.white; ctx.strokeText(callout.glyph, 0, -46);
-        ctx.fillStyle = callout.color; ctx.fillText(callout.glyph, 0, -46);
-        var fs = callout.text.length > 12 ? 30 : 42;
-        ctx.font = 'bold ' + fs + 'px Arial, Helvetica, sans-serif';
-        ctx.lineWidth = 6; ctx.strokeStyle = C.white; ctx.strokeText(callout.text, 0, 0);
+        ctx.lineWidth = 5; ctx.strokeStyle = C.white; ctx.strokeText(callout.glyph, 0, -52);
+        ctx.fillStyle = callout.color; ctx.fillText(callout.glyph, 0, -52);
+        var fs = callout.text.length > 12 ? 44 : 58;
+        ctx.font = 'bold ' + fs + 'px ' + FD;
+        ctx.lineJoin = 'round';
+        ctx.lineWidth = 8; ctx.strokeStyle = C.dark; ctx.strokeText(callout.text, 0, 0);
+        ctx.lineWidth = 5; ctx.strokeStyle = C.white; ctx.strokeText(callout.text, 0, 0);
         ctx.fillStyle = callout.color; ctx.fillText(callout.text, 0, 0);
-        ctx.font = 'bold 15px Arial, Helvetica, sans-serif';
-        ctx.lineWidth = 4; ctx.strokeStyle = rgba(C.dark, 0.8); ctx.strokeText(callout.sub, 0, 32);
-        ctx.fillStyle = C.white; ctx.fillText(callout.sub, 0, 32);
+        ctx.font = 'bold 21px ' + FD;
+        ctx.lineWidth = 4; ctx.strokeStyle = rgba(C.dark, 0.85); ctx.strokeText(callout.sub, 0, 36);
+        ctx.fillStyle = C.white; ctx.fillText(callout.sub, 0, 36);
+        ctx.restore();
+    }
+
+    /* A round halftone burst: dots on a grid, shrinking from the centre out.
+       Built once; Light Blue like the kicker print behind the MCG story. */
+    function buildTone() {
+        var RX = 150, RY = 80, dpr = Math.min(window.devicePixelRatio || 1, 2);   // an oval that holds the callout
+        var cv = document.createElement('canvas');
+        cv.width = Math.round(RX * 2 * dpr); cv.height = Math.round(RY * 2 * dpr); cv.W = RX * 2; cv.H = RY * 2;
+        var b = cv.getContext('2d'); b.scale(dpr, dpr);
+        b.fillStyle = rgba(C.lightBlue, 0.55);
+        for (var y = 4, row = 0; y < RY * 2; y += 7, row++) for (var x = 4 + (row % 2) * 3.5; x < RX * 2; x += 7) {
+            var d = Math.sqrt((x - RX) * (x - RX) / (RX * RX) + (y - RY) * (y - RY) / (RY * RY));
+            if (d >= 1) continue;
+            b.beginPath(); b.arc(x, y, 3.3 * (1 - d), 0, Math.PI * 2); b.fill();
+        }
+        return cv;
+    }
+
+    function drawPetals(ctx) {
+        if (RM) return;                    // still petals read as dirt on the lens; the streamers carry the wind
+        ctx.save();
+        for (var i = 0; i < petals.length; i++) {
+            var p = petals[i];
+            ctx.fillStyle = p.color;
+            ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.ph);
+            ctx.beginPath(); ctx.ellipse(0, 0, p.s, p.s * 0.55, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.restore();
+        }
         ctx.restore();
     }
 
@@ -802,17 +900,17 @@
         ctx.strokeStyle = rgba(C.amber, 0.8); ctx.lineWidth = 1.5;
         GameEngine.drawRoundedRect(ctx, 8, y, W - 16, h, 5); ctx.stroke();
         ctx.textBaseline = 'middle';
-        ctx.textAlign = 'left'; ctx.fillStyle = C.white; ctx.font = 'bold 13px Arial, Helvetica, sans-serif';
+        ctx.textAlign = 'left'; ctx.fillStyle = C.white; ctx.font = 'bold 17px ' + FD;
         ctx.fillText('KICK ' + Math.min(k + 1, MODEL.KICKS.length) + '/' + MODEL.KICKS.length, 18, y + 12);
         ctx.fillStyle = C.amber; ctx.fillText(dist + ' YD', 18, y + 26);
         // wind: arrow shape + number, readable without colour
-        ctx.textAlign = 'center'; ctx.fillStyle = rgba(C.white, 0.7); ctx.font = 'bold 10px Arial, Helvetica, sans-serif';
+        ctx.textAlign = 'center'; ctx.fillStyle = rgba(C.white, 0.7); ctx.font = 'bold 13px ' + FD;
         ctx.fillText('WIND', 200, y + 10);
-        ctx.fillStyle = C.white; ctx.font = 'bold 13px Arial, Helvetica, sans-serif';
+        ctx.fillStyle = C.white; ctx.font = 'bold 17px ' + FD;
         var arrow = wind === 0 ? '•' : wind < 0 ? '◀ ' : '';
         var arrowR = wind > 0 ? ' ▶' : '';
         ctx.fillText(arrow + Math.abs(wind) + ' km/h' + arrowR, 200, y + 25);
-        ctx.textAlign = 'right'; ctx.font = 'bold 13px Arial, Helvetica, sans-serif';
+        ctx.textAlign = 'right'; ctx.font = 'bold 17px ' + FD;
         ctx.fillStyle = C.white; ctx.fillText('MADE ' + made, W - 18, y + 12);
         ctx.fillStyle = streak > 1 ? C.amber : rgba(C.white, 0.55);
         ctx.fillText(streak > 1 ? 'STREAK x' + streak : (hash < 0 ? 'LEFT HASH' : hash > 0 ? 'RIGHT HASH' : 'MIDDLE'), W - 18, y + 26);
@@ -824,14 +922,17 @@
        ============================================================ */
     function init() {
         GameEngine.initCanvas('game-container', { width: W, height: H, maxWidth: 640 });
+        // the field layer bakes its text, so rebuild it once the display face arrives;
+        // blocked or slow, the game plays on in Arial Black
+        if (document.fonts && document.fonts.load) document.fonts.load('bold 20px "Bebas Neue"').then(function () { field = null; }, function () { });
         GameEngine.startGame(GAME_ID, {
             instructions: {
                 title: "FIELD GOAL AT THE 'G",
-                objective: 'Gridiron has come to the MCG. Line up ten field goals under the lights, from 20 yards out to 62, and split the uprights.',
+                objective: 'Gridiron has come to the MCG. Line up ten field goals in the spring sunshine, from 20 yards out to 62, and split the uprights.',
                 controls: [
                     'Tap / Space to lock your AIM (it sweeps left and right)',
                     'Tap / Space again to set POWER, just past the white line',
-                    'Watch the wind: aim into it, or it carries the kick wide'
+                    'Watch the wind (the streamers and the blossom show it): aim into it, or it carries the kick wide'
                 ],
                 legend: {
                     collect: [
