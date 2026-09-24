@@ -1,6 +1,6 @@
 # Newsletter Games
 
-Browser-based minigames platform for KPMG newsletter engagement. Staff authenticate with their `@kpmg.com.au` email and compete on a shared leaderboard across 14 themed games.
+Browser-based minigames platform for KPMG newsletter engagement. Staff authenticate with their `@kpmg.com.au` email and compete on a shared leaderboard across 16 themed games.
 
 ### Games
 
@@ -20,6 +20,8 @@ Browser-based minigames platform for KPMG newsletter engagement. Staff authentic
 | Tax Tetris | Tetris variant |
 | Penalty Pressure | Penalty shootout (June 2026 World Cup edition) |
 | FLASH! Red Carpet Rush | Paparazzi timing game (August 2026 edition) |
+| MULTIPLEX | Nine-screen microgame gauntlet (September 2026 edition) |
+| Field Goal at the 'G | Gridiron field goal kicking at the MCG (October 2026 edition) |
 
 ### Quick Start
 
@@ -35,7 +37,7 @@ python server.py           # Start HTTP server
 - `init_db.py` — Database initialisation
 - `index.html` — Game hub landing page
 - `assets/` — Shared CSS (`hub.css`), JS (`hub.js`, `auth.js`, `leaderboard.js`, `game-engine.js`), plus `edition.json` (static-mode featured game)
-- `games/` — 14 game directories, each with `index.html` and `game.js` (newer games add `audio.js`)
+- `games/` — 16 game directories, each with `index.html` and `game.js` (newer games add `audio.js`)
 - `games.db` — SQLite database for scores and authentication
 
 ### Deployment

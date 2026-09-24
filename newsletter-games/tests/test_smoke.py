@@ -89,17 +89,17 @@ class TestNewsletterGamesSmoke(unittest.TestCase):
         self.assertIn("'red-carpet-rush': '\\u{1F4F8}'", hub)
         self.assertIn("id: 'red-carpet-rush'", hub)
 
-    def test_static_edition_points_at_september(self):
+    def test_static_edition_points_at_october(self):
         """Static/GitHub-Pages mode reads the featured game from edition.json.
 
-        Cut over to 2026-09/multiplex on 2026-08-28, four days before the August
-        edition's own close date of 2026-08-31, on an explicit instruction to
-        publish the September game early. That is a deliberate decision, not
-        drift: it retires red-carpet-rush from the featured slot while its
-        competition is still open, and this test is the record of it.
+        Cut over to 2026-10/field-goal before the September edition's own close
+        date of 2026-09-30, for the newsletter that carries it (same precedent as
+        the 2026-08-28 MULTIPLEX cutover). That retires multiplex from the
+        featured slot while its competition is still open, and this test is the
+        record of it.
 
-        The +10:00 offset on closesAt is correct for 2026-09-30: Melbourne
-        daylight saving does not begin until the first Sunday in October.
+        The +11:00 offset on closesAt is correct for 2026-10-31: Melbourne
+        daylight saving begins on the first Sunday in October (2026-10-04).
         """
         import json
 
@@ -107,9 +107,9 @@ class TestNewsletterGamesSmoke(unittest.TestCase):
             os.path.join(PROJECT_DIR, "assets", "edition.json"), encoding="utf-8"
         ) as fh:
             edition = json.load(fh)
-        self.assertEqual(edition["slug"], "2026-09")
-        self.assertEqual(edition["featuredGameId"], "multiplex")
-        self.assertEqual(edition["closesAt"], "2026-09-30T23:59:00+10:00")
+        self.assertEqual(edition["slug"], "2026-10")
+        self.assertEqual(edition["featuredGameId"], "field-goal")
+        self.assertEqual(edition["closesAt"], "2026-10-31T23:59:00+11:00")
 
     def test_multiplex_game_present(self):
         """September 2026 'MULTIPLEX' game files exist: shell, harness, all 9 screens."""
@@ -154,6 +154,33 @@ class TestNewsletterGamesSmoke(unittest.TestCase):
             hub = fh.read()
         self.assertIn("'multiplex': '\\u{1F3AC}'", hub)
         self.assertIn("id: 'multiplex'", hub)
+
+    def test_field_goal_game_present(self):
+        """October 2026 'Field Goal at the 'G' files exist, plus the audio kit it borrows."""
+        game_dir = os.path.join(PROJECT_DIR, "games", "field-goal")
+        for fname in ("index.html", "game.js"):
+            path = os.path.join(game_dir, fname)
+            self.assertTrue(os.path.isfile(path), f"Expected field-goal file missing: {fname}")
+            self.assertGreater(os.path.getsize(path), 0, f"{fname} should not be empty")
+        with open(os.path.join(game_dir, "index.html"), encoding="utf-8") as fh:
+            shell = fh.read()
+        self.assertIn('src="../penalty-pressure/audio.js"', shell)
+        self.assertTrue(os.path.isfile(os.path.join(PROJECT_DIR, "games", "penalty-pressure", "audio.js")))
+
+    def test_field_goal_seeded_and_rotation(self):
+        """field-goal takes 2026-10; the displaced budget-blitz lands a slot in the same change."""
+        with open(os.path.join(PROJECT_DIR, "init_db.py"), encoding="utf-8") as fh:
+            seed = fh.read()
+        self.assertIn("\"field-goal\", \"Field Goal at the 'G\"", seed)
+        self.assertIn('"field-goal",           0, "2026-10-31"', seed)
+        self.assertIn('"budget-blitz",         0, "2027-07-31"', seed)
+
+    def test_field_goal_registered_in_hub(self):
+        """The hub needs both an icon and a static-mode entry or the tile is invisible."""
+        with open(os.path.join(PROJECT_DIR, "assets", "hub.js"), encoding="utf-8") as fh:
+            hub = fh.read()
+        self.assertIn("'field-goal': '\\u{1F3C8}'", hub)
+        self.assertIn("id: 'field-goal'", hub)
 
 
 if __name__ == "__main__":

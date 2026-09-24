@@ -19,7 +19,8 @@ const GAME_ICONS = {
     'strategy-snake': '\u{1F40D}',
     'penalty-pressure': '⚽',
     'red-carpet-rush': '\u{1F4F8}',
-    'multiplex': '\u{1F3AC}'
+    'multiplex': '\u{1F3AC}',
+    'field-goal': '\u{1F3C8}'
 };
 
 /** Maximum attempts per game per edition */
@@ -58,7 +59,8 @@ const Hub = {
         { id: 'strategy-snake', title: 'Strategy Snake', description: 'Grow your strategy by collecting insights' },
         { id: 'penalty-pressure', title: 'After-Hours Shootout', description: 'Match night at the pub — take 10 World Cup penalties for KPMG United' },
         { id: 'red-carpet-rush', title: 'FLASH! Red Carpet Rush', description: 'MIFF opening night: hold to focus, release to shoot, catch them mid-pose' },
-        { id: 'multiplex', title: 'MULTIPLEX', description: 'Hop between nine screens in a multiplex on movie night, one quick move each, three lives' }
+        { id: 'multiplex', title: 'MULTIPLEX', description: 'Hop between nine screens in a multiplex on movie night, one quick move each, three lives' },
+        { id: 'field-goal', title: "Field Goal at the 'G", description: 'Gridiron comes to the MCG: ten field goals under the lights, 20 to 62 yards, into the wind' }
     ],
 
     async init() {

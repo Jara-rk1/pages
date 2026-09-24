@@ -203,6 +203,16 @@ SEED_GAMES = [
         # anti-forgery floor for casual submissions, not a security control.
         2000000, 15,
     ),
+    (
+        "field-goal", "Field Goal at the 'G",
+        "Gridiron comes to the MCG. Ten field goals under the lights from 20 to "
+        "62 yards: tap to aim into the wind, tap to set the power, split the uprights.",
+        # The exact ceiling is 9,235: all ten kicks dead centre (yards x 10 x 1.5,
+        # 419 yards in all = 6,285), the streak ramp capped at +300 (1,950), and the
+        # 1,000 perfect-ten bonus. A zero-error oracle over 20,000 runs of the game's
+        # own MODEL topped out at 9,178. 10000 leaves ~8% headroom.
+        10000, 16,
+    ),
 ]
 
 # One edition per month, each featuring a different game.
@@ -215,7 +225,7 @@ SEED_EDITIONS = [
     ("2026-07", "July 2026 Newsletter",       "deal-spell",           0, "2026-07-31"),
     ("2026-08", "August 2026 Newsletter",     "red-carpet-rush",      0, "2026-08-31"),
     ("2026-09", "September 2026 Newsletter",  "multiplex",            0, "2026-09-30"),
-    ("2026-10", "October 2026 Newsletter",    "budget-blitz",         0, "2026-10-31"),
+    ("2026-10", "October 2026 Newsletter",    "field-goal",           0, "2026-10-31"),
     ("2026-11", "November 2026 Newsletter",   "merger-match",         0, "2026-11-30"),
     ("2026-12", "December 2026 Newsletter",   "risk-radar",           0, "2026-12-31"),
     ("2027-01", "January 2027 Newsletter",    "pipeline-plumber",     0, "2027-01-31"),
@@ -231,6 +241,9 @@ SEED_EDITIONS = [
     # tax-tetris displaced from 2027-04 by slide-deck-stacker, in this same
     # change, onto a genuinely new slot (2027-05 is already flappy-brief).
     ("2027-06", "June 2027 Newsletter",       "tax-tetris",           0, "2027-06-30"),
+    # budget-blitz displaced from 2026-10 by the October gridiron edition
+    # (field-goal), onto a genuinely new slot in the same change.
+    ("2027-07", "July 2027 Newsletter",       "budget-blitz",         0, "2027-07-31"),
 ]
 
 
