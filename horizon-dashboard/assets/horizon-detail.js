@@ -24,6 +24,12 @@ function tierLabel(score) {
   return 'Cold';
 }
 
+// Critical items must never read as plain Warm: show the gate beside the badge.
+function criticalFlag(sensitivity) {
+  if (sensitivity !== 'critical') return '';
+  return '<span class="sensitivity-badge sensitivity-badge--critical">Route to a partner and Risk before any approach</span>';
+}
+
 function formatDate(dateStr) {
   if (!dateStr) return '';
   var d = new Date(dateStr);
@@ -187,6 +193,7 @@ function renderDetail(opp) {
   html += '      <span class="badge badge--jurisdiction">' + escapeHtml(opp.jurisdiction || '') + '</span>';
   html += '      <span class="badge badge--' + tierCls + '">' + escapeHtml(tier) + '</span>';
   html += '      <span class="sensitivity-badge sensitivity-badge--' + escapeHtml(sensitivity) + '">' + escapeHtml((opp.sensitivity || 'Standard')) + '</span>';
+  html += criticalFlag(sensitivity);
   html += '      <span class="badge badge--status">' + escapeHtml(opp.status || '') + '</span>';
   html += '    </div>';
   html += '  </div>';
@@ -986,6 +993,7 @@ function renderBrief(brief) {
   html += '      <span class="badge badge--jurisdiction">' + escapeHtml(opp.jurisdiction || '') + '</span>';
   html += '      <span class="badge badge--' + tierCls + '">' + escapeHtml(tier) + '</span>';
   html += '      <span class="sensitivity-badge sensitivity-badge--' + escapeHtml(sensitivity) + '">' + escapeHtml(opp.sensitivity || 'Standard') + '</span>';
+  html += criticalFlag(sensitivity);
   html += '      <span class="badge badge--status">' + escapeHtml(opp.status || '') + '</span>';
   html += '    </div>';
   html += '  </div>';
