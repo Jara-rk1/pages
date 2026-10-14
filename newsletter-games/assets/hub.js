@@ -20,7 +20,8 @@ const GAME_ICONS = {
     'penalty-pressure': '⚽',
     'red-carpet-rush': '\u{1F4F8}',
     'multiplex': '\u{1F3AC}',
-    'field-goal': '\u{1F3C8}'
+    'field-goal': '\u{1F3C8}',
+    'ghosts-on-mute': '\u{1F47B}'
 };
 
 /** Maximum attempts per game per edition */
@@ -60,7 +61,8 @@ const Hub = {
         { id: 'penalty-pressure', title: 'After-Hours Shootout', description: 'Match night at the pub — take 10 World Cup penalties for KPMG United' },
         { id: 'red-carpet-rush', title: 'FLASH! Red Carpet Rush', description: 'MIFF opening night: hold to focus, release to shoot, catch them mid-pose' },
         { id: 'multiplex', title: 'MULTIPLEX', description: 'Hop between nine screens in a multiplex on movie night, one quick move each, three lives' },
-        { id: 'field-goal', title: "Field Goal at the 'G", description: "Kick for the 49ers in their 27-7 MCG win: Piñeiro's six kicks from the day, then chase the 68-yard NFL record" }
+        { id: 'field-goal', title: "Field Goal at the 'G", description: "Kick for the 49ers in their 27-7 MCG win: Piñeiro's six kicks from the day, then chase the 68-yard NFL record" },
+        { id: 'ghosts-on-mute', title: 'Ghosts on Mute', description: 'Everyone\'s mic is haunted. Mute the ghosts, leave the presenter alone, keep the call calm.' }
     ],
 
     async init() {

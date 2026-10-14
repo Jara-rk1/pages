@@ -51,6 +51,7 @@ CANVAS_GAMES = [
     ("red-carpet-rush",     400, 700, 640),
     ("multiplex",           400, 700, 460),
     ("field-goal",          400, 700, 640),
+    ("ghosts-on-mute",      400, 700, 640),
 ]
 DOM_GAMES = [
     "deal-spell",

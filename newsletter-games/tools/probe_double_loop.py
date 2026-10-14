@@ -45,6 +45,7 @@ CANVAS_GAMES = [
     "tax-tetris",
     "multiplex",
     "field-goal",
+    "ghosts-on-mute",
 ]
 DOM_GAMES = ["deal-spell", "merger-match"]
 

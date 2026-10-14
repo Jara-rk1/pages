@@ -22,6 +22,7 @@ Browser-based minigames platform for KPMG newsletter engagement. Staff authentic
 | FLASH! Red Carpet Rush | Paparazzi timing game (August 2026 edition) |
 | MULTIPLEX | Nine-screen microgame gauntlet (September 2026 edition) |
 | Field Goal at the 'G | Gridiron field goal kicking at the MCG (October 2026 edition) |
+| Ghosts on Mute | Mute the haunted mics, leave the presenter alone (Spooktober 2026 edition) |
 
 ### Quick Start
 

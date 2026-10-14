@@ -89,17 +89,17 @@ class TestNewsletterGamesSmoke(unittest.TestCase):
         self.assertIn("'red-carpet-rush': '\\u{1F4F8}'", hub)
         self.assertIn("id: 'red-carpet-rush'", hub)
 
-    def test_static_edition_points_at_october(self):
+    def test_static_edition_points_at_november(self):
         """Static/GitHub-Pages mode reads the featured game from edition.json.
 
-        Cut over to 2026-10/field-goal before the September edition's own close
-        date of 2026-09-30, for the newsletter that carries it (same precedent as
-        the 2026-08-28 MULTIPLEX cutover). That retires multiplex from the
-        featured slot while its competition is still open, and this test is the
-        record of it.
+        Cut over to 2026-11/ghosts-on-mute on the push date, before the October
+        edition's own close date of 2026-10-31, for the newsletter that carries
+        it (same precedent as the field-goal and 2026-08-28 MULTIPLEX cutovers).
+        That retires field-goal from the featured slot while its competition is
+        still open, and this test is the record of it.
 
-        The +11:00 offset on closesAt is correct for 2026-10-31: Melbourne
-        daylight saving begins on the first Sunday in October (2026-10-04).
+        The +11:00 offset on closesAt is correct for 2026-11-30: Melbourne
+        daylight saving runs from 2026-10-04 to the first Sunday in April 2027.
         """
         import json
 
@@ -107,9 +107,11 @@ class TestNewsletterGamesSmoke(unittest.TestCase):
             os.path.join(PROJECT_DIR, "assets", "edition.json"), encoding="utf-8"
         ) as fh:
             edition = json.load(fh)
-        self.assertEqual(edition["slug"], "2026-10")
-        self.assertEqual(edition["featuredGameId"], "field-goal")
-        self.assertEqual(edition["closesAt"], "2026-10-31T23:59:00+11:00")
+        self.assertEqual(edition["slug"], "2026-11")
+        self.assertEqual(edition["displayName"], "Spooktober 2026: Ghosts on Mute")
+        self.assertEqual(edition["featuredGameId"], "ghosts-on-mute")
+        self.assertEqual(edition["closesAt"], "2026-11-30T23:59:00+11:00")
+        self.assertEqual(edition["maxAttempts"], 3)
 
     def test_multiplex_game_present(self):
         """September 2026 'MULTIPLEX' game files exist: shell, harness, all 9 screens."""
@@ -181,6 +183,33 @@ class TestNewsletterGamesSmoke(unittest.TestCase):
             hub = fh.read()
         self.assertIn("'field-goal': '\\u{1F3C8}'", hub)
         self.assertIn("id: 'field-goal'", hub)
+
+    def test_ghosts_on_mute_game_present(self):
+        """Spooktober 2026 'Ghosts on Mute' files exist, plus the audio kit it borrows."""
+        game_dir = os.path.join(PROJECT_DIR, "games", "ghosts-on-mute")
+        for fname in ("index.html", "model.js", "art.js", "game.js"):
+            path = os.path.join(game_dir, fname)
+            self.assertTrue(os.path.isfile(path), f"Expected ghosts-on-mute file missing: {fname}")
+            self.assertGreater(os.path.getsize(path), 0, f"{fname} should not be empty")
+        with open(os.path.join(game_dir, "index.html"), encoding="utf-8") as fh:
+            shell = fh.read()
+        self.assertIn('src="../penalty-pressure/audio.js"', shell)
+        self.assertTrue(os.path.isfile(os.path.join(PROJECT_DIR, "games", "penalty-pressure", "audio.js")))
+
+    def test_ghosts_on_mute_seeded_and_rotation(self):
+        """ghosts-on-mute takes 2026-11; the displaced merger-match lands a slot in the same change."""
+        with open(os.path.join(PROJECT_DIR, "init_db.py"), encoding="utf-8") as fh:
+            seed = fh.read()
+        self.assertIn('"ghosts-on-mute", "Ghosts on Mute"', seed)
+        self.assertIn('"ghosts-on-mute",       0, "2026-11-30"', seed)
+        self.assertIn('"merger-match",         0, "2027-08-31"', seed)
+
+    def test_ghosts_on_mute_registered_in_hub(self):
+        """The hub needs both an icon and a static-mode entry or the tile is invisible."""
+        with open(os.path.join(PROJECT_DIR, "assets", "hub.js"), encoding="utf-8") as fh:
+            hub = fh.read()
+        self.assertIn("'ghosts-on-mute': '\\u{1F47B}'", hub)
+        self.assertIn("id: 'ghosts-on-mute'", hub)
 
 
 if __name__ == "__main__":

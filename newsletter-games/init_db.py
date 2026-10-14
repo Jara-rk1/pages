@@ -213,6 +213,13 @@ SEED_GAMES = [
         # game's own MODEL topped out at 10,031. 11000 leaves ~8% headroom.
         11000, 16,
     ),
+    (
+        "ghosts-on-mute", "Ghosts on Mute",
+        "Everyone's mic is haunted. Mute the ghosts, leave the presenter alone, "
+        "keep the call calm for 60 seconds.",
+        # max_score = G4 oracle ceiling (model.oracle().maxScore over seeds 1-1000).
+        42500, 17,
+    ),
 ]
 
 # One edition per month, each featuring a different game.
@@ -226,7 +233,7 @@ SEED_EDITIONS = [
     ("2026-08", "August 2026 Newsletter",     "red-carpet-rush",      0, "2026-08-31"),
     ("2026-09", "September 2026 Newsletter",  "multiplex",            0, "2026-09-30"),
     ("2026-10", "October 2026 Newsletter",    "field-goal",           0, "2026-10-31"),
-    ("2026-11", "November 2026 Newsletter",   "merger-match",         0, "2026-11-30"),
+    ("2026-11", "November 2026 Newsletter",   "ghosts-on-mute",       0, "2026-11-30"),
     ("2026-12", "December 2026 Newsletter",   "risk-radar",           0, "2026-12-31"),
     ("2027-01", "January 2027 Newsletter",    "pipeline-plumber",     0, "2027-01-31"),
     ("2027-02", "February 2027 Newsletter",   "kpi-catcher",          0, "2027-02-28"),
@@ -244,6 +251,9 @@ SEED_EDITIONS = [
     # budget-blitz displaced from 2026-10 by the October gridiron edition
     # (field-goal), onto a genuinely new slot in the same change.
     ("2027-07", "July 2027 Newsletter",       "budget-blitz",         0, "2027-07-31"),
+    # merger-match displaced from 2026-11 by the Spooktober edition
+    # (ghosts-on-mute), onto a genuinely new slot in the same change.
+    ("2027-08", "August 2027 Newsletter",     "merger-match",         0, "2027-08-31"),
 ]
 
 
