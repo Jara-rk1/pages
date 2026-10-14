@@ -26,12 +26,12 @@
     var TUNING = Object.freeze({
         ROUND_S: 60,
         CALM_START: 100,
-        CALM_END_BONUS: 5,              // end bonus = calm * this
+        CALM_END_BONUS: 20,             // end bonus = calm * this
         FIRST_SPAWN_S: 0.8,
         SPAWN_INTERVAL_START_S: 1.3,
-        SPAWN_INTERVAL_END_S: 0.8,
+        SPAWN_INTERVAL_END_S: 0.7,
         HAUNT_LIFE_START_S: 2.2,
-        HAUNT_LIFE_END_S: 2.0,
+        HAUNT_LIFE_END_S: 1.6,
         CONCURRENT_STEPS: Object.freeze([[10, 1], [25, 2], [40, 3]]),   // [under t, max]
         MAX_CONCURRENT_END: 4,
         FLASH_MAX_PER_S: 3,
@@ -39,11 +39,12 @@
         PRESENTER_ROTATE_S: 15,
         MUTED_HOLD_S: 0.4,
         MUDDLED_S: 0.6,
-        MUTE_BASE: 100,
-        MUTE_SPEED_BONUS: 50,
-        STREAK_STEP_TENTHS: 1,          // multiplier = min(2.0, 1 + 0.1 * streak), in tenths
+        MUTE_BASE: 50,                  // plus up to MUTE_SPEED_BONUS for a quick mute: speed decides the score
+        MUTE_SPEED_BONUS: 150,
+        STREAK_STEP_TENTHS: 1,          // multiplier = min(STREAK_MULT_MAX_TENTHS, 10 + streak) / 10
         STREAK_MULT_MAX_TENTHS: 35,
-        EXPIRE_CALM: 5,
+        EXPIRE_CALM: 5,                 // and an escape breaks the streak
+        PRESENTER_TAP_CALM: 10,
         ECHO_LIFE_MULT: 0.8,
         ECHO_POINTS: 25,
         PAIR_FROM_S: 15,
@@ -148,6 +149,7 @@
 
     function expire(s, i, ev) {
         var g = s.tiles[i].ghost;
+        s.streak = 0;
         settle(s.tiles[i], 'muddled', T.MUDDLED_S);
         if (g.kind === 'emoji') {
             s.calm = Math.max(0, s.calm - T.EMOJI_CALM);
@@ -249,7 +251,7 @@
     function tap(s, i) {
         var tl = s.tiles[i];
         if (s.ended || !tl) return { result: 'miss', points: 0, flash: false };
-        if (i === s.presenter) { s.streak = 0; return { result: 'presenter', points: 0, flash: false }; }
+        if (i === s.presenter) { s.streak = 0; s.calm = Math.max(0, s.calm - T.PRESENTER_TAP_CALM); return { result: 'presenter', points: 0, flash: false }; }
         if (tl.state === 'idle') { s.streak = 0; return { result: 'miss', points: 0, flash: false }; }
         // ponytail: a tap on a tile already muted or muddled is a miss that keeps the streak (no
         // double-tap penalty); the spec names only idle and presenter as wrong taps.

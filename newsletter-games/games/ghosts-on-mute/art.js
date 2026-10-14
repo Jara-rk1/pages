@@ -12,6 +12,7 @@
  *          fx[].onset: the model's ledger ask id; fx sharing one onset are one flash.
  *          copy = { title, handles[12], presenting, glitch, captions } from game.js COPY; fallbacks below.
  *          captions drawn: mute|echo|pair (muted tile), replyAll|laugh (haunted tile), presenter (oops toast),
+ *          escaped (expire toast),
  *          calmLow (Calm <= 30 toast), dropped (Calm 0 toast), calm and secondsLeft (call bar labels).
  *   debug: frames (running), travel and fades (this frame), flashes (running count of distinct flash onsets).
  *
@@ -90,7 +91,7 @@
     // COPY.captions (game.js) with neutral fallbacks; every caption is a Bebas display string (G15)
     var CAP = { mute: 'Muted!', echo: 'Echo muted', pair: 'No, you go ahead!', presenter: 'Oops, they were presenting',
         replyAll: 'Reply-all ghost', laugh: 'Giggle ghost', calmLow: 'Keep it calm', dropped: 'The call dropped',
-        calm: 'Calm', secondsLeft: 'Left' };
+        escaped: 'A ghost got away', calm: 'Calm', secondsLeft: 'Left' };
     var CAPTION_MS = 1200, CALM_LOW = 30;
     function cap(view, key) {
         var c = view && view.copy && view.copy.captions;
@@ -339,11 +340,12 @@
     }
 
     function collectFx(view, state) {
-        var out = { press: {}, miss: {}, arrive: {}, result: {}, list: [], presenter: null, glitch: null, oops: false };
+        var out = { press: {}, miss: {}, arrive: {}, result: {}, list: [], presenter: null, glitch: null, oops: false, escaped: false };
         var fx = view.fx || [], now = view.now || 0;
         for (var n = 0; n < fx.length; n++) {
             var f = fx[n]; if (!f) continue;
             if (f.type === 'oops' && now - (f.t0 || 0) < CAPTION_MS) out.oops = true;   // the caption outlives the shake
+            if (f.type === 'expire' && now - (f.t0 || 0) < CAPTION_MS) out.escaped = true;
             var dur = DUR[f.type]; if (!dur) continue;
             var k = (now - (f.t0 || 0)) / dur;
             if (k < 0 || k >= 1) continue;
@@ -364,7 +366,7 @@
     }
 
     /* ---- call bar ---- */
-    function drawCallBar(ctx, state, view, gk, oops) {
+    function drawCallBar(ctx, state, view, gk, oops, escaped) {
         var b = layout.callBar, now = view.now || 0, copy = view.copy || {};
         ctx.fillStyle = P.PLUM; ctx.fillRect(b.x, b.y, b.w, b.h);
         ctx.fillStyle = P.INK; ctx.fillRect(b.x, b.y + b.h - 2, b.w, 2);
@@ -388,9 +390,9 @@
         }
         // calm meter: the number is printed too, so colour is never the only signal
         var calm = Math.max(0, Math.min(100, state && typeof state.calm === 'number' ? state.calm : 100));
-        // a caption toast over the title slot: dropped, then a presenter tap, then low Calm
+        // a caption toast over the title slot: dropped, then a presenter tap, then an escape, then low Calm
         var toast = calm <= 0 && state && state.ended ? cap(view, 'dropped') : oops ? cap(view, 'presenter') :
-            calm > 0 && calm <= CALM_LOW && !gl ? cap(view, 'calmLow') : null;   // the glitch banner outranks calmLow
+            escaped ? cap(view, 'escaped') : calm > 0 && calm <= CALM_LOW && !gl ? cap(view, 'calmLow') : null;   // the glitch banner outranks calmLow
         if (toast) {
             rr(ctx, 26, b.y + 4, 212, 26, 6); ctx.fillStyle = P.GHOST; ctx.fill();
             ctx.font = '20px ' + FD; ctx.fillStyle = P.INK; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
@@ -440,7 +442,7 @@
         var fx = collectFx(view, state);
         // one flash ledger (plan 2.7): a denied glitch onset ramps in over 1 s (glitch fx lives 1.5 s in game.js)
         var gk = fx.glitch && !fx.glitch.flash ? clamp01(fx.glitch.k * DUR.glitch / 1000) : 1;
-        drawCallBar(ctx, state, view, gk, fx.oops);
+        drawCallBar(ctx, state, view, gk, fx.oops, fx.escaped);
 
         // glitch: full = tint wave plus 2 px jitter; reduce = tint crossfade only (2 s or longer)
         var gOn = glitchOn(state), jx = 0;

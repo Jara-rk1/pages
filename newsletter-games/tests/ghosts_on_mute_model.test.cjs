@@ -80,13 +80,14 @@ function hauntedAt(s, i, kind, life, extra) {
 test('TUNING is frozen and carries the 3.4-3.6 numbers', () => {
     assert.ok(Object.isFrozen(T));
     assert.equal(T.ROUND_S, 60);
-    assert.deepEqual([T.SPAWN_INTERVAL_START_S, T.SPAWN_INTERVAL_END_S, T.HAUNT_LIFE_START_S, T.HAUNT_LIFE_END_S], [1.3, 0.8, 2.2, 2.0]);
+    assert.deepEqual([T.SPAWN_INTERVAL_START_S, T.SPAWN_INTERVAL_END_S, T.HAUNT_LIFE_START_S, T.HAUNT_LIFE_END_S], [1.3, 0.7, 2.2, 1.6]);
     assert.deepEqual([0, 9.9, 10, 24.9, 25, 39.9, 40, 59].map(M.maxConcurrent), [1, 1, 2, 2, 3, 3, 4, 4]);
     assert.deepEqual([T.FLASH_MAX_PER_S, T.PRESENTER_ROTATE_S, T.MUTED_HOLD_S, T.MUDDLED_S], [3, 15, 0.4, 0.6]);
     assert.deepEqual([T.PAIR_FROM_S, T.PAIR_WINDOW_S, T.PAIR_BONUS, T.REPLY_ALL_FROM_S, T.REPLY_ALL_BONUS, T.REPLY_ALL_MAX_SPREAD], [15, 1.5, 100, 25, 50, 3]);
     assert.deepEqual([T.EMOJI_FROM_S, T.EMOJI_LIFE_S, T.EMOJI_BONUS, T.EMOJI_CALM, T.GLITCH_START_S, T.GLITCH_END_S, T.GLITCH_SPAWN_MULT], [35, 0.8, 150, 3, 42, 47, 1.6]);
-    assert.deepEqual([T.CALM_START, T.CALM_END_BONUS, T.EXPIRE_CALM, T.ECHO_POINTS, T.ECHO_LIFE_MULT], [100, 5, 5, 25, 0.8]);
-    assert.ok(Math.abs(M.spawnInterval(30) - 1.05) < 1e-9 && Math.abs(M.spawnInterval(44) - M.spawnInterval(41.999) / 1.6) < 0.02);
+    assert.deepEqual([T.CALM_START, T.CALM_END_BONUS, T.EXPIRE_CALM, T.PRESENTER_TAP_CALM, T.ECHO_POINTS, T.ECHO_LIFE_MULT], [100, 20, 5, 10, 25, 0.8]);
+    assert.deepEqual([T.MUTE_BASE, T.MUTE_SPEED_BONUS, T.STREAK_MULT_MAX_TENTHS], [50, 150, 35]);
+    assert.ok(Math.abs(M.spawnInterval(30) - 1.0) < 1e-9 && Math.abs(M.spawnInterval(44) - M.spawnInterval(41.999) / 1.6) < 0.02);
 });
 
 test('model is pure: no Math.random, no DOM', () => {
@@ -135,7 +136,7 @@ test('60 s end: perfect play ends at ROUND_S once, with Calm 100 and the end bon
     assert.equal(s.calm, 100);
     const ends = events.filter(e => e.type === 'end');
     assert.equal(ends.length, 1);
-    assert.equal(ends[0].bonus, 500);
+    assert.equal(ends[0].bonus, 100 * T.CALM_END_BONUS);
     assert.deepEqual(M.step(s, DT), []);
     assert.equal(M.tap(s, 0).result, 'miss');
 });
@@ -159,15 +160,15 @@ test('unlock times: pair 15 s, reply-all 25 s, emoji 35 s, glitch once at 42-47 
     assert.equal(glitches, 200);
 });
 
-test('scoring arithmetic: speed bonus, streak multiplier and its cap (W3: 3.5)', () => {
-    assert.equal(M.mutePoints(0, 2, 0), 150);
+test('scoring arithmetic: 50 base plus up to 150 for speed, streak multiplier and its cap (3.5)', () => {
+    assert.equal(M.mutePoints(0, 2, 0), 200);
     assert.equal(M.mutePoints(1, 2, 0), 125);
-    assert.equal(M.mutePoints(3, 2, 0), 100);
-    assert.equal(M.mutePoints(0, 2, 3), 195);
+    assert.equal(M.mutePoints(3, 2, 0), 50);
+    assert.equal(M.mutePoints(0, 2, 3), 260);
     assert.equal(M.mutePoints(1, 2, 7), 212);      // floor(125 * 1.7)
-    assert.equal(M.mutePoints(0, 2, 10), 300);
-    assert.equal(M.mutePoints(0, 2, 25), 525);
-    assert.equal(M.mutePoints(0, 2, 40), 525);
+    assert.equal(M.mutePoints(0, 2, 10), 400);
+    assert.equal(M.mutePoints(0, 2, 25), 700);
+    assert.equal(M.mutePoints(0, 2, 40), 700);
     const s = M.createRound(1);
     const i = (s.presenter + 1) % 12;
     hauntedAt(s, i, 'normal', 2);
@@ -175,9 +176,9 @@ test('scoring arithmetic: speed bonus, streak multiplier and its cap (W3: 3.5)',
     const r = M.tap(s, i);
     assert.deepEqual([r.result, r.points, s.streak, s.score, s.tiles[i].state], ['mute', 175, 5, 175, 'muted']);
     hauntedAt(s, i, 'replyall', 2);
-    assert.equal(M.tap(s, i).points, Math.floor(150 * 1.5) + 50);
+    assert.equal(M.tap(s, i).points, Math.floor(200 * 1.5) + 50);
     hauntedAt(s, i, 'emoji', 0.8);
-    assert.equal(M.tap(s, i).points, Math.floor(150 * 1.6) + 150);
+    assert.equal(M.tap(s, i).points, Math.floor(200 * 1.6) + 150);
 });
 
 test('echo mute is a flat 25 and leaves the streak alone', () => {
@@ -189,12 +190,13 @@ test('echo mute is a flat 25 and leaves the streak alone', () => {
     assert.deepEqual([r.result, r.points, s.streak, s.score], ['echo', 25, 6, 25]);
 });
 
-test('wrong taps (idle, presenter) reset the streak and nothing else; muted tile tap keeps it', () => {
+test('wrong taps reset the streak, a presenter tap also costs PRESENTER_TAP_CALM; muted tile tap keeps it', () => {
     const s = M.createRound(1);
     const p = s.presenter, idle = (p + 1) % 12;
     s.streak = 5;
     let r = M.tap(s, p);
-    assert.deepEqual([r.result, r.points, s.streak, s.calm, s.score], ['presenter', 0, 0, 100, 0]);
+    assert.deepEqual([r.result, r.points, s.streak, s.calm, s.score], ['presenter', 0, 0, 100 - T.PRESENTER_TAP_CALM, 0]);
+    s.calm = 100;
     s.streak = 5;
     r = M.tap(s, idle);
     assert.deepEqual([r.result, s.streak, s.calm], ['miss', 0, 100]);
@@ -212,20 +214,21 @@ test('pair bonus inside PAIR_WINDOW_S only', () => {
     s.t += 1.4;
     const r = M.tap(s, b);
     assert.equal(r.result, 'pair');
-    assert.equal(r.points, Math.floor(150 * 1.1) + 100);
+    assert.equal(r.points, Math.floor(200 * 1.1) + 100);
     hauntedAt(s, a, 'pair', 2, { pairId: 10 }); hauntedAt(s, b, 'pair', 2, { pairId: 10 });
     M.tap(s, a); s.t += 1.6;
     assert.equal(M.tap(s, b).result, 'mute');
 });
 
-test('expiry: Calm -EXPIRE_CALM, one hop as echo (life x0.8) to an adjacent idle non-presenter; echo expiry leaves', () => {
+test('expiry: Calm -EXPIRE_CALM, streak broken, one hop as echo (life x0.8) to an adjacent idle non-presenter; echo expiry leaves', () => {
     const s = M.createRound(5);
     s.presenter = 11; s.queue.spawnIn = 99;
     hauntedAt(s, 4, 'normal', 1);
-    s.tiles[4].ghost.age = 1;
+    s.tiles[4].ghost.age = 1; s.streak = 5;
     const ev = M.step(s, DT);
     const hop = ev.find(e => e.type === 'hop');
     assert.equal(s.calm, 100 - T.EXPIRE_CALM);
+    assert.equal(s.streak, 0);
     assert.ok(M.ADJ[4].includes(hop.tile) && hop.tile !== 11 && hop.from === 4);
     assert.equal(s.tiles[4].state, 'muddled');
     assert.equal(s.tiles[hop.tile].ghost.kind, 'echo');

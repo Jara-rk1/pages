@@ -218,7 +218,7 @@ SEED_GAMES = [
         "Everyone's mic is haunted. Mute the ghosts, leave the presenter alone, "
         "keep the call calm for 60 seconds.",
         # max_score = G4 oracle ceiling (model.oracle().maxScore over seeds 1-1000).
-        42500, 17,
+        61000, 17,
     ),
 ]
 

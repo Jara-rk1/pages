@@ -35,7 +35,7 @@
     var COLS = 3, ROWS = 4, TILES = COLS * ROWS;
     var FX_TTL_MS = 1500;
     // the G4 ceiling: equals init_db.py ghosts-on-mute max_score and model.oracle().maxScore (seeds 1-1000)
-    var RANK_CEILING = 42500;
+    var RANK_CEILING = 61000;
 
     /* ============================================================
        COPY (W3 copy lane owns this block)
@@ -61,6 +61,7 @@
             laugh: 'Giggle ghost',
             calmLow: 'Keep it calm',
             dropped: 'The call dropped',
+            escaped: 'A ghost got away',
             calm: 'Calm',
             secondsLeft: 'Left'
         },
@@ -74,23 +75,22 @@
         ],
         instructions: {
             title: 'GHOSTS ON MUTE',
-            objective: "Enjoy this edition's game. Everyone's mic is haunted, so help them out: mute each ghost before it drifts to the next caller. Keep the call calm for 60 seconds.",
+            objective: "Enjoy this edition's game. Everyone's mic is haunted, so help them out: mute each ghost before it gets away. Keep the call calm for 60 seconds.",
             controls: [
-                'Tap or click a haunted tile to mute its ghost (arrow keys and Space work too)',
-                'Leave the presenter alone: a wrong tap only resets your streak'
+                'Tap or click a haunted tile to mute its ghost (arrow keys and Space work too)'
             ],
             legend: {
                 collect: [
-                    { icon: '\u{1F47B}', label: 'Haunted mic', points: '100' },
+                    { icon: '\u{1F47B}', label: 'Haunted mic', points: '50-200' },
                     { icon: '\u{1F46F}', label: 'Pair, both quick', points: '100' },
                     { icon: '\u{1F602}', label: 'Giggle ghost', points: '150' }
                 ],
                 avoid: [
-                    { icon: '\u{1F5A5}\u{FE0F}', label: 'The presenter' },
-                    { icon: '\u{231B}', label: 'Lingering ghosts' }
+                    { icon: '\u{1F5A5}\u{FE0F}', label: 'Presenter tap, -10 Calm' },
+                    { icon: '\u{231B}', label: 'Ghost escapes, -5 Calm' }
                 ]
             },
-            tip: 'Quick mutes score more and build a streak. A ghost left too long costs Calm and hops to a neighbour.'
+            tip: 'Quick mutes score more, and a streak multiplies them. Escapes and wrong taps end the streak, and an escaped ghost haunts a neighbour. Leftover Calm is a bonus; run out and the call drops.'
         }
     };
 
@@ -98,7 +98,7 @@
     function displayStrings() {
         var c = COPY.captions;
         return [COPY.title, COPY.instructions.title, COPY.presenting, COPY.glitch,
-            c.mute, c.echo, c.pair, c.presenter, c.replyAll, c.laugh, c.calmLow, c.dropped, c.calm, c.secondsLeft]
+            c.mute, c.echo, c.pair, c.presenter, c.replyAll, c.laugh, c.calmLow, c.dropped, c.escaped, c.calm, c.secondsLeft]
             .concat(COPY.ranks.map(function (r) { return r.title; }))
             .concat(COUNTDOWN_STEPS, [PAUSED_LABEL]);
     }
