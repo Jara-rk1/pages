@@ -1,5 +1,5 @@
 // Ghosts on Mute model tests (G2, G4 oracle, G9). Run:
-//   node --test --test-reporter=tap newsletter-games/tests/ghosts_on_mute_model.test.cjs
+//   node --test --test-reporter=tap dashboards/newsletter-games/tests/ghosts_on_mute_model.test.cjs
 'use strict';
 const test = require('node:test');
 const assert = require('node:assert/strict');

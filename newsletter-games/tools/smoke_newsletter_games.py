@@ -6,8 +6,8 @@ Covers:
   * Sibling regression — non-Easter games must NOT show the legend rows
   * Responsive scaling across 9 viewports for all 15 games (13 canvas, 2 DOM)
 
-Run: python newsletter-games/tools/smoke_newsletter_games.py
-Assumes a server at http://localhost:8765 serving newsletter-games/.
+Run: python dashboards/newsletter-games/tools/smoke_newsletter_games.py
+Assumes a server at http://localhost:8765 serving dashboards/newsletter-games/.
 """
 import json
 from pathlib import Path

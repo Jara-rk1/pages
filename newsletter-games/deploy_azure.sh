@@ -100,12 +100,12 @@ URL=$("$AZ" webapp show \
 # Smoke the deploy before claiming success.
 #
 # gunicorn 23.0.0 -> 26.0.0 (PR #30, merged 2026-08-20) is the one bump in that PR
-# that NO test covers: no workflow installs newsletter-games/requirements.txt, and
+# that NO test covers: no workflow installs dashboards/newsletter-games/requirements.txt, and
 # news-dashboard.yml rsyncs with --exclude='requirements.txt'. So CI cannot catch a
 # gunicorn regression here; only this deploy can.
 #
 # Analysis clears the obvious failure modes. startup.sh runs the DEFAULT sync worker
-# (no --worker-class, and no eventlet/gevent anywhere in newsletter-games/), so 26's
+# (no --worker-class, and no eventlet/gevent anywhere in dashboards/newsletter-games/), so 26's
 # headline breaking change, eventlet worker removal, does not apply. Its three flags
 # (--bind, --timeout, --workers) are all core and unchanged. PyPI reports
 # requires_python ">=3.10" for 26.0.0 and PYTHON_VERSION above is exactly "3.10", so
@@ -137,7 +137,7 @@ if [ "$CODE" != "200" ]; then
     echo ""
     echo "  The deploy itself succeeded, so the app is up but not serving."
     echo "  Logs:     az webapp log tail --name kpmg-minigames --resource-group kpmg-minigames-rg"
-    echo "  Rollback: pin gunicorn==23.0.0 in newsletter-games/requirements.txt, redeploy."
+    echo "  Rollback: pin gunicorn==23.0.0 in dashboards/newsletter-games/requirements.txt, redeploy."
     echo "  ========================================"
     exit 1
 fi

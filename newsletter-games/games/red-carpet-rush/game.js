@@ -8,7 +8,7 @@
  * (did you catch the pose). Best frame of the night makes the cover.
  *
  * The build plan for this game lives in the private workspace, deliberately
- * NOT inside newsletter-games/: this tree is rsynced to a public Pages repo on
+ * NOT inside dashboards/newsletter-games/: this tree is rsynced to a public Pages repo on
  * merge to main, and the plan carries internal-only material.
  *
  * ---------------------------------------------------------------------------
