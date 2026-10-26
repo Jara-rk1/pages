@@ -14,7 +14,7 @@
  * PALETTE (decision D2, 2026-10-13): the newsletter's own, not KPMG's. The newsletter
  * is not KPMG branded, so no exception request; brand_validator.py flags these
  * hexes and that is expected. Declared set, also in
- * docs/decisions/2026-10-13-ghosts-on-mute-palette.md:
+ * internal/newsletter/decisions/2026-10-13-ghosts-on-mute-palette.md:
  *   INK #151726, PLUM #462B41, LILAC #EDDCF3, LAVENDER #EEECFA, PERIWINKLE #AFB7D1,
  *   PUMPKIN #F2882D, GHOST #ECECEC, CREAM #C0B19B, MAUVE #6E6463.
  * WCAG text contrast is measured in art.js and index.html, where the pairs are drawn.

@@ -15,10 +15,10 @@ game and asserts:
   * renderCountdown ran once, not twice
   * the game loop advances once per animation frame, not twice
 
-Run against a server rooted at dashboards/newsletter-games/:
+Run against a server rooted at internal/newsletter/games/:
 
     python -m http.server 8765 --bind 127.0.0.1 --directory newsletter-games
-    python dashboards/newsletter-games/tools/probe_double_loop.py --url http://127.0.0.1:8765
+    python internal/newsletter/games/tools/probe_double_loop.py --url http://127.0.0.1:8765
 
 Exit 0 when every game passes.
 """

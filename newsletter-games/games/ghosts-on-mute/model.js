@@ -1,6 +1,6 @@
 /**
  * Ghosts on Mute: the round model (pure: no DOM, no canvas, no Math.random).
- * Spec: docs/plans/2026-10-13-ghosts-on-mute.md sections 2.7, 3.4-3.6 and 5.1.
+ * Spec: internal/newsletter/plans/2026-10-13-ghosts-on-mute.md sections 2.7, 3.4-3.6 and 5.1.
  *
  * State (plain, JSON-safe):
  *   {t, calm, score, streak, tiles[12], presenter, queue: {spawnIn, presenterIn},

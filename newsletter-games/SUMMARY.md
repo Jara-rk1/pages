@@ -61,7 +61,7 @@ Activation: `python3 manage.py activate 2026-08`
 ## Architecture
 
 ```
-dashboards/newsletter-games/
+internal/newsletter/games/
 ├── server.py              ← Python HTTP server + JSON API (stdlib only, no dependencies)
 ├── init_db.py             ← SQLite schema + seed data
 ├── manage.py              ← CLI: activate editions, export leaderboard, reset users
