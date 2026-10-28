@@ -11,7 +11,7 @@ Static portfolio landing page + sub-sites, published to **two** GitHub Pages sur
 
 **The public `origin` repo is canonical.** It receives automated dashboard deploys daily (horizon,
 PEPI news, reg-hub CI push directly to `Jara-rk1/pages`), and the KPMG mirror **self-syncs from it
-nightly** (`.github/workflows/sync-public-mirror.yml`, 23:00 UTC, fast-forward only, repo-gated to
+nightly** (`.github/workflows/sync-public-mirror.yml`, 23:43 UTC, fast-forward only, repo-gated to
 run only on the KPMG repo).
 
 For manual edits made here:
@@ -36,4 +36,4 @@ reliably serve stored github.com credentials on this devbox — don't depend on 
 
 - Never wire KPMG CI/automation to push to `origin` ("Public GitHub" is a prohibited software category at KPMG-AU; the personal surface is maintained manually).
 - Only public-appropriate content in this repo — it is world-readable on the public surface.
-- Feasibility evidence + ITS asks for wider KPMG-SSO access: `C:\Claude\docs\plans\2026-06-10-github-pages-emu-public-site-feasibility.md` and `C:\Claude\output\2026-06-10-github-pages-sso-gating-asks.md` (not in this repo).
+- Feasibility evidence + ITS asks for wider KPMG-SSO access: `internal/pages/archive/plans/2026-06-10-github-pages-emu-public-site-feasibility.md` and `internal/pages/records/2026-06-10-github-pages-sso-gating-asks.md` (in the private workspace repo, not in this repo).
