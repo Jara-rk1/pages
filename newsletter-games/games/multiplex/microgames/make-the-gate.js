@@ -14,7 +14,7 @@
     var LIP_H = 6;
 
     /* The shutter panel is deliberately below the flash threshold. Measured on this
-       screen's surface (#47263A): accent2 at full alpha composites to luminance
+       screen's surface (dark plum): accent2 at full alpha composites to luminance
        0.239 against a 0.105 threshold, so a 40 x 552 door counted as 10.6% of the
        play rect on its own and the whole frame measured 10.92% against the 7.95%
        area bound every other screen is held to. It went unseen because the

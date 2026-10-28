@@ -34,13 +34,13 @@
        The area bound that shaped this (bright drawn area under ~16,500 px2, at
        the same 25%-of-field threshold applied to surfaces) is derived in the
        internal art direction, section 3. On this screen `lift` composites over
-       the #3A2418 surface to a warm tan-brown, which is why the suit is `lift`
+       the dark brown surface to a warm tan-brown, which is why the suit is `lift`
        and not a bright fill: it is free AND it is the right colour. The four
        vertical wale lines in `deep` across it are the corduroy, and they are the
        single detail that names the film. Also free, because they subtract.
 
-       No new colour. `accent2` #C9622A is already fox orange and `accent`
-       #8A9440 already reads as cider, so nothing needs registering in TINTS.
+       No new colour. `accent2` is already fox orange and `accent` (olive)
+       already reads as cider, so nothing needs registering in TINTS.
        The rock moves from `accent2` to `dim` precisely because the fox now needs
        the orange, and a root in dull grey-brown is what belongs in a burrow
        cross-section anyway. Its two state-encoding alphas are unchanged. */

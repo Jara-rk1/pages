@@ -57,7 +57,7 @@
 
     /* ---- Art only. Nothing below this line is read by init or update. ----
        The castle: a static silhouette in `deep`, which composites to a 1.4:1
-       mass against this screen's #234A34 surface. That is what a DISTANT
+       mass against this screen's dark green surface. That is what a DISTANT
        silhouette should be, and it is also what keeps it free: `deep` sits
        0.008 above the wipe luminance, well under the 0.10 delta that would make
        it count toward the flashing-area bound (the derivation is in the internal

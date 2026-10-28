@@ -114,12 +114,12 @@
        logical px2, because cuts run at 2.38/second and bright drawn content is
        what actually flips by more than the 0.10 luminance delta on a cut from
        the wipe. A solid yellow robot would have been 29% of the rect, 3.6x over.
-       On this screen `lift` composites to #594C38 (delta 0.071) and `deep` to
-       #261D10 (delta 0.008), so both are free; the silhouette is carried by
+       On this screen `lift` composites to a dark tan (delta 0.071) and `deep` to
+       near-black brown (delta 0.008), so both are free; the silhouette is carried by
        shape and by a 2px outline, not by a bright fill.
 
-       No new colour is proposed. `accent` #D9A83A is already construction
-       yellow and `accent2` #A8C4D4 is already the pale grey-blue of a compacted
+       No new colour is proposed. `accent` is already construction yellow and `accent2` is already the
+       pale grey-blue of a compacted
        brick, so nothing needs registering in TINTS. The dull `lift` body is also
        more accurate than clean yellow: he is filthy for the whole first act. */
     var BODY_X = 88, BODY_W = 200;
@@ -136,7 +136,7 @@
 
        The barrels are `lift`, not `deep`, and that is a correction made after
        looking at the render rather than a preference. `deep` on this screen
-       composites to #261D10 against a #3A2A12 surface, a 1.4:1 mass that is
+       composites to near-black brown against a dark brown surface, a 1.4:1 mass that is
        invisible at 400px: the first version drew the barrels in it and the eye
        whites read as two loose circles floating above the body. `lift` is the
        same tan as the torso, so the head reads as fused hardware, and it is

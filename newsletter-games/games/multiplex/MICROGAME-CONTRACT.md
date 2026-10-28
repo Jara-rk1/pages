@@ -111,8 +111,8 @@ to leak to.
 
 ### `update(dt, stage)` - every frame while the screen is live
 
-Note the argument order: **`dt` first, `stage` second.** `dt` is elapsed seconds, already clamped
-to a 0.1s maximum by the engine, so a tab-out cannot produce a giant step.
+Note the argument order: **`dt` first, `stage` second.** `dt` is elapsed seconds, capped
+at 1/60 s (`MAX_SIM_DT`) by the harness (the engine clamps at 0.1 s first), so a tab-out cannot produce a giant step.
 
 Return `'win'` or `'lose'` to end the screen immediately. Return nothing (or anything else) to keep
 playing. That is the only way to end a screen. There is no `stage.win()`, and there is nothing to
@@ -239,11 +239,11 @@ keeps the control scheme legible across a nine-screen run.
 | Screen | Verb | Reads |
 |---|---|---|
 | FOOD FALLS | Catch it before it lands | `axis` |
-| PIVOT | Rotate to clear the gap | `axis` |
+| PIVOT! | Rotate to clear the gap | `axis` |
 | SUNNIES ON | Lean out of the way | `tapped` |
 | NOTHING BUT NET | Time the release | `held` + `holdT` + `released` |
-| THE CHASE | Chase a darting target | `axis` |
-| INCOMING | Deflect what is incoming | `tapped` + `tapX` / `tapY` |
+| THE CHASE (shipped title SEEKER) | Chase a darting target | `axis` |
+| INCOMING (shipped title ASSEMBLE) | Deflect what is incoming | `tapped` + `tapX` / `tapY` |
 | DIG | Tunnel, grab, get out | `axis` + `held` |
 | MAKE THE GATE | Dash before it closes | `tapped` |
 | COMPACT | Crush on the beat | `tapped` |
@@ -451,7 +451,7 @@ This ships publicly. In any file under `games/multiplex/`, including comments:
 
 - **No colleague names, teams, quotes or attributions.** Attribution lives in the newsletter, not in
   the game.
-- **No source material named.** Do not name the film, show, studio, character or franchise your
+- **No source material named** (film names are allowed in `harness.js` `CREDITS` only, per the s14 override). Do not name the film, show, studio, character or franchise your
   screen was inspired by, in a comment, a variable name, a string or a filename.
 - **No trademarked assets.** No logos, no character likenesses, no franchise wordmarks, no title
   lettering, no signature visual effect. Abstract silhouettes and colour-coding only.
