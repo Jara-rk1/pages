@@ -1,6 +1,6 @@
 # Newsletter Games
 
-Browser-based minigames platform for KPMG newsletter engagement. Staff authenticate with their `@kpmg.com.au` email and compete on a shared leaderboard across 16 themed games.
+Browser-based minigames platform for KPMG newsletter engagement. Staff authenticate with their `@kpmg.com.au` email and compete on a shared leaderboard across 17 themed games.
 
 ### Games
 
@@ -27,7 +27,7 @@ Browser-based minigames platform for KPMG newsletter engagement. Staff authentic
 ### Quick Start
 
 ```bash
-cd newsletter-games
+cd internal/newsletter/games
 python init_db.py          # Initialise SQLite database
 python server.py           # Start HTTP server
 ```
@@ -38,7 +38,7 @@ python server.py           # Start HTTP server
 - `init_db.py` — Database initialisation
 - `index.html` — Game hub landing page
 - `assets/` — Shared CSS (`hub.css`), JS (`hub.js`, `auth.js`, `leaderboard.js`, `game-engine.js`), plus `edition.json` (static-mode featured game)
-- `games/` — 16 game directories, each with `index.html` and `game.js` (newer games add `audio.js`)
+- `games/`: 17 game directories, each with `index.html` and `game.js` (newer games add `audio.js`)
 - `games.db` — SQLite database for scores and authentication
 
 ### Deployment
