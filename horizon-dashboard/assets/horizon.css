@@ -571,7 +571,7 @@ a:hover {
 
 .badge--watch {
     background: var(--kpmg-pacific);
-    color: white;
+    color: #00338D;
 }
 
 .badge--cold {
