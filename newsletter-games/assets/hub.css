@@ -473,7 +473,7 @@ body {
 
 .btn-play.completed {
     background: var(--light-grey);
-    color: var(--white);
+    color: #333333;
     cursor: default;
     pointer-events: none;
 }
