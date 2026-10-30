@@ -17,7 +17,7 @@ game and asserts:
 
 Run against a server rooted at internal/newsletter/games/:
 
-    python -m http.server 8765 --bind 127.0.0.1 --directory newsletter-games
+    python -m http.server 8765 --bind 127.0.0.1 --directory internal/newsletter/games
     python internal/newsletter/games/tools/probe_double_loop.py --url http://127.0.0.1:8765
 
 Exit 0 when every game passes.
