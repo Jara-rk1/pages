@@ -547,4 +547,4 @@ if __name__ == "__main__":
         print("[MINIGAMES] Run init_db.py first to create the database.")
     else:
         print(f"[MINIGAMES] Flask dev server at http://127.0.0.1:8080")
-        app.run(host="127.0.0.1", port=8080, debug=True)
+        app.run(host="127.0.0.1", port=8080, debug=os.environ.get("FLASK_DEBUG") == "1")
