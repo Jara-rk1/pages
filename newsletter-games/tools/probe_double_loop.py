@@ -46,6 +46,7 @@ CANVAS_GAMES = [
     "multiplex",
     "field-goal",
     "ghosts-on-mute",
+    "gate-change",
 ]
 DOM_GAMES = ["deal-spell", "merger-match"]
 

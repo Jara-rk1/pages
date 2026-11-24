@@ -23,6 +23,7 @@ Browser-based minigames platform for KPMG newsletter engagement. Staff authentic
 | MULTIPLEX | Nine-screen microgame gauntlet (September 2026 edition) |
 | Field Goal at the 'G | Gridiron field goal kicking at the MCG (October 2026 edition) |
 | Ghosts on Mute | Mute the haunted mics, leave the presenter alone (Spooktober 2026 edition) |
+| Gate Change | Send travellers to the right gate as the board changes (Travel Edition, November 2026 issue) |
 
 ### Quick Start
 

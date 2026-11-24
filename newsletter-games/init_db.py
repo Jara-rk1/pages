@@ -220,6 +220,13 @@ SEED_GAMES = [
         # max_score = G4 oracle ceiling (model.oracle().maxScore over seeds 1-1000).
         61000, 17,
     ),
+    (
+        "gate-change", "Gate Change",
+        "Last afternoon before the break: get every traveller to the gate the "
+        "board shows, and send packed laptops and cancelled flights to the service desk.",
+        # max_score = oracle ceiling (model.oracle(1000).maxScore: perfect instant play, x1.08, to 500).
+        214000, 18,
+    ),
 ]
 
 # One edition per month, each featuring a different game.
@@ -234,7 +241,7 @@ SEED_EDITIONS = [
     ("2026-09", "September 2026 Newsletter",  "multiplex",            0, "2026-09-30"),
     ("2026-10", "October 2026 Newsletter",    "field-goal",           0, "2026-10-31"),
     ("2026-11", "November 2026 Newsletter",   "ghosts-on-mute",       0, "2026-11-30"),
-    ("2026-12", "December 2026 Newsletter",   "risk-radar",           0, "2026-12-31"),
+    ("2026-12", "December 2026 Newsletter",   "gate-change",          0, "2026-12-31"),
     ("2027-01", "January 2027 Newsletter",    "pipeline-plumber",     0, "2027-01-31"),
     ("2027-02", "February 2027 Newsletter",   "kpi-catcher",          0, "2027-02-28"),
     ("2027-03", "March 2027 Newsletter",      "strategy-snake",       0, "2027-03-31"),
@@ -254,6 +261,9 @@ SEED_EDITIONS = [
     # merger-match displaced from 2026-11 by the Spooktober edition
     # (ghosts-on-mute), onto a genuinely new slot in the same change.
     ("2027-08", "August 2027 Newsletter",     "merger-match",         0, "2027-08-31"),
+    # risk-radar displaced from 2026-12 by the Travel Edition game
+    # (gate-change), onto a genuinely new slot in the same change.
+    ("2027-09", "September 2027 Newsletter",  "risk-radar",           0, "2027-09-30"),
 ]
 
 

@@ -89,16 +89,16 @@ class TestNewsletterGamesSmoke(unittest.TestCase):
         self.assertIn("'red-carpet-rush': '\\u{1F4F8}'", hub)
         self.assertIn("id: 'red-carpet-rush'", hub)
 
-    def test_static_edition_points_at_november(self):
+    def test_static_edition_points_at_december(self):
         """Static/GitHub-Pages mode reads the featured game from edition.json.
 
-        Cut over to 2026-11/ghosts-on-mute on the push date, before the October
-        edition's own close date of 2026-10-31, for the newsletter that carries
-        it (same precedent as the field-goal and 2026-08-28 MULTIPLEX cutovers).
-        That retires field-goal from the featured slot while its competition is
-        still open, and this test is the record of it.
+        Cut over to 2026-12/gate-change on the push date, before the November
+        edition's own close date of 2026-11-30, for the Travel Edition newsletter
+        that carries it (same precedent as the ghosts-on-mute, field-goal and
+        MULTIPLEX cutovers). That retires ghosts-on-mute from the featured slot
+        while its competition is still open, and this test is the record of it.
 
-        The +11:00 offset on closesAt is correct for 2026-11-30: Melbourne
+        The +11:00 offset on closesAt is correct for 2026-12-31: Melbourne
         daylight saving runs from 2026-10-04 to the first Sunday in April 2027.
         """
         import json
@@ -107,10 +107,10 @@ class TestNewsletterGamesSmoke(unittest.TestCase):
             os.path.join(PROJECT_DIR, "assets", "edition.json"), encoding="utf-8"
         ) as fh:
             edition = json.load(fh)
-        self.assertEqual(edition["slug"], "2026-11")
-        self.assertEqual(edition["displayName"], "Spooktober 2026: Ghosts on Mute")
-        self.assertEqual(edition["featuredGameId"], "ghosts-on-mute")
-        self.assertEqual(edition["closesAt"], "2026-11-30T23:59:00+11:00")
+        self.assertEqual(edition["slug"], "2026-12")
+        self.assertEqual(edition["displayName"], "Travel Edition 2026: Gate Change")
+        self.assertEqual(edition["featuredGameId"], "gate-change")
+        self.assertEqual(edition["closesAt"], "2026-12-31T23:59:00+11:00")
         self.assertEqual(edition["maxAttempts"], 3)
 
     def test_multiplex_game_present(self):
@@ -210,6 +210,32 @@ class TestNewsletterGamesSmoke(unittest.TestCase):
             hub = fh.read()
         self.assertIn("'ghosts-on-mute': '\\u{1F47B}'", hub)
         self.assertIn("id: 'ghosts-on-mute'", hub)
+
+    def test_gate_change_game_present(self):
+        """Travel Edition 'Gate Change' files exist, plus the audio kit it borrows."""
+        game_dir = os.path.join(PROJECT_DIR, "games", "gate-change")
+        for fname in ("index.html", "model.js", "art.js", "game.js"):
+            path = os.path.join(game_dir, fname)
+            self.assertTrue(os.path.isfile(path), f"Expected gate-change file missing: {fname}")
+            self.assertGreater(os.path.getsize(path), 0, f"{fname} should not be empty")
+        with open(os.path.join(game_dir, "index.html"), encoding="utf-8") as fh:
+            shell = fh.read()
+        self.assertIn('src="../penalty-pressure/audio.js"', shell)
+
+    def test_gate_change_seeded_and_rotation(self):
+        """gate-change takes 2026-12; the displaced risk-radar lands a slot in the same change."""
+        with open(os.path.join(PROJECT_DIR, "init_db.py"), encoding="utf-8") as fh:
+            seed = fh.read()
+        self.assertIn('"gate-change", "Gate Change"', seed)
+        self.assertIn('"gate-change",          0, "2026-12-31"', seed)
+        self.assertIn('"risk-radar",           0, "2027-09-30"', seed)
+
+    def test_gate_change_registered_in_hub(self):
+        """The hub needs both an icon and a static-mode entry or the tile is invisible."""
+        with open(os.path.join(PROJECT_DIR, "assets", "hub.js"), encoding="utf-8") as fh:
+            hub = fh.read()
+        self.assertIn("'gate-change': '\\u2708\\uFE0F'", hub)
+        self.assertIn("id: 'gate-change'", hub)
 
 
 if __name__ == "__main__":

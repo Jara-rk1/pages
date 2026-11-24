@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gate Change | KPMG Minigames</title>
+    <style>
+        /* Self-hosted, never a font CDN. Both SIL OFL 1.1, licence beside each file in assets/fonts/.
+           Montserrat (700-900, printable ASCII subset): the newsletter's heavy geometric headline voice.
+           Bebas Neue (the site's shared subset): signage only, the departures board and destinations. */
+        @font-face {
+            font-family: 'Montserrat';
+            src: url('../../assets/fonts/Montserrat-subset.woff2') format('woff2');
+            font-weight: 700 900;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Bebas Neue';
+            src: url('../../assets/fonts/BebasNeue-subset.woff2') format('woff2');
+            font-weight: 400 700;
+            font-style: normal;
+            font-display: swap;
+        }
+        /* The issue's own palette (plan D3, declared in game.js and the decision file), not KPMG's.
+           Text pairs, WCAG 2.x, measured in python (decision file):
+             #FFF2B0 on #890202 (header title)    #FFF6E6 on #890202 (header icons)
+             #1B1F2A on #FFF6E6 (overlay body)    #890202 on #FFF6E6 (titles, section labels)
+             #1B1F2A on #FFC94A (primary button)  #1B1F2A on #FFF2B0 (legend tiles)
+             #FFFFFF on #2E72C6 (edition pill, 13 px heavy) */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        ::selection { background: #FFC94A; color: #1B1F2A; }
+        body {
+            /* the cover's sky over the terminal floor, lined up with the canvas behind it */
+            background: linear-gradient(180deg, #467BCF 0%, #A2C2F2 37%, #FFF6E6 37%);
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex; flex-direction: column; align-items: center;
+            height: 100dvh; overflow: hidden;
+        }
+        .game-header {
+            width: 100%; background: #890202; color: #FFF6E6;
+            padding: 2px 4px; display: flex; align-items: center; gap: 8px;
+        }
+        .game-header a { color: #FFF6E6; text-decoration: none; min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; }
+        .game-header h1 {
+            font: 900 17px 'Montserrat', 'Arial Black', Arial, sans-serif;
+            text-transform: uppercase; letter-spacing: 0.5px; color: #FFF2B0;
+            text-shadow: 2px 2px 0 #5A0101;
+        }
+        .game-header .mute-btn {
+            margin-left: auto; background: transparent; border: 0; color: #FFF6E6; cursor: pointer;
+            width: 44px; height: 44px; border-radius: 8px; padding: 0; display: inline-flex; align-items: center; justify-content: center;
+        }
+        @media (hover: hover) and (pointer: fine) {
+            .game-header a:hover, .game-header .mute-btn:hover { background: #5A0101; }
+        }
+        .game-header a:focus-visible, .game-header .mute-btn:focus-visible { outline: 2px solid #FFF2B0; outline-offset: 2px; }
+        #game-container {
+            position: relative; width: 100%; max-width: 1600px;
+            flex: 1; min-height: 0; display: flex; justify-content: center; align-items: flex-start;   /* HUD meets the header */
+        }
+        #game-canvas { display: block; touch-action: none; }
+        /* Overlays as the issue's cream page with Kyoto-red headings. The engine writes inline styles, hence !important. */
+        .game-over-overlay {
+            display: none; position: absolute; inset: 0;
+            background: #FFF6E6 !important; color: #1B1F2A !important;
+            flex-direction: column; align-items: center; justify-content: safe center;
+            gap: 0; z-index: 10; padding: 20px 20px 12px; text-align: center;
+            overflow-y: auto;
+        }
+        .game-over-overlay.active { display: flex; }
+        .game-over-overlay div { opacity: 1 !important; color: #1B1F2A !important; }
+        .game-over-overlay > div:first-of-type {
+            font: 900 32px 'Montserrat', 'Arial Black', Arial, sans-serif !important;
+            letter-spacing: 0 !important; color: #890202 !important; margin-bottom: 10px !important;
+            text-shadow: 3px 3px 0 #F2D2C2;
+        }
+        .game-over-overlay > div:first-of-type::after {
+            content: ''; display: block; width: 64px; height: 5px; margin: 8px auto 0;
+            background: #E43D3D; border-radius: 3px;
+        }
+        /* the start card (one button) wears the cover's tilted TRAVEL EDITION pill instead of the rule */
+        .game-over-overlay:has(> button:only-of-type) > div:first-of-type::after {
+            content: 'TRAVEL EDITION'; width: auto; height: auto; display: table; margin: 6px auto 0; padding: 5px 14px;
+            background: #2E72C6; color: #FFFFFF; font: 900 13px 'Montserrat', 'Arial Black', Arial, sans-serif;
+            letter-spacing: 1px; border-radius: 999px; transform: rotate(-3deg); text-shadow: none;
+            box-shadow: 0 4px 10px rgba(19, 33, 63, 0.25);
+        }
+        /* section labels (direct children set at 11 px by the engine) */
+        .game-over-overlay > div[style*="11px"] {
+            font: 800 12px 'Montserrat', 'Arial Black', Arial, sans-serif !important;
+            letter-spacing: 1.5px !important; color: #890202 !important; margin-bottom: 4px !important;
+        }
+        .game-over-overlay > div[style*="15px"] { font-size: 15px !important; line-height: 1.4 !important; margin-bottom: 10px !important; }
+        .game-over-overlay > div[style*="14px"] { line-height: 1.35; margin-bottom: 6px !important; max-width: 360px; }
+        .game-over-overlay [style*="10px"] { font-size: 12px !important; line-height: 1.25; }
+        .game-over-overlay > div > div { background: #FFF2B0 !important; border-radius: 10px !important; padding: 6px 6px !important; flex: 1 1 0; min-width: 96px !important; }   /* legend tiles */
+        .game-over-overlay > div[style*="flex-wrap"] { margin-bottom: 8px !important; gap: 6px !important; }
+        .game-over-overlay > div > div [style*="11px"] { font: 800 12px 'Montserrat', 'Arial Black', Arial, sans-serif !important; }
+        .game-over-overlay svg { display: block; margin: 0 auto 2px; }
+        .game-over-overlay > div[style*="italic"] { font-style: normal !important; font-size: 13px !important; line-height: 1.4 !important; margin: 2px 0 14px !important; }
+        .game-over-overlay .gc-rank {
+            font: 900 24px 'Montserrat', 'Arial Black', Arial, sans-serif !important; color: #890202 !important; margin-bottom: 4px;
+        }
+        .game-over-overlay .gc-rank-line { font-size: 15px !important; max-width: 340px; line-height: 1.4; margin-bottom: 16px; }
+        .game-over-overlay button {
+            background: #FFC94A !important; color: #1B1F2A !important; border: 2px solid #FFC94A !important;
+            font: 900 16px 'Montserrat', 'Arial Black', Arial, sans-serif !important; letter-spacing: 1px !important;
+            border-radius: 999px !important; padding: 13px 40px !important;
+            box-shadow: 0 4px 12px rgba(19, 33, 63, 0.18);
+        }
+        .game-over-overlay > button:only-of-type { position: sticky; bottom: 4px; flex: none; box-shadow: 0 4px 12px rgba(19, 33, 63, 0.18), 0 -6px 10px 4px #FFF6E6; }   /* START stays in reach, text scrolls under a cream veil */
+        .game-over-overlay > div[style*="56px"] { font: 900 52px 'Montserrat', 'Arial Black', Arial, sans-serif !important; }   /* final score */
+        .game-over-overlay button + button { background: transparent !important; color: #890202 !important; border-color: #890202 !important; box-shadow: none; }
+        .game-over-overlay button:focus-visible { outline: 3px solid #890202; outline-offset: 3px; }
+        @media (prefers-reduced-motion: reduce) {
+            /* still dynamic: the engine's START button scale becomes a brightness change */
+            .game-over-overlay button { transition: filter 0.15s ease !important; transform: none !important; }
+            .game-over-overlay button:hover { filter: brightness(1.08); }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-header">
+        <a href="../../" title="Back to hub" aria-label="Back to hub">
+            <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <h1>Gate Change</h1>
+        <button class="mute-btn" id="mute-toggle" type="button" aria-label="Sound" title="Sound on / off"></button>
+    </div>
+    <div id="game-container">
+        <canvas id="game-canvas" aria-label="Gate Change game: departures board, gates A, B and C, and the service desk"></canvas>
+    </div>
+    <script src="../../assets/game-engine.js"></script>
+    <!-- ponytail: borrows the shootout's synthesised kit (tick, ohh, whistle), as field-goal and ghosts-on-mute do -->
+    <script src="../penalty-pressure/audio.js"></script>
+    <script src="model.js"></script>
+    <script src="art.js"></script>
+    <script src="game.js"></script>
+    <script>
+        /* Mute toggle, opt-in audio. The first click also unlocks the AudioContext. */
+        (function () {
+            var btn = document.getElementById('mute-toggle');
+            if (!btn) return;
+            var SPEAKER = '<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/>';
+            var ON = SPEAKER + '<path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>';
+            var OFF = SPEAKER + '<path d="M16 9.5l5 5M21 9.5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>';
+            function sync() {
+                var on = window.PPAudio && !window.PPAudio.isMuted();
+                btn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">' + (on ? ON : OFF) + '</svg>';
+                btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+            }
+            btn.addEventListener('click', function () {
+                if (window.PPAudio) { window.PPAudio.unlock(); window.PPAudio.toggle(); }
+                sync();
+            });
+            sync();
+        })();
+    </script>
+</body>
+</html>
